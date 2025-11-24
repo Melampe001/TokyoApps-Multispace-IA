@@ -1,0 +1,12 @@
+import 'package:huggingface_flutter/transformers.dart';
+
+String detectMood(String input) {
+  final model = Transformers.sentimentAnalysis();
+  return model.analyze(input);  // e.g., 'frustrado', 'curioso'
+}
+
+String adaptResponse(String response, String mood, String genero) {
+  if (genero == 'mujer') response = "Empáticamente: $response";
+  if (mood == 'frustrado') response += " ¡Ánimo, [NOMBRE_USUARIO]! Aquí un video motivacional.";
+  return response;
+}
