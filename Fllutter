@@ -1,0 +1,18 @@
+// En terminal: flutter create tokyo_ia_personal --platforms=android,ios
+// Actualiza pubspec.yaml con dependencias 2025
+dependencies:
+  flutter:
+    sdk: flutter
+  firebase_core: ^3.5.0  // Para auth, storage, vector DB
+  stripe: ^11.0.0  // Monetización opcional
+  huggingface_flutter: ^2.5.0  // Para modelos AI locales (Gemini Nano/Flux.1)
+  onnx_runtime: ^1.8.0  // Runtime para edge AI models
+  pytorch_mobile: ^2.0.0  // Para PyTorch models en mobile
+  edge_impulse: ^1.5.0  // Edge AI deployment
+  flutter_gemini: ^1.2.0  // Integración Gemini 2.5 Flash Image
+  openai_flutter: ^0.5.0  // Para Sora 2 APIs (text-to-video)
+  speech_to_text: ^6.0.0  // Voz input para sentiment
+  camera: ^0.12.0  // Imagen input para multimodal
+  flutter_ffmpeg: ^0.5.0  // Edición video local
+  http: ^1.2.0  // APIs web search
+  vector_math: ^2.2.0  // Para RAG vector DB local
