@@ -57,14 +57,21 @@ spec:
       scaleDownFactor: "0.5"
 
 ---
+# Note: Create this secret manually with your GitHub PAT
+# kubectl create secret generic controller-manager \
+#   --namespace=actions-runner-system \
+#   --from-literal=github_token=YOUR_GITHUB_PAT
 apiVersion: v1
 kind: Secret
 metadata:
   name: controller-manager
   namespace: actions-runner-system
+  annotations:
+    description: "GitHub PAT for runner registration. Create this secret manually."
 type: Opaque
-data:
-  github_token: "" # Base64 encoded GitHub PAT
+# The github_token field should be populated manually:
+# echo -n 'YOUR_GITHUB_PAT' | base64
+# Then add: github_token: <base64-encoded-token>
 
 ---
 apiVersion: v1

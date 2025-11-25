@@ -92,7 +92,7 @@ echo -e "${GREEN}📊 System Information${NC}"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo "Python versions available:"
 for v in 3.9 3.10 3.11 3.12; do
-    python3.${v#3.} --version 2>/dev/null || true
+    python${v} --version 2>/dev/null || true
 done
 echo ""
 echo "pip version: $(pip3 --version)"

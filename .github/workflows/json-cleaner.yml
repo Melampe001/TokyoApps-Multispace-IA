@@ -12,10 +12,16 @@ on:
       - '**.json'
   workflow_dispatch:
 
+# Default permissions
+permissions:
+  contents: read
+
 jobs:
   validate-json:
     name: 🧹 Validate and Clean JSON
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Checkout code
         uses: actions/checkout@v4

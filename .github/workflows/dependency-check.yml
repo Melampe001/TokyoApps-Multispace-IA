@@ -13,10 +13,16 @@ on:
       - 'pyproject.toml'
       - 'Pipfile*'
 
+# Default permissions
+permissions:
+  contents: read
+
 jobs:
   audit:
     name: 🔍 Audit Dependencies
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Checkout code
         uses: actions/checkout@v4

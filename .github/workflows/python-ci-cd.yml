@@ -19,6 +19,10 @@ on:
           - staging
           - production
 
+# Default permissions for all jobs
+permissions:
+  contents: read
+
 env:
   PYTHON_VERSION: '3.11'
   
@@ -26,6 +30,8 @@ jobs:
   lint:
     name: 🔍 Lint
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -93,6 +99,7 @@ jobs:
         with:
           file: ./coverage.xml
           fail_ci_if_error: false
+          token: ${{ secrets.CODECOV_TOKEN }}
           
   build:
     name: 📦 Build

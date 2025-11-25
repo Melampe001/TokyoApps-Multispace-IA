@@ -12,10 +12,17 @@ on:
     - cron: '0 6 * * 1'  # Every Monday at 6 AM UTC
   workflow_dispatch:
 
+# Default permissions for all jobs
+permissions:
+  contents: read
+  security-events: write
+
 jobs:
   dependency-check:
     name: 🔐 Dependency Security Check
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Checkout code
         uses: actions/checkout@v4

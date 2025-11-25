@@ -24,10 +24,16 @@ on:
         default: false
         type: boolean
 
+# Default permissions
+permissions:
+  contents: read
+
 jobs:
   validate:
     name: ✅ Validate Release
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     outputs:
       version: ${{ steps.version.outputs.version }}
     steps:

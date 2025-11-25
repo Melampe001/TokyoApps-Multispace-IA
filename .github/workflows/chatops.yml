@@ -1,5 +1,6 @@
 # ChatOps Workflow
 # Execute commands from issue/PR comments
+# Security: Only allows commands from repository collaborators
 
 name: ChatOps
 
@@ -9,28 +10,61 @@ on:
   pull_request_review_comment:
     types: [created]
 
+# Limit permissions at workflow level
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
 jobs:
   parse-command:
     name: 🤖 Parse Command
     runs-on: ubuntu-latest
     if: startsWith(github.event.comment.body, '/')
+    permissions:
+      contents: read
     outputs:
       command: ${{ steps.parse.outputs.command }}
       args: ${{ steps.parse.outputs.args }}
       is_pr: ${{ steps.check.outputs.is_pr }}
+      is_authorized: ${{ steps.auth.outputs.authorized }}
     steps:
+      - name: Check authorization
+        id: auth
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // Check if the commenter is a collaborator
+            const { data: permission } = await github.rest.repos.getCollaboratorPermissionLevel({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              username: context.payload.comment.user.login
+            });
+            
+            const authorized = ['admin', 'write', 'maintain'].includes(permission.permission);
+            core.setOutput('authorized', authorized.toString());
+            
+            if (!authorized) {
+              console.log(`User ${context.payload.comment.user.login} is not authorized (permission: ${permission.permission})`);
+            }
+            
       - name: Parse command
         id: parse
+        if: steps.auth.outputs.authorized == 'true'
         run: |
-          BODY="${{ github.event.comment.body }}"
-          COMMAND=$(echo "$BODY" | head -n1 | cut -d' ' -f1)
+          # Use environment variable to avoid injection
+          BODY="${COMMENT_BODY}"
+          COMMAND=$(echo "$BODY" | head -n1 | cut -d' ' -f1 | tr -cd '[:alnum:]/')
           ARGS=$(echo "$BODY" | head -n1 | cut -d' ' -f2-)
           echo "command=$COMMAND" >> $GITHUB_OUTPUT
           echo "args=$ARGS" >> $GITHUB_OUTPUT
-          echo "Parsed command: $COMMAND with args: $ARGS"
+          echo "Parsed command: $COMMAND"
+        env:
+          COMMENT_BODY: ${{ github.event.comment.body }}
           
       - name: Check if PR
         id: check
+        if: steps.auth.outputs.authorized == 'true'
         run: |
           if [ -n "${{ github.event.issue.pull_request }}" ]; then
             echo "is_pr=true" >> $GITHUB_OUTPUT
@@ -42,12 +76,18 @@ jobs:
     name: 🧪 Run Tests
     runs-on: ubuntu-latest
     needs: parse-command
-    if: needs.parse-command.outputs.command == '/test'
+    if: needs.parse-command.outputs.command == '/test' && needs.parse-command.outputs.is_authorized == 'true'
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          # Only checkout the base branch, not untrusted PR code
+          ref: ${{ github.event.repository.default_branch }}
+          persist-credentials: false
           
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -84,12 +124,18 @@ jobs:
     name: 🔍 Run Lint
     runs-on: ubuntu-latest
     needs: parse-command
-    if: needs.parse-command.outputs.command == '/lint'
+    if: needs.parse-command.outputs.command == '/lint' && needs.parse-command.outputs.is_authorized == 'true'
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          # Only checkout the base branch, not untrusted PR code
+          ref: ${{ github.event.repository.default_branch }}
+          persist-credentials: false
           
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -132,12 +178,18 @@ jobs:
     name: 📊 Run Coverage
     runs-on: ubuntu-latest
     needs: parse-command
-    if: needs.parse-command.outputs.command == '/coverage'
+    if: needs.parse-command.outputs.command == '/coverage' && needs.parse-command.outputs.is_authorized == 'true'
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          # Only checkout the base branch, not untrusted PR code
+          ref: ${{ github.event.repository.default_branch }}
+          persist-credentials: false
           
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -172,7 +224,10 @@ jobs:
     name: ❓ Help
     runs-on: ubuntu-latest
     needs: parse-command
-    if: needs.parse-command.outputs.command == '/help'
+    if: needs.parse-command.outputs.command == '/help' && needs.parse-command.outputs.is_authorized == 'true'
+    permissions:
+      issues: write
+      pull-requests: write
     steps:
       - name: Post help
         uses: actions/github-script@v7
@@ -194,5 +249,7 @@ jobs:
             ### Examples
             - \`/test\` - Run all tests
             - \`/lint\` - Check code style
-            - \`/coverage\` - Get coverage report`
+            - \`/coverage\` - Get coverage report
+            
+            **Note:** Only repository collaborators can use these commands.`
             });

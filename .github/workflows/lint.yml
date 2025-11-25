@@ -21,10 +21,16 @@ on:
       - '.flake8'
       - '.pylintrc'
 
+# Default permissions
+permissions:
+  contents: read
+
 jobs:
   lint:
     name: 🔍 Python Linting
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
