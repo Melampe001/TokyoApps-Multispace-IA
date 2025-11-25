@@ -1,0 +1,174 @@
+# Auto-Documentation Workflow
+# Automatically generates and updates documentation
+
+name: Auto-Documentation
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '**.py'
+      - 'docs/**'
+      - 'README.md'
+  workflow_dispatch:
+
+jobs:
+  generate-docs:
+    name: 📚 Generate Documentation
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          
+      - name: Install documentation tools
+        run: |
+          pip install pdoc3 mkdocs mkdocs-material sphinx sphinx-rtd-theme
+          
+      - name: Generate API documentation
+        run: |
+          mkdir -p docs/api
+          
+          # Find Python files and generate docs
+          if find . -name "*.py" -not -path "./.git/*" -not -path "./venv/*" | head -1 | grep -q .; then
+            find . -name "*.py" -not -path "./.git/*" -not -path "./venv/*" -exec dirname {} \; | sort -u | while read dir; do
+              if [ -f "$dir/__init__.py" ] || ls "$dir"/*.py 1>/dev/null 2>&1; then
+                module_name=$(echo "$dir" | sed 's|^\./||' | tr '/' '.')
+                pdoc --html --output-dir docs/api "$dir" 2>/dev/null || true
+              fi
+            done
+          fi
+          
+      - name: Generate README structure
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+            
+            // Read current README
+            let readme = '';
+            if (fs.existsSync('README.md')) {
+              readme = fs.readFileSync('README.md', 'utf8');
+            }
+            
+            // Generate project structure
+            function getStructure(dir, prefix = '', depth = 0, maxDepth = 3) {
+              if (depth >= maxDepth) return '';
+              
+              let result = '';
+              const items = fs.readdirSync(dir).filter(f => 
+                !f.startsWith('.') && 
+                f !== 'node_modules' && 
+                f !== 'venv' && 
+                f !== '__pycache__' &&
+                f !== 'dist' &&
+                f !== 'build'
+              );
+              
+              for (let i = 0; i < items.length; i++) {
+                const item = items[i];
+                const itemPath = path.join(dir, item);
+                const isLast = i === items.length - 1;
+                const connector = isLast ? '└── ' : '├── ';
+                const newPrefix = prefix + (isLast ? '    ' : '│   ');
+                
+                const stat = fs.statSync(itemPath);
+                if (stat.isDirectory()) {
+                  result += prefix + connector + '📁 ' + item + '/\n';
+                  result += getStructure(itemPath, newPrefix, depth + 1, maxDepth);
+                } else {
+                  const ext = path.extname(item);
+                  let icon = '📄';
+                  if (ext === '.py') icon = '🐍';
+                  else if (ext === '.md') icon = '📝';
+                  else if (ext === '.yml' || ext === '.yaml') icon = '⚙️';
+                  else if (ext === '.json') icon = '📋';
+                  result += prefix + connector + icon + ' ' + item + '\n';
+                }
+              }
+              return result;
+            }
+            
+            const structure = getStructure('.');
+            
+            // Check if structure section exists
+            const structureSection = `\n## 📁 Project Structure\n\n\`\`\`\n${structure}\`\`\`\n`;
+            
+            if (readme.includes('## 📁 Project Structure')) {
+              // Update existing section
+              readme = readme.replace(
+                /## 📁 Project Structure[\s\S]*?(?=\n## |$)/,
+                structureSection
+              );
+            } else {
+              // Add new section at the end
+              readme += structureSection;
+            }
+            
+            fs.writeFileSync('README.md', readme);
+            console.log('README updated with project structure');
+            
+      - name: Generate docs index
+        run: |
+          mkdir -p docs
+          
+          cat > docs/index.md << 'EOF'
+          # Tokyo IA Documentation
+          
+          Welcome to the Tokyo IA documentation.
+          
+          ## Quick Links
+          
+          - [README](../README.md) - Project overview
+          - [API Documentation](api/) - Auto-generated API docs
+          - [Agents](.github/agents/) - Copilot agents documentation
+          
+          ## Agents
+          
+          Tokyo IA includes the following Copilot agents:
+          
+          | Agent | Description |
+          |-------|-------------|
+          | Lint Agent | Python code linting and formatting |
+          | Coverage Agent | Test coverage analysis |
+          | Build Agent | Project building and packaging |
+          | Release Agent | Automated versioning and releases |
+          | ChatOps Agent | Commands from issue/PR comments |
+          
+          ## Workflows
+          
+          Available GitHub Actions workflows:
+          
+          | Workflow | Description |
+          |----------|-------------|
+          | Python CI/CD | Build, test, and deploy Python apps |
+          | Security Scan | Vulnerability and security scanning |
+          | Release | Automated release management |
+          | ChatOps | Comment-based commands |
+          | Lint | Code linting and formatting |
+          | Auto-Label | Automatic issue/PR labeling |
+          | Auto-Merge | Automatic PR merging |
+          | Auto-Changelog | Changelog generation |
+          
+          EOF
+          
+      - name: Commit documentation
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          git add docs/ README.md 2>/dev/null || true
+          
+          if git diff --cached --quiet; then
+            echo "No changes to documentation"
+          else
+            git commit -m "docs: Auto-update documentation"
+            git push
+          fi

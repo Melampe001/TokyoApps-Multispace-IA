@@ -1,0 +1,179 @@
+# Auto-Changelog Workflow
+# Automatically generates and updates changelog
+
+name: Auto-Changelog
+
+on:
+  push:
+    branches: [main]
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  generate-changelog:
+    name: 📝 Generate Changelog
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          
+      - name: Generate changelog
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            
+            // Get all tags
+            const { data: tags } = await github.rest.repos.listTags({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              per_page: 100
+            });
+            
+            let changelog = `# Changelog\n\n`;
+            changelog += `All notable changes to Tokyo IA will be documented in this file.\n\n`;
+            changelog += `The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),\n`;
+            changelog += `and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).\n\n`;
+            
+            // Get commits since last tag or all commits if no tags
+            let commits;
+            if (tags.length > 0) {
+              const { data: comparison } = await github.rest.repos.compareCommits({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                base: tags[0].commit.sha,
+                head: 'HEAD'
+              });
+              commits = comparison.commits;
+            } else {
+              const { data: allCommits } = await github.rest.repos.listCommits({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                per_page: 100
+              });
+              commits = allCommits;
+            }
+            
+            // Categorize commits
+            const categories = {
+              'feat': { title: '### ✨ Added', commits: [] },
+              'fix': { title: '### 🐛 Fixed', commits: [] },
+              'docs': { title: '### 📚 Documentation', commits: [] },
+              'style': { title: '### 💄 Style', commits: [] },
+              'refactor': { title: '### ♻️ Refactored', commits: [] },
+              'perf': { title: '### ⚡ Performance', commits: [] },
+              'test': { title: '### 🧪 Tests', commits: [] },
+              'build': { title: '### 🔧 Build', commits: [] },
+              'ci': { title: '### 👷 CI', commits: [] },
+              'chore': { title: '### 🔨 Chore', commits: [] },
+              'other': { title: '### 📦 Other', commits: [] }
+            };
+            
+            for (const commit of commits) {
+              const message = commit.commit.message.split('\n')[0];
+              const match = message.match(/^(\w+)(\(.+\))?!?:\s*(.+)$/);
+              
+              if (match) {
+                const type = match[1].toLowerCase();
+                const scope = match[2] ? match[2].slice(1, -1) : '';
+                const description = match[3];
+                
+                const entry = {
+                  sha: commit.sha.substring(0, 7),
+                  message: description,
+                  scope: scope,
+                  author: commit.author ? commit.author.login : 'unknown'
+                };
+                
+                if (categories[type]) {
+                  categories[type].commits.push(entry);
+                } else {
+                  categories['other'].commits.push(entry);
+                }
+              } else {
+                categories['other'].commits.push({
+                  sha: commit.sha.substring(0, 7),
+                  message: message,
+                  scope: '',
+                  author: commit.author ? commit.author.login : 'unknown'
+                });
+              }
+            }
+            
+            // Add unreleased section
+            changelog += `## [Unreleased]\n\n`;
+            
+            for (const [type, category] of Object.entries(categories)) {
+              if (category.commits.length > 0) {
+                changelog += `${category.title}\n\n`;
+                for (const commit of category.commits) {
+                  const scope = commit.scope ? `**${commit.scope}:** ` : '';
+                  changelog += `- ${scope}${commit.message} (\`${commit.sha}\`) by @${commit.author}\n`;
+                }
+                changelog += '\n';
+              }
+            }
+            
+            // Add previous releases if tags exist
+            for (let i = 0; i < Math.min(tags.length, 10); i++) {
+              const tag = tags[i];
+              const prevTag = tags[i + 1];
+              
+              // Get release info
+              let releaseDate = '';
+              try {
+                const { data: release } = await github.rest.repos.getReleaseByTag({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  tag: tag.name
+                });
+                releaseDate = release.published_at.split('T')[0];
+              } catch {
+                // No release found, use commit date
+                const { data: commitData } = await github.rest.repos.getCommit({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  ref: tag.commit.sha
+                });
+                releaseDate = commitData.commit.author.date.split('T')[0];
+              }
+              
+              changelog += `## [${tag.name}] - ${releaseDate}\n\n`;
+              
+              if (prevTag) {
+                const { data: comparison } = await github.rest.repos.compareCommits({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  base: prevTag.commit.sha,
+                  head: tag.commit.sha
+                });
+                
+                for (const commit of comparison.commits.slice(0, 20)) {
+                  const message = commit.commit.message.split('\n')[0];
+                  changelog += `- ${message} (\`${commit.sha.substring(0, 7)}\`)\n`;
+                }
+              }
+              changelog += '\n';
+            }
+            
+            // Write changelog
+            fs.writeFileSync('CHANGELOG.md', changelog);
+            console.log('Changelog generated successfully');
+            
+      - name: Commit changelog
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          if git diff --quiet CHANGELOG.md 2>/dev/null; then
+            echo "No changes to CHANGELOG.md"
+          else
+            git add CHANGELOG.md
+            git commit -m "docs: Update CHANGELOG.md" || true
+            git push || true
+          fi

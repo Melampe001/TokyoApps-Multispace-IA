@@ -1,0 +1,204 @@
+# Tokyo IA - Python Project Configuration
+# This file contains all Python tool configurations
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tokyo-ia"
+version = "1.0.0"
+description = "Tokyo IA - Intelligent Agent System with unlimited capabilities"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.9"
+authors = [
+    {name = "Melampe001", email = "melampe001@example.com"}
+]
+keywords = ["ai", "agents", "automation", "python"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+dependencies = [
+    "fastapi>=0.100.0",
+    "uvicorn>=0.22.0",
+    "httpx>=0.24.0",
+    "pydantic>=2.0.0",
+    "python-dotenv>=1.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    # Testing
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "pytest-asyncio>=0.21.0",
+    "pytest-xdist>=3.0.0",
+    "hypothesis>=6.0.0",
+    # Linting
+    "black>=23.0.0",
+    "flake8>=6.0.0",
+    "pylint>=2.17.0",
+    "mypy>=1.0.0",
+    "isort>=5.12.0",
+    # Security
+    "bandit>=1.7.0",
+    "safety>=2.3.0",
+    "pip-audit>=2.5.0",
+    # Documentation
+    "mkdocs>=1.4.0",
+    "mkdocs-material>=9.0.0",
+    "pdoc3>=0.10.0",
+]
+
+ai = [
+    "openai>=1.0.0",
+    "anthropic>=0.5.0",
+    "transformers>=4.30.0",
+    "torch>=2.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/Melampe001/Tokyo-IA"
+Documentation = "https://github.com/Melampe001/Tokyo-IA/wiki"
+Repository = "https://github.com/Melampe001/Tokyo-IA.git"
+Issues = "https://github.com/Melampe001/Tokyo-IA/issues"
+
+[project.scripts]
+tokyo-ia = "tokyo_ia.cli:main"
+
+# Black configuration
+[tool.black]
+line-length = 100
+target-version = ['py39', 'py310', 'py311', 'py312']
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+  | node_modules
+)/
+'''
+
+# isort configuration
+[tool.isort]
+profile = "black"
+line_length = 100
+skip = [".git", ".venv", "venv", "node_modules", "dist", "build"]
+known_first_party = ["tokyo_ia"]
+sections = ["FUTURE", "STDLIB", "THIRDPARTY", "FIRSTPARTY", "LOCALFOLDER"]
+
+# pytest configuration
+[tool.pytest.ini_options]
+minversion = "7.0"
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = [
+    "-v",
+    "--tb=short",
+    "--strict-markers",
+    "--cov=.",
+    "--cov-report=term-missing",
+    "--cov-report=html:htmlcov",
+    "--cov-fail-under=70",
+]
+asyncio_mode = "auto"
+markers = [
+    "slow: marks tests as slow",
+    "integration: marks tests as integration tests",
+    "unit: marks tests as unit tests",
+]
+
+# Coverage configuration
+[tool.coverage.run]
+source = ["."]
+branch = true
+omit = [
+    "tests/*",
+    "setup.py",
+    "conftest.py",
+    "*/__init__.py",
+    ".venv/*",
+    "venv/*",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+]
+show_missing = true
+
+# mypy configuration
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+ignore_missing_imports = true
+strict_optional = true
+disallow_untyped_defs = false
+check_untyped_defs = true
+
+[[tool.mypy.overrides]]
+module = "tests.*"
+disallow_untyped_defs = false
+
+# pylint configuration
+[tool.pylint.main]
+py-version = "3.11"
+jobs = 0
+ignore = [".git", ".venv", "venv", "node_modules"]
+
+[tool.pylint.messages_control]
+disable = [
+    "C0114",  # missing-module-docstring
+    "C0115",  # missing-class-docstring
+    "C0116",  # missing-function-docstring
+    "R0903",  # too-few-public-methods
+]
+
+[tool.pylint.format]
+max-line-length = 100
+
+# Bandit security configuration
+[tool.bandit]
+exclude_dirs = ["tests", ".venv", "venv"]
+skips = ["B101"]  # assert_used
+
+# Ruff configuration (alternative to flake8)
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+exclude = [
+    ".git",
+    ".venv",
+    "venv",
+    "node_modules",
+    "dist",
+    "build",
+]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "B", "C4"]
+ignore = ["E501"]  # line too long (handled by formatter)

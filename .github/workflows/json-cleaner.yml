@@ -1,0 +1,74 @@
+# JSON Cleaner Workflow
+# Validates and cleans JSON files
+
+name: JSON Cleaner
+
+on:
+  push:
+    paths:
+      - '**.json'
+  pull_request:
+    paths:
+      - '**.json'
+  workflow_dispatch:
+
+jobs:
+  validate-json:
+    name: 🧹 Validate and Clean JSON
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          
+      - name: Validate JSON files
+        run: |
+          echo "## 🧹 JSON Validation Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          ERRORS=0
+          while IFS= read -r -d '' file; do
+            if python -m json.tool "$file" > /dev/null 2>&1; then
+              echo "✅ $file" >> $GITHUB_STEP_SUMMARY
+            else
+              echo "❌ $file - Invalid JSON" >> $GITHUB_STEP_SUMMARY
+              python -m json.tool "$file" 2>&1 | head -5 >> $GITHUB_STEP_SUMMARY
+              ERRORS=$((ERRORS + 1))
+            fi
+          done < <(find . -name "*.json" -not -path "./.git/*" -not -path "./node_modules/*" -print0)
+          
+          if [ $ERRORS -gt 0 ]; then
+            echo ""
+            echo "### ⚠️ Found $ERRORS invalid JSON file(s)" >> $GITHUB_STEP_SUMMARY
+            exit 1
+          fi
+          
+      - name: Format JSON files
+        if: github.event_name == 'pull_request'
+        run: |
+          find . -name "*.json" -not -path "./.git/*" -not -path "./node_modules/*" | while read file; do
+            if python -m json.tool "$file" > /dev/null 2>&1; then
+              python -c "
+          import json
+          import sys
+          with open('$file', 'r') as f:
+              data = json.load(f)
+          with open('$file', 'w') as f:
+              json.dump(data, f, indent=2, ensure_ascii=False)
+              f.write('\n')
+          "
+            fi
+          done
+          
+      - name: Check for changes
+        id: changes
+        run: |
+          if git diff --quiet; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          fi

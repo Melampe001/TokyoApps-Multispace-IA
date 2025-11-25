@@ -1,0 +1,138 @@
+# Auto-Close Stale Issues Workflow
+# Automatically closes inactive issues and PRs
+
+name: Auto-Close Stale
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Daily at midnight UTC
+  workflow_dispatch:
+
+jobs:
+  stale:
+    name: 🧹 Mark Stale and Close
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+    steps:
+      - name: Mark stale issues and PRs
+        uses: actions/stale@v9
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          
+          # Stale issues configuration
+          stale-issue-message: |
+            ## ⏰ Este issue ha sido marcado como inactivo
+            
+            Este issue no ha tenido actividad en los últimos 30 días y será cerrado automáticamente en 7 días si no hay más actividad.
+            
+            Si este issue sigue siendo relevante:
+            - Agrega un comentario con más información
+            - O usa la etiqueta `keep-open` para mantenerlo abierto
+            
+            ¡Gracias por tu comprensión! 🌸
+            
+          stale-issue-label: stale
+          days-before-issue-stale: 30
+          days-before-issue-close: 7
+          close-issue-message: |
+            ## 🔒 Issue cerrado por inactividad
+            
+            Este issue ha sido cerrado automáticamente debido a la falta de actividad.
+            
+            Si el problema persiste, no dudes en abrir un nuevo issue con información actualizada.
+            
+          # Stale PR configuration
+          stale-pr-message: |
+            ## ⏰ Este PR ha sido marcado como inactivo
+            
+            Este PR no ha tenido actividad en los últimos 14 días y será cerrado automáticamente en 7 días si no hay más actividad.
+            
+            Para mantener este PR abierto:
+            - Resuelve los conflictos de merge si los hay
+            - Responde a los comentarios de revisión
+            - Usa la etiqueta `keep-open` para mantenerlo abierto
+            
+          stale-pr-label: stale
+          days-before-pr-stale: 14
+          days-before-pr-close: 7
+          close-pr-message: |
+            ## 🔒 PR cerrado por inactividad
+            
+            Este PR ha sido cerrado automáticamente debido a la falta de actividad.
+            
+            Si deseas continuar con estos cambios, puedes reabrir el PR o crear uno nuevo.
+            
+          # Labels that prevent stale marking
+          exempt-issue-labels: 'keep-open,in-progress,help wanted,priority: high'
+          exempt-pr-labels: 'keep-open,in-progress,work in progress'
+          
+          # Exempt assigned items
+          exempt-all-assignees: true
+          
+          # Operations per run
+          operations-per-run: 100
+          
+          # Ascending order (oldest first)
+          ascending: true
+
+  close-answered:
+    name: ✅ Close Answered Questions
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: Close questions with accepted answer
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // Find issues with 'question' label that have been answered
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'question'
+            });
+            
+            for (const issue of issues) {
+              // Check for comments containing resolution markers
+              const { data: comments } = await github.rest.issues.listComments({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number
+              });
+              
+              const hasAnswer = comments.some(c => 
+                c.body.toLowerCase().includes('✅') ||
+                c.body.toLowerCase().includes('resolved') ||
+                c.body.toLowerCase().includes('answered') ||
+                c.body.toLowerCase().includes('solved') ||
+                c.body.toLowerCase().includes('resuelto')
+              );
+              
+              if (hasAnswer && comments.length > 0) {
+                // Check if last activity was more than 3 days ago
+                const lastComment = comments[comments.length - 1];
+                const daysSinceLastComment = (Date.now() - new Date(lastComment.created_at)) / (1000 * 60 * 60 * 24);
+                
+                if (daysSinceLastComment > 3) {
+                  await github.rest.issues.update({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    issue_number: issue.number,
+                    state: 'closed',
+                    state_reason: 'completed'
+                  });
+                  
+                  await github.rest.issues.createComment({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    issue_number: issue.number,
+                    body: '## ✅ Issue cerrado\n\nEste issue ha sido cerrado ya que la pregunta fue respondida.\n\nSi necesitas más ayuda, no dudes en abrir un nuevo issue.'
+                  });
+                  
+                  console.log(`Closed answered issue #${issue.number}`);
+                }
+              }
+            }
