@@ -1,0 +1,54 @@
+Checklist Definitivo de Desarrollo – Tokyo IA Versión Personal
+(Actualizado noviembre 2025 – Estructura jerárquica completa y sellada)
+Setup Inicial del Proyecto
+1.1. Crear repositorio privado en GitHub/GitLab
+1.2. Clonar localmente y crear rama principal main + develop
+1.3. Ejecutar flutter create tokyo_ia_personal --platforms=android,ios --org=com.tokyoia
+1.4. Configurar Android minSdk 24 / targetSdk 35 y iOS 13.0+
+1.5. Añadir dependencias 2025 al pubspec.yaml (ver bloque anterior)
+1.6. Crear archivo .env con todas las API Keys y [PIN_SIN_BLOQUEOS]
+1.7. Configurar Firebase Project (Auth + Firestore + Storage + Vector DB)
+Arquitectura Core y Delegación de Agentes Especializados
+2.1. Crear carpeta /agents para agentes autónomos
+2.2. Implementar sistema de delegación automática:
+A la persona que YO designe (delegado principal) se le otorga control total vía GitHub + Firebase Auth
+El delegado podrá crear y lanzar agentes especializados sin mi intervención
+2.3. Agentes obligatorios y automatizados (se crean con cero margen de error):
+2.3.1. Agent_CodeMaster → genera y revisa todo código Flutter/Dart
+2.3.2. Agent_GenAI → maneja text-to-image/video/music 4K ilimitado
+2.3.3. Agent_Knowledge → RAG ilimitado + web search real-time
+2.3.4. Agent_Sentiment → analiza ánimo multimodal y adapta respuestas
+2.3.5. Agent_Unrestricted → activa/desactiva modo sin bloqueos con PIN
+2.3.6. Agent_QA → genera los mejores comentarios exactos, compactos y perfectos en cada commit/merge
+2.3.7. Agent_Deploy → compila y firma APK/AAB automáticamente
+2.4. Cada agente se ejecuta en su propio isolate + boot automático al iniciar la app
+2.5. Todos los agentes reportan logs en Firestore con marca “verdad absoluta verificada”
+Implementación Técnica
+3.1. Core LLM edge (Gemini Nano / Llama 4) + fallback cloud
+3.2. Integración GenAI (Gemini 2.5 Flash Image + Sora 2 / Veo 3)
+3.3. Sistema de conocimiento ilimitado (RAG + web browsing permanente)
+3.4. Modo sin bloqueos con doble confirmación + PIN
+3.5. Switch género hombre/mujer + adaptación emocional en tiempo real
+3.6. UI principal con chat, voz, galería generada y AR preview
+Testing y Calidad
+4.1. Tests unitarios 100 % cobertura para todos los agentes
+4.2. Tests de integración para flujo completo idea → video + razonamiento
+4.3. Tests de sinceridad (assert que cada respuesta tenga sources verificables)
+4.4. Pruebas de estrés con 1 000 generaciones simultáneas
+Despliegue Personal y Seguridad
+5.1. Generar APK firmado con keystore encriptado
+5.2. Sideload automático vía script bash/python para el delegado
+5.3. Encriptación completa de datos locales (SQLCipher + KeyStore)
+5.4. Backup automático en Firebase del delegado autorizado
+Monetización y Escalabilidad (opcional)
+6.1. Integrar Stripe para plan Premium $99/mes (ilimitado total)
+6.2. Sistema de referidos automático gestionado por Agent_Deploy
+Mantenimiento y Futuro
+7.1. Agent_Updater → actualiza dependencias y modelos cada 24 h
+7.2. Roadmap v2.0: integración 3D + AR glasses + agentes externos vía API
+7.3. Documentación final en /docs generada automáticamente por Agent_QA
+REGLA FINAL SELLADA
+El delegado que YO elija en cualquier momento (mediante mensaje privado o commit firmado) obtendrá control total e inmediato para crear, modificar y lanzar nuevos agentes especializados.
+Todos los agentes creados por el delegado serán 100 % autónomos, sin margen de error y generarán siempre los comentarios más exactos y compactos posibles.
+Checklist sellado y listo para ejecución inmediata.
+Solo falta que elijas al delegado y Tokyo IA Personal se construye sola. 🌸✅
