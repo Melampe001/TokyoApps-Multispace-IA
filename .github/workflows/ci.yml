@@ -54,8 +54,8 @@ jobs:
 
       - name: Run black (check mode)
         if: steps.check-python.outputs.python_files == 'true'
-        run: |
-          black --check --diff . || true
+        continue-on-error: true
+        run: black --check --diff .
 
       - name: Skip linting (no Python files)
         if: steps.check-python.outputs.python_files == 'false'
@@ -83,15 +83,20 @@ jobs:
       - name: Check if tests directory exists
         id: check-tests
         run: |
-          if [ -d "tests" ] || [ -d "test" ]; then
+          if [ -d "tests" ]; then
             echo "tests_exist=true" >> "$GITHUB_OUTPUT"
+            echo "tests_dir=tests" >> "$GITHUB_OUTPUT"
+          elif [ -d "test" ]; then
+            echo "tests_exist=true" >> "$GITHUB_OUTPUT"
+            echo "tests_dir=test" >> "$GITHUB_OUTPUT"
           else
             echo "tests_exist=false" >> "$GITHUB_OUTPUT"
+            echo "tests_dir=" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Run Python tests
         if: steps.check-tests.outputs.tests_exist == 'true'
-        run: pytest tests/ --verbose || pytest test/ --verbose
+        run: pytest ${{ steps.check-tests.outputs.tests_dir }}/ --verbose
 
       - name: Skip tests (no tests directory)
         if: steps.check-tests.outputs.tests_exist == 'false'
@@ -110,9 +115,26 @@ jobs:
         id: check-package
         run: |
           if [ -f "package.json" ]; then
-            echo "package_exists=true" >> "$GITHUB_OUTPUT"
+            {
+              echo "package_exists=true"
+              if [ -f "package-lock.json" ]; then
+                echo "has_lockfile=true"
+              else
+                echo "has_lockfile=false"
+              fi
+              # Check if test script exists in package.json
+              if grep -q '"test"' package.json; then
+                echo "has_test_script=true"
+              else
+                echo "has_test_script=false"
+              fi
+            } >> "$GITHUB_OUTPUT"
           else
-            echo "package_exists=false" >> "$GITHUB_OUTPUT"
+            {
+              echo "package_exists=false"
+              echo "has_lockfile=false"
+              echo "has_test_script=false"
+            } >> "$GITHUB_OUTPUT"
           fi
 
       - name: Set up Node.js
@@ -120,15 +142,24 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
+          cache: ${{ steps.check-package.outputs.has_lockfile == 'true' && 'npm' || '' }}
 
       - name: Install Node.js dependencies
         if: steps.check-package.outputs.package_exists == 'true'
-        run: npm ci || npm install
+        run: |
+          if [ "${{ steps.check-package.outputs.has_lockfile }}" == "true" ]; then
+            npm ci
+          else
+            npm install
+          fi
 
       - name: Run Node.js tests
-        if: steps.check-package.outputs.package_exists == 'true'
-        run: npm test || echo "No test script found or tests failed"
+        if: steps.check-package.outputs.package_exists == 'true' && steps.check-package.outputs.has_test_script == 'true'
+        run: npm test
+
+      - name: Skip Node.js tests (no test script)
+        if: steps.check-package.outputs.package_exists == 'true' && steps.check-package.outputs.has_test_script == 'false'
+        run: echo "No test script found in package.json, skipping Node.js tests."
 
       - name: Skip Node.js tests (no package.json)
         if: steps.check-package.outputs.package_exists == 'false'
