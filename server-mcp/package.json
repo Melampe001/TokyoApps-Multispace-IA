@@ -1,0 +1,15 @@
+{
+  "name": "tokyo-ia-server-mcp",
+  "version": "0.1.0",
+  "description": "Tokyo-IA MCP Server",
+  "private": true,
+  "main": "src/index.js",
+  "scripts": {
+    "start": "echo 'Server not configured yet'",
+    "dev": "echo 'Development server not configured yet'",
+    "lint": "echo 'Linting not configured yet'",
+    "test": "echo 'Tests not configured yet'"
+  },
+  "keywords": ["tokyo-ia", "mcp", "server"],
+  "license": "MIT"
+}

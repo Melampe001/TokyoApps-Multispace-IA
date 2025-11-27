@@ -1,0 +1,14 @@
+{
+  "name": "tokyo-ia-web",
+  "version": "0.1.0",
+  "description": "Tokyo-IA Web Application",
+  "private": true,
+  "scripts": {
+    "dev": "echo 'Development server not configured yet'",
+    "build": "echo 'Build not configured yet'",
+    "lint": "echo 'Linting not configured yet'",
+    "test": "echo 'Tests not configured yet'"
+  },
+  "keywords": ["tokyo-ia", "web"],
+  "license": "MIT"
+}
