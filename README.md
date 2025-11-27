@@ -130,14 +130,14 @@ echo "Running pre-commit checks..."
 # Run linting for web
 if [ -d "web" ]; then
     echo "Linting web..."
-    cd web && npm run lint 2>/dev/null || true
+    cd web && npm run lint 2>/dev/null
     cd ..
 fi
 
 # Run linting for server-mcp
 if [ -d "server-mcp" ]; then
     echo "Linting server-mcp..."
-    cd server-mcp && npm run lint 2>/dev/null || true
+    cd server-mcp && npm run lint 2>/dev/null
     cd ..
 fi
 
