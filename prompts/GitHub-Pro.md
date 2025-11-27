@@ -130,7 +130,7 @@ jobs:
     
     strategy:
       matrix:
-        node-version: [18.x, 20.x, 22.x]
+        node-version: [20.x, 22.x]
     
     steps:
       - name: Checkout repository
@@ -162,7 +162,7 @@ jobs:
       - uses: actions/checkout@v4
       
       - name: Run CodeQL Analysis
-        uses: github/codeql-action/analyze@v3
+        uses: github/codeql-action/analyze@v4
         
       - name: Dependency Review
         uses: actions/dependency-review-action@v4
