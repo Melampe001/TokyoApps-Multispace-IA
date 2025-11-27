@@ -19,48 +19,63 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: '**/package-lock.json'
       
+      # server-mcp steps - only run if directory exists
       - name: Install dependencies (server-mcp)
+        if: hashFiles('server-mcp/package.json') != ''
         working-directory: server-mcp
         run: npm ci || npm install
-        continue-on-error: true
-      
-      - name: Install dependencies (web)
-        working-directory: web
-        run: npm ci || npm install
-        continue-on-error: true
       
       - name: Lint (server-mcp)
+        if: hashFiles('server-mcp/package.json') != ''
         working-directory: server-mcp
         run: npm run lint || echo "Lint not configured"
         continue-on-error: true
       
+      - name: Test (server-mcp)
+        if: hashFiles('server-mcp/package.json') != ''
+        working-directory: server-mcp
+        run: npm test || echo "Tests not configured"
+        continue-on-error: true
+      
+      # web steps - only run if directory exists
+      - name: Install dependencies (web)
+        if: hashFiles('web/package.json') != ''
+        working-directory: web
+        run: npm ci || npm install
+      
       - name: Lint (web)
+        if: hashFiles('web/package.json') != ''
         working-directory: web
         run: npm run lint || echo "Lint not configured"
         continue-on-error: true
       
       - name: Build (web)
+        if: hashFiles('web/package.json') != ''
         working-directory: web
         run: npm run build || echo "Build not configured"
         continue-on-error: true
       
-      - name: Test (server-mcp)
-        working-directory: server-mcp
-        run: npm test || echo "Tests not configured"
-        continue-on-error: true
-      
       - name: Test (web)
+        if: hashFiles('web/package.json') != ''
         working-directory: web
         run: npm test || echo "Tests not configured"
         continue-on-error: true
+      
+      # Placeholder step when no components exist yet
+      - name: Check repository status
+        run: |
+          echo "✅ CI workflow executed successfully"
+          if [ ! -d "server-mcp" ] && [ ! -d "web" ]; then
+            echo "ℹ️ Note: server-mcp/ and web/ directories not found yet."
+            echo "   Steps for these components will run once they are created."
+          fi
 
   android-build:
     name: Android Build Check
     runs-on: ubuntu-latest
-    if: false  # Enabled when app/ directory exists
+    # Only run if app/ directory exists with build.gradle
+    if: hashFiles('app/build.gradle', 'app/build.gradle.kts') != ''
     
     steps:
       - name: Checkout code

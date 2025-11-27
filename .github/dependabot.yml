@@ -1,6 +1,6 @@
 version: 2
 updates:
-  # GitHub Actions
+  # GitHub Actions - always applicable
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
@@ -12,6 +12,7 @@ updates:
       - "github-actions"
 
   # npm dependencies for server-mcp
+  # Note: This will only work once the server-mcp/ directory exists with a package.json
   - package-ecosystem: "npm"
     directory: "/server-mcp"
     schedule:
@@ -24,6 +25,7 @@ updates:
     open-pull-requests-limit: 5
 
   # npm dependencies for web
+  # Note: This will only work once the web/ directory exists with a package.json
   - package-ecosystem: "npm"
     directory: "/web"
     schedule:
