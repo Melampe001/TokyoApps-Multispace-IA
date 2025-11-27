@@ -1,0 +1,36 @@
+version: 2
+updates:
+  # GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "ci"
+    labels:
+      - "dependencies"
+      - "github-actions"
+
+  # npm dependencies for server-mcp
+  - package-ecosystem: "npm"
+    directory: "/server-mcp"
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "deps(server-mcp)"
+    labels:
+      - "dependencies"
+      - "server-mcp"
+    open-pull-requests-limit: 5
+
+  # npm dependencies for web
+  - package-ecosystem: "npm"
+    directory: "/web"
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "deps(web)"
+    labels:
+      - "dependencies"
+      - "web"
+    open-pull-requests-limit: 5
