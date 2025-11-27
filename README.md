@@ -165,7 +165,7 @@ Do NOT store service account JSONs, keystore files, private keys, or other secre
 
 If any secret was ever committed:
 1. Rotate the exposed credential immediately (revoke old key).
-2. Remove the secret from the repository and history (see docs/SECRETS.md).
+2. Remove the secret from the repository and history.
 3. Notify collaborators and ask them to reclone if history was rewritten.
 
 ### Release Notes
