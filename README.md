@@ -80,6 +80,25 @@ Where to find release notes
 - whatsnew/en-US/whatsnew.txt
 - whatsnew/es-MX/whatsnew.txt
 
+Agentes implementados mínimo
+
+La carpeta `/agents` contiene las implementaciones base de los siguientes agentes:
+
+| Agente | Archivo | Descripción |
+|--------|---------|-------------|
+| Agent_CodeMaster | `codemaster.go` | Análisis y generación de código |
+| Agent_GenAI | `genai.go` | Generación de contenido con IA |
+| Agent_Knowledge | `knowledge.go` | Gestión y recuperación de conocimiento |
+| Agent_Sentiment | `sentiment.go` | Análisis de sentimiento |
+| Agent_Unrestricted | `unrestricted.go` | Procesamiento sin restricciones |
+| Agent_QA | `qa.go` | Aseguramiento de calidad |
+| Agent_Deploy | `deploy.go` | Automatización de despliegue |
+
+Para ejecutar los tests de agentes:
+```bash
+make test-agents
+```
+
 Contributing
 See docs/CONTRIBUTING.md (if present) or open issues/PRs for proposed changes.
 
