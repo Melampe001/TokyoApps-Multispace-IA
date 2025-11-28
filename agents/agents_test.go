@@ -64,6 +64,61 @@ func TestAgentCreation(t *testing.T) {
 	}
 }
 
+// TestAgentDescription verifies that all agents return non-empty descriptions.
+func TestAgentDescription(t *testing.T) {
+	testCases := []struct {
+		name        string
+		constructor func() Agent
+		wantContain string
+	}{
+		{
+			name:        "AgentCodeMaster",
+			constructor: NewAgentCodeMaster,
+			wantContain: "code",
+		},
+		{
+			name:        "AgentGenAI",
+			constructor: NewAgentGenAI,
+			wantContain: "AI",
+		},
+		{
+			name:        "AgentKnowledge",
+			constructor: NewAgentKnowledge,
+			wantContain: "knowledge",
+		},
+		{
+			name:        "AgentSentiment",
+			constructor: NewAgentSentiment,
+			wantContain: "sentiment",
+		},
+		{
+			name:        "AgentUnrestricted",
+			constructor: NewAgentUnrestricted,
+			wantContain: "unrestricted",
+		},
+		{
+			name:        "AgentQA",
+			constructor: NewAgentQA,
+			wantContain: "quality",
+		},
+		{
+			name:        "AgentDeploy",
+			constructor: NewAgentDeploy,
+			wantContain: "deployment",
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			agent := tc.constructor()
+			desc := agent.Description()
+			if desc == "" {
+				t.Error("expected non-empty Description(), got empty string")
+			}
+		})
+	}
+}
+
 // TestAgentExecute verifies that all agents can execute with valid input and return expected results.
 func TestAgentExecute(t *testing.T) {
 	testCases := []struct {
@@ -129,4 +184,42 @@ func TestAgentExecute(t *testing.T) {
 			}
 		})
 	}
+}
+
+// TestAgentExecuteEmptyInput verifies that agents handle empty input gracefully.
+func TestAgentExecuteEmptyInput(t *testing.T) {
+	constructors := []func() Agent{
+		NewAgentCodeMaster,
+		NewAgentGenAI,
+		NewAgentKnowledge,
+		NewAgentSentiment,
+		NewAgentUnrestricted,
+		NewAgentQA,
+		NewAgentDeploy,
+	}
+
+	for _, constructor := range constructors {
+		agent := constructor()
+		t.Run(agent.Name()+"_EmptyInput", func(t *testing.T) {
+			result, err := agent.Execute("")
+			if err != nil {
+				t.Fatalf("expected no error with empty input, got %v", err)
+			}
+			if result == "" {
+				t.Error("expected non-empty result, got empty string")
+			}
+		})
+	}
+}
+
+// TestAgentInterfaceCompliance verifies that all agents properly implement the Agent interface.
+func TestAgentInterfaceCompliance(t *testing.T) {
+	// This test ensures compile-time interface compliance
+	var _ Agent = NewAgentCodeMaster()
+	var _ Agent = NewAgentGenAI()
+	var _ Agent = NewAgentKnowledge()
+	var _ Agent = NewAgentSentiment()
+	var _ Agent = NewAgentUnrestricted()
+	var _ Agent = NewAgentQA()
+	var _ Agent = NewAgentDeploy()
 }

@@ -16,6 +16,11 @@ func (a *AgentQA) Name() string {
 	return "QA"
 }
 
+// Description returns a brief description of the QA agent's capabilities.
+func (a *AgentQA) Description() string {
+	return "Specialized in quality assurance and testing automation"
+}
+
 // Execute performs QA processing on the given input and returns the result.
 func (a *AgentQA) Execute(input string) (string, error) {
 	return "QA processed: " + input, nil

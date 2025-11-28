@@ -16,6 +16,11 @@ func (a *AgentGenAI) Name() string {
 	return "GenAI"
 }
 
+// Description returns a brief description of the GenAI agent's capabilities.
+func (a *AgentGenAI) Description() string {
+	return "Specialized in general AI tasks and content generation"
+}
+
 // Execute performs general AI processing on the given input and returns the result.
 func (a *AgentGenAI) Execute(input string) (string, error) {
 	return "GenAI processed: " + input, nil

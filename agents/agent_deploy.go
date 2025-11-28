@@ -16,6 +16,11 @@ func (a *AgentDeploy) Name() string {
 	return "Deploy"
 }
 
+// Description returns a brief description of the Deploy agent's capabilities.
+func (a *AgentDeploy) Description() string {
+	return "Specialized in deployment and release management automation"
+}
+
 // Execute performs deployment processing on the given input and returns the result.
 func (a *AgentDeploy) Execute(input string) (string, error) {
 	return "Deploy processed: " + input, nil

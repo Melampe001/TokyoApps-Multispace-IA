@@ -16,6 +16,11 @@ func (a *AgentSentiment) Name() string {
 	return "Sentiment"
 }
 
+// Description returns a brief description of the Sentiment agent's capabilities.
+func (a *AgentSentiment) Description() string {
+	return "Specialized in sentiment analysis and emotional tone detection"
+}
+
 // Execute performs sentiment analysis on the given input and returns the result.
 func (a *AgentSentiment) Execute(input string) (string, error) {
 	return "Sentiment processed: " + input, nil

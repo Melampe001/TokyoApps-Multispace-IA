@@ -16,6 +16,11 @@ func (a *AgentCodeMaster) Name() string {
 	return "CodeMaster"
 }
 
+// Description returns a brief description of the CodeMaster agent's capabilities.
+func (a *AgentCodeMaster) Description() string {
+	return "Specialized in code analysis, generation, and review"
+}
+
 // Execute performs code analysis on the given input and returns the result.
 func (a *AgentCodeMaster) Execute(input string) (string, error) {
 	return "CodeMaster processed: " + input, nil

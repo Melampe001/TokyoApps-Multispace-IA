@@ -16,6 +16,11 @@ func (a *AgentUnrestricted) Name() string {
 	return "Unrestricted"
 }
 
+// Description returns a brief description of the Unrestricted agent's capabilities.
+func (a *AgentUnrestricted) Description() string {
+	return "Provides open-ended AI interactions without restrictions"
+}
+
 // Execute performs unrestricted processing on the given input and returns the result.
 func (a *AgentUnrestricted) Execute(input string) (string, error) {
 	return "Unrestricted processed: " + input, nil
