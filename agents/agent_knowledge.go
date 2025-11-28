@@ -3,21 +3,17 @@ package agents
 
 // AgentKnowledge is an agent specialized in knowledge retrieval and management.
 // It provides functionality for accessing and organizing information.
-type AgentKnowledge struct {
-	name string
-}
+type AgentKnowledge struct{}
 
 // NewAgentKnowledge creates a new instance of AgentKnowledge.
 // It returns an Agent interface implementation for knowledge-related tasks.
 func NewAgentKnowledge() Agent {
-	return &AgentKnowledge{
-		name: "Knowledge",
-	}
+	return &AgentKnowledge{}
 }
 
 // Name returns the unique name identifier of the Knowledge agent.
 func (a *AgentKnowledge) Name() string {
-	return a.name
+	return "Knowledge"
 }
 
 // Execute performs knowledge retrieval on the given input and returns the result.

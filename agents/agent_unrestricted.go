@@ -3,21 +3,17 @@ package agents
 
 // AgentUnrestricted is an agent with unrestricted capabilities.
 // It provides functionality for open-ended AI interactions.
-type AgentUnrestricted struct {
-	name string
-}
+type AgentUnrestricted struct{}
 
 // NewAgentUnrestricted creates a new instance of AgentUnrestricted.
 // It returns an Agent interface implementation for unrestricted tasks.
 func NewAgentUnrestricted() Agent {
-	return &AgentUnrestricted{
-		name: "Unrestricted",
-	}
+	return &AgentUnrestricted{}
 }
 
 // Name returns the unique name identifier of the Unrestricted agent.
 func (a *AgentUnrestricted) Name() string {
-	return a.name
+	return "Unrestricted"
 }
 
 // Execute performs unrestricted processing on the given input and returns the result.

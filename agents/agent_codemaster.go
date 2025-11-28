@@ -3,21 +3,17 @@ package agents
 
 // AgentCodeMaster is an agent specialized in code analysis, generation, and review.
 // It provides functionality for understanding and manipulating source code.
-type AgentCodeMaster struct {
-	name string
-}
+type AgentCodeMaster struct{}
 
 // NewAgentCodeMaster creates a new instance of AgentCodeMaster.
 // It returns an Agent interface implementation for code-related tasks.
 func NewAgentCodeMaster() Agent {
-	return &AgentCodeMaster{
-		name: "CodeMaster",
-	}
+	return &AgentCodeMaster{}
 }
 
 // Name returns the unique name identifier of the CodeMaster agent.
 func (a *AgentCodeMaster) Name() string {
-	return a.name
+	return "CodeMaster"
 }
 
 // Execute performs code analysis on the given input and returns the result.
