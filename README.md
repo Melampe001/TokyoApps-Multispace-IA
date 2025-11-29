@@ -1,87 +1,96 @@
-Tokyo-IA
+/<Tokyo-IA-Pro>/# Tokyo-IA-Pro
+Tokyo-IA-Pro is an advanced AI-powered application designed to enhance productivity and streamline workflows. It leverages cutting-edge machine learning algorithms to provide intelligent solutions for various tasks, including data analysis, content generation, and decision-making support.
+## Features
+- **AI-Powered Analytics**: Gain insights from your data with advanced analytics powered by AI
+tokyo-ia/tokyo-ia/tokyo-ia/
+/.hithum/startup/
+/shinstaller.sh/install.sh
 
-Tokyo-IA is a mobile + web + server project that provides Tokyo-themed AI features and a MCP server.
+install_pro.sh
 
-Repository layout
-tokyoia/
-│
-├── app/                                   # Android – main project
-│   ├── build.gradle                       # Config signed + release
-│   ├── proguard-rules.pro
-│   ├── src/
-│   │   ├── main/
-│   │   │   ├── AndroidManifest.xml
-│   │   │   ├── java/com/tokyoia/app/
-│   │   │   │   └── TokyoApp.kt
-│   │   │   └── res/
-│   │   │       ├── layout/activity_main.xml
-│   │   │       ├── mipmap-*/              # App icons
-│   │   │       └── values/strings.xml
-│   │   └── test/
-│   │       └── ExampleUnitTest.kt
-│   └── gradle.properties
-│
-├── web/                                   # Web site + admin panel
-│   ├── index.html
-│   ├── vite.config.js
-│   ├── package.json
-│   └── src/
-│       ├── App.jsx
-│       ├── components/
-│       └── styles/
-│
-├── server-mcp/                            # Node server for MCP
-│   ├── index.js
-│   ├── package.json
-│   ├── tokyo-rules.json
-│   └── src/
-│       ├── actions/
-│       └── context/
-│
-├── whatsnew/                              # Play Store release notes
-│   ├── en-US/whatsnew.txt
-│   └── es-MX/whatsnew.txt
-│
+install_full.sh
+
+install_strict.sh
+
+setup_env.sh
+
+validate_all.sh
+/prewarm.sh/
+/agent_watchdog.sh/
+/health_monitor.sh/
+/sign_logs.sh
+tokyo-ia/infra/docker-compose.yml
+tokyo-ia/scripts/verify_step.py
+tokyo-ia/scripts/deploy_apk.sh
+tokyo-ia/api-node/
+package.json
+
+Dockerfile
+
+src/app.js
+
+src/server.js
+
+carpeta src/routes/
+tokyo-ia/api-node/src/routes/ai.js
+tokyo-ia/ia-python/main.py
+
+preload.py
+
+requirements.txt
+
+Dockerfile
+tokyo-ia/android/
+tokyo-ia/.github/
+tokyo-ia/.github/workflows/android-build.yml
+
+ci-node.yml
+
+ci-python.yml
+
+deploy.yml
+android-build.yml
+
+ci-node.yml
+
+ci-python.yml
+
+deploy.yml
+├── api-node/
+
+server.js
+
+estructura Node
+
+APIs híbridas
+package.json
+
+server.js
+
+estructura Node
+
+APIs híbridas
+├── ia-python/
+├── android/
+├── infra/
+├── scripts/tokyo-ia/scripts/deploy_apk.sh
+
+├── .hithum/
 ├── .github/
-│   └── workflows/
-│       ├── android-build.yml              # Build AAB
-│       ├── tokyoia-release-to-play.yml    # Auto release to Play Store
-│       └── security-scan.yml              # Optional
-│
-├── scripts/
-│   ├── bump-version.sh                    # Increment version
-│   └── generate-release.sh                # Build + tag + push
-│
-├── .gitignore
+├── Makefile
 ├── README.md
-└── LICENSE
 
-Quick start (high level)
-- Android (local debug):
-  - ./gradlew assembleDebug
-  - ./gradlew installDebug
-- Web (dev):
-  - cd web && npm install && npm run dev
-- Server (local):
-  - cd server-mcp && npm install && npm start
-
-Security / Secrets (IMPORTANT)
-Do NOT store service account JSONs, keystore files, private keys, or other secrets in the repository. If you need to provide credentials for CI:
-- Create the credential (e.g., Google Play service account JSON) locally.
-- Encode keystore files or JSON as base64 (or keep them as files) and store them in GitHub Actions Secrets.
-- Reference secrets in workflows using: ${{ secrets.GOOGLE_PLAY_JSON }}, ${{ secrets.ANDROID_KEYSTORE_BASE64 }}, etc.
-
-If any secret was ever committed:
-1. Rotate the exposed credential immediately (revoke old key).
-2. Remove the secret from the repository and history (see docs/SECRETS.md).
-3. Notify collaborators and ask them to reclone if history was rewritten.
-
-Where to find release notes
-- whatsnew/en-US/whatsnew.txt
-- whatsnew/es-MX/whatsnew.txt
-
-Contributing
-See docs/CONTRIBUTING.md (if present) or open issues/PRs for proposed changes.
-
-License
-See LICENSE
+├── api-node/
+├── ia-python/
+├── android/
+├── infra/
+├── scripts/
+├── .hithum/
+├── .github/
+├── Makefile
+├── README.md
+├── docker-compose.yml
+└── Dockerfile
+- **Content Generation**: Automatically generate high-quality content for blogs, reports, and more
+- **Decision Support**: Receive AI-driven recommendations to aid in decision-making processes
+- **User-Friendly Interface**: Intuitive design for easy navigation and use
