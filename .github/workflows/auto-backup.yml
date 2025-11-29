@@ -1,0 +1,166 @@
+# Auto Backup Bot
+# Automatically backs up repository and data
+
+name: Auto Backup
+
+on:
+  schedule:
+    - cron: '0 2 * * *'  # Daily at 2 AM UTC
+  workflow_dispatch:
+    inputs:
+      backup_type:
+        description: 'Backup type'
+        required: true
+        default: 'full'
+        type: choice
+        options:
+          - full
+          - incremental
+          - code-only
+
+permissions:
+  contents: read
+
+jobs:
+  backup-code:
+    name: 💾 Backup Code
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Create code backup
+        run: |
+          BACKUP_NAME="backup-$(date +%Y%m%d-%H%M%S)"
+          mkdir -p backups
+          
+          # Create compressed archive
+          tar -czvf "backups/${BACKUP_NAME}.tar.gz" \
+            --exclude='.git' \
+            --exclude='node_modules' \
+            --exclude='__pycache__' \
+            --exclude='.venv' \
+            --exclude='dist' \
+            --exclude='build' \
+            .
+          
+          echo "backup_name=${BACKUP_NAME}" >> $GITHUB_ENV
+          echo "✅ Created backup: ${BACKUP_NAME}.tar.gz"
+
+      - name: Upload backup artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: code-backup-${{ env.backup_name }}
+          path: backups/
+          retention-days: 30
+
+  backup-releases:
+    name: 📦 Backup Releases
+    runs-on: ubuntu-latest
+    steps:
+      - name: Backup release info
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            
+            // Get all releases
+            const releases = await github.rest.repos.listReleases({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              per_page: 100
+            });
+            
+            // Save to JSON
+            const backupData = {
+              timestamp: new Date().toISOString(),
+              repository: `${context.repo.owner}/${context.repo.repo}`,
+              releases: releases.data.map(r => ({
+                tag: r.tag_name,
+                name: r.name,
+                body: r.body,
+                created_at: r.created_at,
+                published_at: r.published_at,
+                assets: r.assets.map(a => ({
+                  name: a.name,
+                  download_url: a.browser_download_url
+                }))
+              }))
+            };
+            
+            fs.mkdirSync('backups', { recursive: true });
+            fs.writeFileSync('backups/releases-backup.json', JSON.stringify(backupData, null, 2));
+            console.log(`✅ Backed up ${releases.data.length} releases`);
+
+      - name: Upload releases backup
+        uses: actions/upload-artifact@v4
+        with:
+          name: releases-backup
+          path: backups/releases-backup.json
+          retention-days: 30
+
+  backup-issues:
+    name: 📋 Backup Issues
+    runs-on: ubuntu-latest
+    steps:
+      - name: Backup issues
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            
+            // Get all issues
+            const issues = await github.paginate(github.rest.issues.listForRepo, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'all',
+              per_page: 100
+            });
+            
+            // Save to JSON
+            const backupData = {
+              timestamp: new Date().toISOString(),
+              repository: `${context.repo.owner}/${context.repo.repo}`,
+              issues: issues.map(i => ({
+                number: i.number,
+                title: i.title,
+                body: i.body,
+                state: i.state,
+                labels: i.labels.map(l => l.name),
+                created_at: i.created_at,
+                updated_at: i.updated_at,
+                closed_at: i.closed_at
+              }))
+            };
+            
+            fs.mkdirSync('backups', { recursive: true });
+            fs.writeFileSync('backups/issues-backup.json', JSON.stringify(backupData, null, 2));
+            console.log(`✅ Backed up ${issues.length} issues`);
+
+      - name: Upload issues backup
+        uses: actions/upload-artifact@v4
+        with:
+          name: issues-backup
+          path: backups/issues-backup.json
+          retention-days: 30
+
+  backup-summary:
+    name: 📊 Backup Summary
+    runs-on: ubuntu-latest
+    needs: [backup-code, backup-releases, backup-issues]
+    if: always()
+    steps:
+      - name: Generate backup report
+        run: |
+          echo "## 💾 Backup Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Backup Type | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Code | ${{ needs.backup-code.result == 'success' && '✅' || '❌' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Releases | ${{ needs.backup-releases.result == 'success' && '✅' || '❌' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Issues | ${{ needs.backup-issues.result == 'success' && '✅' || '❌' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Date:** $(date -u +%Y-%m-%d)" >> $GITHUB_STEP_SUMMARY
+          echo "**Retention:** 30 days" >> $GITHUB_STEP_SUMMARY

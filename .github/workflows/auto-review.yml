@@ -1,0 +1,126 @@
+# Auto Review Bot
+# Automatically reviews PRs and provides feedback
+
+name: Auto Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, ready_for_review]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  auto-review:
+    name: 🔍 Auto Review PR
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.draft == false
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install review tools
+        run: |
+          pip install pylint flake8 bandit radon
+
+      - name: Get changed files
+        id: changed
+        run: |
+          FILES=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} | grep '\.py$' || true)
+          echo "files=$FILES" >> $GITHUB_OUTPUT
+          echo "Changed Python files: $FILES"
+
+      - name: Run code analysis
+        if: steps.changed.outputs.files != ''
+        id: analysis
+        run: |
+          echo "## 🔍 Auto Review Results" > review.md
+          echo "" >> review.md
+          
+          # Pylint analysis
+          echo "### Pylint Analysis" >> review.md
+          for file in ${{ steps.changed.outputs.files }}; do
+            if [ -f "$file" ]; then
+              echo "#### $file" >> review.md
+              pylint "$file" --output-format=text --score=yes 2>/dev/null | tail -5 >> review.md || echo "No issues found" >> review.md
+              echo "" >> review.md
+            fi
+          done
+          
+          # Complexity analysis
+          echo "### Complexity Analysis" >> review.md
+          for file in ${{ steps.changed.outputs.files }}; do
+            if [ -f "$file" ]; then
+              echo "#### $file" >> review.md
+              radon cc "$file" -a 2>/dev/null >> review.md || echo "No complexity issues" >> review.md
+              echo "" >> review.md
+            fi
+          done
+          
+          # Security analysis
+          echo "### Security Check" >> review.md
+          bandit -r . -f txt 2>/dev/null | head -20 >> review.md || echo "No security issues found" >> review.md
+
+      - name: Post review comment
+        if: steps.changed.outputs.files != ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const review = fs.readFileSync('review.md', 'utf8');
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: review
+            });
+
+  size-check:
+    name: 📏 PR Size Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check PR size
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { additions, deletions, changed_files } = context.payload.pull_request;
+            const totalChanges = additions + deletions;
+            
+            let label = 'size/S';
+            let message = '✅ Small PR - Easy to review!';
+            
+            if (totalChanges > 500) {
+              label = 'size/XL';
+              message = '⚠️ Very large PR - Consider splitting into smaller PRs';
+            } else if (totalChanges > 200) {
+              label = 'size/L';
+              message = '📦 Large PR - May take longer to review';
+            } else if (totalChanges > 50) {
+              label = 'size/M';
+              message = '📄 Medium PR';
+            }
+            
+            // Add size label
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              labels: [label]
+            });
+            
+            // Comment about size
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: `## 📏 PR Size Analysis\n\n${message}\n\n- **Additions:** ${additions}\n- **Deletions:** ${deletions}\n- **Files changed:** ${changed_files}`
+            });

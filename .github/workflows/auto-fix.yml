@@ -1,0 +1,146 @@
+# Auto Fix Bot
+# Automatically fixes common issues in code
+
+name: Auto Fix
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - '**.py'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  auto-format:
+    name: 🔧 Auto Format Code
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install formatters
+        run: |
+          pip install black isort autoflake autopep8
+
+      - name: Run Black
+        run: black . --quiet || true
+
+      - name: Run isort
+        run: isort . --quiet || true
+
+      - name: Remove unused imports
+        run: |
+          find . -name "*.py" -not -path "./.venv/*" | xargs autoflake --in-place --remove-all-unused-imports --remove-unused-variables || true
+
+      - name: Check for changes
+        id: changes
+        run: |
+          if git diff --quiet; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit changes
+        if: steps.changes.outputs.has_changes == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "style: Auto-format code with black, isort, and autoflake"
+          git push
+
+      - name: Comment on PR
+        if: steps.changes.outputs.has_changes == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '## 🔧 Auto-Fix Applied\n\nI automatically formatted the code with:\n- **Black** - Code formatting\n- **isort** - Import sorting\n- **autoflake** - Remove unused imports\n\nPlease pull the latest changes.'
+            });
+
+  auto-fix-lint:
+    name: 🩹 Auto Fix Lint Issues
+    runs-on: ubuntu-latest
+    needs: auto-format
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install tools
+        run: pip install autopep8 docformatter
+
+      - name: Fix PEP8 issues
+        run: |
+          find . -name "*.py" -not -path "./.venv/*" | xargs autopep8 --in-place --aggressive --aggressive || true
+
+      - name: Format docstrings
+        run: |
+          find . -name "*.py" -not -path "./.venv/*" | xargs docformatter --in-place --wrap-summaries 100 --wrap-descriptions 100 || true
+
+      - name: Check for changes
+        id: changes
+        run: |
+          if git diff --quiet; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit changes
+        if: steps.changes.outputs.has_changes == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "style: Auto-fix lint issues with autopep8 and docformatter"
+          git push
+
+  fix-summary:
+    name: 📋 Fix Summary
+    runs-on: ubuntu-latest
+    needs: [auto-format, auto-fix-lint]
+    if: always()
+    steps:
+      - name: Post summary
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const formatResult = '${{ needs.auto-format.result }}';
+            const lintResult = '${{ needs.auto-fix-lint.result }}';
+            
+            let summary = '## 🔧 Auto-Fix Summary\n\n';
+            summary += '| Fix Type | Status |\n';
+            summary += '|----------|--------|\n';
+            summary += `| Code Formatting | ${formatResult === 'success' ? '✅' : '❌'} |\n`;
+            summary += `| Lint Fixes | ${lintResult === 'success' ? '✅' : '❌'} |\n`;
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: summary
+            });
