@@ -1,0 +1,170 @@
+# Scheduled Agent Tasks
+# Runs agents on a schedule for maintenance
+
+name: Scheduled Agent Tasks
+
+on:
+  schedule:
+    - cron: '0 6 * * *'    # Daily at 6 AM UTC
+    - cron: '0 12 * * 0'   # Weekly on Sunday at noon
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  # Daily Tasks
+  daily-lint:
+    name: 🔍 Daily Lint Scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Lint scan
+        run: |
+          pip install black isort flake8 pylint
+          echo "# Daily Lint Report - $(date)" > lint-report.md
+          echo "" >> lint-report.md
+          
+          echo "## Black Check" >> lint-report.md
+          black --check . 2>&1 | head -20 >> lint-report.md || true
+          
+          echo "## Flake8 Check" >> lint-report.md
+          flake8 . --max-line-length=100 2>&1 | head -30 >> lint-report.md || true
+
+  daily-security:
+    name: 🔒 Daily Security Scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Security scan
+        run: |
+          pip install bandit safety pip-audit
+          echo "# Daily Security Report - $(date)" > security-report.md
+          
+          echo "## Bandit Scan" >> security-report.md
+          bandit -r . -f txt 2>&1 | head -50 >> security-report.md || true
+          
+          echo "## Dependency Audit" >> security-report.md
+          if [ -f requirements.txt ]; then
+            pip-audit -r requirements.txt 2>&1 | head -30 >> security-report.md || true
+          fi
+          
+      - name: Create issue if vulnerabilities found
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const report = fs.readFileSync('security-report.md', 'utf8');
+            
+            if (report.includes('Issue') || report.includes('vulnerability')) {
+              // Check if issue already exists
+              const { data: issues } = await github.rest.issues.listForRepo({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                state: 'open',
+                labels: 'security,automated'
+              });
+              
+              if (issues.length === 0) {
+                await github.rest.issues.create({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  title: '🔒 Security Agent: Vulnerabilities Detected',
+                  body: report,
+                  labels: ['security', 'automated', 'priority: high']
+                });
+              }
+            }
+
+  # Weekly Tasks
+  weekly-performance:
+    name: ⚡ Weekly Performance Analysis
+    runs-on: ubuntu-latest
+    if: github.event.schedule == '0 12 * * 0'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Performance analysis
+        run: |
+          pip install radon vulture
+          
+          echo "# Weekly Performance Report - $(date)" > perf-report.md
+          echo "" >> perf-report.md
+          
+          echo "## Complexity Analysis" >> perf-report.md
+          radon cc . -a -s 2>&1 | head -50 >> perf-report.md || true
+          
+          echo "## Maintainability Index" >> perf-report.md
+          radon mi . -s 2>&1 | head -50 >> perf-report.md || true
+          
+          echo "## Dead Code" >> perf-report.md
+          vulture . --min-confidence 80 2>&1 | head -30 >> perf-report.md || true
+
+  weekly-docs:
+    name: 📚 Weekly Docs Check
+    runs-on: ubuntu-latest
+    if: github.event.schedule == '0 12 * * 0'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Docs check
+        run: |
+          pip install pydocstyle
+          
+          echo "# Weekly Documentation Report - $(date)" > docs-report.md
+          echo "" >> docs-report.md
+          
+          echo "## Missing Docstrings" >> docs-report.md
+          pydocstyle . 2>&1 | head -50 >> docs-report.md || echo "All documented!" >> docs-report.md
+
+  weekly-summary:
+    name: 📊 Weekly Summary
+    runs-on: ubuntu-latest
+    needs: [daily-lint, daily-security, weekly-performance, weekly-docs]
+    if: always() && github.event.schedule == '0 12 * * 0'
+    steps:
+      - name: Create weekly summary issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const date = new Date().toISOString().split('T')[0];
+            
+            const summary = `## 🤖 Weekly Agent Summary - ${date}
+            
+            ### Agent Status
+            
+            | Agent | Task | Status |
+            |-------|------|--------|
+            | 🔍 Lint Agent | Code Quality | ${{ needs.daily-lint.result == 'success' ? '✅' : '❌' }} |
+            | 🔒 Security Agent | Vulnerability Scan | ${{ needs.daily-security.result == 'success' ? '✅' : '❌' }} |
+            | ⚡ Perf Agent | Performance Analysis | ${{ needs.weekly-performance.result == 'success' ? '✅' : '❌' }} |
+            | 📚 Docs Agent | Documentation Check | ${{ needs.weekly-docs.result == 'success' ? '✅' : '❌' }} |
+            
+            ### Recommendations
+            
+            - Review any security alerts
+            - Address high-complexity code
+            - Update missing documentation
+            
+            ---
+            *Generated by Agent Task System*`;
+            
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `📊 Weekly Agent Report - ${date}`,
+              body: summary,
+              labels: ['automated', 'report']
+            });

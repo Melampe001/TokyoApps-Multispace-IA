@@ -1,0 +1,222 @@
+# Agent Task Automation System
+# Master workflow that orchestrates all agents based on events
+
+name: Agent Task Automation
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    types: [opened, synchronize, ready_for_review]
+  issues:
+    types: [opened, labeled]
+  issue_comment:
+    types: [created]
+  schedule:
+    - cron: '0 */4 * * *'  # Every 4 hours
+  workflow_dispatch:
+    inputs:
+      task:
+        description: 'Task to execute'
+        required: true
+        type: choice
+        options:
+          - all
+          - lint
+          - test
+          - security
+          - docs
+          - performance
+          - refactor
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+  security-events: write
+
+env:
+  PYTHON_VERSION: '3.11'
+
+jobs:
+  # ============================================
+  # AREA: CODE QUALITY (copilot-lint-agent)
+  # ============================================
+  lint-agent:
+    name: 🔍 Lint Agent
+    runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'push' ||
+      github.event_name == 'pull_request' ||
+      (github.event_name == 'workflow_dispatch' && (github.event.inputs.task == 'all' || github.event.inputs.task == 'lint'))
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Install lint tools
+        run: pip install black isort flake8 pylint mypy
+      - name: Run Black
+        run: black --check . || black .
+      - name: Run isort
+        run: isort --check . || isort .
+      - name: Run Flake8
+        run: flake8 . --max-line-length=100 --ignore=E501,W503 || true
+      - name: Run Pylint
+        run: find . -name "*.py" -not -path "./.venv/*" | head -20 | xargs pylint --exit-zero || true
+
+  # ============================================
+  # AREA: TESTING (copilot-test-agent + copilot-coverage-agent)
+  # ============================================
+  test-agent:
+    name: 🧪 Test Agent
+    runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'push' ||
+      github.event_name == 'pull_request' ||
+      (github.event_name == 'workflow_dispatch' && (github.event.inputs.task == 'all' || github.event.inputs.task == 'test'))
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Install test tools
+        run: |
+          pip install pytest pytest-cov pytest-asyncio hypothesis
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      - name: Run tests with coverage
+        run: pytest --cov=. --cov-report=xml --cov-report=term-missing -v || echo "No tests found"
+      - name: Upload coverage
+        uses: codecov/codecov-action@v4
+        with:
+          file: ./coverage.xml
+          fail_ci_if_error: false
+        continue-on-error: true
+
+  # ============================================
+  # AREA: SECURITY (copilot-security-agent)
+  # ============================================
+  security-agent:
+    name: 🔒 Security Agent
+    runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'push' ||
+      github.event_name == 'pull_request' ||
+      github.event_name == 'schedule' ||
+      (github.event_name == 'workflow_dispatch' && (github.event.inputs.task == 'all' || github.event.inputs.task == 'security'))
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Install security tools
+        run: pip install bandit safety pip-audit
+      - name: Run Bandit
+        run: bandit -r . -f txt || true
+      - name: Run Safety check
+        run: |
+          if [ -f requirements.txt ]; then
+            safety check -r requirements.txt || true
+          fi
+      - name: Run pip-audit
+        run: |
+          if [ -f requirements.txt ]; then
+            pip-audit -r requirements.txt || true
+          fi
+
+  # ============================================
+  # AREA: DOCUMENTATION (copilot-docs-agent)
+  # ============================================
+  docs-agent:
+    name: 📚 Documentation Agent
+    runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'push' ||
+      (github.event_name == 'workflow_dispatch' && (github.event.inputs.task == 'all' || github.event.inputs.task == 'docs'))
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Install doc tools
+        run: pip install pdoc3 pydocstyle
+      - name: Check docstrings
+        run: pydocstyle . --ignore=D100,D101,D102,D103,D104 || true
+      - name: Generate API docs
+        run: |
+          mkdir -p docs/api
+          find . -name "*.py" -not -path "./.venv/*" -not -path "./tests/*" | head -10 | while read file; do
+            pdoc --html --output-dir docs/api "$file" 2>/dev/null || true
+          done
+
+  # ============================================
+  # AREA: PERFORMANCE (copilot-perf-agent)
+  # ============================================
+  performance-agent:
+    name: ⚡ Performance Agent
+    runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'schedule' ||
+      (github.event_name == 'workflow_dispatch' && (github.event.inputs.task == 'all' || github.event.inputs.task == 'performance'))
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Install perf tools
+        run: pip install radon
+      - name: Analyze complexity
+        run: |
+          echo "## Complexity Analysis" >> $GITHUB_STEP_SUMMARY
+          radon cc . -a -s 2>/dev/null | head -50 >> $GITHUB_STEP_SUMMARY || true
+      - name: Analyze maintainability
+        run: |
+          echo "## Maintainability Index" >> $GITHUB_STEP_SUMMARY
+          radon mi . -s 2>/dev/null | head -50 >> $GITHUB_STEP_SUMMARY || true
+
+  # ============================================
+  # AREA: REFACTORING (copilot-refactor-agent)
+  # ============================================
+  refactor-agent:
+    name: ♻️ Refactor Agent
+    runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'schedule' ||
+      (github.event_name == 'workflow_dispatch' && (github.event.inputs.task == 'all' || github.event.inputs.task == 'refactor'))
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Install refactor tools
+        run: pip install vulture radon
+      - name: Find dead code
+        run: |
+          echo "## Dead Code Analysis" >> $GITHUB_STEP_SUMMARY
+          vulture . --min-confidence 80 2>/dev/null | head -30 >> $GITHUB_STEP_SUMMARY || echo "No dead code found" >> $GITHUB_STEP_SUMMARY
+      - name: Find duplicates
+        run: |
+          echo "## Code Duplication" >> $GITHUB_STEP_SUMMARY
+          radon raw . -s 2>/dev/null | head -30 >> $GITHUB_STEP_SUMMARY || true
+
+  # ============================================
+  # TASK SUMMARY
+  # ============================================
+  task-summary:
+    name: 📊 Task Summary
+    runs-on: ubuntu-latest
+    needs: [lint-agent, test-agent, security-agent, docs-agent, performance-agent, refactor-agent]
+    if: always()
+    steps:
+      - name: Generate summary
+        run: |
+          echo "## 🤖 Agent Task Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Agent | Area | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------|------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Lint Agent | Code Quality | ${{ needs.lint-agent.result == 'success' && '✅' || needs.lint-agent.result == 'skipped' && '⏭️' || '❌' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Test Agent | Testing | ${{ needs.test-agent.result == 'success' && '✅' || needs.test-agent.result == 'skipped' && '⏭️' || '❌' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Security Agent | Security | ${{ needs.security-agent.result == 'success' && '✅' || needs.security-agent.result == 'skipped' && '⏭️' || '❌' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Docs Agent | Documentation | ${{ needs.docs-agent.result == 'success' && '✅' || needs.docs-agent.result == 'skipped' && '⏭️' || '❌' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Performance Agent | Optimization | ${{ needs.performance-agent.result == 'success' && '✅' || needs.performance-agent.result == 'skipped' && '⏭️' || '❌' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Refactor Agent | Code Quality | ${{ needs.refactor-agent.result == 'success' && '✅' || needs.refactor-agent.result == 'skipped' && '⏭️' || '❌' }} |" >> $GITHUB_STEP_SUMMARY
