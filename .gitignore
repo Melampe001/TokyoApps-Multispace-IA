@@ -90,3 +90,24 @@ temp/
 
 # Runner artifacts
 runners/_work/
+# Build artifacts
+bin/
+
+# IDE files
+.idea/
+.vscode/
+*.iml
+
+# Go
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test files
+*.test
+*.out
+
+# Dependency directories
+vendor/
