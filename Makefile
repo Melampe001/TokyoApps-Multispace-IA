@@ -2,7 +2,7 @@
 
 # Build the main application
 build:
-	go build -o bin/tokyo-ia ./cmd/main.go
+	go build -o bin/tokyo-ia ./cmd/...
 
 # Format Go source code and Ruby
 fmt:
