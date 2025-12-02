@@ -1,0 +1,4 @@
+test('Respuesta veraz', () {
+  final resp = razonar('¿Cuál es la fecha actual?');
+  assert(resp.contains('November 24, 2025'));  // Verifica con sources
+});

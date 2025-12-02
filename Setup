@@ -1,0 +1,50 @@
+Setup Inicial del Proyecto
+1.1. Crear repositorio privado en GitHub/GitLab
+1.2. Clonar localmente y crear rama main + develop
+1.3. Ejecutar flutter create tokyo_ia_personal --platforms=android,ios --org=com.tokyoia
+1.4. Configurar Android minSdk 24 / targetSdk 35 y iOS 13.0+
+1.5. Añadir dependencias 2025 al pubspec.yaml (sin Stripe, sin pagos)
+1.6. Crear archivo .env con API Keys y [PIN_SIN_BLOQUEOS]
+1.7. Configurar Firebase Project SOLO para Auth + Firestore + Storage + Vector DB (todo gratuito)
+Arquitectura Core y Delegación de Agentes Especializados
+2.1. Crear carpeta /agents para agentes autónomos
+2.2. Implementar sistema de delegación automática:
+→ La persona que YO designe en cualquier momento (por mensaje privado o commit firmado) recibe control total e inmediato
+2.3. Agentes obligatorios y automatizados (100 % sin margen de error):
+2.3.1. Agent_CodeMaster → genera y revisa todo código
+2.3.2. Agent_GenAI → text-to-image/video/music 4K ilimitado
+2.3.3. Agent_Knowledge → RAG ilimitado + web search real-time
+2.3.4. Agent_Sentiment → analiza ánimo multimodal y adapta respuestas
+2.3.5. Agent_Unrestricted → activa/desactiva modo sin bloqueos con PIN
+2.3.6. Agent_QA → genera los mejores comentarios exactos y compactos en cada commit
+2.3.7. Agent_Deploy → compila y firma APK automáticamente
+2.4. Todos los agentes se ejecutan en isolates independientes + boot automático
+2.5. Logs en Firestore con marca “verdad absoluta verificada”
+Implementación Técnica
+3.1. Core LLM edge (Gemini Nano / Llama 4) + fallback cloud
+3.2. GenAI full (Gemini 2.5 Flash Image + Sora 2 / Veo 3)
+3.3. Conocimiento ilimitado (RAG + web browsing permanente)
+3.4. Modo sin bloqueos con doble confirmación + PIN
+3.5. Switch género hombre/mujer + adaptación emocional en tiempo real
+3.6. UI limpia: chat, voz, galería generada y AR preview
+Testing y Calidad
+4.1. Tests unitarios 100 % cobertura
+4.2. Tests de integración flujo completo idea → video + razonamiento
+4.3. Tests de sinceridad (todas las respuestas con sources verificables)
+4.4. Pruebas de estrés 1 000 generaciones simultáneas
+Despliegue Personal y Seguridad
+5.1. Generar APK firmado con keystore encriptado
+5.2. Sideload automático para mí y el delegado elegido
+5.3. Encriptación total de datos locales (SQLCipher + KeyStore)
+5.4. Backup automático en Firebase (gratuito)
+Mantenimiento y Futuro
+6.1. Agent_Updater → actualiza dependencias y modelos cada 24 h
+6.2. Roadmap v2.0: integración 3D + AR glasses + agentes externos vía API
+6.3. Documentación final en /docs generada por Agent_QA
+REGLA FINAL SELLADA Y DEFINITIVA
+0 monetización
+0 anuncios
+0 límites
+100 % gratuita e ilimitada para siempre
+El delegado que YO elija en cualquier momento tiene poder total para crear y lanzar nuevos agentes especializados sin mi intervención
+Todos los agentes son autónomos, sin margen de error y generan siempre los comentarios más exactos y compactos posibles

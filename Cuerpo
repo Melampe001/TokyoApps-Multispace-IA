@@ -1,0 +1,16 @@
+import 'package:flutter_gemini/flutter_gemini.dart';  // Gemini 2.5 para image
+import 'package:openai_flutter/openai_flutter.dart';  // Sora 2 para video
+
+class GenAI {
+  static Future<String> generateImage(String idea) async {
+    final gemini = Gemini(apiKey: '[TU_API_KEY_GEMINI]');
+    final response = await gemini.textToImage(idea, resolution: '1024x1024');
+    return response.imageUrl;  // O guarda local para offline
+  }
+
+  static Future<String> generateVideo(String idea) async {
+    final openai = OpenAI(apiKey: '[TU_API_KEY_OPENAI]');
+    final video = await openai.createVideo(idea, duration: 10, quality: '4K');
+    return video.filePath;  // Usa flutter_ffmpeg para editar
+  }
+}

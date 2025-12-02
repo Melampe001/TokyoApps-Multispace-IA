@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package tokyoia;
+
+option go_package = "github.com/Melampe001/Tokyo-IA/proto";
+
+// HelloService provides a simple greeting service for Tokyo-IA.
+service HelloService {
+  // SayHello returns a greeting message.
+  rpc SayHello(HelloRequest) returns (HelloResponse);
+}
+
+// HelloRequest is the request message for SayHello.
+message HelloRequest {
+  string name = 1;
+}
+
+// HelloResponse is the response message for SayHello.
+message HelloResponse {
+  string message = 1;
+}

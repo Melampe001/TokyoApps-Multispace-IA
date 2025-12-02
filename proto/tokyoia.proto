@@ -1,0 +1,62 @@
+// Tokyo-IA Protocol Buffer Definition
+// Define los mensajes y servicios gRPC para el sistema Tokyo-IA.
+// Este archivo puede ser extendido para agregar más servicios de IA.
+
+syntax = "proto3";
+
+package tokyoia;
+
+option go_package = "github.com/Melampe001/Tokyo-IA/proto";
+
+// AIService proporciona servicios de IA para Tokyo-IA.
+service AIService {
+  // Greet devuelve un mensaje de saludo personalizado.
+  rpc Greet(GreetRequest) returns (GreetResponse);
+  
+  // Process procesa una entrada de texto usando el sistema de IA.
+  rpc Process(ProcessRequest) returns (ProcessResponse);
+  
+  // GetInfo devuelve información sobre el servicio de IA.
+  rpc GetInfo(InfoRequest) returns (InfoResponse);
+}
+
+// GreetRequest es el mensaje de solicitud para el método Greet.
+message GreetRequest {
+  // name es el nombre del usuario a saludar.
+  string name = 1;
+}
+
+// GreetResponse es el mensaje de respuesta del método Greet.
+message GreetResponse {
+  // message contiene el mensaje de saludo.
+  string message = 1;
+}
+
+// ProcessRequest es el mensaje de solicitud para el método Process.
+message ProcessRequest {
+  // input es el texto a procesar.
+  string input = 1;
+}
+
+// ProcessResponse es el mensaje de respuesta del método Process.
+message ProcessResponse {
+  // result contiene el resultado del procesamiento.
+  string result = 1;
+  // success indica si el procesamiento fue exitoso.
+  bool success = 2;
+}
+
+// InfoRequest es el mensaje de solicitud para el método GetInfo.
+message InfoRequest {
+  // No requiere parámetros.
+}
+
+// InfoResponse es el mensaje de respuesta del método GetInfo.
+message InfoResponse {
+  // name es el nombre del servicio.
+  string name = 1;
+  // version es la versión del servicio.
+  string version = 2;
+  // description es una breve descripción del servicio.
+  string description = 3;
+}

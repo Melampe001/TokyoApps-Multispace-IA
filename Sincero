@@ -1,0 +1,1 @@
+Usuario Input (Idea/Query) → Sentiment Detector (Mood: frustrado → motivacional) → Género Switch (Hombre/Mujer) → LLM Core (Razonamiento + RAG ilimitado) → Gen Multimodal (Image/Video con Gemini/Sora) → Output Sincero (Verificado con sources) → UI Preview (Chat/Voz/AR).
