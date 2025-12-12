@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Crear PR desde copilot/final-testing-implementation -> Main, esperar CI y mergear (merge commit).
-# Uso:
+# Create PR from copilot/final-testing-implementation -> Main, wait for CI and merge (merge commit).
+# Usage:
 #   chmod +x scripts/create_and_merge_pr.sh
 #   AUTO_MERGE=yes ./scripts/create_and_merge_pr.sh
 #
@@ -27,6 +27,7 @@ AUTO_MERGE="${AUTO_MERGE:-no}"
 command -v gh >/dev/null 2>&1 || { echo "gh CLI not found. Install and authenticate it (gh auth login)."; exit 1; }
 command -v git >/dev/null 2>&1 || { echo "git not found."; exit 1; }
 command -v make >/dev/null 2>&1 || { echo "make not found."; exit 1; }
+command -v jq >/dev/null 2>&1 || { echo "jq not found. Install it to parse JSON responses."; exit 1; }
 
 git fetch origin --prune
 
