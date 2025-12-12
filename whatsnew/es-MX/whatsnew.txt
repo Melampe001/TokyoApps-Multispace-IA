@@ -1,0 +1,5 @@
+Lanzamiento inicial v1.0.0
+
+• Aplicación básica Tokyo-IA
+• Lista para pruebas y desarrollo
+• Incluye funcionalidad principal
