@@ -1,0 +1,67 @@
+{
+  "name": "Tokyo-IA MCP Rules",
+  "version": "1.0.0",
+  "description": "Model Context Protocol rules for Tokyo-IA",
+  "rules": [
+    {
+      "id": "tokyo-theme",
+      "name": "Tokyo Theme Enforcement",
+      "description": "Ensures responses maintain Tokyo-themed context",
+      "priority": 1,
+      "enabled": true
+    },
+    {
+      "id": "sentiment-analysis",
+      "name": "Sentiment Analysis",
+      "description": "Analyzes user sentiment and adapts responses",
+      "priority": 2,
+      "enabled": true
+    },
+    {
+      "id": "knowledge-rag",
+      "name": "Knowledge RAG",
+      "description": "Retrieval-augmented generation for knowledge queries",
+      "priority": 3,
+      "enabled": true
+    }
+  ],
+  "contexts": {
+    "default": {
+      "theme": "tokyo",
+      "language": "en",
+      "personality": "friendly"
+    },
+    "creative": {
+      "theme": "tokyo",
+      "language": "en",
+      "personality": "creative",
+      "allowImageGeneration": true
+    },
+    "technical": {
+      "theme": "tokyo",
+      "language": "en",
+      "personality": "professional",
+      "focusOnAccuracy": true
+    }
+  },
+  "actions": [
+    {
+      "name": "generate-image",
+      "description": "Generate Tokyo-themed images",
+      "endpoint": "/api/mcp/actions/generate-image",
+      "parameters": ["prompt", "style", "resolution"]
+    },
+    {
+      "name": "web-search",
+      "description": "Perform web search with Tokyo context",
+      "endpoint": "/api/mcp/actions/web-search",
+      "parameters": ["query", "filters"]
+    },
+    {
+      "name": "sentiment-detect",
+      "description": "Detect user sentiment",
+      "endpoint": "/api/mcp/actions/sentiment-detect",
+      "parameters": ["text", "context"]
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+name: Tokyo-IA Release to Play Store
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        
+    - name: Decode keystore
+      run: |
+        echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 -d > keystore.jks
+        
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+      working-directory: ./app
+      
+    - name: Build release AAB
+      env:
+        TOKYO_KEYSTORE_PATH: ../keystore.jks
+        TOKYO_KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+        TOKYO_KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+        TOKYO_KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+      run: ./gradlew bundleRelease
+      working-directory: ./app
+      
+    - name: Upload to Play Store
+      uses: r0adkll/upload-google-play@v1
+      with:
+        serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_JSON }}
+        packageName: com.tokyoia.app
+        releaseFiles: app/build/outputs/bundle/release/*.aab
+        track: production
+        whatsNewDirectory: whatsnew/
+        
+    - name: Clean up keystore
+      if: always()
+      run: rm -f keystore.jks
