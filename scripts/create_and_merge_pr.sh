@@ -24,9 +24,9 @@ PRBODY
 
 AUTO_MERGE="${AUTO_MERGE:-no}"
 
-command -v gh >/dev/null 2>&1 || { echo "gh CLI not found. Instálalo y autentícate (gh auth login)."; exit 1; }
-command -v git >/dev/null 2>&1 || { echo "git no encontrado."; exit 1; }
-command -v make >/dev/null 2>&1 || { echo "make no encontrado."; exit 1; }
+command -v gh >/dev/null 2>&1 || { echo "gh CLI not found. Install and authenticate it (gh auth login)."; exit 1; }
+command -v git >/dev/null 2>&1 || { echo "git not found."; exit 1; }
+command -v make >/dev/null 2>&1 || { echo "make not found."; exit 1; }
 
 git fetch origin --prune
 

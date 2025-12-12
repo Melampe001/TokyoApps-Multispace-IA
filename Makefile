@@ -4,11 +4,11 @@
 build:
 	go build -o bin/tokyo-ia ./cmd/main.go
 
-# Format Go source code (aplica gofmt)
+# Format Go source code
 fmt:
 	go fmt ./...
 
-# Check formatting (fallará en CI si hay archivos sin formatear)
+# Check formatting (will fail in CI if files are not formatted)
 fmt-check:
 	@echo "Checking gofmt..."
 	@if [ -n "$$(gofmt -l .)" ]; then echo "gofmt found issues:"; gofmt -l .; exit 1; else echo "gofmt OK"; fi
@@ -17,7 +17,7 @@ fmt-check:
 test:
 	go test ./...
 
-# Lint (usa golangci-lint si está instalado)
+# Lint (uses golangci-lint if installed)
 lint:
 	@which golangci-lint > /dev/null || (echo "Install golangci-lint: https://golangci-lint.run/usage/install/" && exit 1)
 	golangci-lint run ./...
