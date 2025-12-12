@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Tokyo-IA</string>
+    <string name="welcome_message">Welcome to Tokyo-IA - Your AI Companion</string>
+    <string name="chat_hint">Type a message…</string>
+    <string name="send">Send</string>
+</resources>

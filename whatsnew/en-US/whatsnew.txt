@@ -1,0 +1,15 @@
+Tokyo-IA v1.0.0 is now available!
+
+New Features:
+- Initial release of Tokyo-IA
+- Tokyo-themed AI companion
+- Chat interface with AI responses
+- Web admin panel
+- MCP server integration
+
+Improvements:
+- Optimized performance
+- Enhanced security
+
+Bug Fixes:
+- Initial stable release

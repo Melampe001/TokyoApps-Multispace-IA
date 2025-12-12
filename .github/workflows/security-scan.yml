@@ -1,0 +1,25 @@
+name: Security Scan
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  schedule:
+    - cron: '0 0 * * 0'  # Weekly on Sunday
+
+jobs:
+  security:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Run security scan
+      uses: github/codeql-action/init@v2
+      with:
+        languages: javascript, java
+        
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v2
