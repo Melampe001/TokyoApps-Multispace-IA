@@ -8,6 +8,8 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write  # Needed for creating GitHub releases
 
     steps:
     - name: Checkout code
