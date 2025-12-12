@@ -1,0 +1,9 @@
+Initial release of Tokyo-IA
+
+Features:
+- Tokyo-themed AI assistant
+- MCP server integration
+- Web admin panel
+- Real-time AI interactions
+
+This is the first production release of Tokyo-IA.

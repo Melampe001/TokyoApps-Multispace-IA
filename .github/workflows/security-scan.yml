@@ -1,0 +1,78 @@
+name: Security Scan
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    # Run security scan daily at 2 AM UTC
+    - cron: '0 2 * * *'
+
+jobs:
+  dependency-scan:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Run dependency check (Gradle)
+      if: hashFiles('build.gradle') != ''
+      run: |
+        ./gradlew dependencyCheckAnalyze || true
+
+    - name: Run npm audit (Web)
+      if: hashFiles('web/package.json') != ''
+      run: |
+        cd web
+        npm audit --audit-level=moderate || true
+
+    - name: Run npm audit (Server)
+      if: hashFiles('server-mcp/package.json') != ''
+      run: |
+        cd server-mcp
+        npm audit --audit-level=moderate || true
+
+  secret-scan:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: TruffleHog Secret Scan
+      uses: trufflesecurity/trufflehog@main
+      with:
+        path: ./
+        base: ${{ github.event.repository.default_branch }}
+        head: HEAD
+        extra_args: --only-verified
+
+  codeql:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    strategy:
+      matrix:
+        language: [ 'java', 'javascript' ]
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v3
+      with:
+        languages: ${{ matrix.language }}
+
+    - name: Autobuild
+      uses: github/codeql-action/autobuild@v3
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v3
