@@ -1,0 +1,5 @@
+Initial release v1.0.0
+
+• Basic Tokyo-IA application
+• Ready for testing and development
+• Includes core functionality
