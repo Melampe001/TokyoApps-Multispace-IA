@@ -1,0 +1,16 @@
+#!/bin/sh
+# Pre-commit hook: run make fmt and stage any formatting changes
+set -e
+
+echo "Running make fmt..."
+make fmt
+
+# If gofmt changed files, stage them so the commit includes formatting
+if [ -n "$(git status --porcelain)" ]; then
+  echo "Staging formatting changes..."
+  git add -A
+fi
+
+# Optional quick vet
+echo "Running go vet..."
+go vet ./...
