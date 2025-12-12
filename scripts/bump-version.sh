@@ -22,25 +22,32 @@ BUILD_NUMBER=${2:-1}
 
 echo -e "${YELLOW}Bumping version to ${NEW_VERSION} (build ${BUILD_NUMBER})${NC}"
 
+# Detect OS for sed compatibility
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    SED_INPLACE="sed -i ''"
+else
+    SED_INPLACE="sed -i"
+fi
+
 # Update Android app/build.gradle
 if [ -f "app/build.gradle" ]; then
     echo "Updating Android version..."
-    sed -i "s/versionCode .*/versionCode ${BUILD_NUMBER}/" app/build.gradle
-    sed -i "s/versionName .*/versionName \"${NEW_VERSION}\"/" app/build.gradle
+    $SED_INPLACE "s/versionCode .*/versionCode ${BUILD_NUMBER}/" app/build.gradle
+    $SED_INPLACE "s/versionName .*/versionName \"${NEW_VERSION}\"/" app/build.gradle
     echo -e "${GREEN}✓ Android version updated${NC}"
 fi
 
 # Update web package.json
 if [ -f "web/package.json" ]; then
     echo "Updating Web version..."
-    sed -i "s/\"version\": \".*\"/\"version\": \"${NEW_VERSION}\"/" web/package.json
+    $SED_INPLACE "s/\"version\": \".*\"/\"version\": \"${NEW_VERSION}\"/" web/package.json
     echo -e "${GREEN}✓ Web version updated${NC}"
 fi
 
 # Update MCP server package.json
 if [ -f "server-mcp/package.json" ]; then
     echo "Updating MCP Server version..."
-    sed -i "s/\"version\": \".*\"/\"version\": \"${NEW_VERSION}\"/" server-mcp/package.json
+    $SED_INPLACE "s/\"version\": \".*\"/\"version\": \"${NEW_VERSION}\"/" server-mcp/package.json
     echo -e "${GREEN}✓ MCP Server version updated${NC}"
 fi
 

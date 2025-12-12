@@ -20,7 +20,14 @@ fi
 VERSION=$1
 TAG="v${VERSION}"
 
-echo -e "${YELLOW}Generating release ${VERSION}${NC}"
+# Get the default branch name dynamically
+DEFAULT_BRANCH=$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/origin/@@')
+if [ -z "$DEFAULT_BRANCH" ]; then
+    echo -e "${YELLOW}Warning: Could not detect default branch, using 'main'${NC}"
+    DEFAULT_BRANCH="main"
+fi
+
+echo -e "${YELLOW}Generating release ${VERSION} on branch ${DEFAULT_BRANCH}${NC}"
 
 # Check if tag already exists
 if git rev-parse "$TAG" >/dev/null 2>&1; then
@@ -59,7 +66,7 @@ echo -e "${GREEN}✓ Tag created${NC}"
 
 # Push changes and tags
 echo "Pushing to remote..."
-git push origin main
+git push origin "$DEFAULT_BRANCH"
 git push origin "$TAG"
 echo -e "${GREEN}✓ Pushed to remote${NC}"
 
