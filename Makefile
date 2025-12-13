@@ -1,4 +1,4 @@
-.PHONY: build fmt test clean
+.PHONY: build fmt test test-agents clean
 
 # Build the main application
 build:
@@ -8,9 +8,13 @@ build:
 fmt:
 	go fmt ./...
 
-# Run tests
+# Run all tests (includes agents)
 test:
 	go test ./...
+
+# Run agents tests only
+test-agents:
+	go test ./agents/... -v
 
 # Clean build artifacts
 clean:
