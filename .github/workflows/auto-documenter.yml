@@ -9,6 +9,9 @@ on:
       - main
   workflow_dispatch:
 
+permissions:
+  contents: write  # Needed to commit documentation updates
+
 jobs:
   auto-document:
     runs-on: ubuntu-latest

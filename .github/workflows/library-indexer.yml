@@ -13,6 +13,9 @@ on:
   # Manual trigger
   workflow_dispatch:
 
+permissions:
+  contents: write  # Needed to commit and push changes
+
 jobs:
   index-library:
     runs-on: ubuntu-latest

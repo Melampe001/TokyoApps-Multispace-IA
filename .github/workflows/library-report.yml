@@ -9,6 +9,9 @@ on:
   
   workflow_dispatch:
 
+permissions:
+  contents: write  # Needed to commit reports
+
 jobs:
   generate-report:
     runs-on: ubuntu-latest
