@@ -1,5 +1,5 @@
 # MOD
 
-Total: 1 archivos
+Total: 1 archivo
 
 - [go.mod](go.mod)

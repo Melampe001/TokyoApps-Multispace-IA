@@ -1,9 +1,10 @@
 # General
 
-Total: 33 archivos
+Total: 53 archivos
 
 - [.gitignore](.gitignore) - .gitignore - other
 - [BRANCH_PROTECTION.md](docs/BRANCH_PROTECTION.md) - Branch Protection Rules
+- [CATALOG.md](LIBRARY/CATALOG.md) - 📚 Catálogo Completo de la Biblioteca
 - [CONTRIBUTING.md](CONTRIBUTING.md) - Contributing to Tokyo-IA
 - [Cuerpo](Cuerpo) - Cuerpo - other
 - [FILE_TEMPLATE.md](.github/templates/FILE_TEMPLATE.md) - [Nombre del Archivo]
@@ -11,27 +12,46 @@ Total: 33 archivos
 - [IA suprema](prompts/IA suprema) - IA suprema - other
 - [Imitar](Imitar) - Imitar - other
 - [JS-Supremo.md](prompts/JS-Supremo.md) - JS-Supremo.md – Premium JavaScript Expert Prompt
+- [Makefile.md](LIBRARY/by-technology/Makefile.md) - MAKEFILE
 - [Real](Real) - Real - other
+- [SEARCH_INDEX.json](LIBRARY/SEARCH_INDEX.json) - SEARCH_INDEX.json - configuration
 - [Setup](Setup) - Setup - other
 - [Sin limite](Sin limite) - Sin limite - other
 - [Sincero](Sincero) - Sincero - other
 - [TAREAS.md](TAREAS.md) - ¿Qué tengo que hacer? - Guía de Tareas para Tokyo IA
+- [TIMELINE.md](LIBRARY/TIMELINE.md) - 📅 Línea de Tiempo de Creaciones
 - [bug_report.md](.github/ISSUE_TEMPLATE/bug_report.md) - ---
 - [ci.yml](.github/workflows/ci.yml) - CI Pipeline
+- [configuration.md](LIBRARY/by-category/configuration.md) - Configuration
 - [copilot-instructions.md](.github/copilot-instructions.md) - Copilot Instructions for Tokyo-IA
 - [dashboard.html](LIBRARY/dashboard.html) - dashboard.html - other
 - [feature_request.md](.github/ISSUE_TEMPLATE/feature_request.md) - ---
+- [file-count.md](LIBRARY/stats/file-count.md) - File Count Statistics
+- [general.md](LIBRARY/by-purpose/general.md) - General
+- [go.md](LIBRARY/by-technology/go.md) - GO
 - [go.mod](go.mod) - go.mod - other
 - [hello.go](admin/hello.go) - hello.go - source
 - [hello.go](internal/hello.go) - hello.go - source
 - [hello.go](lib/hello.go) - hello.go - source
 - [hello.go](config/hello.go) - hello.go - source
 - [hello.proto](proto/hello.proto) - hello.proto - schema
+- [html.md](LIBRARY/by-technology/html.md) - HTML
+- [json.md](LIBRARY/by-technology/json.md) - JSON
 - [library-indexer.yml](.github/workflows/library-indexer.yml) - Library Indexer
 - [library-report.yml](.github/workflows/library-report.yml) - Library Report
 - [library_cataloger.py](.github/workflows/scripts/library_cataloger.py) - !/usr/bin/env python3
 - [library_search.py](.github/workflows/scripts/library_search.py) - !/usr/bin/env python3
 - [main.go](cmd/main.go) - main.go - source
+- [md.md](LIBRARY/by-technology/md.md) - MD
+- [mod.md](LIBRARY/by-technology/mod.md) - MOD
 - [my-agent.agent.md](.github/agents/my-agent.agent.md) - ---
+- [other.md](LIBRARY/by-category/other.md) - Other
+- [proto.md](LIBRARY/by-technology/proto.md) - PROTO
 - [pull_request_template.md](.github/pull_request_template.md) - Description
+- [py.md](LIBRARY/by-technology/py.md) - PY
+- [rb.md](LIBRARY/by-technology/rb.md) - RB
+- [schema.md](LIBRARY/by-category/schema.md) - Schema
+- [script.md](LIBRARY/by-category/script.md) - Script
+- [source.md](LIBRARY/by-category/source.md) - Source
 - [version.rb](ruby/lib/billing-platform/version.rb) - frozen_string_literal: true
+- [yml.md](LIBRARY/by-technology/yml.md) - YML

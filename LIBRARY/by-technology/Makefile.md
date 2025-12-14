@@ -1,5 +1,5 @@
 # MAKEFILE
 
-Total: 1 archivos
+Total: 1 archivo
 
 - [Makefile](Makefile)

@@ -446,7 +446,8 @@ class LibraryCataloger:
         
         for category, files in self.category_files.items():
             content = [f"# {category.title()}\n\n"]
-            content.append(f"Total: {len(files)} archivos\n\n")
+            file_word = "archivo" if len(files) == 1 else "archivos"
+            content.append(f"Total: {len(files)} {file_word}\n\n")
             
             for file_info in sorted(files, key=lambda x: x['name']):
                 content.append(f"## [{file_info['name']}]({file_info['path']})\n")
@@ -464,7 +465,8 @@ class LibraryCataloger:
         
         for purpose, files in self.purpose_files.items():
             content = [f"# {purpose.title()}\n\n"]
-            content.append(f"Total: {len(files)} archivos\n\n")
+            file_word = "archivo" if len(files) == 1 else "archivos"
+            content.append(f"Total: {len(files)} {file_word}\n\n")
             
             for file_info in sorted(files, key=lambda x: x['name']):
                 content.append(f"- [{file_info['name']}]({file_info['path']}) - {file_info['description'][:100]}\n")
@@ -484,7 +486,8 @@ class LibraryCataloger:
                 continue
                 
             content = [f"# {tech.upper()}\n\n"]
-            content.append(f"Total: {len(files)} archivos\n\n")
+            file_word = "archivo" if len(files) == 1 else "archivos"
+            content.append(f"Total: {len(files)} {file_word}\n\n")
             
             for file_info in sorted(files, key=lambda x: x['name']):
                 content.append(f"- [{file_info['name']}]({file_info['path']})\n")

@@ -1,11 +1,12 @@
 # 📚 Catálogo Completo de la Biblioteca
-Última actualización: 2025-12-14 07:20:25
-Total de archivos: 44
+Última actualización: 2025-12-14 07:28:39
+Total de archivos: 75
 
 ---
 ## 📊 Estadísticas Generales
 - **Build**: 1 archivos
-- **Documentation**: 16 archivos
+- **Configuration**: 1 archivos
+- **Documentation**: 46 archivos
 - **Other**: 12 archivos
 - **Schema**: 1 archivos
 - **Script**: 3 archivos
@@ -18,23 +19,30 @@ Total de archivos: 44
 ### Build (1 archivos)
 - **[Makefile](Makefile)** - Makefile - build
 
-### Documentation (16 archivos)
+### Configuration (1 archivos)
+- **[SEARCH_INDEX.json](LIBRARY/SEARCH_INDEX.json)** - SEARCH_INDEX.json - configuration
+
+### Documentation (46 archivos)
 - **[BRANCH_PROTECTION.md](docs/BRANCH_PROTECTION.md)** - Branch Protection Rules
+- **[CATALOG.md](LIBRARY/CATALOG.md)** - 📚 Catálogo Completo de la Biblioteca
 - **[CI_CD.md](docs/CI_CD.md)** - CI/CD Documentation
 - **[CONTRIBUTING.md](CONTRIBUTING.md)** - Contributing to Tokyo-IA
 - **[FILE_TEMPLATE.md](.github/templates/FILE_TEMPLATE.md)** - [Nombre del Archivo]
+- **[GUIDE.md](LIBRARY/GUIDE.md)** - Digital Library System - Complete Guide
 - **[GitHub-Pro.md](prompts/GitHub-Pro.md)** - GitHub-Pro.md – Step-by-Step Guide for GitHub Pro (2025)
 - **[JS-Supremo.md](prompts/JS-Supremo.md)** - JS-Supremo.md – Premium JavaScript Expert Prompt
+- **[Makefile.md](LIBRARY/by-technology/Makefile.md)** - MAKEFILE
 - **[README.md](README.md)** - Tokyo-IA
+- **[README.md](LIBRARY/README.md)** - 📚 Tokyo-IA Digital Library
+- **[README.md](LIBRARY/reports/README.md)** - Library Reports
 - **[README.md](docs/README.md)** - Tokyo-IA Documentation
 - **[SECURITY.md](SECURITY.md)** - Security Policy
 - **[TAREAS.md](TAREAS.md)** - ¿Qué tengo que hacer? - Guía de Tareas para Tokyo IA
+- **[TIMELINE.md](LIBRARY/TIMELINE.md)** - 📅 Línea de Tiempo de Creaciones
+- **[automation.md](LIBRARY/by-purpose/automation.md)** - Automation
 - **[bug_report.md](.github/ISSUE_TEMPLATE/bug_report.md)** - ---
-- **[copilot-instructions.md](.github/copilot-instructions.md)** - Copilot Instructions for Tokyo-IA
-- **[documentation.md](.github/ISSUE_TEMPLATE/documentation.md)** - ---
-- **[feature_request.md](.github/ISSUE_TEMPLATE/feature_request.md)** - ---
-- **[my-agent.agent.md](.github/agents/my-agent.agent.md)** - ---
-- **[pull_request_template.md](.github/pull_request_template.md)** - Description
+- **[build.md](LIBRARY/by-category/build.md)** - Build
+- **[configuration.md](LIBRARY/by-category/configuration.md)** - Configuration
 
 ### Other (12 archivos)
 - **[.gitignore](.gitignore)** - .gitignore - other
@@ -76,24 +84,33 @@ Total de archivos: 44
 ---
 ## 🎯 Por Propósito
 
-### Automation (2 archivos)
+### Automation (4 archivos)
 - [Agentes y bots](Agentes y bots)
+- [automation.md](LIBRARY/by-purpose/automation.md)
 - [dependabot.yml](.github/dependabot.yml)
+- [workflow.md](LIBRARY/by-category/workflow.md)
 
-### Deployment (1 archivos)
+### Deployment (3 archivos)
 - [Makefile](Makefile)
+- [build.md](LIBRARY/by-category/build.md)
+- [deployment.md](LIBRARY/by-purpose/deployment.md)
 
-### Documentation (6 archivos)
+### Documentation (11 archivos)
 - [CI_CD.md](docs/CI_CD.md)
+- [GUIDE.md](LIBRARY/GUIDE.md)
 - [GitHub-Pro.md](prompts/GitHub-Pro.md)
 - [README.md](README.md)
+- [README.md](LIBRARY/README.md)
+- [README.md](LIBRARY/reports/README.md)
 - [README.md](docs/README.md)
 - [auto-documenter.yml](.github/workflows/auto-documenter.yml)
 - [documentation.md](.github/ISSUE_TEMPLATE/documentation.md)
+- [documentation.md](LIBRARY/by-category/documentation.md)
 
-### General (33 archivos)
+### General (53 archivos)
 - [.gitignore](.gitignore)
 - [BRANCH_PROTECTION.md](docs/BRANCH_PROTECTION.md)
+- [CATALOG.md](LIBRARY/CATALOG.md)
 - [CONTRIBUTING.md](CONTRIBUTING.md)
 - [Cuerpo](Cuerpo)
 - [FILE_TEMPLATE.md](.github/templates/FILE_TEMPLATE.md)
@@ -101,13 +118,14 @@ Total de archivos: 44
 - [IA suprema](prompts/IA suprema)
 - [Imitar](Imitar)
 - [JS-Supremo.md](prompts/JS-Supremo.md)
-- [Real](Real)
 
-### Security (1 archivos)
+### Security (2 archivos)
 - [SECURITY.md](SECURITY.md)
+- [security.md](LIBRARY/by-purpose/security.md)
 
-### Testing (1 archivos)
+### Testing (2 archivos)
 - [placeholder_test.go](testing/placeholder_test.go)
+- [testing.md](LIBRARY/by-purpose/testing.md)
 
 ---
 

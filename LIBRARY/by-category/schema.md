@@ -1,6 +1,6 @@
 # Schema
 
-Total: 1 archivos
+Total: 1 archivo
 
 ## [hello.proto](proto/hello.proto)
 hello.proto - schema
