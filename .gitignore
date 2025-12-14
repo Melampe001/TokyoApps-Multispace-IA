@@ -74,3 +74,7 @@ logs/
 tmp/
 temp/
 .cache/
+
+# Library reports (auto-generated)
+LIBRARY/reports/*.md
+!LIBRARY/reports/README.md
