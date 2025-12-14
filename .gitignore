@@ -74,3 +74,13 @@ logs/
 tmp/
 temp/
 .cache/
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+.jupyter/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
