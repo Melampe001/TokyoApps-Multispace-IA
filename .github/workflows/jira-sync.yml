@@ -1,0 +1,188 @@
+name: Jira Sync
+
+on:
+  issues:
+    types: [opened, edited, closed, reopened, labeled, unlabeled]
+  issue_comment:
+    types: [created]
+  pull_request:
+    types: [opened, edited, closed, reopened]
+  schedule:
+    # Run every 15 minutes to catch any missed syncs
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: 'GitHub issue number to sync'
+        required: false
+        type: number
+      jira_key:
+        description: 'Jira ticket key to sync'
+        required: false
+        type: string
+
+jobs:
+  sync-to-jira:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'issues' || github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          pip install requests
+
+      - name: Sync GitHub issue to Jira
+        env:
+          JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+          JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
+          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          cd .github/workflows/scripts
+          
+          # Determine issue number
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            ISSUE_NUM="${{ inputs.issue_number }}"
+          elif [ "${{ github.event_name }}" = "issues" ]; then
+            ISSUE_NUM="${{ github.event.issue.number }}"
+          elif [ "${{ github.event_name }}" = "pull_request" ]; then
+            ISSUE_NUM="${{ github.event.pull_request.number }}"
+          fi
+          
+          if [ -n "$ISSUE_NUM" ]; then
+            echo "Syncing issue #$ISSUE_NUM to Jira..."
+            python jira_sync_manager.py create --issue $ISSUE_NUM
+          else
+            echo "No issue number to sync"
+          fi
+
+      - name: Upload sync log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: jira-sync-log-${{ github.run_id }}
+          path: .github/workflows/scripts/sync-log.json
+          retention-days: 30
+
+  sync-comments:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'issue_comment'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          pip install requests
+
+      - name: Sync comment to Jira
+        env:
+          JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+          JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
+          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          cd .github/workflows/scripts
+          python << 'EOF'
+          import os
+          import sys
+          from jira_sync_manager import JiraSyncManager
+          
+          manager = JiraSyncManager()
+          issue_number = int("${{ github.event.issue.number }}")
+          comment = "${{ github.event.comment.body }}"
+          author = "${{ github.event.comment.user.login }}"
+          
+          # Find linked Jira ticket
+          jira_key = manager._find_linked_jira_ticket(issue_number)
+          
+          if jira_key and manager.mappings_config['sync_rules']['sync_comments']:
+            # Add comment to Jira
+            formatted_comment = f"Comment by @{author}:\n\n{comment}"
+            manager.add_jira_comment(jira_key, formatted_comment)
+            print(f"Synced comment to {jira_key}")
+          else:
+            print("No linked Jira ticket or comment sync disabled")
+          EOF
+
+  scheduled-sync:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          pip install requests
+
+      - name: Sync open issues
+        env:
+          JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+          JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
+          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          cd .github/workflows/scripts
+          python << 'EOF'
+          import os
+          from jira_sync_manager import JiraSyncManager, GitHubClient
+          
+          manager = JiraSyncManager()
+          
+          # Get open issues
+          github = GitHubClient(os.environ['GITHUB_TOKEN'])
+          repo = os.environ['GITHUB_REPOSITORY']
+          owner, name = repo.split('/')
+          
+          issues = github.get(f'/repos/{owner}/{name}/issues', params={'state': 'open'})
+          
+          synced_count = 0
+          for issue in issues:
+            # Skip PRs (they appear in issues endpoint)
+            if 'pull_request' in issue:
+              continue
+            
+            issue_number = issue['number']
+            jira_key = manager._find_linked_jira_ticket(issue_number)
+            
+            if not jira_key:
+              # Create Jira ticket for issues without one
+              jira_key = manager.sync_github_to_jira(issue_number)
+              if jira_key:
+                synced_count += 1
+          
+          print(f"Synced {synced_count} issues to Jira")
+          manager.save_sync_log()
+          EOF
+
+      - name: Upload sync log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: scheduled-sync-log-${{ github.run_id }}
+          path: .github/workflows/scripts/sync-log.json
+          retention-days: 30

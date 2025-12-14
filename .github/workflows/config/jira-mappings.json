@@ -1,0 +1,47 @@
+{
+  "label_to_type": {
+    "bug": "Bug",
+    "enhancement": "Story",
+    "feature": "Story",
+    "documentation": "Task",
+    "task": "Task"
+  },
+  "label_to_priority": {
+    "priority: high": "High",
+    "priority: medium": "Medium",
+    "priority: low": "Low",
+    "critical": "Highest",
+    "blocker": "Highest"
+  },
+  "status_mapping": {
+    "github_to_jira": {
+      "open": "To Do",
+      "in_progress": "In Progress",
+      "review": "In Review",
+      "closed": "Done"
+    },
+    "jira_to_github": {
+      "To Do": "open",
+      "In Progress": "in_progress",
+      "In Review": "review",
+      "Done": "closed",
+      "Closed": "closed"
+    }
+  },
+  "custom_fields": {
+    "story_points": "customfield_10016",
+    "sprint": "customfield_10020",
+    "epic_link": "customfield_10014"
+  },
+  "sync_rules": {
+    "sync_comments": true,
+    "sync_assignees": true,
+    "sync_labels": true,
+    "sync_descriptions": true,
+    "create_missing_labels": true
+  },
+  "conflict_resolution": {
+    "strategy": "last_write_wins",
+    "notify_on_conflict": true
+  }
+}
