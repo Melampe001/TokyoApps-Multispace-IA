@@ -1,0 +1,267 @@
+name: Weekly Report
+
+# Run every Friday at 15:00 UTC (3:00 PM)
+on:
+  schedule:
+    - cron: '0 15 * * 5'  # 3:00 PM UTC on Fridays
+  workflow_dispatch:  # Allow manual trigger for testing
+
+permissions:
+  issues: write
+  pull-requests: read
+  contents: read
+
+jobs:
+  generate-report:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install PyGithub
+        run: |
+          pip install PyGithub
+
+      - name: Generate weekly metrics
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO_FULL_NAME: ${{ github.repository }}
+        run: |
+          cat > /tmp/generate_report.py << 'EOFPYTHON'
+          import os
+          import json
+          from datetime import datetime, timedelta
+          from github import Github
+
+          # Initialize GitHub client
+          g = Github(os.environ['GITHUB_TOKEN'])
+          repo = g.get_repo(os.environ['REPO_FULL_NAME'])
+
+          # Calculate date range (last 7 days)
+          now = datetime.utcnow()
+          week_ago = now - timedelta(days=7)
+
+          print(f"📊 Generating weekly report from {week_ago.date()} to {now.date()}")
+
+          # Collect commits from last 7 days
+          commits = []
+          for commit in repo.get_commits(since=week_ago):
+              commits.append(commit)
+          
+          commits_count = len(commits)
+          print(f"Found {commits_count} commits")
+
+          # Collect PRs
+          all_prs = list(repo.get_pulls(state='all'))
+          
+          # PRs opened in last 7 days
+          prs_opened = [pr for pr in all_prs if pr.created_at >= week_ago]
+          
+          # PRs merged in last 7 days
+          prs_merged = [pr for pr in all_prs if pr.merged_at and pr.merged_at >= week_ago]
+          
+          # Currently open PRs
+          prs_open = [pr for pr in all_prs if pr.state == 'open']
+          
+          print(f"PRs opened: {len(prs_opened)}, merged: {len(prs_merged)}, currently open: {len(prs_open)}")
+
+          # Collect issues closed in last 7 days
+          issues_closed = []
+          for issue in repo.get_issues(state='closed', since=week_ago):
+              if not issue.pull_request and issue.closed_at >= week_ago:
+                  issues_closed.append(issue)
+          
+          print(f"Issues closed: {len(issues_closed)}")
+
+          # Calculate velocity (% of PRs completed)
+          total_prs = len(prs_opened) + len(prs_open)
+          if total_prs > 0:
+              velocity = (len(prs_merged) / total_prs) * 100
+          else:
+              velocity = 0
+          
+          print(f"Velocity: {velocity:.1f}%")
+
+          # Detect current blockers
+          three_days_ago = now - timedelta(days=3)
+          five_days_ago = now - timedelta(days=5)
+          
+          stalled_draft_prs = [pr for pr in prs_open if pr.draft and pr.updated_at < three_days_ago]
+          stalled_issues = [issue for issue in repo.get_issues(state='open') 
+                            if not issue.pull_request and issue.updated_at < five_days_ago]
+          
+          blocker_count = len(stalled_draft_prs) + len(stalled_issues)
+          print(f"Blockers: {blocker_count} (Draft PRs: {len(stalled_draft_prs)}, Stalled Issues: {len(stalled_issues)})")
+
+          # Calculate health status
+          if blocker_count == 0:
+              health_emoji = "🟢"
+              health_status = "Excellent"
+          elif blocker_count <= 2:
+              health_emoji = "🟡"
+              health_status = "Good"
+          else:
+              health_emoji = "🔴"
+              health_status = "Needs Attention"
+
+          # Build markdown report
+          report = f"""# 📊 Weekly Report - Week of {week_ago.strftime('%B %d, %Y')}
+
+          ## Project Health: {health_emoji} {health_status}
+
+          ---
+
+          ## 🎯 Achievements This Week
+
+          ### Development Activity
+          - **{commits_count}** commits pushed
+          - **{len(prs_opened)}** pull requests opened
+          - **{len(prs_merged)}** pull requests merged
+          - **{len(issues_closed)}** issues closed
+
+          ### Team Velocity
+          - **{velocity:.1f}%** of PRs completed this week
+          - **{len(prs_open)}** PRs currently in review
+
+          """
+
+          # Add top contributors if we have commits
+          if commits:
+              contributors = {}
+              for commit in commits:
+                  if commit.author:
+                      author = commit.author.login
+                      contributors[author] = contributors.get(author, 0) + 1
+              
+              if contributors:
+                  report += "### Top Contributors\n"
+                  sorted_contributors = sorted(contributors.items(), key=lambda x: x[1], reverse=True)[:5]
+                  for contributor, count in sorted_contributors:
+                      report += f"- @{contributor}: {count} commits\n"
+                  report += "\n"
+
+          # Blockers section
+          report += "---\n\n## 🚧 Blockers\n\n"
+          
+          if blocker_count == 0:
+              report += "✅ **No blockers detected!** All work items are progressing smoothly.\n\n"
+          else:
+              if stalled_draft_prs:
+                  report += "### Draft PRs Stalled (>3 days)\n\n"
+                  report += "| PR | Title | Days Stalled | Author |\n"
+                  report += "|---|---|---|---|\n"
+                  for pr in stalled_draft_prs:
+                      days = (now - pr.updated_at).days
+                      report += f"| [#{pr.number}]({pr.html_url}) | {pr.title} | {days} | @{pr.user.login} |\n"
+                  report += "\n"
+              
+              if stalled_issues:
+                  report += "### Issues Without Updates (>5 days)\n\n"
+                  report += "| Issue | Title | Days Stalled | Assignees |\n"
+                  report += "|---|---|---|---|\n"
+                  for issue in stalled_issues:
+                      days = (now - issue.updated_at).days
+                      assignees = ", ".join([f"@{a.login}" for a in issue.assignees]) if issue.assignees else "None"
+                      report += f"| [#{issue.number}]({issue.html_url}) | {issue.title} | {days} | {assignees} |\n"
+                  report += "\n"
+
+          # Metrics summary table
+          report += """---
+
+          ## 📈 Metrics Summary
+
+          | Metric | Value |
+          |--------|-------|
+          | Commits | {commits} |
+          | PRs Opened | {prs_opened} |
+          | PRs Merged | {prs_merged} |
+          | PRs Open | {prs_open} |
+          | Issues Closed | {issues_closed} |
+          | Velocity | {velocity}% |
+          | Blockers | {blockers} |
+          | Health Status | {health} {status} |
+
+          ---
+
+          ## 💡 Recommendations
+
+          """.format(
+              commits=commits_count,
+              prs_opened=len(prs_opened),
+              prs_merged=len(prs_merged),
+              prs_open=len(prs_open),
+              issues_closed=len(issues_closed),
+              velocity=f"{velocity:.1f}",
+              blockers=blocker_count,
+              health=health_emoji,
+              status=health_status
+          )
+
+          # Add context-specific recommendations
+          if blocker_count > 2:
+              report += "- 🚨 **High blocker count**: Schedule a sync meeting to unblock stalled work\n"
+          
+          if velocity < 50 and len(prs_open) > 3:
+              report += "- ⏱️ **Low velocity**: Consider breaking down large PRs or increasing review capacity\n"
+          
+          if len(prs_open) > 5:
+              report += "- 📝 **Many open PRs**: Prioritize reviews to maintain flow\n"
+          
+          if blocker_count == 0 and velocity > 70:
+              report += "- ✨ **Excellent progress**: Keep up the great work!\n"
+          
+          report += "\n---\n\n"
+          report += "_This report was automatically generated by the Weekly Report workflow._"
+
+          # Save report to file
+          with open('/tmp/report.md', 'w') as f:
+              f.write(report)
+          
+          print("✅ Report generated successfully")
+
+          # Save metrics as JSON for GitHub Actions
+          metrics = {
+              "commits": commits_count,
+              "prs_opened": len(prs_opened),
+              "prs_merged": len(prs_merged),
+              "prs_open": len(prs_open),
+              "issues_closed": len(issues_closed),
+              "velocity": round(velocity, 1),
+              "blockers": blocker_count,
+              "health_status": health_status,
+              "health_emoji": health_emoji
+          }
+          
+          with open('/tmp/metrics.json', 'w') as f:
+              json.dump(metrics, f)
+          
+          EOFPYTHON
+
+          python /tmp/generate_report.py
+
+      - name: Create weekly report issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            
+            // Read the generated report
+            const report = fs.readFileSync('/tmp/report.md', 'utf8');
+            const metrics = JSON.parse(fs.readFileSync('/tmp/metrics.json', 'utf8'));
+            
+            // Create the issue
+            const { data: issue } = await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `📊 Weekly Report - ${new Date().toISOString().split('T')[0]}`,
+              body: report,
+              labels: ['weekly-report', 'automated']
+            });
+            
+            console.log(`✅ Created weekly report issue: ${issue.html_url}`);
+            console.log('Metrics:', metrics);
