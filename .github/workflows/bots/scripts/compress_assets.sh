@@ -71,16 +71,16 @@ echo ""
 echo "Searching for images to optimize..."
 
 # Process PNG files
-for png_file in $(find . -type f -name "*.png" ! -path "*/node_modules/*" ! -path "*/.git/*" 2>/dev/null); do
+while IFS= read -r -d '' png_file; do
     file_size=$(stat -f%z "$png_file" 2>/dev/null || stat -c%s "$png_file" 2>/dev/null)
     # Only process PNGs > 10KB
     if [ "$file_size" -gt 10240 ]; then
         optimize_png "$png_file"
     fi
-done
+done < <(find . -type f -name "*.png" ! -path "*/node_modules/*" ! -path "*/.git/*" -print0 2>/dev/null)
 
 # Process JPG files
-for jpg_file in $(find . -type f \( -name "*.jpg" -o -name "*.jpeg" \) ! -path "*/node_modules/*" ! -path "*/.git/*" 2>/dev/null); do
+while IFS= read -r -d '' jpg_file; do
     file_size=$(stat -f%z "$jpg_file" 2>/dev/null || stat -c%s "$jpg_file" 2>/dev/null)
     # Convert large JPGs (> 500KB) to WebP
     if [ "$file_size" -gt 512000 ]; then
@@ -88,7 +88,7 @@ for jpg_file in $(find . -type f \( -name "*.jpg" -o -name "*.jpeg" \) ! -path "
     fi
     # Remove EXIF from all JPGs
     remove_exif "$jpg_file"
-done
+done < <(find . -type f \( -name "*.jpg" -o -name "*.jpeg" \) ! -path "*/node_modules/*" ! -path "*/.git/*" -print0 2>/dev/null)
 
 echo ""
 echo "============================"

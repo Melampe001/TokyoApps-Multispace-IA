@@ -165,8 +165,21 @@ def get_changed_files(diff_only: bool = True) -> List[str]:
         # Use git diff to get changed files
         import subprocess
         try:
+            # Try to detect the base branch dynamically
+            base_branch = 'origin/main'
+            try:
+                result = subprocess.run(
+                    ['git', 'symbolic-ref', 'refs/remotes/origin/HEAD'],
+                    capture_output=True,
+                    text=True,
+                    check=True
+                )
+                base_branch = result.stdout.strip().replace('refs/remotes/', '')
+            except subprocess.CalledProcessError:
+                pass  # Use default origin/main
+            
             result = subprocess.run(
-                ['git', 'diff', '--name-only', 'origin/main...HEAD'],
+                ['git', 'diff', '--name-only', f'{base_branch}...HEAD'],
                 capture_output=True,
                 text=True,
                 check=True

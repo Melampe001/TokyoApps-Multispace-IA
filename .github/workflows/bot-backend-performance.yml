@@ -69,7 +69,8 @@ jobs:
               if [ "$nested_count" -gt 1 ]; then
                 # Simple heuristic: if we have multiple for loops, check if nested
                 content=$(cat "$file")
-                if echo "$content" | grep -Pzo "for[^{]*\{[^}]*for[^{]*\{" > /dev/null 2>&1; then
+                # Use extended regex instead of PCRE for better compatibility
+                if echo "$content" | grep -E "for.*\{.*for.*\{" > /dev/null 2>&1; then
                   nested_loops=$((nested_loops + 1))
                   echo "  ⚠️  Nested loops detected"
                 fi

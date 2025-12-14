@@ -114,11 +114,15 @@ jobs:
             echo "total_runs=0" >> $GITHUB_OUTPUT
           fi
           
-          # Estimate time saved (placeholder calculation)
-          # Backend Quality: ~30 min per run
-          # Backend Performance: ~20 min per run  
-          # Frontend UX: ~25 min per run
-          # Frontend Build: ~15 min per run
+          # Time estimates per bot type (in hours)
+          # Backend Quality: 0.5 hours (30 min) per comprehensive code review
+          # Backend Performance: 0.33 hours (20 min) per performance analysis
+          # Frontend UX: 0.42 hours (25 min) per UI/UX review
+          # Frontend Build: 0.25 hours (15 min) per asset optimization
+          TIME_BACKEND_QUALITY=0.5
+          TIME_BACKEND_PERF=0.33
+          TIME_FRONTEND_UX=0.42
+          TIME_FRONTEND_BUILD=0.25
           
           if [ -f bot-metrics.json ]; then
             bq_runs=$(jq -r '.backend_quality.runs // 0' bot-metrics.json)
@@ -126,7 +130,7 @@ jobs:
             fu_runs=$(jq -r '.frontend_ux.runs // 0' bot-metrics.json)
             fb_runs=$(jq -r '.frontend_build.runs // 0' bot-metrics.json)
             
-            time_saved=$(awk "BEGIN {print ($bq_runs * 0.5) + ($bp_runs * 0.33) + ($fu_runs * 0.42) + ($fb_runs * 0.25)}")
+            time_saved=$(awk "BEGIN {print ($bq_runs * $TIME_BACKEND_QUALITY) + ($bp_runs * $TIME_BACKEND_PERF) + ($fu_runs * $TIME_FRONTEND_UX) + ($fb_runs * $TIME_FRONTEND_BUILD)}")
           else
             bq_runs=0
             bp_runs=0
