@@ -25,6 +25,10 @@ jobs:
   sync-to-jira:
     runs-on: ubuntu-latest
     if: github.event_name == 'issues' || github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch'
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -76,6 +80,9 @@ jobs:
   sync-comments:
     runs-on: ubuntu-latest
     if: github.event_name == 'issue_comment'
+    permissions:
+      contents: read
+      issues: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -124,6 +131,10 @@ jobs:
   scheduled-sync:
     runs-on: ubuntu-latest
     if: github.event_name == 'schedule'
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: read
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4

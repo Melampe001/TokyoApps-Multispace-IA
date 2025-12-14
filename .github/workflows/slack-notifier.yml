@@ -28,6 +28,8 @@ jobs:
   notify-pr-approved:
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request_review' && github.event.review.state == 'approved'
+    permissions:
+      contents: read
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -53,6 +55,8 @@ jobs:
   notify-issue-assigned:
     runs-on: ubuntu-latest
     if: github.event_name == 'issues' && github.event.action == 'assigned'
+    permissions:
+      contents: read
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -92,6 +96,8 @@ jobs:
   notify-build-status:
     runs-on: ubuntu-latest
     if: github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'failure'
+    permissions:
+      contents: read
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -139,6 +145,8 @@ jobs:
   daily-summary:
     runs-on: ubuntu-latest
     if: (github.event.schedule == '0 9 * * *') || (github.event_name == 'workflow_dispatch' && inputs.notification_type == 'daily')
+    permissions:
+      contents: read
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -210,6 +218,8 @@ jobs:
   weekly-report:
     runs-on: ubuntu-latest
     if: (github.event.schedule == '0 9 * * 1') || (github.event_name == 'workflow_dispatch' && inputs.notification_type == 'weekly')
+    permissions:
+      contents: read
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4

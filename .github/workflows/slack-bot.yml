@@ -18,6 +18,10 @@ jobs:
   handle-slack-command:
     runs-on: ubuntu-latest
     if: github.event.action == 'slack-command' || github.event_name == 'workflow_dispatch'
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: read
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -74,6 +78,10 @@ jobs:
   handle-slack-event:
     runs-on: ubuntu-latest
     if: github.event.action == 'slack-event'
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: read
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
