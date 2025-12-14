@@ -1,0 +1,25 @@
+{
+  "naming_conventions": {
+    "files": "snake_case",
+    "classes": "PascalCase",
+    "widgets": "PascalCase"
+  },
+  "asset_limits": {
+    "max_image_size_kb": 500,
+    "max_bundle_increase_mb": 2
+  },
+  "required_a11y": {
+    "semantic_labels": true,
+    "color_contrast_ratio": 4.5
+  },
+  "ui_checks": {
+    "check_hardcoded_strings": true,
+    "check_theme_usage": true,
+    "check_widget_placement": true
+  },
+  "paths_to_monitor": [
+    "app/src/",
+    "lib/",
+    "*.dart"
+  ]
+}

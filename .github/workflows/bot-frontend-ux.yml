@@ -1,0 +1,295 @@
+name: Bot #3 - Frontend UI/UX Compliance Bot
+
+on:
+  # Run on PRs that touch Dart/Flutter code
+  pull_request:
+    paths:
+      - '**.dart'
+      - 'pubspec.yaml'
+      - 'app/src/**'
+  
+  # Allow manual trigger
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  frontend-ux-check:
+    runs-on: ubuntu-latest
+    name: Analyze Frontend UI/UX Compliance
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Run Frontend UX Analysis
+        id: analysis
+        run: |
+          echo "Running frontend UI/UX analysis..."
+          
+          # Run analysis script if Dart files exist
+          if find . -name "*.dart" -type f | head -1 > /dev/null; then
+            python3 .github/workflows/bots/scripts/analyze_dart_code.py \
+              --check-naming \
+              --check-hardcoded-strings \
+              --check-theme-usage \
+              --config .github/workflows/bots/frontend-ux-guidelines.json \
+              --output frontend-ux-report.json || true
+            
+            if [ -f frontend-ux-report.json ]; then
+              echo "report_exists=true" >> $GITHUB_OUTPUT
+              
+              # Extract metrics
+              quality_score=$(jq -r '.metrics.quality_score' frontend-ux-report.json)
+              files_analyzed=$(jq -r '.metrics.files_analyzed' frontend-ux-report.json)
+              naming_violations=$(jq -r '.metrics.naming_violations' frontend-ux-report.json)
+              hardcoded_strings=$(jq -r '.metrics.hardcoded_strings' frontend-ux-report.json)
+              theme_issues=$(jq -r '.metrics.theme_issues' frontend-ux-report.json)
+              total_issues=$(jq -r '.summary.total_issues' frontend-ux-report.json)
+              
+              echo "quality_score=$quality_score" >> $GITHUB_OUTPUT
+              echo "files_analyzed=$files_analyzed" >> $GITHUB_OUTPUT
+              echo "naming_violations=$naming_violations" >> $GITHUB_OUTPUT
+              echo "hardcoded_strings=$hardcoded_strings" >> $GITHUB_OUTPUT
+              echo "theme_issues=$theme_issues" >> $GITHUB_OUTPUT
+              echo "total_issues=$total_issues" >> $GITHUB_OUTPUT
+            else
+              echo "report_exists=false" >> $GITHUB_OUTPUT
+            fi
+          else
+            echo "report_exists=false" >> $GITHUB_OUTPUT
+            echo "No Dart files found to analyze"
+          fi
+      
+      - name: Check for New Screens
+        id: screen_check
+        if: github.event_name == 'pull_request'
+        run: |
+          # Look for new screen/page files
+          changed_files=$(git diff --name-only origin/${{ github.base_ref }}...HEAD)
+          
+          if echo "$changed_files" | grep -iE "(screen|page).*\.dart$" > /dev/null; then
+            new_screens=$(echo "$changed_files" | grep -iE "(screen|page).*\.dart$" | wc -l)
+            echo "new_screens=$new_screens" >> $GITHUB_OUTPUT
+            echo "has_new_screens=true" >> $GITHUB_OUTPUT
+          else
+            echo "new_screens=0" >> $GITHUB_OUTPUT
+            echo "has_new_screens=false" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Check for Main Widget Changes
+        id: widget_check
+        if: github.event_name == 'pull_request'
+        run: |
+          # Check if main widgets were modified
+          changed_files=$(git diff --name-only origin/${{ github.base_ref }}...HEAD)
+          
+          if echo "$changed_files" | grep -iE "(widget|component).*\.dart$" > /dev/null; then
+            echo "widgets_changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "widgets_changed=false" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Check for Accessibility Issues
+        id: a11y_check
+        if: steps.analysis.outputs.report_exists == 'true'
+        run: |
+          # Basic accessibility checks
+          a11y_issues=0
+          
+          # Check for semantic labels
+          if find . -name "*.dart" -type f -exec grep -l "Semantics" {} \; > /dev/null 2>&1; then
+            echo "semantics_used=true" >> $GITHUB_OUTPUT
+          else
+            # Check if there are UI components without semantics
+            if find . -name "*.dart" -type f -exec grep -l "Text\|Image\|Button" {} \; | head -1 > /dev/null 2>&1; then
+              a11y_issues=$((a11y_issues + 1))
+              echo "semantics_used=false" >> $GITHUB_OUTPUT
+            fi
+          fi
+          
+          echo "a11y_issues=$a11y_issues" >> $GITHUB_OUTPUT
+      
+      - name: Generate UX Report Comment
+        id: generate_comment
+        if: github.event_name == 'pull_request' && steps.analysis.outputs.report_exists == 'true'
+        run: |
+          quality_score=${{ steps.analysis.outputs.quality_score }}
+          total_issues=${{ steps.analysis.outputs.total_issues }}
+          
+          # Determine status
+          if [ "$quality_score" -ge 90 ]; then
+            status_emoji="✅"
+            status_text="Excellent"
+          elif [ "$quality_score" -ge 70 ]; then
+            status_emoji="⚠️"
+            status_text="Needs Improvement"
+          else
+            status_emoji="❌"
+            status_text="Issues Found"
+          fi
+          
+          # Build comment
+          cat > ux-comment.md << EOF
+          ## 🎨 Frontend UI/UX Compliance Report
+          
+          **Quality Score:** ${quality_score}/100 ${status_emoji}
+          **Status:** ${status_text}
+          
+          ### 📊 Analysis Summary
+          - Files analyzed: ${{ steps.analysis.outputs.files_analyzed }}
+          - Total issues: ${total_issues}
+          
+          ### 🔍 Detailed Findings
+          
+          EOF
+          
+          # Add specific issues
+          if [ "${{ steps.analysis.outputs.naming_violations }}" -gt 0 ]; then
+            echo "#### Naming Conventions ⚠️" >> ux-comment.md
+            echo "- **${steps.analysis.outputs.naming_violations}** file(s) don't follow snake_case convention" >> ux-comment.md
+            echo "- Files should use lowercase with underscores (e.g., \`home_screen.dart\`)" >> ux-comment.md
+            echo "" >> ux-comment.md
+          else
+            echo "#### Naming Conventions ✅" >> ux-comment.md
+            echo "- All files follow snake_case convention" >> ux-comment.md
+            echo "" >> ux-comment.md
+          fi
+          
+          if [ "${{ steps.analysis.outputs.hardcoded_strings }}" -gt 0 ]; then
+            echo "#### Hardcoded Strings ⚠️" >> ux-comment.md
+            echo "- **${{ steps.analysis.outputs.hardcoded_strings }}** hardcoded UI string(s) detected" >> ux-comment.md
+            echo "- Consider externalizing strings to localization files" >> ux-comment.md
+            echo "" >> ux-comment.md
+          else
+            echo "#### Hardcoded Strings ✅" >> ux-comment.md
+            echo "- No hardcoded UI strings detected" >> ux-comment.md
+            echo "" >> ux-comment.md
+          fi
+          
+          if [ "${{ steps.analysis.outputs.theme_issues }}" -gt 0 ]; then
+            echo "#### Theme Usage ⚠️" >> ux-comment.md
+            echo "- **${{ steps.analysis.outputs.theme_issues }}** hardcoded color(s) found" >> ux-comment.md
+            echo "- Use \`Theme.of(context)\` for consistent theming" >> ux-comment.md
+            echo "" >> ux-comment.md
+          else
+            echo "#### Theme Usage ✅" >> ux-comment.md
+            echo "- Colors use theme constants" >> ux-comment.md
+            echo "" >> ux-comment.md
+          fi
+          
+          # Add accessibility check
+          if [ "${{ steps.a11y_check.outputs.a11y_issues }}" -gt 0 ]; then
+            echo "#### Accessibility ⚠️" >> ux-comment.md
+            echo "- Consider adding \`Semantics\` widgets for better accessibility" >> ux-comment.md
+            echo "" >> ux-comment.md
+          fi
+          
+          # Add new screen reminder
+          if [ "${{ steps.screen_check.outputs.has_new_screens }}" = "true" ]; then
+            echo "### 🔔 Reminder" >> ux-comment.md
+            echo "" >> ux-comment.md
+            echo "- ⚠️ New screen(s) added - please update navigation documentation" >> ux-comment.md
+            echo "" >> ux-comment.md
+          fi
+          
+          # Add widget change notification
+          if [ "${{ steps.widget_check.outputs.widgets_changed }}" = "true" ]; then
+            echo "### 📢 Notification" >> ux-comment.md
+            echo "" >> ux-comment.md
+            echo "- 🎨 Main widgets modified - design team may want to review" >> ux-comment.md
+            echo "" >> ux-comment.md
+          fi
+          
+          # Add issue details if any
+          if [ "$total_issues" -gt 0 ]; then
+            echo "### 📋 Detailed Issues" >> ux-comment.md
+            echo "" >> ux-comment.md
+            jq -r '.issues[] | "- **\(.file):\(.line)** - \(.message)"' frontend-ux-report.json | head -20 >> ux-comment.md
+            
+            if [ "$total_issues" -gt 20 ]; then
+              echo "" >> ux-comment.md
+              echo "_... and $((total_issues - 20)) more issue(s). See full report artifact._" >> ux-comment.md
+            fi
+          fi
+          
+          echo "" >> ux-comment.md
+          echo "---" >> ux-comment.md
+          echo "_UI/UX compliance check by Frontend UI/UX Compliance Bot_" >> ux-comment.md
+          
+          cat ux-comment.md > ux-comment-body.txt
+      
+      - name: Post PR Comment
+        if: github.event_name == 'pull_request' && steps.analysis.outputs.report_exists == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const comment = fs.readFileSync('ux-comment-body.txt', 'utf8');
+            
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number
+            });
+            
+            const botComment = comments.find(c => 
+              c.user.type === 'Bot' && c.body.includes('Frontend UI/UX Compliance Report')
+            );
+            
+            if (botComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: comment
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: comment
+              });
+            }
+      
+      - name: Add Labels
+        if: github.event_name == 'pull_request' && steps.analysis.outputs.report_exists == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const labels = ['frontend', 'ui'];
+            
+            const a11yIssues = parseInt('${{ steps.a11y_check.outputs.a11y_issues }}' || '0');
+            if (a11yIssues > 0) {
+              labels.push('a11y');
+            }
+            
+            try {
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                labels: labels
+              });
+            } catch (error) {
+              console.log('Some labels may not exist:', error.message);
+            }
+      
+      - name: Upload Report Artifact
+        if: steps.analysis.outputs.report_exists == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-ux-report
+          path: frontend-ux-report.json
+          retention-days: 30
