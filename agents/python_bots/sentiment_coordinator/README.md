@@ -122,12 +122,12 @@ pytest tests/test_sentiment_analysis.py -v
 
 ### Sentiment Analysis
 - `distilbert-base-uncased-finetuned-sst-2-english` (base)
-- `nlptown/bert-base-multilingual-uncased-sentiment` (multilingüe)
-- Custom fine-tuned model para español
+- `nlptown/bert-base-multilingual-uncased-sentiment` (multilingual)
+- Custom fine-tuned model for Spanish
 
 ### Emotion Detection
 - `j-hartmann/emotion-english-distilroberta-base`
-- Custom model entrenado con datos de conversaciones
+- Custom model trained with conversational data
 
 ## Logs
 

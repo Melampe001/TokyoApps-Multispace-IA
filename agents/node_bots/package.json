@@ -5,7 +5,9 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node genai_coordinator/index.js & node deployment_coordinator/index.js",
+    "start": "npm run start:genai & npm run start:deployment",
+    "start:genai": "node genai_coordinator/index.js",
+    "start:deployment": "node deployment_coordinator/index.js",
     "dev": "nodemon --watch '**/*.js' genai_coordinator/index.js",
     "dev:genai": "nodemon genai_coordinator/index.js",
     "dev:deployment": "nodemon deployment_coordinator/index.js",

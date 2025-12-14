@@ -368,14 +368,14 @@ cd agents/python_bots
 python -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
-python -m knowledge_coordinator &
-python -m sentiment_coordinator &
+cd knowledge_coordinator && python coordinator.py &
+cd ../sentiment_coordinator && python coordinator.py &
 
 # Terminal 2: Node coordinators
 cd agents/node_bots
 npm install
-npm run dev:genai &
-npm run dev:deployment &
+npm run start:genai &
+npm run start:deployment &
 
 # Terminal 3: Infrastructure
 docker-compose up -d  # RabbitMQ, Redis, etc.
