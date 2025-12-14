@@ -12,6 +12,9 @@ Requirements:
 Usage:
     export GROQ_API_KEY=your_api_key_here
     python examples/python/basic_agent.py
+    
+Optional:
+    export GROQ_MODEL=mixtral-8x7b-32768  # Default model if not specified
 """
 
 import os
@@ -51,10 +54,12 @@ def main():
     
     # Initialize Groq LLM
     print("🔧 Initializing Groq LLM...")
+    model = os.environ.get("GROQ_MODEL", "mixtral-8x7b-32768")
+    print(f"   Using model: {model}")
     try:
         llm = ChatGroq(
             api_key=api_key,
-            model="mixtral-8x7b-32768",
+            model=model,
             temperature=0.7
         )
         print("✅ LLM initialized\n")

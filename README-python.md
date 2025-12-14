@@ -216,8 +216,6 @@ For higher limits, check the [Groq pricing page](https://groq.com/pricing).
 See the `examples/python/` directory for complete example scripts:
 
 - `basic_agent.py` - Simple CrewAI agent with Groq
-- `multi_agent_crew.py` - Multiple agents collaborating (coming soon)
-- `custom_tools.py` - Agents with custom tools (coming soon)
 
 To run an example:
 
