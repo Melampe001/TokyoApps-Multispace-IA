@@ -2,19 +2,42 @@
 
 ## Project Overview
 
-Tokyo-IA is a mobile + web + server project that provides Tokyo-themed AI features and an MCP (Model Context Protocol) server. The project consists of three main components:
+Tokyo-IA is a Tokyo-themed AI project that provides AI features and integrations. The project is currently in documentation and planning phase, with specifications for:
 
-1. **Android App** (`app/`) - Kotlin-based Android application
-2. **Web** (`web/`) - React/Vite web application with admin panel
-3. **MCP Server** (`server-mcp/`) - Node.js server for MCP functionality
+1. **Flutter Mobile App** - Cross-platform mobile application (planned)
+2. **AI Agents** - Autonomous agents for code generation, media creation, and more
+3. **MCP Integration** - Model Context Protocol server functionality
 
-## Repository Structure
+## Current Repository Structure
 
 ```
 tokyoia/
-├── app/                    # Android – main project (Kotlin)
-├── web/                    # Web site + admin panel (React/Vite)
-├── server-mcp/             # Node server for MCP (Node.js)
+├── .github/
+│   ├── copilot-instructions.md  # Copilot configuration (this file)
+│   └── agents/                   # Custom agent definitions
+├── prompts/                      # AI prompts and templates
+│   ├── JS-Supremo.md             # JavaScript expert prompt
+│   └── GitHub-Pro.md             # GitHub workflow guide
+├── README.md                     # Project overview
+├── TAREAS.md                     # Task list and roadmap
+├── Setup                         # Initial setup checklist
+├── Agentes y bots                # Agent development checklist
+├── Fllutter                      # Flutter dependencies spec (note: filename typo exists)
+├── Cuerpo                        # GenAI code examples
+├── Imitar                        # Sentiment analysis code
+├── Sin limite                    # Unrestricted mode code
+├── Sincero                       # Sincere response code
+└── Real                          # Reality mode code
+```
+
+## Planned Structure (When Implemented)
+
+```
+tokyoia/
+├── app/                    # Flutter mobile app
+├── web/                    # Web site + admin panel
+├── server-mcp/             # Node server for MCP
+├── agents/                 # Autonomous AI agents
 ├── whatsnew/               # Play Store release notes
 ├── scripts/                # Build and release scripts
 └── .github/workflows/      # CI/CD workflows
@@ -22,14 +45,16 @@ tokyoia/
 
 ## Build and Test Commands
 
-### Android
+### Flutter (When Implemented)
 ```bash
-./gradlew assembleDebug     # Build debug APK
-./gradlew installDebug      # Install debug APK
-./gradlew test              # Run unit tests
+flutter create tokyo_ia_personal --platforms=android,ios --org=com.tokyoia
+flutter pub get             # Install dependencies
+flutter run                 # Run the app
+flutter test                # Run unit tests
+flutter build apk           # Build APK
 ```
 
-### Web
+### Web (When Implemented)
 ```bash
 cd web
 npm install                 # Install dependencies
@@ -38,7 +63,7 @@ npm run build               # Build for production
 npm test                    # Run tests
 ```
 
-### MCP Server
+### MCP Server (When Implemented)
 ```bash
 cd server-mcp
 npm install                 # Install dependencies
@@ -52,6 +77,14 @@ npm test                    # Run tests
 - Write clear, self-documenting code with meaningful variable and function names
 - Keep functions small and focused on a single responsibility
 - Add comments only when the code logic is complex or non-obvious
+- Follow the C.R.A.F.T. prompt structure for AI interactions (see prompts/JS-Supremo.md)
+
+### Flutter/Dart
+- Follow Dart coding conventions and effective Dart guidelines
+- Use descriptive names for classes, functions, and variables
+- Prefer immutable data structures where possible
+- Use async/await for asynchronous operations
+- Organize code with proper separation of concerns (UI, business logic, data)
 
 ### Android/Kotlin
 - Follow Kotlin coding conventions
@@ -63,6 +96,7 @@ npm test                    # Run tests
 - Use functional components with hooks
 - Follow React best practices for component structure
 - Use consistent naming conventions (camelCase for variables, PascalCase for components)
+- Follow JS-Supremo guidelines for production-ready code (see prompts/JS-Supremo.md)
 
 ### Node.js/Server
 - Use async/await for asynchronous operations
@@ -86,8 +120,10 @@ npm test                    # Run tests
 
 - Write unit tests for new functionality
 - Ensure existing tests pass before submitting changes
+- Test Flutter changes on emulator or device when possible
 - Test Android changes on emulator or device when possible
 - Test web changes in multiple browsers if making UI changes
+- Follow the testing standards outlined in the project prompts
 
 ## Task Guidelines
 
