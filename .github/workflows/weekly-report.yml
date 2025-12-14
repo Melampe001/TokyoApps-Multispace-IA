@@ -56,8 +56,13 @@ jobs:
           commits_count = len(commits)
           print(f"Found {commits_count} commits")
 
-          # Collect PRs
-          all_prs = list(repo.get_pulls(state='all'))
+          # Collect PRs - limit to recent activity for efficiency
+          all_prs = []
+          for pr in repo.get_pulls(state='all', sort='updated', direction='desc'):
+              # Only fetch PRs updated in last 30 days for efficiency
+              if pr.updated_at < now - timedelta(days=30):
+                  break
+              all_prs.append(pr)
           
           # PRs opened in last 7 days
           prs_opened = [pr for pr in all_prs if pr.created_at >= week_ago]
@@ -78,10 +83,9 @@ jobs:
           
           print(f"Issues closed: {len(issues_closed)}")
 
-          # Calculate velocity (% of PRs completed)
-          total_prs = len(prs_opened) + len(prs_open)
-          if total_prs > 0:
-              velocity = (len(prs_merged) / total_prs) * 100
+          # Calculate velocity (% of PRs completed from those opened this week)
+          if len(prs_opened) > 0:
+              velocity = (len(prs_merged) / len(prs_opened)) * 100
           else:
               velocity = 0
           
@@ -92,8 +96,14 @@ jobs:
           five_days_ago = now - timedelta(days=5)
           
           stalled_draft_prs = [pr for pr in prs_open if pr.draft and pr.updated_at < three_days_ago]
-          stalled_issues = [issue for issue in repo.get_issues(state='open') 
-                            if not issue.pull_request and issue.updated_at < five_days_ago]
+          # Limit stalled issues query for efficiency
+          stalled_issues = []
+          for issue in repo.get_issues(state='open', sort='updated', direction='asc'):
+              if not issue.pull_request and issue.updated_at < five_days_ago:
+                  stalled_issues.append(issue)
+              # Stop checking after finding recent issues (optimization)
+              if issue.updated_at >= five_days_ago and len(stalled_issues) > 0:
+                  break
           
           blocker_count = len(stalled_draft_prs) + len(stalled_issues)
           print(f"Blockers: {blocker_count} (Draft PRs: {len(stalled_draft_prs)}, Stalled Issues: {len(stalled_issues)})")
