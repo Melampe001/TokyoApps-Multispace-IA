@@ -19,6 +19,9 @@ IGNORE_DIRS = {
     '.gradle', '.idea', '.vscode', 'vendor', 'tmp'
 }
 
+# Maximum file size to process (10 MB)
+MAX_FILE_SIZE_BYTES = 10 * 1024 * 1024
+
 # File extensions mapped to categories
 EXTENSION_CATEGORIES = {
     # Workflows
@@ -86,8 +89,8 @@ class LibraryCataloger:
             stat = filepath.stat()
             relative_path = filepath.relative_to(self.repo_path)
             
-            # Skip if file is too large (>10MB)
-            if stat.st_size > 10 * 1024 * 1024:
+            # Skip if file is too large
+            if stat.st_size > MAX_FILE_SIZE_BYTES:
                 return None
             
             # Get file extension
