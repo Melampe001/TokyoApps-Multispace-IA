@@ -1,0 +1,33 @@
+{
+  "jira": {
+    "enabled": true,
+    "bidirectional": true,
+    "projects": ["TOKYO", "IA"],
+    "sync_interval_minutes": 15,
+    "max_retries": 3,
+    "timeout_seconds": 30
+  },
+  "google_sheets": {
+    "enabled": true,
+    "update_interval_hours": 2,
+    "real_time_events": ["push", "pull_request", "issues"],
+    "metrics_retention_days": 90
+  },
+  "slack": {
+    "enabled": true,
+    "bot_name": "tokyo-bot",
+    "notification_channels": {
+      "dev_team": "C01234567",
+      "alerts": "C01234568"
+    },
+    "notification_schedule": {
+      "daily_summary": "09:00",
+      "weekly_report": "monday:09:00"
+    }
+  },
+  "health_check": {
+    "interval_minutes": 30,
+    "max_sync_delay_minutes": 5,
+    "max_error_rate_percent": 1
+  }
+}

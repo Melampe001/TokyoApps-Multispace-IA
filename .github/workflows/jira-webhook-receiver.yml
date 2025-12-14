@@ -1,0 +1,112 @@
+name: Jira Webhook Receiver
+
+on:
+  repository_dispatch:
+    types: [jira-webhook]
+
+jobs:
+  handle-jira-event:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          pip install requests
+
+      - name: Process Jira webhook
+        env:
+          JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+          JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
+          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          WEBHOOK_PAYLOAD: ${{ toJson(github.event.client_payload) }}
+        run: |
+          cd .github/workflows/scripts
+          python << 'EOF'
+          import os
+          import json
+          from jira_sync_manager import JiraSyncManager
+          
+          # Parse webhook payload
+          payload = json.loads(os.environ['WEBHOOK_PAYLOAD'])
+          event_type = payload.get('webhookEvent')
+          issue_data = payload.get('issue', {})
+          
+          if not issue_data:
+            print("No issue data in webhook payload")
+            exit(0)
+          
+          jira_key = issue_data.get('key')
+          if not jira_key:
+            print("No Jira key in payload")
+            exit(0)
+          
+          manager = JiraSyncManager()
+          
+          # Handle different event types
+          if event_type == 'jira:issue_updated':
+            print(f"Processing issue_updated event for {jira_key}")
+            
+            # Extract GitHub issue number from description or comments
+            # Look for pattern like "GitHub Issue: #123"
+            import re
+            description = issue_data.get('fields', {}).get('description', '')
+            match = re.search(r'GitHub Issue:.*#(\d+)', description)
+            
+            if match:
+              github_issue = int(match.group(1))
+              manager.sync_jira_to_github(jira_key, github_issue)
+            else:
+              print(f"No linked GitHub issue found for {jira_key}")
+          
+          elif event_type == 'jira:issue_deleted':
+            print(f"Jira issue {jira_key} was deleted")
+            # Optionally add comment to GitHub issue
+          
+          elif event_type == 'comment_created':
+            print(f"Processing comment_created event for {jira_key}")
+            
+            comment = payload.get('comment', {})
+            comment_body = comment.get('body', '')
+            author = comment.get('author', {}).get('displayName', 'Unknown')
+            
+            # Find linked GitHub issue and add comment
+            description = issue_data.get('fields', {}).get('description', '')
+            import re
+            match = re.search(r'GitHub Issue:.*#(\d+)', description)
+            
+            if match and manager.mappings_config['sync_rules']['sync_comments']:
+              github_issue = int(match.group(1))
+              formatted_comment = f"**Jira comment by {author}:**\n\n{comment_body}"
+              manager.add_github_comment(github_issue, formatted_comment)
+          
+          manager.save_sync_log()
+          EOF
+
+      - name: Upload webhook log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: jira-webhook-log-${{ github.run_id }}
+          path: .github/workflows/scripts/sync-log.json
+          retention-days: 30
+
+# Note: This workflow is triggered via repository_dispatch events.
+# To set up the webhook in Jira:
+# 1. Go to Jira Settings > System > WebHooks
+# 2. Create a webhook pointing to a service that can trigger GitHub repository_dispatch
+# 3. Or use a service like Zapier/Make.com to bridge Jira webhooks to GitHub
+# 4. Set the webhook secret in JIRA_WEBHOOK_SECRET

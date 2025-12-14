@@ -1,0 +1,90 @@
+name: Google Sheets Dashboard Update
+
+on:
+  schedule:
+    # Every 2 hours
+    - cron: '0 */2 * * *'
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [closed]
+  issues:
+    types: [closed]
+  workflow_dispatch:
+    inputs:
+      force_full_update:
+        description: 'Force full dashboard update'
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  update-dashboard:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          pip install requests google-auth google-auth-httplib2 google-api-python-client
+
+      - name: Update Google Sheets dashboard
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+          GOOGLE_SHEET_ID: ${{ secrets.GOOGLE_SHEET_ID }}
+        run: |
+          cd .github/workflows/scripts
+          python sheets_updater.py
+
+      - name: Apply formatting
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+          GOOGLE_SHEET_ID: ${{ secrets.GOOGLE_SHEET_ID }}
+        run: |
+          cd .github/workflows/scripts
+          python << 'EOF'
+          import os
+          import json
+          from google.oauth2 import service_account
+          from googleapiclient.discovery import build
+          from sheets_formatter import SheetsFormatter
+          
+          # Initialize service
+          credentials = service_account.Credentials.from_service_account_info(
+              json.loads(os.environ['GOOGLE_CREDENTIALS']),
+              scopes=['https://www.googleapis.com/auth/spreadsheets']
+          )
+          service = build('sheets', 'v4', credentials=credentials)
+          
+          # Apply formatting
+          formatter = SheetsFormatter(service, os.environ['GOOGLE_SHEET_ID'])
+          formatter.apply_all_formatting()
+          
+          print("Dashboard formatting complete")
+          EOF
+
+      - name: Create dashboard summary
+        run: |
+          echo "## Dashboard Update Summary" > $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Dashboard updated successfully at $(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Updated tabs:**" >> $GITHUB_STEP_SUMMARY
+          echo "- Daily Metrics" >> $GITHUB_STEP_SUMMARY
+          echo "- Weekly Trends" >> $GITHUB_STEP_SUMMARY
+          echo "- Team Performance" >> $GITHUB_STEP_SUMMARY
+          echo "- Executive Dashboard" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "[View Dashboard](https://docs.google.com/spreadsheets/d/${{ secrets.GOOGLE_SHEET_ID }})" >> $GITHUB_STEP_SUMMARY

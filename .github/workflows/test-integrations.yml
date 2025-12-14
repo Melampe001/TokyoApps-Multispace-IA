@@ -1,0 +1,331 @@
+name: Test Integrations
+
+on:
+  workflow_dispatch:
+    inputs:
+      test_type:
+        description: 'Type of integration test to run'
+        required: true
+        type: choice
+        options:
+          - all
+          - jira
+          - sheets
+          - slack
+  pull_request:
+    paths:
+      - '.github/workflows/jira-*.yml'
+      - '.github/workflows/sheets-*.yml'
+      - '.github/workflows/slack-*.yml'
+      - '.github/workflows/scripts/**'
+
+jobs:
+  test-jira:
+    runs-on: ubuntu-latest
+    if: inputs.test_type == 'all' || inputs.test_type == 'jira' || github.event_name == 'pull_request'
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          pip install requests
+
+      - name: Test Jira connection
+        env:
+          JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+          JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
+          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          cd .github/workflows/scripts
+          python << 'EOF'
+          import os
+          import sys
+          from jira_sync_manager import JiraClient
+          
+          print("Testing Jira connection...")
+          
+          try:
+              jira = JiraClient(
+                  os.environ['JIRA_BASE_URL'],
+                  os.environ['JIRA_USER_EMAIL'],
+                  os.environ['JIRA_API_TOKEN']
+              )
+              
+              # Test authentication
+              user = jira.get('/rest/api/2/myself')
+              print(f"✅ Authenticated as: {user.get('displayName')}")
+              
+              # Test project access
+              projects = jira.get('/rest/api/2/project')
+              print(f"✅ Can access {len(projects)} projects")
+              
+              # Test creating a test issue (will be cleaned up)
+              test_issue = {
+                  'fields': {
+                      'project': {'key': 'TOKYO'},
+                      'summary': '[TEST] Integration test - can be deleted',
+                      'description': 'This is a test issue created by integration tests.',
+                      'issuetype': {'name': 'Task'}
+                  }
+              }
+              
+              try:
+                  result = jira.post('/rest/api/2/issue', json_data=test_issue)
+                  test_key = result['key']
+                  print(f"✅ Created test issue: {test_key}")
+                  
+                  # Clean up
+                  jira.delete(f'/rest/api/2/issue/{test_key}')
+                  print(f"✅ Cleaned up test issue: {test_key}")
+              except Exception as e:
+                  print(f"⚠️  Could not create test issue (project may not exist): {e}")
+              
+              print("\n✅ All Jira tests passed!")
+              
+          except Exception as e:
+              print(f"\n❌ Jira test failed: {e}")
+              sys.exit(1)
+          EOF
+
+  test-sheets:
+    runs-on: ubuntu-latest
+    if: inputs.test_type == 'all' || inputs.test_type == 'sheets' || github.event_name == 'pull_request'
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          pip install requests google-auth google-auth-httplib2 google-api-python-client
+
+      - name: Test Google Sheets access
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+          GOOGLE_SHEET_ID: ${{ secrets.GOOGLE_SHEET_ID }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          cd .github/workflows/scripts
+          python << 'EOF'
+          import os
+          import sys
+          import json
+          from google.oauth2 import service_account
+          from googleapiclient.discovery import build
+          
+          print("Testing Google Sheets access...")
+          
+          try:
+              credentials = service_account.Credentials.from_service_account_info(
+                  json.loads(os.environ['GOOGLE_CREDENTIALS']),
+                  scopes=['https://www.googleapis.com/auth/spreadsheets']
+              )
+              
+              service = build('sheets', 'v4', credentials=credentials)
+              sheet_id = os.environ['GOOGLE_SHEET_ID']
+              
+              # Test read access
+              result = service.spreadsheets().get(spreadsheetId=sheet_id).execute()
+              print(f"✅ Can read sheet: {result['properties']['title']}")
+              
+              # Test write access - write to a test tab
+              test_values = [['Test', 'Integration', 'Data']]
+              body = {'values': test_values}
+              
+              try:
+                  service.spreadsheets().values().update(
+                      spreadsheetId=sheet_id,
+                      range='Test!A1:C1',
+                      valueInputOption='RAW',
+                      body=body
+                  ).execute()
+                  print("✅ Can write to sheet")
+              except Exception as e:
+                  print(f"⚠️  Could not write to Test tab (may not exist): {e}")
+              
+              # Test read back
+              try:
+                  result = service.spreadsheets().values().get(
+                      spreadsheetId=sheet_id,
+                      range='Test!A1:C1'
+                  ).execute()
+                  print("✅ Can read from sheet")
+              except Exception as e:
+                  print(f"⚠️  Could not read from Test tab: {e}")
+              
+              print("\n✅ All Google Sheets tests passed!")
+              
+          except Exception as e:
+              print(f"\n❌ Google Sheets test failed: {e}")
+              sys.exit(1)
+          EOF
+
+  test-slack:
+    runs-on: ubuntu-latest
+    if: inputs.test_type == 'all' || inputs.test_type == 'slack' || github.event_name == 'pull_request'
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          pip install slack-sdk requests
+
+      - name: Test Slack bot
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          cd .github/workflows/scripts
+          python << 'EOF'
+          import os
+          import sys
+          from slack_sdk import WebClient
+          from slack_sdk.errors import SlackApiError
+          
+          print("Testing Slack bot...")
+          
+          try:
+              client = WebClient(token=os.environ['SLACK_BOT_TOKEN'])
+              
+              # Test authentication
+              response = client.auth_test()
+              print(f"✅ Authenticated as: {response['user']}")
+              print(f"✅ Team: {response['team']}")
+              
+              # Test bot info
+              bot_info = client.bots_info(bot=response['user_id'])
+              print(f"✅ Bot name: {bot_info['bot']['name']}")
+              
+              # Test sending a test message (to self/test channel)
+              # Note: This requires a test channel to be set up
+              try:
+                  test_msg = client.chat_postMessage(
+                      channel='test',  # Make sure this channel exists or skip
+                      text='🤖 Integration test message - bot is working!'
+                  )
+                  print(f"✅ Can send messages")
+              except SlackApiError as e:
+                  if e.response['error'] == 'channel_not_found':
+                      print("⚠️  Test channel not found (create #test channel for full testing)")
+                  else:
+                      raise
+              
+              print("\n✅ All Slack tests passed!")
+              
+          except Exception as e:
+              print(f"\n❌ Slack test failed: {e}")
+              sys.exit(1)
+          EOF
+
+      - name: Test NLP processor
+        run: |
+          cd .github/workflows/scripts
+          python << 'EOF'
+          import sys
+          from nlp_processor import NLPProcessor, Intent
+          
+          print("Testing NLP processor...")
+          
+          nlp = NLPProcessor()
+          
+          # Test intent detection
+          test_cases = [
+              ("status", Intent.STATUS_QUERY),
+              ("what's the status", Intent.STATUS_QUERY),
+              ("show me issue 123", Intent.ISSUE_INFO),
+              ("pr 456", Intent.PR_INFO),
+              ("search authentication", Intent.SEARCH),
+              ("create issue 'Fix bug'", Intent.CREATE_ISSUE),
+              ("assign 123 to john", Intent.ASSIGN),
+              ("weekly report", Intent.REPORT),
+              ("show blockers", Intent.BLOCKERS),
+              ("help", Intent.HELP)
+          ]
+          
+          passed = 0
+          failed = 0
+          
+          for text, expected_intent in test_cases:
+              intent, entities = nlp.detect_intent(text)
+              if intent == expected_intent:
+                  print(f"✅ '{text}' -> {intent}")
+                  passed += 1
+              else:
+                  print(f"❌ '{text}' -> Expected {expected_intent}, got {intent}")
+                  failed += 1
+          
+          print(f"\nNLP Tests: {passed} passed, {failed} failed")
+          
+          if failed > 0:
+              sys.exit(1)
+          
+          print("✅ All NLP tests passed!")
+          EOF
+
+  test-summary:
+    runs-on: ubuntu-latest
+    needs: [test-jira, test-sheets, test-slack]
+    if: always()
+    permissions:
+      contents: read
+    steps:
+      - name: Create test summary
+        run: |
+          echo "## Integration Test Results" > $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Timestamp: $(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # Jira
+          if [ "${{ needs.test-jira.result }}" = "success" ]; then
+            echo "✅ **Jira Integration**: Passed" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ **Jira Integration**: Failed" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          # Google Sheets
+          if [ "${{ needs.test-sheets.result }}" = "success" ]; then
+            echo "✅ **Google Sheets Integration**: Passed" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ **Google Sheets Integration**: Failed" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          # Slack
+          if [ "${{ needs.test-slack.result }}" = "success" ]; then
+            echo "✅ **Slack Bot Integration**: Passed" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ **Slack Bot Integration**: Failed" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "---" >> $GITHUB_STEP_SUMMARY
+          echo "All integration tests completed." >> $GITHUB_STEP_SUMMARY

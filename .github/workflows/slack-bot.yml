@@ -1,0 +1,136 @@
+name: Slack Bot
+
+on:
+  repository_dispatch:
+    types: [slack-command, slack-event]
+  workflow_dispatch:
+    inputs:
+      command:
+        description: 'Slash command to test'
+        required: false
+        type: string
+      text:
+        description: 'Command text'
+        required: false
+        type: string
+
+jobs:
+  handle-slack-command:
+    runs-on: ubuntu-latest
+    if: github.event.action == 'slack-command' || github.event_name == 'workflow_dispatch'
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          pip install requests slack-sdk
+
+      - name: Process slash command
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          cd .github/workflows/scripts
+          
+          # Get command from event or workflow input
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            COMMAND="${{ inputs.command }}"
+            TEXT="${{ inputs.text }}"
+            USER="manual"
+          else
+            COMMAND="${{ github.event.client_payload.command }}"
+            TEXT="${{ github.event.client_payload.text }}"
+            USER="${{ github.event.client_payload.user }}"
+          fi
+          
+          # Process command
+          RESPONSE=$(python slack_bot.py --command "$COMMAND" --text "$TEXT" --user "$USER")
+          
+          echo "Bot response:"
+          echo "$RESPONSE"
+          
+          # Send response back to Slack (if channel provided)
+          if [ -n "${{ github.event.client_payload.channel }}" ]; then
+            python << EOF
+          import os
+          from slack_sdk import WebClient
+          
+          client = WebClient(token=os.environ['SLACK_BOT_TOKEN'])
+          client.chat_postMessage(
+              channel="${{ github.event.client_payload.channel }}",
+              text="$RESPONSE"
+          )
+          EOF
+          fi
+
+  handle-slack-event:
+    runs-on: ubuntu-latest
+    if: github.event.action == 'slack-event'
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          pip install requests slack-sdk
+
+      - name: Process Slack event
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          EVENT_DATA: ${{ toJson(github.event.client_payload) }}
+        run: |
+          cd .github/workflows/scripts
+          
+          # Save event to file
+          echo "$EVENT_DATA" > /tmp/slack_event.json
+          
+          # Process event
+          RESPONSE=$(python slack_bot.py --event-file /tmp/slack_event.json)
+          
+          echo "Bot response:"
+          echo "$RESPONSE"
+          
+          # Send response if needed
+          if [ -n "${{ github.event.client_payload.channel }}" ]; then
+            python << EOF
+          import os
+          from slack_sdk import WebClient
+          
+          client = WebClient(token=os.environ['SLACK_BOT_TOKEN'])
+          client.chat_postMessage(
+              channel="${{ github.event.client_payload.channel }}",
+              text="$RESPONSE"
+          )
+          EOF
+          fi
+
+# Note: This workflow is triggered via repository_dispatch events.
+# To integrate with Slack:
+# 1. Create a Slack App with appropriate scopes
+# 2. Set up a service to bridge Slack events to GitHub repository_dispatch
+# 3. Configure slash commands in Slack App settings
+# 4. Add SLACK_BOT_TOKEN to GitHub Secrets
