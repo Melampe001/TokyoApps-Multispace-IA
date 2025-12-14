@@ -1,0 +1,141 @@
+name: Library Report
+
+on:
+  # Daily report
+  schedule:
+    - cron: '0 3 * * *'
+  
+  # Weekly report (Friday at 3 PM UTC)
+  schedule:
+    - cron: '0 15 * * 5'
+  
+  # Monthly report (1st of month at 9 AM UTC)
+  schedule:
+    - cron: '0 9 1 * *'
+  
+  workflow_dispatch:
+
+jobs:
+  generate-report:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      
+      - name: Generate daily report
+        if: github.event.schedule == '0 3 * * *' || github.event_name == 'workflow_dispatch'
+        run: |
+          cat > LIBRARY/reports/daily-$(date +%Y-%m-%d).md << 'EOF'
+          # Daily Library Report
+          
+          Date: $(date +"%Y-%m-%d")
+          
+          ## Files Changed (Last 24 Hours)
+          
+          EOF
+          
+          # Files added/modified/deleted in last 24 hours
+          echo "### Added" >> LIBRARY/reports/daily-$(date +%Y-%m-%d).md
+          git log --since="24 hours ago" --diff-filter=A --name-only --pretty=format: | sort | uniq >> LIBRARY/reports/daily-$(date +%Y-%m-%d).md || echo "None" >> LIBRARY/reports/daily-$(date +%Y-%m-%d).md
+          
+          echo -e "\n### Modified" >> LIBRARY/reports/daily-$(date +%Y-%m-%d).md
+          git log --since="24 hours ago" --diff-filter=M --name-only --pretty=format: | sort | uniq >> LIBRARY/reports/daily-$(date +%Y-%m-%d).md || echo "None" >> LIBRARY/reports/daily-$(date +%Y-%m-%d).md
+          
+          echo -e "\n### Deleted" >> LIBRARY/reports/daily-$(date +%Y-%m-%d).md
+          git log --since="24 hours ago" --diff-filter=D --name-only --pretty=format: | sort | uniq >> LIBRARY/reports/daily-$(date +%Y-%m-%d).md || echo "None" >> LIBRARY/reports/daily-$(date +%Y-%m-%d).md
+          
+          echo -e "\n## Statistics" >> LIBRARY/reports/daily-$(date +%Y-%m-%d).md
+          echo "- Total commits: $(git log --since='24 hours ago' --oneline | wc -l)" >> LIBRARY/reports/daily-$(date +%Y-%m-%d).md
+          echo "- Files changed: $(git log --since='24 hours ago' --name-only --pretty=format: | sort | uniq | wc -l)" >> LIBRARY/reports/daily-$(date +%Y-%m-%d).md
+      
+      - name: Generate weekly report
+        if: github.event.schedule == '0 15 * * 5' || github.event_name == 'workflow_dispatch'
+        run: |
+          mkdir -p LIBRARY/reports
+          
+          cat > LIBRARY/reports/weekly-$(date +%Y-W%V).md << 'EOF'
+          # Weekly Library Report
+          
+          Week: $(date +"%Y-W%V")
+          Generated: $(date +"%Y-%m-%d %H:%M:%S")
+          
+          ## Summary
+          
+          EOF
+          
+          # Activity in the last 7 days
+          echo "### Repository Activity" >> LIBRARY/reports/weekly-$(date +%Y-W%V).md
+          echo "- Commits: $(git log --since='7 days ago' --oneline | wc -l)" >> LIBRARY/reports/weekly-$(date +%Y-W%V).md
+          echo "- Files changed: $(git log --since='7 days ago' --name-only --pretty=format: | sort | uniq | wc -l)" >> LIBRARY/reports/weekly-$(date +%Y-W%V).md
+          echo "- Contributors: $(git log --since='7 days ago' --format='%an' | sort | uniq | wc -l)" >> LIBRARY/reports/weekly-$(date +%Y-W%V).md
+          
+          echo -e "\n### Most Modified Files" >> LIBRARY/reports/weekly-$(date +%Y-W%V).md
+          git log --since='7 days ago' --name-only --pretty=format: | sort | uniq -c | sort -rn | head -10 >> LIBRARY/reports/weekly-$(date +%Y-W%V).md
+          
+          echo -e "\n### Top Contributors" >> LIBRARY/reports/weekly-$(date +%Y-W%V).md
+          git log --since='7 days ago' --format='%an' | sort | uniq -c | sort -rn >> LIBRARY/reports/weekly-$(date +%Y-W%V).md
+          
+          echo -e "\n### Active Areas" >> LIBRARY/reports/weekly-$(date +%Y-W%V).md
+          git log --since='7 days ago' --name-only --pretty=format: | cut -d'/' -f1 | sort | uniq -c | sort -rn >> LIBRARY/reports/weekly-$(date +%Y-W%V).md
+      
+      - name: Generate monthly report
+        if: github.event.schedule == '0 9 1 * *' || github.event_name == 'workflow_dispatch'
+        run: |
+          mkdir -p LIBRARY/reports
+          
+          cat > LIBRARY/reports/monthly-$(date +%Y-%m).md << 'EOF'
+          # Monthly Library Report
+          
+          Month: $(date +"%B %Y")
+          Generated: $(date +"%Y-%m-%d %H:%M:%S")
+          
+          ## Growth Analysis
+          
+          EOF
+          
+          # Activity in the last 30 days
+          echo "### Repository Growth" >> LIBRARY/reports/monthly-$(date +%Y-%m).md
+          echo "- Total commits: $(git log --since='30 days ago' --oneline | wc -l)" >> LIBRARY/reports/monthly-$(date +%Y-%m).md
+          echo "- Files changed: $(git log --since='30 days ago' --name-only --pretty=format: | sort | uniq | wc -l)" >> LIBRARY/reports/monthly-$(date +%Y-%m).md
+          echo "- Total files now: $(find . -type f -not -path '*/\.*' | wc -l)" >> LIBRARY/reports/monthly-$(date +%Y-%m).md
+          
+          echo -e "\n### Trends" >> LIBRARY/reports/monthly-$(date +%Y-%m).md
+          echo "Week-by-week commit count:" >> LIBRARY/reports/monthly-$(date +%Y-%m).md
+          for week in {0..3}; do
+            start_date=$(date -d "$((week * 7)) days ago" +%Y-%m-%d)
+            end_date=$(date -d "$(((week + 1) * 7)) days ago" +%Y-%m-%d)
+            count=$(git log --since="$end_date" --until="$start_date" --oneline | wc -l)
+            echo "- Week $((4 - week)): $count commits" >> LIBRARY/reports/monthly-$(date +%Y-%m).md
+          done
+          
+          echo -e "\n### Quality Metrics" >> LIBRARY/reports/monthly-$(date +%Y-%m).md
+          doc_files=$(find . -name "*.md" | wc -l)
+          total_files=$(find . -type f -not -path '*/\.*' | wc -l)
+          doc_ratio=$(awk "BEGIN {printf \"%.1f\", ($doc_files/$total_files)*100}")
+          echo "- Documentation files: $doc_files" >> LIBRARY/reports/monthly-$(date +%Y-%m).md
+          echo "- Total files: $total_files" >> LIBRARY/reports/monthly-$(date +%Y-%m).md
+          echo "- Documentation ratio: $doc_ratio%" >> LIBRARY/reports/monthly-$(date +%Y-%m).md
+          
+          echo -e "\n### Recommendations" >> LIBRARY/reports/monthly-$(date +%Y-%m).md
+          echo "- Review files not modified in 60+ days for potential archiving" >> LIBRARY/reports/monthly-$(date +%Y-%m).md
+          echo "- Consider adding tests for new code modules" >> LIBRARY/reports/monthly-$(date +%Y-%m).md
+          echo "- Update documentation for frequently changed files" >> LIBRARY/reports/monthly-$(date +%Y-%m).md
+      
+      - name: Create reports directory
+        run: mkdir -p LIBRARY/reports
+      
+      - name: Commit reports
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add LIBRARY/reports/ || true
+          git diff --staged --quiet || git commit -m "📊 Add library report [automated]" || true
+          git push || echo "No changes to push"

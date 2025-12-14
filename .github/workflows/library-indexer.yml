@@ -1,0 +1,118 @@
+name: Library Indexer
+
+on:
+  # Daily at 2 AM UTC
+  schedule:
+    - cron: '0 2 * * *'
+  
+  # On every push to main
+  push:
+    branches:
+      - main
+  
+  # Manual trigger
+  workflow_dispatch:
+
+jobs:
+  index-library:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch all history for git log
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      
+      - name: Create LIBRARY directories
+        run: |
+          mkdir -p LIBRARY/by-category
+          mkdir -p LIBRARY/by-purpose
+          mkdir -p LIBRARY/by-technology
+          mkdir -p LIBRARY/stats
+      
+      - name: Run library cataloger
+        run: |
+          python .github/workflows/scripts/library_cataloger.py
+      
+      - name: Generate README
+        run: |
+          cat > LIBRARY/README.md << 'EOF'
+          # 📚 Tokyo-IA Digital Library
+
+          Welcome to the Tokyo-IA Digital Library - an automated catalog of all project files, code, documentation, and workflows.
+
+          ## 📊 Quick Links
+
+          - [Complete Catalog](CATALOG.md) - Full categorized listing of all files
+          - [Timeline](TIMELINE.md) - Chronological view of file creation
+          - [Search Index](SEARCH_INDEX.json) - JSON index for programmatic access
+
+          ## 🗂️ Browse by Category
+
+          - [Workflows](by-category/workflow.md) - GitHub Actions workflows
+          - [Scripts](by-category/script.md) - Automation scripts
+          - [Documentation](by-category/documentation.md) - Project documentation
+          - [Source Code](by-category/source.md) - Application source code
+          - [Configuration](by-category/configuration.md) - Configuration files
+
+          ## 🎯 Browse by Purpose
+
+          - [Automation](by-purpose/automation.md) - Automation tools and workflows
+          - [Testing](by-purpose/testing.md) - Test files and test utilities
+          - [Documentation](by-purpose/documentation.md) - Documentation files
+          - [Integration](by-purpose/integration.md) - API integrations
+          - [Monitoring](by-purpose/monitoring.md) - Monitoring and alerting
+
+          ## 💻 Browse by Technology
+
+          - [Go](by-technology/go.md) - Go source files
+          - [Python](by-technology/py.md) - Python scripts
+          - [YAML](by-technology/yml.md) - YAML configuration files
+          - [Markdown](by-technology/md.md) - Markdown documentation
+
+          ## 📈 Statistics
+
+          - [File Count](stats/file-count.md) - File statistics by category
+
+          ## 🔍 Search the Library
+
+          Use the CLI search tool:
+
+          ```bash
+          # Search by name
+          python .github/workflows/scripts/library_search.py --name "workflow"
+
+          # Search by type
+          python .github/workflows/scripts/library_search.py --type "script"
+
+          # Search by purpose
+          python .github/workflows/scripts/library_search.py --purpose "automation"
+
+          # List all categories
+          python .github/workflows/scripts/library_search.py --list
+          ```
+
+          ## 📅 Updates
+
+          This library is automatically updated:
+          - Daily at 2:00 AM UTC
+          - On every push to main branch
+          - Can be triggered manually via workflow_dispatch
+
+          ---
+
+          *Last updated: Automatically generated*
+          EOF
+      
+      - name: Commit and push changes
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add LIBRARY/
+          git diff --staged --quiet || git commit -m "📚 Update library catalog [automated]"
+          git push || echo "No changes to push"
