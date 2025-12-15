@@ -6,3 +6,6 @@ crewai>=0.80.0
 
 # Groq - Fast inference API for LLMs
 groq>=0.13.0
+
+# ML Dependencies for Cost Prediction
+numpy>=1.24.0
