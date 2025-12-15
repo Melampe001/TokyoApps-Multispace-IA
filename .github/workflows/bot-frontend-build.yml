@@ -329,7 +329,7 @@ jobs:
             }
       
       - name: Upload Optimization Report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: asset-optimization-report
           path: |

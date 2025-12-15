@@ -337,7 +337,7 @@ jobs:
             console.log('Weekly report issue created successfully');
       
       - name: Upload Report Artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: bot-coordinator-weekly-report
           path: |
