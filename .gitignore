@@ -26,6 +26,33 @@ out/
 vendor/
 node_modules/
 
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+.venv
+pip-log.txt
+pip-delete-this-directory.txt
+.tox/
+.coverage
+.coverage.*
+htmlcov/
+.pytest_cache/
+.mypy_cache/
+.dmypy.json
+dmypy.json
+*.egg-info/
+dist/
+build/
+*.egg
+.env
+.env.python
+
 # Android
 *.apk
 *.aab

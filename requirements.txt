@@ -1,0 +1,8 @@
+# Tokyo-IA Python Dependencies
+# AI Agent Framework and LLM Inference
+
+# CrewAI - Framework for orchestrating role-playing, autonomous AI agents
+crewai>=0.80.0
+
+# Groq - Fast inference API for LLMs
+groq>=0.13.0
