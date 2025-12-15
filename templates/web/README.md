@@ -57,7 +57,7 @@ web-template/
 │   ├── store/                # State management
 │   ├── styles/               # Global styles
 │   ├── types/                # TypeScript types
-│   ├── App.tsx               # Main app
+│   ├── App.tsx               # Main app (see App.tsx.txt)
 │   ├── main.tsx              # Entry point
 │   └── service-worker.ts     # Service worker
 ├── tests/                    # Tests
@@ -69,6 +69,8 @@ web-template/
 ├── tailwind.config.js
 └── tsconfig.json
 ```
+
+> **Note:** See `App.tsx.txt` in this directory for a sample implementation.
 
 ## PWA Features
 

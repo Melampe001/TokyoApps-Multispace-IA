@@ -95,7 +95,7 @@ TELEGRAM_TOKEN=your-bot-token
 bot-template/
 ├── src/
 │   ├── index.js              # Entry point
-│   ├── bot.js                # Bot initialization
+│   ├── bot.js                # Bot initialization (see bot.js.txt)
 │   ├── commands/             # Command modules
 │   │   ├── moderation/
 │   │   │   ├── kick.js
@@ -125,6 +125,8 @@ bot-template/
 ├── docs/                     # Documentation
 └── package.json
 ```
+
+> **Note:** See `bot.js.txt` in this directory for a sample implementation.
 
 ## Development
 

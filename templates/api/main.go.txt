@@ -38,7 +38,7 @@ func setupRoutes(r *gin.Engine) {
 	// Health check
 	r.GET("/health", func(c *gin.Context) {
 		c.JSON(200, gin.H{
-			"status": "ok",
+			"status":  "ok",
 			"message": "API is running",
 		})
 	})

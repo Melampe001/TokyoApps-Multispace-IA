@@ -111,7 +111,7 @@ API documentation is available at:
 ```
 api-template/
 ├── cmd/
-│   └── main.go              # Entry point
+│   └── main.go              # Entry point (see main.go.txt)
 ├── internal/
 │   ├── handlers/            # HTTP handlers
 │   │   ├── auth.go
@@ -137,6 +137,8 @@ api-template/
     ├── Dockerfile
     └── k8s/
 ```
+
+> **Note:** See `main.go.txt` in this directory for a sample implementation.
 
 ## Security Features
 

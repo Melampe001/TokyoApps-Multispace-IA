@@ -35,7 +35,7 @@ python src/main.py
 ```
 agent-template/
 ├── src/
-│   ├── main.py               # Entry point
+│   ├── main.py               # Entry point (see main.py.txt)
 │   ├── agents/               # Agent definitions
 │   │   ├── researcher.py
 │   │   ├── writer.py
@@ -62,6 +62,8 @@ agent-template/
 ├── docs/                     # Documentation
 └── requirements.txt
 ```
+
+> **Note:** See `main.py.txt` in this directory for a sample implementation.
 
 ## Agent Types
 
