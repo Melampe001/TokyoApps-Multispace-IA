@@ -97,13 +97,24 @@ func (c *Cache) cleanup() {
 	defer ticker.Stop()
 
 	for range ticker.C {
-		c.mu.Lock()
+		// Collect expired keys with read lock
+		c.mu.RLock()
 		now := time.Now()
+		expiredKeys := make([]string, 0)
 		for key, entry := range c.entries {
 			if now.After(entry.ExpiresAt) {
-				delete(c.entries, key)
+				expiredKeys = append(expiredKeys, key)
 			}
 		}
-		c.mu.Unlock()
+		c.mu.RUnlock()
+
+		// Delete expired entries with write lock
+		if len(expiredKeys) > 0 {
+			c.mu.Lock()
+			for _, key := range expiredKeys {
+				delete(c.entries, key)
+			}
+			c.mu.Unlock()
+		}
 	}
 }

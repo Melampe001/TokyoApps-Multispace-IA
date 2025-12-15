@@ -17,7 +17,8 @@ type GeminiClient struct {
 // NewGeminiClient creates a new Gemini client
 // TODO: Implement real Gemini client
 // This requires GEMINI_API_KEY environment variable
-// See: docs/guides/ai-model-router-guide.md#api-keys
+// Implementation guide: docs/guides/ai-model-router-guide.md#api-keys
+// Example: Use google.golang.org/api/generativeai/v1beta
 func NewGeminiClient() *GeminiClient {
 	return &GeminiClient{
 		apiKey: os.Getenv("GEMINI_API_KEY"),

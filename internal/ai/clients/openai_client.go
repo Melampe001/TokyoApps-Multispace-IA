@@ -17,7 +17,8 @@ type OpenAIClient struct {
 // NewOpenAIClient creates a new OpenAI client
 // TODO: Implement real OpenAI client
 // This requires OPENAI_API_KEY environment variable
-// See: docs/guides/ai-model-router-guide.md#api-keys
+// Implementation guide: docs/guides/ai-model-router-guide.md#api-keys
+// Example: Use github.com/openai/openai-go SDK
 func NewOpenAIClient() *OpenAIClient {
 	return &OpenAIClient{
 		apiKey: os.Getenv("OPENAI_API_KEY"),

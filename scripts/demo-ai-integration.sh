@@ -23,8 +23,7 @@ fi
 
 # Build the AI API
 echo -e "${BLUE}Building AI API...${NC}"
-make build
-go build -o bin/ai-api cmd/ai-api/main.go
+make ai-build
 echo -e "${GREEN}✓ Build complete${NC}"
 echo ""
 

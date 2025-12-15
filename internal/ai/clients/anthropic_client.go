@@ -17,7 +17,8 @@ type AnthropicClient struct {
 // NewAnthropicClient creates a new Anthropic client
 // TODO: Implement real Anthropic client
 // This requires ANTHROPIC_API_KEY environment variable
-// See: docs/guides/ai-model-router-guide.md#api-keys
+// Implementation guide: docs/guides/ai-model-router-guide.md#api-keys
+// Example: Use official Anthropic SDK
 func NewAnthropicClient() *AnthropicClient {
 	return &AnthropicClient{
 		apiKey: os.Getenv("ANTHROPIC_API_KEY"),

@@ -90,6 +90,8 @@ func main() {
 		}
 
 		// Execute completion
+		// TODO: Make timeout configurable via environment variable
+		// Default: 30 seconds, adjust based on provider response times
 		ctx, cancel := context.WithTimeout(r.Context(), 30*time.Second)
 		defer cancel()
 
