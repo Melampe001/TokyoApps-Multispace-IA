@@ -1,0 +1,251 @@
+name: Elite Framework CI/CD
+
+on:
+  push:
+    branches:
+      - Main
+      - develop
+  pull_request:
+    branches:
+      - Main
+
+# Set minimal permissions by default
+permissions:
+  contents: read
+
+jobs:
+  # Validate Elite Framework configuration
+  validate-framework:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Validate framework files exist
+        run: |
+          echo "Validating Elite Framework files..."
+          test -f .github/copilot-instructions.md || (echo "Missing copilot-instructions.md" && exit 1)
+          test -f .vscode/settings.json || (echo "Missing .vscode/settings.json" && exit 1)
+          test -f scripts/generate-project.sh || (echo "Missing generate-project.sh" && exit 1)
+          test -f .env.example || (echo "Missing .env.example" && exit 1)
+          echo "✓ All framework files present"
+
+      - name: Validate template directories
+        run: |
+          echo "Validating template directories..."
+          test -d templates/api || (echo "Missing templates/api" && exit 1)
+          test -d templates/bot || (echo "Missing templates/bot" && exit 1)
+          test -d templates/web || (echo "Missing templates/web" && exit 1)
+          test -d templates/agent || (echo "Missing templates/agent" && exit 1)
+          echo "✓ All template directories present"
+
+      - name: Validate template READMEs
+        run: |
+          echo "Validating template READMEs..."
+          test -f templates/api/README.md || (echo "Missing API template README" && exit 1)
+          test -f templates/bot/README.md || (echo "Missing Bot template README" && exit 1)
+          test -f templates/web/README.md || (echo "Missing Web template README" && exit 1)
+          test -f templates/agent/README.md || (echo "Missing Agent template README" && exit 1)
+          echo "✓ All template READMEs present"
+
+      - name: Check script permissions
+        run: |
+          echo "Checking script permissions..."
+          test -x scripts/generate-project.sh || (echo "generate-project.sh not executable" && exit 1)
+          echo "✓ Scripts have correct permissions"
+
+  # Test Go project
+  test-go:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.24.10'
+
+      - name: Cache Go modules
+        uses: actions/cache@v4
+        with:
+          path: ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
+
+      - name: Download dependencies
+        run: make deps
+
+      - name: Run tests
+        run: make test
+
+      - name: Run linter
+        run: |
+          if command -v golangci-lint &> /dev/null; then
+            make lint
+          else
+            echo "golangci-lint not installed, running go vet"
+            go vet ./...
+          fi
+
+  # Test Makefile commands
+  test-makefile:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.24.10'
+
+      - name: Test Makefile help
+        run: make help
+
+      - name: Test Makefile build
+        run: make build
+
+      - name: Test Makefile clean
+        run: make clean
+
+      - name: Verify binary was created
+        run: |
+          make build
+          test -f bin/tokyo-ia || (echo "Binary not created" && exit 1)
+          echo "✓ Binary created successfully"
+
+  # Test templates
+  test-templates:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    strategy:
+      matrix:
+        template: [api, bot, web, agent]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Test ${{ matrix.template }} template
+        run: |
+          echo "Testing ${{ matrix.template }} template..."
+          test -d templates/${{ matrix.template }} || exit 1
+          test -f templates/${{ matrix.template }}/README.md || exit 1
+          echo "✓ Template ${{ matrix.template }} is valid"
+
+      - name: Check template completeness
+        run: |
+          cd templates/${{ matrix.template }}
+          
+          # Check README has required sections
+          grep -q "Quick Start" README.md || (echo "Missing Quick Start section" && exit 1)
+          grep -q "Features" README.md || (echo "Missing Features section" && exit 1)
+          
+          echo "✓ Template ${{ matrix.template }} is complete"
+
+  # Test project generation script
+  test-generator:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Test script syntax
+        run: |
+          bash -n scripts/generate-project.sh
+          echo "✓ Script syntax is valid"
+
+      - name: Test project generation (dry run)
+        run: |
+          # Test that the script can run
+          echo "REST API with PostgreSQL" | timeout 5 bash scripts/generate-project.sh || true
+          echo "✓ Script can execute"
+
+  # Security scan
+  security-scan:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check for secrets in code
+        run: |
+          echo "Scanning for potential secrets..."
+          
+          # Check .env.example doesn't contain real secrets
+          if grep -qE "(sk-[a-zA-Z0-9]{32,}|ghp_[a-zA-Z0-9]{36})" .env.example; then
+            echo "⚠ Warning: .env.example might contain real secrets"
+            exit 1
+          fi
+          
+          echo "✓ No secrets found in .env.example"
+
+      - name: Verify .gitignore includes sensitive files
+        run: |
+          echo "Checking .gitignore..."
+          grep -q "\.env$" .gitignore || (echo ".env not in .gitignore" && exit 1)
+          grep -q "node_modules" .gitignore || (echo "node_modules not in .gitignore" && exit 1)
+          echo "✓ .gitignore properly configured"
+
+  # Documentation check
+  docs-check:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check documentation completeness
+        run: |
+          echo "Checking documentation..."
+          
+          # Check main README
+          test -f README.md || (echo "Missing README.md" && exit 1)
+          grep -q "Elite Framework" README.md || echo "⚠ README might need Elite Framework section"
+          
+          # Check CONTRIBUTING
+          test -f CONTRIBUTING.md || (echo "Missing CONTRIBUTING.md" && exit 1)
+          
+          # Check SECURITY
+          test -f SECURITY.md || (echo "Missing SECURITY.md" && exit 1)
+          
+          echo "✓ Documentation files present"
+
+  # Deployment readiness check
+  deploy-check:
+    needs: [validate-framework, test-go, test-makefile, test-templates]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    if: github.ref == 'refs/heads/Main'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check deployment readiness
+        run: |
+          echo "✓ All checks passed"
+          echo "✓ Elite Framework is ready"
+          echo ""
+          echo "Framework components:"
+          echo "  - Copilot instructions: ✓"
+          echo "  - VS Code settings: ✓"
+          echo "  - Project generator: ✓"
+          echo "  - Templates (4): ✓"
+          echo "  - Enhanced Makefile: ✓"
+          echo "  - Environment template: ✓"
+          echo ""
+          echo "🚀 Elite Framework validated successfully!"

@@ -1,0 +1,103 @@
+"""
+AI Agent Main Entry Point
+"""
+
+import os
+import re
+from dotenv import load_dotenv
+from langchain.chat_models import ChatOpenAI
+from langchain.agents import initialize_agent, Tool
+from langchain.agents import AgentType
+
+# Load environment variables
+load_dotenv()
+
+def safe_calculate(expression: str) -> str:
+    """
+    Safely calculate mathematical expressions.
+    Only allows basic arithmetic operations: +, -, *, /, **, ()
+    """
+    # Remove whitespace
+    expression = expression.replace(" ", "")
+    
+    # Check for invalid characters
+    if not re.match(r'^[\d+\-*/().\s**]+$', expression):
+        return "Error: Invalid characters in expression"
+    
+    try:
+        # Use ast.literal_eval for safe evaluation
+        import ast
+        
+        # Parse the expression
+        tree = ast.parse(expression, mode='eval')
+        
+        # Check that only allowed operations are used
+        for node in ast.walk(tree):
+            if isinstance(node, (ast.Add, ast.Sub, ast.Mult, ast.Div, ast.Pow, ast.USub, ast.UAdd)):
+                continue
+            elif isinstance(node, (ast.Num, ast.Constant, ast.Expression, ast.Load)):
+                continue
+            elif isinstance(node, ast.BinOp):
+                continue
+            elif isinstance(node, ast.UnaryOp):
+                continue
+            else:
+                return "Error: Unsupported operation"
+        
+        # Evaluate safely
+        result = eval(compile(tree, filename='', mode='eval'))
+        return str(result)
+    except Exception as e:
+        return f"Error: {str(e)}"
+
+def main():
+    """Initialize and run the AI agent"""
+    
+    # Initialize LLM
+    llm = ChatOpenAI(
+        model="gpt-4",
+        temperature=0.7,
+        openai_api_key=os.getenv("OPENAI_API_KEY")
+    )
+    
+    # Define tools
+    tools = [
+        Tool(
+            name="WebSearch",
+            func=lambda x: "Search results for: " + x,
+            description="Search the web for information"
+        ),
+        Tool(
+            name="Calculator",
+            func=safe_calculate,
+            description="Calculate mathematical expressions (supports +, -, *, /, **)"
+        )
+    ]
+    
+    # Initialize agent
+    agent = initialize_agent(
+        tools=tools,
+        llm=llm,
+        agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
+        verbose=True
+    )
+    
+    # Run agent
+    print("AI Agent initialized!")
+    print("Type 'exit' to quit\n")
+    
+    while True:
+        query = input("You: ")
+        
+        if query.lower() in ['exit', 'quit']:
+            print("Goodbye!")
+            break
+        
+        try:
+            result = agent.run(query)
+            print(f"\nAgent: {result}\n")
+        except Exception as e:
+            print(f"\nError: {e}\n")
+
+if __name__ == "__main__":
+    main()

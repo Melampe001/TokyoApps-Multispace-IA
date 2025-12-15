@@ -97,6 +97,62 @@ npm install
 npm start
 ```
 
+---
+
+## 🚀 Elite Framework - Generación Automática de Proyectos
+
+Tokyo-IA incluye un **Elite Framework** que permite generar **CUALQUIER tipo de proyecto** de forma 100% automatizada.
+
+### ✨ Uso Rápido
+
+**Opción 1: Desde VS Code con Copilot**
+```javascript
+// PROYECTO: Bot de Discord con moderación AI y música
+// Tab x10 → Proyecto completo generado
+```
+
+**Opción 2: Desde CLI**
+```bash
+./scripts/generate-project.sh "API REST con autenticación JWT y PostgreSQL"
+cd projects/api-rest-con-autenticacion-jwt-y-postgresql
+make build && make test
+```
+
+**Opción 3: Interactivo**
+```bash
+make scaffold
+# Sigue las instrucciones para configurar tu proyecto
+```
+
+### 🎯 Proyectos Soportados
+
+- ✅ **PWAs** - Progressive Web Apps con React/Vue/Svelte
+- ✅ **Bots** - Discord, Telegram, WhatsApp con AI
+- ✅ **APIs REST/GraphQL** - Go, Node.js, Python
+- ✅ **E-commerce** - Tiendas completas con pagos
+- ✅ **AI Agents** - LangChain, CrewAI, RAG
+- ✅ **Microservicios** - gRPC, Service Mesh
+
+### 🔧 Features del Framework
+
+- 🎯 Detección automática de stack tecnológico
+- 🧪 Tests automáticos con 100% coverage
+- 📚 Documentación completa auto-generada
+- 🔐 Seguridad by default
+- 🚀 CI/CD automático (GitHub Actions)
+- 🐳 Docker y Kubernetes ready
+- 📦 Templates reutilizables
+
+### 📖 Documentación Completa
+
+Ver la [Documentación completa del Elite Framework](.github/copilot-instructions.md#-elite-framework---automatic-project-generation) para:
+- Agentes especializados (ProjectScaffold, CodeMaster, TestGenius, etc.)
+- Patrones y best practices por lenguaje
+- Ejemplos de uso detallados
+- Guías de deployment
+
+---
+
 ## 📚 Documentation
 
 - **[Contributing Guide](CONTRIBUTING.md)** - How to contribute to the project

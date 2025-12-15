@@ -1,0 +1,192 @@
+{
+  "// ============================================": "Elite Framework VS Code Configuration",
+  "// GitHub Copilot": "Configuration",
+  "github.copilot.enable": {
+    "*": true,
+    "yaml": true,
+    "plaintext": true,
+    "markdown": true,
+    "go": true,
+    "javascript": true,
+    "typescript": true,
+    "python": true,
+    "rust": true
+  },
+  "github.copilot.advanced": {
+    "inlineSuggestCount": 3
+  },
+  
+  "// Editor": "General Settings",
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit",
+    "source.organizeImports": "explicit"
+  },
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.trimAutoWhitespace": true,
+  "editor.rulers": [80, 120],
+  "editor.wordWrap": "on",
+  "editor.suggestSelection": "first",
+  "editor.quickSuggestions": {
+    "other": "on",
+    "comments": "on",
+    "strings": "on"
+  },
+  "editor.acceptSuggestionOnCommitCharacter": true,
+  "editor.snippetSuggestions": "top",
+  
+  "// Files": "Configuration",
+  "files.autoSave": "afterDelay",
+  "files.autoSaveDelay": 1000,
+  "files.exclude": {
+    "**/.git": true,
+    "**/.DS_Store": true,
+    "**/node_modules": true,
+    "**/bin": true,
+    "**/build": true,
+    "**/dist": true,
+    "**/.gradle": true,
+    "**/.idea": true
+  },
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/node_modules/**": true,
+    "**/bin/**": true,
+    "**/build/**": true,
+    "**/dist/**": true
+  },
+  "files.associations": {
+    "*.go": "go",
+    "*.mod": "go.mod",
+    "Makefile": "makefile",
+    "Dockerfile*": "dockerfile"
+  },
+  
+  "// Go": "Language Settings",
+  "[go]": {
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    },
+    "editor.tabSize": 4,
+    "editor.insertSpaces": false
+  },
+  "go.toolsManagement.autoUpdate": true,
+  "go.useLanguageServer": true,
+  "go.formatTool": "gofmt",
+  "go.lintTool": "golangci-lint",
+  "go.lintOnSave": "workspace",
+  "go.testFlags": ["-v", "-race"],
+  "go.coverOnSave": true,
+  "go.coverageDecorator": {
+    "type": "gutter",
+    "coveredHighlightColor": "rgba(64,128,64,0.5)",
+    "uncoveredHighlightColor": "rgba(128,64,64,0.5)"
+  },
+  
+  "// JavaScript/TypeScript": "Language Settings",
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit"
+    }
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit"
+    }
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "typescript.preferences.importModuleSpecifier": "relative",
+  
+  "// Python": "Language Settings",
+  "[python]": {
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    },
+    "editor.tabSize": 4
+  },
+  "python.linting.enabled": true,
+  "python.linting.pylintEnabled": false,
+  "python.linting.flake8Enabled": true,
+  "python.formatting.provider": "black",
+  "python.analysis.typeCheckingMode": "basic",
+  
+  "// JSON/YAML": "Language Settings",
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[yaml]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.tabSize": 2
+  },
+  
+  "// Markdown": "Language Settings",
+  "[markdown]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.wordWrap": "on",
+    "editor.quickSuggestions": {
+      "comments": "on",
+      "strings": "on",
+      "other": "on"
+    }
+  },
+  
+  "// Shell": "Language Settings",
+  "[shellscript]": {
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true
+  },
+  
+  "// Docker": "Language Settings",
+  "[dockerfile]": {
+    "editor.defaultFormatter": "ms-azuretools.vscode-docker"
+  },
+  
+  "// Git": "Configuration",
+  "git.autofetch": true,
+  "git.confirmSync": false,
+  "git.enableSmartCommit": true,
+  
+  "// Search": "Configuration",
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/bin": true,
+    "**/build": true,
+    "**/dist": true,
+    "**/.git": true,
+    "**/.gradle": true
+  },
+  
+  "// Terminal": "Configuration",
+  "terminal.integrated.defaultProfile.linux": "bash",
+  "terminal.integrated.scrollback": 10000,
+  
+  "// Testing": "Configuration",
+  "go.testExplorer.enable": true,
+  "testing.automaticallyOpenPeekView": "failureInVisibleDocument",
+  
+  "// Problems": "Configuration",
+  "problems.decorations.enabled": true,
+  "problems.showCurrentInStatus": true,
+  
+  "// Breadcrumbs": "Configuration",
+  "breadcrumbs.enabled": true,
+  "breadcrumbs.symbolPath": "on"
+}
