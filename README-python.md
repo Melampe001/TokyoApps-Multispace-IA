@@ -125,6 +125,7 @@ import os
 from crewai import Agent, Task, Crew, LLM
 
 # Initialize Groq LLM using CrewAI's native LLM class
+# Note: API key is automatically read from GROQ_API_KEY environment variable
 llm = LLM(
     model="groq/llama-3.1-70b-versatile"
 )

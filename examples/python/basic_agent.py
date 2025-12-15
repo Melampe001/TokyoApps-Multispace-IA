@@ -52,6 +52,7 @@ def main():
         sys.exit(1)
     
     # Initialize Groq LLM using CrewAI's LLM class
+    # Note: API key is automatically read from GROQ_API_KEY environment variable
     print("🔧 Initializing Groq LLM...")
     model = os.environ.get("GROQ_MODEL", "groq/llama-3.1-70b-versatile")
     print(f"   Using model: {model}")
