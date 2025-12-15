@@ -9,27 +9,27 @@ import (
 
 func TestCreateStructure(t *testing.T) {
 	scaffolder := NewScaffolder()
-	
+
 	// Create temporary directory
 	tmpDir := t.TempDir()
-	
+
 	config := &ProjectConfig{
 		Name:        "test-project",
 		Description: "Test project",
 		Type:        ProjectTypeAPI,
 		OutputDir:   filepath.Join(tmpDir, "test-project"),
 	}
-	
+
 	err := scaffolder.CreateStructure(config)
 	if err != nil {
 		t.Fatalf("CreateStructure failed: %v", err)
 	}
-	
+
 	// Verify output directory exists
 	if _, err := os.Stat(config.OutputDir); os.IsNotExist(err) {
 		t.Errorf("Output directory was not created: %s", config.OutputDir)
 	}
-	
+
 	// Verify some expected directories exist
 	expectedDirs := []string{"cmd", "internal", "tests", "deploy", "docs"}
 	for _, dir := range expectedDirs {
@@ -42,7 +42,7 @@ func TestCreateStructure(t *testing.T) {
 
 func TestGetProjectName(t *testing.T) {
 	scaffolder := NewScaffolder()
-	
+
 	tests := []struct {
 		name        string
 		description string
@@ -59,7 +59,7 @@ func TestGetProjectName(t *testing.T) {
 			maxLength:   50,
 		},
 	}
-	
+
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			result := scaffolder.GetProjectName(tt.description)
@@ -77,27 +77,27 @@ func TestGetProjectName(t *testing.T) {
 func TestCreateFile(t *testing.T) {
 	scaffolder := NewScaffolder()
 	tmpDir := t.TempDir()
-	
+
 	content := "test content"
 	relativePath := "subdir/test.txt"
-	
+
 	err := scaffolder.CreateFile(tmpDir, relativePath, content)
 	if err != nil {
 		t.Fatalf("CreateFile failed: %v", err)
 	}
-	
+
 	// Verify file exists
 	fullPath := filepath.Join(tmpDir, relativePath)
 	if _, err := os.Stat(fullPath); os.IsNotExist(err) {
 		t.Errorf("File was not created: %s", fullPath)
 	}
-	
+
 	// Verify content
 	data, err := os.ReadFile(fullPath)
 	if err != nil {
 		t.Fatalf("Failed to read created file: %v", err)
 	}
-	
+
 	if string(data) != content {
 		t.Errorf("File content = %q; want %q", string(data), content)
 	}
