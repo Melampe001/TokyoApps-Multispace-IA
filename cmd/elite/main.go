@@ -18,13 +18,13 @@ func main() {
 	// Define flags
 	generateCmd := flag.NewFlagSet("generate", flag.ExitOnError)
 	outputDir := generateCmd.String("output", "./output", "Output directory for generated projects")
-	
+
 	// Parse flags
 	if len(os.Args) < 2 {
 		printUsage()
 		os.Exit(1)
 	}
-	
+
 	// Check for global flags
 	for _, arg := range os.Args[1:] {
 		if arg == "--version" || arg == "-v" {
@@ -36,9 +36,9 @@ func main() {
 			os.Exit(0)
 		}
 	}
-	
+
 	command := os.Args[1]
-	
+
 	switch command {
 	case "generate":
 		if len(os.Args) < 3 {
@@ -46,9 +46,9 @@ func main() {
 			fmt.Println("\nUsage: elite generate \"project description\"")
 			os.Exit(1)
 		}
-		
+
 		generateCmd.Parse(os.Args[2:])
-		
+
 		// Get project description
 		var description string
 		if generateCmd.NArg() > 0 {
@@ -57,19 +57,19 @@ func main() {
 			fmt.Println("Error: project description required")
 			os.Exit(1)
 		}
-		
+
 		err := generateProject(description, *outputDir)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "Error: %v\n", err)
 			os.Exit(1)
 		}
-	
+
 	case "version":
 		fmt.Printf("Tokyo-IA Elite Framework v%s\n", version)
-	
+
 	case "help":
 		printUsage()
-	
+
 	default:
 		fmt.Printf("Unknown command: %s\n", command)
 		printUsage()
@@ -82,20 +82,20 @@ func generateProject(description, outputDir string) error {
 	fmt.Println("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
 	fmt.Printf("📝 Description: %s\n", description)
 	fmt.Println()
-	
+
 	// Get manifest path
 	manifestPath := findManifestPath()
-	
+
 	// Create generator
 	gen := generator.NewGenerator(manifestPath)
-	
+
 	// Generate project
 	fmt.Println("🔍 Analyzing project requirements...")
 	config, err := gen.Generate(description, outputDir)
 	if err != nil {
 		return err
 	}
-	
+
 	fmt.Println()
 	fmt.Println("✅ Project generated successfully!")
 	fmt.Println("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
@@ -108,7 +108,7 @@ func generateProject(description, outputDir string) error {
 	fmt.Printf("  cd %s\n", config.OutputDir)
 	fmt.Println("  cat README.md")
 	fmt.Println()
-	
+
 	return nil
 }
 
@@ -119,13 +119,13 @@ func findManifestPath() string {
 		"../templates/manifest.yaml",
 		"../../templates/manifest.yaml",
 	}
-	
+
 	for _, loc := range locations {
 		if _, err := os.Stat(loc); err == nil {
 			return loc
 		}
 	}
-	
+
 	// Try from GOPATH or module cache
 	gopath := os.Getenv("GOPATH")
 	if gopath != "" {
@@ -134,7 +134,7 @@ func findManifestPath() string {
 			return manifestPath
 		}
 	}
-	
+
 	// Default fallback
 	return "templates/manifest.yaml"
 }

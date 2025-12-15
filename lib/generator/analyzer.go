@@ -30,13 +30,13 @@ func (a *Analyzer) DetectProjectType(keywords []string) (ProjectType, error) {
 		// Fallback to simple keyword matching if manifest not available
 		return a.simpleDetection(keywords), nil
 	}
-	
+
 	// Score each project type based on keyword matches
 	scores := make(map[ProjectType]int)
-	
+
 	for _, keyword := range keywords {
 		keyword = strings.ToLower(keyword)
-		
+
 		// Check against patterns
 		if a.matchesPattern(keyword, "pwa") {
 			scores[ProjectTypePWA]++
@@ -54,23 +54,23 @@ func (a *Analyzer) DetectProjectType(keywords []string) (ProjectType, error) {
 			scores[ProjectTypeAIAgent]++
 		}
 	}
-	
+
 	// Find the type with highest score
 	var bestType ProjectType
 	maxScore := 0
-	
+
 	for pType, score := range scores {
 		if score > maxScore {
 			maxScore = score
 			bestType = pType
 		}
 	}
-	
+
 	// Default to API if no clear match
 	if maxScore == 0 {
 		return ProjectTypeAPI, nil
 	}
-	
+
 	return bestType, nil
 }
 
@@ -80,25 +80,25 @@ func (a *Analyzer) loadPatterns() error {
 	if err != nil {
 		return err
 	}
-	
+
 	var manifest struct {
 		DetectionPatterns map[string]struct {
 			Keywords   []string `yaml:"keywords"`
 			Indicators []string `yaml:"indicators"`
 		} `yaml:"detection_patterns"`
 	}
-	
+
 	err = yaml.Unmarshal(data, &manifest)
 	if err != nil {
 		return err
 	}
-	
+
 	// Build patterns map
 	for pType, pattern := range manifest.DetectionPatterns {
 		allPatterns := append(pattern.Keywords, pattern.Indicators...)
 		a.patterns[pType] = allPatterns
 	}
-	
+
 	return nil
 }
 
@@ -108,20 +108,20 @@ func (a *Analyzer) matchesPattern(keyword string, projectType string) bool {
 	if !exists {
 		return false
 	}
-	
+
 	for _, pattern := range patterns {
 		if strings.Contains(keyword, pattern) || strings.Contains(pattern, keyword) {
 			return true
 		}
 	}
-	
+
 	return false
 }
 
 // simpleDetection provides basic detection without manifest.
 func (a *Analyzer) simpleDetection(keywords []string) ProjectType {
 	keywordStr := strings.ToLower(strings.Join(keywords, " "))
-	
+
 	if strings.Contains(keywordStr, "bot") || strings.Contains(keywordStr, "telegram") || strings.Contains(keywordStr, "discord") {
 		return ProjectTypeBot
 	}
@@ -134,7 +134,7 @@ func (a *Analyzer) simpleDetection(keywords []string) ProjectType {
 	if strings.Contains(keywordStr, "pwa") || strings.Contains(keywordStr, "progressive") {
 		return ProjectTypePWA
 	}
-	
+
 	// Default to API
 	return ProjectTypeAPI
 }
@@ -146,23 +146,23 @@ func (a *Analyzer) GetOptimalStack(projectType ProjectType) ([]string, error) {
 	if err != nil {
 		return a.defaultStack(projectType), nil
 	}
-	
+
 	var manifest struct {
 		Templates map[string]struct {
 			Stack []string `yaml:"stack"`
 		} `yaml:"templates"`
 	}
-	
+
 	err = yaml.Unmarshal(data, &manifest)
 	if err != nil {
 		return a.defaultStack(projectType), nil
 	}
-	
+
 	template, exists := manifest.Templates[string(projectType)]
 	if !exists || len(template.Stack) == 0 {
 		return a.defaultStack(projectType), nil
 	}
-	
+
 	return template.Stack, nil
 }
 

@@ -7,7 +7,7 @@ import (
 
 func TestParseCommand(t *testing.T) {
 	parser := NewParser()
-	
+
 	tests := []struct {
 		name     string
 		input    string
@@ -39,7 +39,7 @@ func TestParseCommand(t *testing.T) {
 			expected: "PWA application",
 		},
 	}
-	
+
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			result := parser.ParseCommand(tt.input)
@@ -52,7 +52,7 @@ func TestParseCommand(t *testing.T) {
 
 func TestExtractKeywords(t *testing.T) {
 	parser := NewParser()
-	
+
 	tests := []struct {
 		name        string
 		description string
@@ -74,7 +74,7 @@ func TestExtractKeywords(t *testing.T) {
 			minKeywords: 4,
 		},
 	}
-	
+
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			keywords := parser.ExtractKeywords(tt.description)
@@ -88,10 +88,10 @@ func TestExtractKeywords(t *testing.T) {
 
 func TestExtractKeywordsFiltersStopWords(t *testing.T) {
 	parser := NewParser()
-	
+
 	description := "the a an and or"
 	keywords := parser.ExtractKeywords(description)
-	
+
 	if len(keywords) > 0 {
 		t.Errorf("ExtractKeywords should filter all stop words, but got: %v", keywords)
 	}
