@@ -5,6 +5,7 @@ import (
 	"bytes"
 	"fmt"
 	"text/template"
+	"time"
 )
 
 // Templater handles rendering of project templates.
@@ -130,7 +131,7 @@ MIT License - Copyright (c) {{.Year}}
 		Description: config.Description,
 		Type:        string(config.Type),
 		Stack:       config.Stack,
-		Year:        2024,
+		Year:        time.Now().Year(),
 	}
 
 	return t.render(tmpl, data)

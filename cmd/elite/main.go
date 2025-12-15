@@ -19,9 +19,6 @@ func main() {
 	generateCmd := flag.NewFlagSet("generate", flag.ExitOnError)
 	outputDir := generateCmd.String("output", "./output", "Output directory for generated projects")
 	
-	versionFlag := flag.Bool("version", false, "Print version information")
-	helpFlag := flag.Bool("help", false, "Show help")
-	
 	// Parse flags
 	if len(os.Args) < 2 {
 		printUsage()
@@ -78,9 +75,6 @@ func main() {
 		printUsage()
 		os.Exit(1)
 	}
-	
-	_ = versionFlag
-	_ = helpFlag
 }
 
 func generateProject(description, outputDir string) error {

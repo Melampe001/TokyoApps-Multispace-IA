@@ -4,6 +4,7 @@ package generator
 import (
 	"fmt"
 	"strings"
+	"time"
 )
 
 // Documenter handles generation of project documentation.
@@ -317,9 +318,10 @@ Feel free to open an issue for any questions or concerns.
 
 // GenerateLicense creates a MIT license file.
 func (d *Documenter) GenerateLicense() string {
-	return `MIT License
+	year := time.Now().Year()
+	return fmt.Sprintf(`MIT License
 
-Copyright (c) 2024
+Copyright (c) %d
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -338,7 +340,7 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-`
+`, year)
 }
 
 // contains checks if a slice contains a string.

@@ -4,7 +4,6 @@ package generator
 import (
 	"fmt"
 	"path/filepath"
-	"strings"
 )
 
 // Generator orchestrates the complete project generation process.
@@ -55,7 +54,7 @@ func (g *Generator) Generate(input, outputDir string) (*ProjectConfig, error) {
 	}
 	
 	// Generate project name
-	projectName := g.generateProjectName(description)
+	projectName := GenerateProjectName(description)
 	
 	// Create config
 	config := &ProjectConfig{
@@ -186,40 +185,6 @@ func (g *Generator) generateFiles(config *ProjectConfig) error {
 	}
 	
 	return nil
-}
-
-// generateProjectName creates a project name from description.
-func (g *Generator) generateProjectName(description string) string {
-	// Convert to lowercase
-	name := strings.ToLower(description)
-	
-	// Replace spaces with hyphens
-	name = strings.ReplaceAll(name, " ", "-")
-	
-	// Remove special characters except hyphens
-	var result strings.Builder
-	for _, r := range name {
-		if (r >= 'a' && r <= 'z') || (r >= '0' && r <= '9') || r == '-' {
-			result.WriteRune(r)
-		}
-	}
-	name = result.String()
-	
-	// Remove consecutive hyphens
-	for strings.Contains(name, "--") {
-		name = strings.ReplaceAll(name, "--", "-")
-	}
-	
-	// Trim hyphens
-	name = strings.Trim(name, "-")
-	
-	// Limit length
-	if len(name) > 50 {
-		name = name[:50]
-		name = strings.TrimRight(name, "-")
-	}
-	
-	return name
 }
 
 // generateGitignore creates a .gitignore file.

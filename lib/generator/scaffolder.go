@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 // Scaffolder handles creation of project directory structures.
@@ -154,16 +155,38 @@ func (s *Scaffolder) CreateFile(basePath, relativePath, content string) error {
 
 // GetProjectName generates a project name from the description.
 func (s *Scaffolder) GetProjectName(description string) string {
-	// Simple slug generation
-	name := description
-	name = filepath.Base(name) // Remove any path separators
+	return GenerateProjectName(description)
+}
+
+// GenerateProjectName creates a URL-safe project name from a description.
+func GenerateProjectName(description string) string {
+	// Convert to lowercase
+	name := strings.ToLower(description)
 	
-	// Convert to lowercase and replace spaces with hyphens
-	name = filepath.Clean(name)
+	// Replace spaces with hyphens
+	name = strings.ReplaceAll(name, " ", "-")
 	
-	// If name is too long, truncate
+	// Remove special characters except hyphens
+	var result strings.Builder
+	for _, r := range name {
+		if (r >= 'a' && r <= 'z') || (r >= '0' && r <= '9') || r == '-' {
+			result.WriteRune(r)
+		}
+	}
+	name = result.String()
+	
+	// Remove consecutive hyphens
+	for strings.Contains(name, "--") {
+		name = strings.ReplaceAll(name, "--", "-")
+	}
+	
+	// Trim hyphens
+	name = strings.Trim(name, "-")
+	
+	// Limit length
 	if len(name) > 50 {
 		name = name[:50]
+		name = strings.TrimRight(name, "-")
 	}
 	
 	return name
