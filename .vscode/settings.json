@@ -1,0 +1,15 @@
+{
+  "github.copilot.enable": {
+    "*": true,
+    "yaml": true,
+    "plaintext": true,
+    "markdown": true
+  },
+  "github.copilot.advanced": {
+    "debug.overrideEngine": "gpt-4",
+    "inlineSuggestCount": 10
+  },
+  "files.associations": {
+    "copilot-instructions.md": "markdown"
+  }
+}

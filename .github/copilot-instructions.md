@@ -181,79 +181,53 @@ func TestFunctionName(t *testing.T) {
   - Any breaking changes or migration notes
 - Reference related issues using keywords (e.g., "Closes #123", "Fixes #456")
 - Include test coverage for new code
-- Ensure all checks pass before requesting review:
-  - `make test` - All tests pass
-  - `make fmt` - Code is properly formatted
-  - `go vet ./...` - No common mistakes detected
-- Keep commits atomic and well-described
-- Address review feedback promptly
-- Update documentation if the PR changes behavior or adds features
+- Ensure all CI checks pass before requesting review
+- Reference related issues in the PR description
 
-## Development Workflow
+## Elite Framework - Automated Project Generation
 
-### Initial Setup
-```bash
-# Clone the repository
-git clone https://github.com/Melampe001/Tokyo-IA.git
-cd Tokyo-IA
-
-# Verify Go installation (requires Go 1.24+)
-go version
-
-# Download dependencies
-go mod download
-
-# Build the project
-make build
-
-# Run tests
-make test
+### Magic Command
+Use the following command to generate complete projects:
+```
+// PROYECTO: [description of the project]
 ```
 
-### Making Changes
+### Automatic Generation Process
+1. Analyze project type from description
+2. Select optimal technology stack
+3. Generate complete structure (src, tests, deploy, docs)
+4. Configure CI/CD pipelines
+5. Create comprehensive documentation
+6. Setup testing infrastructure
+
+### Available Stacks
+- **Go**: APIs, microservices, CLI tools
+- **Python**: AI/ML, bots, automation scripts
+- **TypeScript**: PWAs, frontends, backends
+- **Rust**: Performance-critical applications
+- **Ruby**: Admin interfaces
+
+### Template Types
+- `/templates/pwa` - Progressive Web Apps
+- `/templates/bot` - Chat bots (Telegram, Discord, Slack)
+- `/templates/api` - REST/GraphQL APIs
+- `/templates/ecommerce` - E-commerce platforms
+- `/templates/ai-agent` - AI Agents (CrewAI/Groq)
+
+### CLI Usage
 ```bash
-# Create a feature branch
-git checkout -b feature/your-feature-name
+# Generate a new project
+make generate IDEA="REST API for task management"
 
-# Make your changes, commit frequently
-git add .
-git commit -m "feat: descriptive message"
-
-# Format code before committing
-make fmt
-
-# Run tests
-make test
-
-# Push to your fork or branch
-git push origin feature/your-feature-name
+# Or use the CLI directly
+./bin/elite generate "E-commerce platform with Stripe"
 ```
 
-## Common Commands Reference
-
-| Command | Description |
-|---------|-------------|
-| `make build` | Build the application |
-| `make test` | Run all tests |
-| `make fmt` | Format all Go code |
-| `make clean` | Remove build artifacts |
-| `go run ./cmd/main.go` | Run without building |
-| `go test -v ./...` | Run tests with verbose output |
-| `go test -cover ./...` | Run tests with coverage |
-| `go mod tidy` | Clean up dependencies |
-| `go vet ./...` | Run Go vet for common mistakes |
-
-## Project-Specific Notes
-
-- This is a Go 1.24+ project - ensure your Go version is compatible
-- The project uses a standard Go layout with `cmd/` for executables and `internal/` for private packages
-- Protocol buffer definitions are in `proto/` directory
-- AI/LLM prompt templates are stored in `prompts/` for reference
-- The project is in early development - some features are planned but not yet implemented
-
-## Resources
-
-- [Effective Go](https://go.dev/doc/effective_go)
-- [Go Code Review Comments](https://github.com/golang/go/wiki/CodeReviewComments)
-- [Project Contributing Guide](../CONTRIBUTING.md)
-- [Security Policy](../SECURITY.md)
+### Generated Structure
+Each generated project includes:
+- Complete source code structure
+- Unit and integration tests (>80% coverage)
+- Deployment scripts (Docker, K8s, CI/CD)
+- Comprehensive documentation
+- GitHub Actions workflows
+- Development environment setup
