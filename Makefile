@@ -1,4 +1,4 @@
-.PHONY: build fmt test clean elite generate scaffold
+.PHONY: build fmt test clean elite generate scaffold ai-build ai-test ai-run ai-demo
 
 # Build the main application
 build:
@@ -46,3 +46,30 @@ ci: fmt-check lint test build
 # Clean build artifacts
 clean:
 	rm -rf bin/ output/
+
+# AI-specific targets
+ai-build:
+	@echo "Building AI API..."
+	go build -o bin/ai-api cmd/ai-api/main.go
+	@echo "✓ AI API built successfully"
+
+ai-test:
+	@echo "Running Go AI tests..."
+	go test ./internal/ai/... -v
+	@echo ""
+	@echo "Running Python AI tests..."
+	python -m pytest lib/agents/test_tools.py -v
+
+ai-run:
+	@echo "Starting AI API server..."
+	@echo "Endpoints:"
+	@echo "  - POST http://localhost:8080/ai/complete    - AI completion"
+	@echo "  - GET  http://localhost:8080/ai/metrics     - Metrics"
+	@echo "  - POST http://localhost:8080/ai/cache/clear - Clear cache"
+	@echo "  - GET  http://localhost:8080/health         - Health check"
+	@echo ""
+	./bin/ai-api
+
+ai-demo:
+	@echo "Running AI integration demo..."
+	./scripts/demo-ai-integration.sh

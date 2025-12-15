@@ -8,12 +8,12 @@ import (
 
 // Generator orchestrates the complete project generation process.
 type Generator struct {
-	parser      *Parser
-	analyzer    *Analyzer
-	scaffolder  *Scaffolder
-	templater   *Templater
-	documenter  *Documenter
-	deployer    *Deployer
+	parser       *Parser
+	analyzer     *Analyzer
+	scaffolder   *Scaffolder
+	templater    *Templater
+	documenter   *Documenter
+	deployer     *Deployer
 	manifestPath string
 }
 
@@ -37,25 +37,25 @@ func (g *Generator) Generate(input, outputDir string) (*ProjectConfig, error) {
 	if description == "" {
 		return nil, fmt.Errorf("empty project description")
 	}
-	
+
 	// Extract keywords
 	keywords := g.parser.ExtractKeywords(description)
-	
+
 	// Detect project type
 	projectType, err := g.analyzer.DetectProjectType(keywords)
 	if err != nil {
 		return nil, fmt.Errorf("failed to detect project type: %w", err)
 	}
-	
+
 	// Get optimal stack
 	stack, err := g.analyzer.GetOptimalStack(projectType)
 	if err != nil {
 		return nil, fmt.Errorf("failed to determine stack: %w", err)
 	}
-	
+
 	// Generate project name
 	projectName := GenerateProjectName(description)
-	
+
 	// Create config
 	config := &ProjectConfig{
 		Name:        projectName,
@@ -64,19 +64,19 @@ func (g *Generator) Generate(input, outputDir string) (*ProjectConfig, error) {
 		Stack:       stack,
 		OutputDir:   filepath.Join(outputDir, projectName),
 	}
-	
+
 	// Create directory structure
 	err = g.scaffolder.CreateStructure(config)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create structure: %w", err)
 	}
-	
+
 	// Generate files
 	err = g.generateFiles(config)
 	if err != nil {
 		return nil, fmt.Errorf("failed to generate files: %w", err)
 	}
-	
+
 	return config, nil
 }
 
@@ -91,7 +91,7 @@ func (g *Generator) generateFiles(config *ProjectConfig) error {
 	if err != nil {
 		return err
 	}
-	
+
 	// Generate Dockerfile
 	dockerfile, err := g.templater.RenderDockerfile(config)
 	if err != nil {
@@ -101,7 +101,7 @@ func (g *Generator) generateFiles(config *ProjectConfig) error {
 	if err != nil {
 		return err
 	}
-	
+
 	// Generate GitHub workflow
 	workflow, err := g.templater.RenderGitHubWorkflow(config)
 	if err != nil {
@@ -111,7 +111,7 @@ func (g *Generator) generateFiles(config *ProjectConfig) error {
 	if err != nil {
 		return err
 	}
-	
+
 	// Generate docker-compose
 	compose, err := g.deployer.GenerateDockerCompose(config)
 	if err != nil {
@@ -121,7 +121,7 @@ func (g *Generator) generateFiles(config *ProjectConfig) error {
 	if err != nil {
 		return err
 	}
-	
+
 	// Generate deployment README
 	deployREADME, err := g.deployer.GenerateDeploymentREADME(config)
 	if err != nil {
@@ -131,7 +131,7 @@ func (g *Generator) generateFiles(config *ProjectConfig) error {
 	if err != nil {
 		return err
 	}
-	
+
 	// Generate architecture docs
 	archDocs, err := g.documenter.GenerateArchitectureDocs(config)
 	if err != nil {
@@ -141,7 +141,7 @@ func (g *Generator) generateFiles(config *ProjectConfig) error {
 	if err != nil {
 		return err
 	}
-	
+
 	// Generate API docs (if applicable)
 	apiDocs, err := g.documenter.GenerateAPIDoc(config)
 	if err != nil {
@@ -153,7 +153,7 @@ func (g *Generator) generateFiles(config *ProjectConfig) error {
 			return err
 		}
 	}
-	
+
 	// Generate contributing guide
 	contributing, err := g.documenter.GenerateContributingGuide(config)
 	if err != nil {
@@ -163,34 +163,34 @@ func (g *Generator) generateFiles(config *ProjectConfig) error {
 	if err != nil {
 		return err
 	}
-	
+
 	// Generate LICENSE
 	license := g.documenter.GenerateLicense()
 	err = g.scaffolder.CreateFile(config.OutputDir, "LICENSE", license)
 	if err != nil {
 		return err
 	}
-	
+
 	// Generate .gitignore
 	gitignore := g.generateGitignore(config)
 	err = g.scaffolder.CreateFile(config.OutputDir, ".gitignore", gitignore)
 	if err != nil {
 		return err
 	}
-	
+
 	// Generate project-specific files
 	err = g.generateProjectSpecificFiles(config)
 	if err != nil {
 		return fmt.Errorf("failed to generate project-specific files: %w", err)
 	}
-	
+
 	return nil
 }
 
 // generateGitignore creates a .gitignore file.
 func (g *Generator) generateGitignore(config *ProjectConfig) string {
 	var ignore string
-	
+
 	switch config.Type {
 	case ProjectTypePWA, ProjectTypeEcommerce:
 		ignore = `node_modules/
@@ -204,7 +204,7 @@ coverage/
 out/
 build/
 `
-	
+
 	case ProjectTypeBot, ProjectTypeAIAgent:
 		ignore = `__pycache__/
 *.py[cod]
@@ -219,7 +219,7 @@ env/
 .coverage
 htmlcov/
 `
-	
+
 	case ProjectTypeAPI:
 		ignore = `bin/
 *.exe
@@ -235,7 +235,7 @@ coverage.txt
 vendor/
 `
 	}
-	
+
 	return ignore
 }
 
@@ -284,7 +284,7 @@ func (g *Generator) generatePWAFiles(config *ProjectConfig) error {
 	if err != nil {
 		return err
 	}
-	
+
 	// vite.config.js
 	viteConfig := `import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
@@ -297,7 +297,7 @@ export default defineConfig({
 	if err != nil {
 		return err
 	}
-	
+
 	// src/main.jsx
 	mainJSX := `import React from 'react'
 import ReactDOM from 'react-dom/client'
@@ -313,7 +313,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
 	if err != nil {
 		return err
 	}
-	
+
 	// src/App.jsx
 	appJSX := `import React from 'react'
 
@@ -332,7 +332,7 @@ export default App
 	if err != nil {
 		return err
 	}
-	
+
 	// index.html
 	indexHTML := `<!DOCTYPE html>
 <html lang="en">
@@ -363,7 +363,7 @@ pytest-asyncio>=0.21.0
 	if err != nil {
 		return err
 	}
-	
+
 	// main.py
 	mainPy := `import os
 from dotenv import load_dotenv
@@ -400,7 +400,7 @@ if __name__ == '__main__':
 	if err != nil {
 		return err
 	}
-	
+
 	// .env.example
 	envExample := `BOT_TOKEN=your_bot_token_here
 `
@@ -424,7 +424,7 @@ require (
 	if err != nil {
 		return err
 	}
-	
+
 	// cmd/api/main.go
 	mainGo := `package main
 
@@ -486,7 +486,7 @@ func (g *Generator) generateEcommerceFiles(config *ProjectConfig) error {
 	if err != nil {
 		return err
 	}
-	
+
 	// app/page.tsx
 	pageTSX := `export default function Home() {
   return (
@@ -501,7 +501,7 @@ func (g *Generator) generateEcommerceFiles(config *ProjectConfig) error {
 	if err != nil {
 		return err
 	}
-	
+
 	// .env.example
 	envExample := `DATABASE_URL="postgresql://user:password@localhost:5432/dbname"
 STRIPE_SECRET_KEY=sk_test_...
@@ -523,7 +523,7 @@ pytest>=7.4.0
 	if err != nil {
 		return err
 	}
-	
+
 	// main.py
 	mainPy := `import os
 from dotenv import load_dotenv
@@ -564,7 +564,7 @@ if __name__ == '__main__':
 	if err != nil {
 		return err
 	}
-	
+
 	// .env.example
 	envExample := `GROQ_API_KEY=your_groq_api_key_here
 OPENAI_API_KEY=your_openai_api_key_here

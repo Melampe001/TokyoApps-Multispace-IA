@@ -99,11 +99,88 @@ npm start
 
 ## 📚 Documentation
 
+- **[AI Integration](docs/IMPLEMENTATION_SUMMARY_AI.md)** - Multi-model AI orchestration system
 - **[Elite Framework](docs/elite-framework.md)** - Automated project generation system
 - **[Contributing Guide](CONTRIBUTING.md)** - How to contribute to the project
 - **[CI/CD Documentation](docs/CI_CD.md)** - Continuous Integration and Deployment
 - **[Branch Protection](docs/BRANCH_PROTECTION.md)** - Git workflow and branch rules
 - **[Security Policy](SECURITY.md)** - Security best practices
+
+## 🤖 AI Integration - Multi-Model Orchestration
+
+Tokyo-IA includes a sophisticated AI orchestration system that intelligently routes requests to different AI providers (OpenAI, Anthropic, Gemini) based on task requirements.
+
+### Features
+
+- **Intelligent Routing**: Automatic provider selection based on task type
+- **Response Caching**: In-memory cache with TTL for cost optimization
+- **Metrics Collection**: Comprehensive usage statistics and performance tracking
+- **Mock Development**: Work without API keys using mock clients
+- **Python Agents**: CrewAI-based agents for complex workflows
+- **REST API**: Simple HTTP interface for AI completions
+
+### Quick Start
+
+```bash
+# Build AI API
+make ai-build
+
+# Run server
+make ai-run
+
+# Test endpoint
+curl -X POST http://localhost:8080/ai/complete \
+  -H "Content-Type: application/json" \
+  -d '{
+    "prompt": "Explain quantum computing",
+    "task_type": "reasoning"
+  }'
+
+# Run interactive demo
+make ai-demo
+```
+
+### Task Routing
+
+| Task Type | Provider | Use Case |
+|-----------|----------|----------|
+| Reasoning | Anthropic Claude | Logic, analysis, problem-solving |
+| Creative | OpenAI GPT-4 | Writing, storytelling, creative content |
+| Code Review | Anthropic Claude | Code analysis, security, best practices |
+| Code Generation | OpenAI GPT-4 | Writing new code, implementing features |
+| Translation | Google Gemini | Language translation |
+| General | OpenAI GPT-4 | Default for other tasks |
+
+### Documentation
+
+- **[Architecture Guide](docs/architecture/ai-models-integration-architecture.md)** - System design and components
+- **[User Guide](docs/guides/ai-model-router-guide.md)** - Configuration and usage examples
+- **[API Reference](docs/api/ai-api-reference.md)** - REST API documentation
+- **[Implementation Summary](docs/IMPLEMENTATION_SUMMARY_AI.md)** - Complete feature list
+
+### Python Agents
+
+The system includes CrewAI-based agents for complex workflows:
+
+```python
+from lib.agents import run_workflow
+
+# Research workflow
+result = run_workflow("research", topic="AI Ethics")
+
+# Code review workflow
+result = run_workflow("code_review", code="...", language="python")
+
+# Content creation workflow
+result = run_workflow("content_creation", topic="Climate Change", content_type="blog")
+```
+
+**Available Tools:**
+- Code Analyzer
+- Text Summarizer
+- JSON Parser
+- URL Validator
+- And 5 more...
 
 ## 🎯 Elite Framework - Generate Projects Instantly
 

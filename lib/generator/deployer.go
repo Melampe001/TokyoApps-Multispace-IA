@@ -16,7 +16,7 @@ func NewDeployer() *Deployer {
 // GenerateDockerCompose creates a docker-compose.yml file.
 func (d *Deployer) GenerateDockerCompose(config *ProjectConfig) (string, error) {
 	var compose string
-	
+
 	switch config.Type {
 	case ProjectTypeAPI:
 		compose = `version: '3.8'
@@ -45,7 +45,7 @@ services:
 volumes:
   postgres_data:
 `
-	
+
 	case ProjectTypeEcommerce:
 		compose = `version: '3.8'
 
@@ -74,7 +74,7 @@ services:
 volumes:
   postgres_data:
 `
-	
+
 	case ProjectTypeBot, ProjectTypeAIAgent:
 		compose = `version: '3.8'
 
@@ -86,7 +86,7 @@ services:
       - API_KEY=${API_KEY}
     restart: unless-stopped
 `
-	
+
 	case ProjectTypePWA:
 		compose = `version: '3.8'
 
@@ -98,7 +98,7 @@ services:
     restart: unless-stopped
 `
 	}
-	
+
 	return compose, nil
 }
 
@@ -141,7 +141,7 @@ spec:
     targetPort: 8080
   type: LoadBalancer
 `, config.Name, config.Name, config.Name, config.Name, config.Name, config.Name, config.Name, config.Name)
-	
+
 	return manifest, nil
 }
 
@@ -212,26 +212,26 @@ See [gcp-deploy.md](gcp-deploy.md) for detailed GCP deployment instructions.
 Make sure to set the following environment variables:
 
 `, config.Name, config.Name, config.Name)
-	
+
 	// Add environment variables based on project type
 	switch config.Type {
 	case ProjectTypeAPI, ProjectTypeEcommerce:
 		doc += `- ` + "`DATABASE_URL`" + ` - Database connection string
 `
 	}
-	
+
 	if config.Type == ProjectTypeEcommerce {
 		doc += `- ` + "`STRIPE_SECRET_KEY`" + ` - Stripe API key
 - ` + "`STRIPE_WEBHOOK_SECRET`" + ` - Stripe webhook secret
 `
 	}
-	
+
 	if config.Type == ProjectTypeBot || config.Type == ProjectTypeAIAgent {
 		doc += `- ` + "`BOT_TOKEN`" + ` - Bot authentication token
 - ` + "`API_KEY`" + ` - API key for external services
 `
 	}
-	
+
 	doc += `
 ## Monitoring
 
@@ -243,18 +243,18 @@ Make sure to set the following environment variables:
 
 ### Horizontal Scaling
 
-`+"```bash"+`
+` + "```bash" + `
 kubectl scale deployment %s --replicas=5
-`+"```"+`
+` + "```" + `
 
 ### Auto-scaling
 
-`+"```bash"+`
+` + "```bash" + `
 kubectl autoscale deployment %s --cpu-percent=80 --min=3 --max=10
-`+"```"+`
+` + "```" + `
 `
-	
+
 	doc = fmt.Sprintf(doc, config.Name, config.Name)
-	
+
 	return doc, nil
 }
