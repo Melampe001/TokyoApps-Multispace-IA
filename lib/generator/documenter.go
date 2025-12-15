@@ -18,7 +18,7 @@ func NewDocumenter() *Documenter {
 // GenerateArchitectureDocs creates architecture documentation with Mermaid diagrams.
 func (d *Documenter) GenerateArchitectureDocs(config *ProjectConfig) (string, error) {
 	var diagram string
-	
+
 	switch config.Type {
 	case ProjectTypePWA:
 		diagram = `# Architecture
@@ -41,7 +41,7 @@ graph TD
 - **API Backend**: RESTful API services
 - **Cache Storage**: Local data persistence
 `
-	
+
 	case ProjectTypeBot:
 		diagram = `# Architecture
 
@@ -63,7 +63,7 @@ graph TD
 - **Service Layer**: Business logic
 - **External APIs**: Third-party integrations
 `
-	
+
 	case ProjectTypeAPI:
 		diagram = `# Architecture
 
@@ -85,7 +85,7 @@ graph TD
 - **Service Layer**: Business logic
 - **Repository Layer**: Data access
 `
-	
+
 	case ProjectTypeEcommerce:
 		diagram = `# Architecture
 
@@ -108,7 +108,7 @@ graph TD
 - **Database**: Product and order data
 - **Email Service**: Order notifications
 `
-	
+
 	case ProjectTypeAIAgent:
 		diagram = `# Architecture
 
@@ -133,7 +133,7 @@ graph TD
 - **Custom Tools**: Domain-specific utilities
 `
 	}
-	
+
 	return diagram, nil
 }
 
@@ -142,7 +142,7 @@ func (d *Documenter) GenerateAPIDoc(config *ProjectConfig) (string, error) {
 	if config.Type != ProjectTypeAPI && config.Type != ProjectTypeEcommerce {
 		return "", nil
 	}
-	
+
 	doc := `# API Documentation
 
 ## Base URL
@@ -239,7 +239,7 @@ All errors follow this format:
 - 100 requests per minute per IP
 - 1000 requests per hour per user
 `
-	
+
 	return doc, nil
 }
 
@@ -258,7 +258,7 @@ Thank you for your interest in contributing!
 ## Code Style
 
 `, config.Name)
-	
+
 	// Add language-specific style guidelines
 	if contains(config.Stack, "go") {
 		guide += `### Go
@@ -268,7 +268,7 @@ Thank you for your interest in contributing!
 
 `
 	}
-	
+
 	if contains(config.Stack, "python") {
 		guide += `### Python
 - Follow PEP 8 style guide
@@ -278,7 +278,7 @@ Thank you for your interest in contributing!
 
 `
 	}
-	
+
 	if contains(config.Stack, "typescript") || contains(config.Stack, "javascript") {
 		guide += `### TypeScript/JavaScript
 - Follow ESLint rules
@@ -287,7 +287,7 @@ Thank you for your interest in contributing!
 
 `
 	}
-	
+
 	guide += `## Pull Request Process
 
 1. Update documentation for any changed functionality
@@ -312,7 +312,7 @@ Thank you for your interest in contributing!
 
 Feel free to open an issue for any questions or concerns.
 `
-	
+
 	return guide, nil
 }
 

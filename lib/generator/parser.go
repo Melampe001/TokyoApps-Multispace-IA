@@ -21,15 +21,15 @@ func NewParser() *Parser {
 // - Plain description
 func (p *Parser) ParseCommand(input string) string {
 	input = strings.TrimSpace(input)
-	
+
 	// Match "// PROYECTO: description" or "PROYECTO: description"
 	re := regexp.MustCompile(`(?i)^(?://\s*)?PROYECTO:\s*(.+)$`)
 	matches := re.FindStringSubmatch(input)
-	
+
 	if len(matches) > 1 {
 		return strings.TrimSpace(matches[1])
 	}
-	
+
 	// If no match, return the input as-is (assume it's just the description)
 	return input
 }
@@ -38,10 +38,10 @@ func (p *Parser) ParseCommand(input string) string {
 func (p *Parser) ExtractKeywords(description string) []string {
 	// Convert to lowercase for matching
 	lower := strings.ToLower(description)
-	
+
 	// Split into words
 	words := strings.Fields(lower)
-	
+
 	// Remove common stop words
 	stopWords := map[string]bool{
 		"the": true, "a": true, "an": true, "and": true, "or": true,
@@ -49,7 +49,7 @@ func (p *Parser) ExtractKeywords(description string) []string {
 		"for": true, "of": true, "with": true, "by": true, "from": true,
 		"up": true, "about": true, "into": true, "through": true, "during": true,
 	}
-	
+
 	var keywords []string
 	for _, word := range words {
 		// Remove punctuation
@@ -58,6 +58,6 @@ func (p *Parser) ExtractKeywords(description string) []string {
 			keywords = append(keywords, word)
 		}
 	}
-	
+
 	return keywords
 }

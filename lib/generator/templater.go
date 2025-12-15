@@ -140,7 +140,7 @@ MIT License - Copyright (c) {{.Year}}
 // RenderDockerfile generates a Dockerfile for the project.
 func (t *Templater) RenderDockerfile(config *ProjectConfig) (string, error) {
 	var tmpl string
-	
+
 	switch config.Type {
 	case ProjectTypePWA:
 		tmpl = `FROM node:18-alpine AS builder
@@ -155,7 +155,7 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
 `
-	
+
 	case ProjectTypeBot, ProjectTypeAIAgent:
 		tmpl = `FROM python:3.9-slim
 WORKDIR /app
@@ -164,7 +164,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 CMD ["python", "main.py"]
 `
-	
+
 	case ProjectTypeAPI:
 		tmpl = `FROM golang:1.21-alpine AS builder
 WORKDIR /app
@@ -180,7 +180,7 @@ COPY --from=builder /app/server .
 EXPOSE 8080
 CMD ["./server"]
 `
-	
+
 	case ProjectTypeEcommerce:
 		tmpl = `FROM node:18-alpine AS builder
 WORKDIR /app
@@ -198,7 +198,7 @@ EXPOSE 3000
 CMD ["npm", "start"]
 `
 	}
-	
+
 	return tmpl, nil
 }
 
@@ -276,12 +276,12 @@ func (t *Templater) render(tmplStr string, data interface{}) (string, error) {
 	if err != nil {
 		return "", fmt.Errorf("failed to parse template: %w", err)
 	}
-	
+
 	var buf bytes.Buffer
 	err = tmpl.Execute(&buf, data)
 	if err != nil {
 		return "", fmt.Errorf("failed to execute template: %w", err)
 	}
-	
+
 	return buf.String(), nil
 }
