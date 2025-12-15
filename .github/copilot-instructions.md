@@ -113,3 +113,51 @@ npm test                    # Run tests
 - Include test coverage for new code
 - Ensure all CI checks pass before requesting review
 - Reference related issues in the PR description
+
+## Elite Framework - Automated Project Generation
+
+### Magic Command
+Use the following command to generate complete projects:
+```
+// PROYECTO: [description of the project]
+```
+
+### Automatic Generation Process
+1. Analyze project type from description
+2. Select optimal technology stack
+3. Generate complete structure (src, tests, deploy, docs)
+4. Configure CI/CD pipelines
+5. Create comprehensive documentation
+6. Setup testing infrastructure
+
+### Available Stacks
+- **Go**: APIs, microservices, CLI tools
+- **Python**: AI/ML, bots, automation scripts
+- **TypeScript**: PWAs, frontends, backends
+- **Rust**: Performance-critical applications
+- **Ruby**: Admin interfaces
+
+### Template Types
+- `/templates/pwa` - Progressive Web Apps
+- `/templates/bot` - Chat bots (Telegram, Discord, Slack)
+- `/templates/api` - REST/GraphQL APIs
+- `/templates/ecommerce` - E-commerce platforms
+- `/templates/ai-agent` - AI Agents (CrewAI/Groq)
+
+### CLI Usage
+```bash
+# Generate a new project
+make generate IDEA="REST API for task management"
+
+# Or use the CLI directly
+./bin/elite generate "E-commerce platform with Stripe"
+```
+
+### Generated Structure
+Each generated project includes:
+- Complete source code structure
+- Unit and integration tests (>80% coverage)
+- Deployment scripts (Docker, K8s, CI/CD)
+- Comprehensive documentation
+- GitHub Actions workflows
+- Development environment setup

@@ -99,10 +99,45 @@ npm start
 
 ## 📚 Documentation
 
+- **[Elite Framework](docs/elite-framework.md)** - Automated project generation system
 - **[Contributing Guide](CONTRIBUTING.md)** - How to contribute to the project
 - **[CI/CD Documentation](docs/CI_CD.md)** - Continuous Integration and Deployment
 - **[Branch Protection](docs/BRANCH_PROTECTION.md)** - Git workflow and branch rules
 - **[Security Policy](SECURITY.md)** - Security best practices
+
+## 🎯 Elite Framework - Generate Projects Instantly
+
+Tokyo-IA includes the **Elite Framework**, an automated project generator that creates complete, production-ready projects from simple descriptions.
+
+### Quick Start
+
+```bash
+# Build the elite CLI
+make elite
+
+# Generate a project
+./bin/elite generate "REST API for task management"
+
+# Or use make command
+make generate IDEA="Telegram bot for weather updates"
+```
+
+### Supported Project Types
+
+- **PWAs** - Progressive Web Apps with React/Vite
+- **Bots** - Telegram, Discord, Slack bots
+- **APIs** - REST/GraphQL APIs with Go
+- **E-commerce** - Online stores with Stripe
+- **AI Agents** - CrewAI/Groq powered agents
+
+Each generated project includes:
+- ✅ Complete source code
+- ✅ Tests (unit + integration)
+- ✅ Docker deployment
+- ✅ CI/CD workflows
+- ✅ Full documentation
+
+See the [Elite Framework Documentation](docs/elite-framework.md) for details.
 
 ## 🔒 Security / Secrets (IMPORTANT)
 

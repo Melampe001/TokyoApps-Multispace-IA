@@ -6,7 +6,6 @@ out/
 
 # IDE files
 .idea/
-.vscode/
 *.iml
 *.swp
 *.swo
@@ -74,3 +73,6 @@ logs/
 tmp/
 temp/
 .cache/
+
+# Generated projects (Elite Framework output)
+output/
