@@ -1,0 +1,26 @@
+{
+  "quality_thresholds": {
+    "min_test_coverage": 80,
+    "max_function_length": 50,
+    "max_cyclomatic_complexity": 10
+  },
+  "auto_approve": {
+    "enabled": true,
+    "require_tests": true,
+    "require_docs": true,
+    "min_quality_score": 90
+  },
+  "notifications": {
+    "slack_channel": "#backend-reviews",
+    "mention_on_critical": true
+  },
+  "paths_to_monitor": [
+    "lib/",
+    "internal/",
+    "cmd/"
+  ],
+  "special_checks": {
+    "proto_changes_remind_make_proto": true,
+    "billing_changes_require_tests": true
+  }
+}
