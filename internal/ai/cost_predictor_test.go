@@ -17,13 +17,13 @@ func TestNewCostPredictor(t *testing.T) {
 
 func TestPredictCost(t *testing.T) {
 	cp := NewCostPredictor()
-	
+
 	tests := []struct {
-		name        string
-		metrics     RequestMetrics
-		wantErr     bool
-		minCost     float64
-		maxCost     float64
+		name    string
+		metrics RequestMetrics
+		wantErr bool
+		minCost float64
+		maxCost float64
 	}{
 		{
 			name: "basic gpt-3.5-turbo request",
@@ -86,7 +86,7 @@ func TestPredictCost(t *testing.T) {
 					return
 				}
 				if prediction.EstimatedCost < tt.minCost || prediction.EstimatedCost > tt.maxCost {
-					t.Errorf("EstimatedCost = %v, want between %v and %v", 
+					t.Errorf("EstimatedCost = %v, want between %v and %v",
 						prediction.EstimatedCost, tt.minCost, tt.maxCost)
 				}
 				if prediction.ConfidenceLevel <= 0 || prediction.ConfidenceLevel >= 1 {
@@ -107,17 +107,17 @@ func TestGenerateRecommendations(t *testing.T) {
 	cp := NewCostPredictor()
 
 	tests := []struct {
-		name             string
-		metrics          RequestMetrics
-		cost             float64
-		wantContains     string
+		name         string
+		metrics      RequestMetrics
+		cost         float64
+		wantContains string
 	}{
 		{
 			name: "high token count",
 			metrics: RequestMetrics{
-				Tokens:      15000,
-				ModelName:   "gpt-3.5-turbo",
-				Complexity:  0.5,
+				Tokens:     15000,
+				ModelName:  "gpt-3.5-turbo",
+				Complexity: 0.5,
 			},
 			cost:         0.1,
 			wantContains: "reducing input size",
@@ -125,9 +125,9 @@ func TestGenerateRecommendations(t *testing.T) {
 		{
 			name: "high complexity",
 			metrics: RequestMetrics{
-				Tokens:      5000,
-				ModelName:   "gpt-3.5-turbo",
-				Complexity:  0.9,
+				Tokens:     5000,
+				ModelName:  "gpt-3.5-turbo",
+				Complexity: 0.9,
 			},
 			cost:         0.1,
 			wantContains: "complexity is high",
@@ -135,9 +135,9 @@ func TestGenerateRecommendations(t *testing.T) {
 		{
 			name: "expensive cost",
 			metrics: RequestMetrics{
-				Tokens:      5000,
-				ModelName:   "gpt-4",
-				Complexity:  0.5,
+				Tokens:     5000,
+				ModelName:  "gpt-4",
+				Complexity: 0.5,
 			},
 			cost:         0.5,
 			wantContains: "cost-effective model",
@@ -155,7 +155,7 @@ func TestGenerateRecommendations(t *testing.T) {
 				}
 			}
 			if !found {
-				t.Errorf("Expected recommendation containing %q, got %v", 
+				t.Errorf("Expected recommendation containing %q, got %v",
 					tt.wantContains, recommendations)
 			}
 		})
@@ -164,25 +164,25 @@ func TestGenerateRecommendations(t *testing.T) {
 
 func TestAddHistoricalData(t *testing.T) {
 	cp := NewCostPredictor()
-	
+
 	metrics := RequestMetrics{
 		Tokens:      1000,
 		ModelName:   "gpt-3.5-turbo",
 		RequestType: "completion",
 		Complexity:  0.5,
 	}
-	
+
 	cp.AddHistoricalData(metrics, 0.15)
-	
+
 	if len(cp.HistoricalData) != 1 {
 		t.Errorf("Expected 1 historical data entry, got %d", len(cp.HistoricalData))
 	}
-	
+
 	// Test that it keeps only 10K entries
 	for i := 0; i < 11000; i++ {
 		cp.AddHistoricalData(metrics, 0.15)
 	}
-	
+
 	if len(cp.HistoricalData) > 10000 {
 		t.Errorf("Expected max 10000 historical entries, got %d", len(cp.HistoricalData))
 	}
@@ -190,13 +190,13 @@ func TestAddHistoricalData(t *testing.T) {
 
 func TestGetModelAccuracy(t *testing.T) {
 	cp := NewCostPredictor()
-	
+
 	// No data should return 0
 	accuracy := cp.GetModelAccuracy()
 	if accuracy != 0.0 {
 		t.Errorf("Expected 0 accuracy with no data, got %v", accuracy)
 	}
-	
+
 	// Add some historical data
 	metrics := RequestMetrics{
 		Tokens:      1000,
@@ -204,10 +204,10 @@ func TestGetModelAccuracy(t *testing.T) {
 		RequestType: "completion",
 		Complexity:  0.5,
 	}
-	
+
 	prediction, _ := cp.PredictCost(metrics)
 	cp.AddHistoricalData(metrics, prediction.EstimatedCost)
-	
+
 	accuracy = cp.GetModelAccuracy()
 	if accuracy <= 0 {
 		t.Errorf("Expected positive accuracy, got %v", accuracy)
@@ -216,7 +216,7 @@ func TestGetModelAccuracy(t *testing.T) {
 
 func TestGetModelMultiplier(t *testing.T) {
 	cp := NewCostPredictor()
-	
+
 	tests := []struct {
 		model      string
 		multiplier float64
@@ -226,12 +226,12 @@ func TestGetModelMultiplier(t *testing.T) {
 		{"gemini-pro", 0.5},
 		{"unknown-model", 1.0},
 	}
-	
+
 	for _, tt := range tests {
 		t.Run(tt.model, func(t *testing.T) {
 			mult := cp.getModelMultiplier(tt.model)
 			if mult != tt.multiplier {
-				t.Errorf("Expected multiplier %v for %s, got %v", 
+				t.Errorf("Expected multiplier %v for %s, got %v",
 					tt.multiplier, tt.model, mult)
 			}
 		})
@@ -240,7 +240,7 @@ func TestGetModelMultiplier(t *testing.T) {
 
 func TestExportImportModel(t *testing.T) {
 	cp := NewCostPredictor()
-	
+
 	metrics := RequestMetrics{
 		Tokens:      1000,
 		ModelName:   "gpt-3.5-turbo",
@@ -248,41 +248,41 @@ func TestExportImportModel(t *testing.T) {
 		Complexity:  0.5,
 	}
 	cp.AddHistoricalData(metrics, 0.15)
-	
+
 	// Export
 	data, err := cp.ExportModel()
 	if err != nil {
 		t.Fatalf("ExportModel failed: %v", err)
 	}
-	
+
 	// Import into new predictor
 	cp2 := NewCostPredictor()
 	err = cp2.ImportModel(data)
 	if err != nil {
 		t.Fatalf("ImportModel failed: %v", err)
 	}
-	
+
 	if len(cp2.HistoricalData) != len(cp.HistoricalData) {
-		t.Errorf("Expected %d historical entries after import, got %d", 
+		t.Errorf("Expected %d historical entries after import, got %d",
 			len(cp.HistoricalData), len(cp2.HistoricalData))
 	}
 }
 
 func TestCostPredictionFields(t *testing.T) {
 	cp := NewCostPredictor()
-	
+
 	metrics := RequestMetrics{
 		Tokens:      1000,
 		ModelName:   "gpt-3.5-turbo",
 		RequestType: "completion",
 		Complexity:  0.5,
 	}
-	
+
 	prediction, err := cp.PredictCost(metrics)
 	if err != nil {
 		t.Fatalf("PredictCost failed: %v", err)
 	}
-	
+
 	// Check all fields are populated
 	if prediction.EstimatedCost <= 0 {
 		t.Error("EstimatedCost should be positive")
@@ -309,9 +309,9 @@ func TestCostPredictionFields(t *testing.T) {
 
 // Helper function
 func contains(s, substr string) bool {
-	return len(s) >= len(substr) && (s == substr || len(s) > len(substr) && 
-		(s[:len(substr)] == substr || s[len(s)-len(substr):] == substr || 
-		findSubstring(s, substr)))
+	return len(s) >= len(substr) && (s == substr || len(s) > len(substr) &&
+		(s[:len(substr)] == substr || s[len(s)-len(substr):] == substr ||
+			findSubstring(s, substr)))
 }
 
 func findSubstring(s, substr string) bool {

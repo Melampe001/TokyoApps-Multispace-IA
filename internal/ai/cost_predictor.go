@@ -10,23 +10,23 @@ import (
 
 // CostPrediction represents a cost prediction result
 type CostPrediction struct {
-	EstimatedCost     float64                `json:"estimated_cost"`
-	ConfidenceMin     float64                `json:"confidence_min"`
-	ConfidenceMax     float64                `json:"confidence_max"`
-	ConfidenceLevel   float64                `json:"confidence_level"`
-	ModelVersion      string                 `json:"model_version"`
-	PredictedAt       time.Time              `json:"predicted_at"`
-	Recommendations   []string               `json:"recommendations"`
-	BreakdownByAction map[string]float64     `json:"breakdown_by_action"`
+	EstimatedCost     float64            `json:"estimated_cost"`
+	ConfidenceMin     float64            `json:"confidence_min"`
+	ConfidenceMax     float64            `json:"confidence_max"`
+	ConfidenceLevel   float64            `json:"confidence_level"`
+	ModelVersion      string             `json:"model_version"`
+	PredictedAt       time.Time          `json:"predicted_at"`
+	Recommendations   []string           `json:"recommendations"`
+	BreakdownByAction map[string]float64 `json:"breakdown_by_action"`
 }
 
 // RequestMetrics contains metrics for a request
 type RequestMetrics struct {
-	Tokens          int                    `json:"tokens"`
-	ModelName       string                 `json:"model_name"`
-	RequestType     string                 `json:"request_type"`
-	Complexity      float64                `json:"complexity"`
-	Features        map[string]interface{} `json:"features"`
+	Tokens      int                    `json:"tokens"`
+	ModelName   string                 `json:"model_name"`
+	RequestType string                 `json:"request_type"`
+	Complexity  float64                `json:"complexity"`
+	Features    map[string]interface{} `json:"features"`
 }
 
 // CostPredictor predicts costs before executing requests
@@ -54,13 +54,13 @@ type ModelParameters struct {
 // NewCostPredictor creates a new cost predictor
 func NewCostPredictor() *CostPredictor {
 	return &CostPredictor{
-		ModelVersion: "v1.0.0",
+		ModelVersion:   "v1.0.0",
 		HistoricalData: make([]HistoricalRequest, 0),
 		ModelParameters: ModelParameters{
-			TokenCostFactor:    0.0001,  // $0.0001 per token
-			ComplexityFactor:   0.05,    // 5% increase per complexity unit
-			BaselineCost:       0.001,   // $0.001 baseline
-			ConfidenceInterval: 0.15,    // 15% confidence interval
+			TokenCostFactor:    0.0001, // $0.0001 per token
+			ComplexityFactor:   0.05,   // 5% increase per complexity unit
+			BaselineCost:       0.001,  // $0.001 baseline
+			ConfidenceInterval: 0.15,   // 15% confidence interval
 		},
 	}
 }
@@ -75,7 +75,7 @@ func (cp *CostPredictor) PredictCost(metrics RequestMetrics) (*CostPrediction, e
 	baseCost := cp.ModelParameters.BaselineCost
 	tokenCost := float64(metrics.Tokens) * cp.ModelParameters.TokenCostFactor
 	complexityCost := metrics.Complexity * cp.ModelParameters.ComplexityFactor
-	
+
 	estimatedCost := baseCost + tokenCost + complexityCost
 
 	// Apply model-specific multipliers

@@ -19,13 +19,13 @@ func TestNewAdvancedScanner(t *testing.T) {
 
 func TestScanCode(t *testing.T) {
 	scanner := NewAdvancedScanner()
-	
+
 	tests := []struct {
-		name          string
-		code          string
-		wantVulns     bool
-		wantSeverity  VulnerabilityLevel
-		wantStatus    string
+		name         string
+		code         string
+		wantVulns    bool
+		wantSeverity VulnerabilityLevel
+		wantStatus   string
 	}{
 		{
 			name:       "clean code",
@@ -62,24 +62,24 @@ func TestScanCode(t *testing.T) {
 			wantStatus:   "WARNING",
 		},
 	}
-	
+
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			result, err := scanner.ScanCode(tt.code, "test.go")
 			if err != nil {
 				t.Fatalf("ScanCode failed: %v", err)
 			}
-			
+
 			if result == nil {
 				t.Fatal("Expected result, got nil")
 			}
-			
+
 			hasVulns := result.TotalVulnerabilities > 0
 			if hasVulns != tt.wantVulns {
-				t.Errorf("Expected vulnerabilities=%v, got %d vulnerabilities", 
+				t.Errorf("Expected vulnerabilities=%v, got %d vulnerabilities",
 					tt.wantVulns, result.TotalVulnerabilities)
 			}
-			
+
 			if tt.wantVulns && len(result.Vulnerabilities) > 0 {
 				found := false
 				for _, vuln := range result.Vulnerabilities {
@@ -92,7 +92,7 @@ func TestScanCode(t *testing.T) {
 					t.Errorf("Expected severity %v, not found in results", tt.wantSeverity)
 				}
 			}
-			
+
 			if result.Status != tt.wantStatus {
 				t.Errorf("Expected status %s, got %s", tt.wantStatus, result.Status)
 			}
@@ -102,7 +102,7 @@ func TestScanCode(t *testing.T) {
 
 func TestScanOWASPTop10(t *testing.T) {
 	scanner := NewAdvancedScanner()
-	
+
 	tests := []struct {
 		name     string
 		code     string
@@ -129,14 +129,14 @@ func TestScanOWASPTop10(t *testing.T) {
 			category: "OWASP A05",
 		},
 	}
-	
+
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			vulns := scanner.scanOWASPTop10(tt.code, "test.go")
 			if len(vulns) == 0 {
 				t.Error("Expected OWASP vulnerability, found none")
 			}
-			
+
 			found := false
 			for _, vuln := range vulns {
 				if contains(vuln.Category, tt.category) {
@@ -153,11 +153,11 @@ func TestScanOWASPTop10(t *testing.T) {
 
 func TestScanCommonIssues(t *testing.T) {
 	scanner := NewAdvancedScanner()
-	
+
 	tests := []struct {
-		name     string
-		code     string
-		wantCWE  string
+		name    string
+		code    string
+		wantCWE string
 	}{
 		{
 			name:    "hardcoded password",
@@ -170,14 +170,14 @@ func TestScanCommonIssues(t *testing.T) {
 			wantCWE: "CWE-338",
 		},
 	}
-	
+
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			vulns := scanner.scanCommonIssues(tt.code, "test.go")
 			if len(vulns) == 0 {
 				t.Error("Expected vulnerability, found none")
 			}
-			
+
 			found := false
 			for _, vuln := range vulns {
 				if vuln.CWE == tt.wantCWE {
@@ -194,7 +194,7 @@ func TestScanCommonIssues(t *testing.T) {
 
 func TestCalculateComplianceScore(t *testing.T) {
 	scanner := NewAdvancedScanner()
-	
+
 	tests := []struct {
 		name  string
 		vulns []Vulnerability
@@ -222,7 +222,7 @@ func TestCalculateComplianceScore(t *testing.T) {
 			want: 65,
 		},
 	}
-	
+
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			score := scanner.calculateComplianceScore(tt.vulns)
@@ -235,7 +235,7 @@ func TestCalculateComplianceScore(t *testing.T) {
 
 func TestGenerateReport(t *testing.T) {
 	scanner := NewAdvancedScanner()
-	
+
 	result := &ScanResult{
 		TotalVulnerabilities: 5,
 		VulnerabilitiesBySeverity: map[VulnerabilityLevel]int{
@@ -246,12 +246,12 @@ func TestGenerateReport(t *testing.T) {
 		ComplianceScore: 75,
 		Status:          "FAIL",
 	}
-	
+
 	report := scanner.GenerateReport(result)
 	if report == "" {
 		t.Error("Expected non-empty report")
 	}
-	
+
 	if !contains(report, "Security Scan Report") {
 		t.Error("Report missing title")
 	}
@@ -265,19 +265,19 @@ func TestGenerateReport(t *testing.T) {
 
 func TestVulnerabilityFields(t *testing.T) {
 	scanner := NewAdvancedScanner()
-	
+
 	code := "SELECT * FROM users WHERE id = \" + userId"
 	result, err := scanner.ScanCode(code, "test.go")
 	if err != nil {
 		t.Fatalf("ScanCode failed: %v", err)
 	}
-	
+
 	if len(result.Vulnerabilities) == 0 {
 		t.Fatal("Expected vulnerabilities, got none")
 	}
-	
+
 	vuln := result.Vulnerabilities[0]
-	
+
 	if vuln.ID == "" {
 		t.Error("Vulnerability ID is empty")
 	}
@@ -297,9 +297,9 @@ func TestVulnerabilityFields(t *testing.T) {
 
 // Helper function
 func contains(s, substr string) bool {
-	return len(s) >= len(substr) && (s == substr || len(s) > len(substr) && 
-		(s[:len(substr)] == substr || s[len(s)-len(substr):] == substr || 
-		findSubstring(s, substr)))
+	return len(s) >= len(substr) && (s == substr || len(s) > len(substr) &&
+		(s[:len(substr)] == substr || s[len(s)-len(substr):] == substr ||
+			findSubstring(s, substr)))
 }
 
 func findSubstring(s, substr string) bool {

@@ -23,10 +23,10 @@ func (s *Scaffolder) CreateStructure(config *ProjectConfig) error {
 	if err != nil {
 		return fmt.Errorf("failed to create output directory: %w", err)
 	}
-	
+
 	// Get directory structure based on project type
 	dirs := s.getDirectories(config.Type)
-	
+
 	// Create each directory
 	for _, dir := range dirs {
 		path := filepath.Join(config.OutputDir, dir)
@@ -35,7 +35,7 @@ func (s *Scaffolder) CreateStructure(config *ProjectConfig) error {
 			return fmt.Errorf("failed to create directory %s: %w", dir, err)
 		}
 	}
-	
+
 	return nil
 }
 
@@ -56,7 +56,7 @@ func (s *Scaffolder) getDirectories(projectType ProjectType) []string {
 			"deploy",
 			"docs",
 		}
-	
+
 	case ProjectTypeBot:
 		return []string{
 			"bot",
@@ -71,7 +71,7 @@ func (s *Scaffolder) getDirectories(projectType ProjectType) []string {
 			"deploy",
 			"docs",
 		}
-	
+
 	case ProjectTypeAPI:
 		return []string{
 			"cmd",
@@ -89,7 +89,7 @@ func (s *Scaffolder) getDirectories(projectType ProjectType) []string {
 			"deploy",
 			"docs",
 		}
-	
+
 	case ProjectTypeEcommerce:
 		return []string{
 			"app",
@@ -108,7 +108,7 @@ func (s *Scaffolder) getDirectories(projectType ProjectType) []string {
 			"deploy",
 			"docs",
 		}
-	
+
 	case ProjectTypeAIAgent:
 		return []string{
 			"agents",
@@ -122,7 +122,7 @@ func (s *Scaffolder) getDirectories(projectType ProjectType) []string {
 			"deploy",
 			"docs",
 		}
-	
+
 	default:
 		return []string{
 			"src",
@@ -136,20 +136,20 @@ func (s *Scaffolder) getDirectories(projectType ProjectType) []string {
 // CreateFile creates a file with the given content at the specified path.
 func (s *Scaffolder) CreateFile(basePath, relativePath, content string) error {
 	fullPath := filepath.Join(basePath, relativePath)
-	
+
 	// Ensure directory exists
 	dir := filepath.Dir(fullPath)
 	err := os.MkdirAll(dir, 0755)
 	if err != nil {
 		return fmt.Errorf("failed to create directory for file %s: %w", relativePath, err)
 	}
-	
+
 	// Write file
 	err = os.WriteFile(fullPath, []byte(content), 0644)
 	if err != nil {
 		return fmt.Errorf("failed to write file %s: %w", relativePath, err)
 	}
-	
+
 	return nil
 }
 
@@ -162,10 +162,10 @@ func (s *Scaffolder) GetProjectName(description string) string {
 func GenerateProjectName(description string) string {
 	// Convert to lowercase
 	name := strings.ToLower(description)
-	
+
 	// Replace spaces with hyphens
 	name = strings.ReplaceAll(name, " ", "-")
-	
+
 	// Remove special characters except hyphens
 	var result strings.Builder
 	for _, r := range name {
@@ -174,20 +174,20 @@ func GenerateProjectName(description string) string {
 		}
 	}
 	name = result.String()
-	
+
 	// Remove consecutive hyphens
 	for strings.Contains(name, "--") {
 		name = strings.ReplaceAll(name, "--", "-")
 	}
-	
+
 	// Trim hyphens
 	name = strings.Trim(name, "-")
-	
+
 	// Limit length
 	if len(name) > 50 {
 		name = name[:50]
 		name = strings.TrimRight(name, "-")
 	}
-	
+
 	return name
 }

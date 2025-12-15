@@ -11,10 +11,10 @@ import (
 type ComplianceStandard string
 
 const (
-	SOC2  ComplianceStandard = "SOC2"
-	GDPR  ComplianceStandard = "GDPR"
-	HIPAA ComplianceStandard = "HIPAA"
-	PCI   ComplianceStandard = "PCI-DSS"
+	SOC2     ComplianceStandard = "SOC2"
+	GDPR     ComplianceStandard = "GDPR"
+	HIPAA    ComplianceStandard = "HIPAA"
+	PCI      ComplianceStandard = "PCI-DSS"
 	ISO27001 ComplianceStandard = "ISO27001"
 )
 
@@ -30,13 +30,13 @@ type ComplianceCheck struct {
 
 // ComplianceReport represents a compliance report
 type ComplianceReport struct {
-	Standards       []ComplianceStandard `json:"standards"`
-	Checks          []ComplianceCheck    `json:"checks"`
-	OverallScore    int                  `json:"overall_score"`
-	PassedChecks    int                  `json:"passed_checks"`
-	FailedChecks    int                  `json:"failed_checks"`
-	WarningChecks   int                  `json:"warning_checks"`
-	GeneratedAt     time.Time            `json:"generated_at"`
+	Standards     []ComplianceStandard `json:"standards"`
+	Checks        []ComplianceCheck    `json:"checks"`
+	OverallScore  int                  `json:"overall_score"`
+	PassedChecks  int                  `json:"passed_checks"`
+	FailedChecks  int                  `json:"failed_checks"`
+	WarningChecks int                  `json:"warning_checks"`
+	GeneratedAt   time.Time            `json:"generated_at"`
 }
 
 // ComplianceChecker checks code for compliance with security standards
@@ -54,17 +54,17 @@ func NewComplianceChecker() *ComplianceChecker {
 // CheckCompliance checks code for compliance
 func (cc *ComplianceChecker) CheckCompliance(code string, filePath string) *ComplianceReport {
 	checks := make([]ComplianceCheck, 0)
-	
+
 	for _, standard := range cc.enabledStandards {
 		standardChecks := cc.checkStandard(standard, code, filePath)
 		checks = append(checks, standardChecks...)
 	}
-	
+
 	// Calculate statistics
 	passed := 0
 	failed := 0
 	warnings := 0
-	
+
 	for _, check := range checks {
 		switch check.Status {
 		case "PASS":
@@ -75,14 +75,14 @@ func (cc *ComplianceChecker) CheckCompliance(code string, filePath string) *Comp
 			warnings++
 		}
 	}
-	
+
 	// Calculate overall score
 	totalChecks := len(checks)
 	score := 0
 	if totalChecks > 0 {
 		score = (passed * 100) / totalChecks
 	}
-	
+
 	return &ComplianceReport{
 		Standards:     cc.enabledStandards,
 		Checks:        checks,
@@ -97,7 +97,7 @@ func (cc *ComplianceChecker) CheckCompliance(code string, filePath string) *Comp
 // checkStandard checks code against a specific standard
 func (cc *ComplianceChecker) checkStandard(standard ComplianceStandard, code string, filePath string) []ComplianceCheck {
 	checks := make([]ComplianceCheck, 0)
-	
+
 	switch standard {
 	case SOC2:
 		checks = append(checks, cc.checkSOC2(code, filePath)...)
@@ -110,25 +110,25 @@ func (cc *ComplianceChecker) checkStandard(standard ComplianceStandard, code str
 	case ISO27001:
 		checks = append(checks, cc.checkISO27001(code, filePath)...)
 	}
-	
+
 	return checks
 }
 
 // checkSOC2 checks for SOC2 compliance
 func (cc *ComplianceChecker) checkSOC2(code string, filePath string) []ComplianceCheck {
 	checks := make([]ComplianceCheck, 0)
-	
+
 	// CC6.1 - Logical and Physical Access Controls
 	findings := make([]string, 0)
 	if strings.Contains(code, "public") && strings.Contains(code, "api") {
 		findings = append(findings, "Public API endpoint detected - ensure proper access controls")
 	}
-	
+
 	status := "PASS"
 	if len(findings) > 0 {
 		status = "WARNING"
 	}
-	
+
 	checks = append(checks, ComplianceCheck{
 		Standard:    SOC2,
 		Requirement: "CC6.1 - Access Controls",
@@ -137,7 +137,7 @@ func (cc *ComplianceChecker) checkSOC2(code string, filePath string) []Complianc
 		Findings:    findings,
 		CheckedAt:   time.Now(),
 	})
-	
+
 	// CC7.2 - System Monitoring
 	findings = make([]string, 0)
 	hasLogging := strings.Contains(code, "log.") || strings.Contains(code, "logger")
@@ -147,7 +147,7 @@ func (cc *ComplianceChecker) checkSOC2(code string, filePath string) []Complianc
 	} else {
 		status = "PASS"
 	}
-	
+
 	checks = append(checks, ComplianceCheck{
 		Standard:    SOC2,
 		Requirement: "CC7.2 - System Monitoring",
@@ -156,25 +156,25 @@ func (cc *ComplianceChecker) checkSOC2(code string, filePath string) []Complianc
 		Findings:    findings,
 		CheckedAt:   time.Now(),
 	})
-	
+
 	return checks
 }
 
 // checkGDPR checks for GDPR compliance
 func (cc *ComplianceChecker) checkGDPR(code string, filePath string) []ComplianceCheck {
 	checks := make([]ComplianceCheck, 0)
-	
+
 	// Article 32 - Security of processing
 	findings := make([]string, 0)
 	if strings.Contains(code, "password") && !strings.Contains(code, "hash") {
 		findings = append(findings, "Potential unencrypted password - ensure encryption")
 	}
-	
+
 	status := "PASS"
 	if len(findings) > 0 {
 		status = "FAIL"
 	}
-	
+
 	checks = append(checks, ComplianceCheck{
 		Standard:    GDPR,
 		Requirement: "Article 32 - Data Security",
@@ -183,7 +183,7 @@ func (cc *ComplianceChecker) checkGDPR(code string, filePath string) []Complianc
 		Findings:    findings,
 		CheckedAt:   time.Now(),
 	})
-	
+
 	// Article 25 - Data protection by design
 	findings = make([]string, 0)
 	hasEncryption := strings.Contains(code, "encrypt") || strings.Contains(code, "cipher")
@@ -193,7 +193,7 @@ func (cc *ComplianceChecker) checkGDPR(code string, filePath string) []Complianc
 	} else {
 		status = "PASS"
 	}
-	
+
 	checks = append(checks, ComplianceCheck{
 		Standard:    GDPR,
 		Requirement: "Article 25 - Data Protection by Design",
@@ -202,14 +202,14 @@ func (cc *ComplianceChecker) checkGDPR(code string, filePath string) []Complianc
 		Findings:    findings,
 		CheckedAt:   time.Now(),
 	})
-	
+
 	return checks
 }
 
 // checkHIPAA checks for HIPAA compliance
 func (cc *ComplianceChecker) checkHIPAA(code string, filePath string) []ComplianceCheck {
 	checks := make([]ComplianceCheck, 0)
-	
+
 	// 164.312(a)(1) - Access Control
 	findings := make([]string, 0)
 	if strings.Contains(code, "health") || strings.Contains(code, "patient") {
@@ -217,12 +217,12 @@ func (cc *ComplianceChecker) checkHIPAA(code string, filePath string) []Complian
 			findings = append(findings, "Health data without access control - implement authentication")
 		}
 	}
-	
+
 	status := "PASS"
 	if len(findings) > 0 {
 		status = "FAIL"
 	}
-	
+
 	checks = append(checks, ComplianceCheck{
 		Standard:    HIPAA,
 		Requirement: "164.312(a)(1) - Access Control",
@@ -231,14 +231,14 @@ func (cc *ComplianceChecker) checkHIPAA(code string, filePath string) []Complian
 		Findings:    findings,
 		CheckedAt:   time.Now(),
 	})
-	
+
 	return checks
 }
 
 // checkPCI checks for PCI-DSS compliance
 func (cc *ComplianceChecker) checkPCI(code string, filePath string) []ComplianceCheck {
 	checks := make([]ComplianceCheck, 0)
-	
+
 	// Requirement 3 - Protect stored cardholder data
 	findings := make([]string, 0)
 	if strings.Contains(code, "card") || strings.Contains(code, "credit") {
@@ -246,12 +246,12 @@ func (cc *ComplianceChecker) checkPCI(code string, filePath string) []Compliance
 			findings = append(findings, "Card data without encryption - must encrypt cardholder data")
 		}
 	}
-	
+
 	status := "PASS"
 	if len(findings) > 0 {
 		status = "FAIL"
 	}
-	
+
 	checks = append(checks, ComplianceCheck{
 		Standard:    PCI,
 		Requirement: "Requirement 3 - Protect Cardholder Data",
@@ -260,7 +260,7 @@ func (cc *ComplianceChecker) checkPCI(code string, filePath string) []Compliance
 		Findings:    findings,
 		CheckedAt:   time.Now(),
 	})
-	
+
 	return checks
 }
 
@@ -271,12 +271,12 @@ func (cc *ComplianceChecker) checkISO27001(code string, filePath string) []Compl
 	if strings.Contains(code, "admin") && !strings.Contains(code, "role") {
 		findings = append(findings, "Admin access without role-based control")
 	}
-	
+
 	status := "PASS"
 	if len(findings) > 0 {
 		status = "WARNING"
 	}
-	
+
 	return []ComplianceCheck{
 		{
 			Standard:    ISO27001,
@@ -294,13 +294,13 @@ func (cc *ComplianceChecker) GenerateReport(report *ComplianceReport) string {
 	output := "Compliance Report\n"
 	output += "=================\n\n"
 	output += fmt.Sprintf("Overall Score: %d/100\n", report.OverallScore)
-	output += fmt.Sprintf("Passed: %d, Failed: %d, Warnings: %d\n\n", 
+	output += fmt.Sprintf("Passed: %d, Failed: %d, Warnings: %d\n\n",
 		report.PassedChecks, report.FailedChecks, report.WarningChecks)
-	
+
 	output += "Standards Checked:\n"
 	for _, std := range report.Standards {
 		output += fmt.Sprintf("  - %s\n", std)
 	}
-	
+
 	return output
 }
