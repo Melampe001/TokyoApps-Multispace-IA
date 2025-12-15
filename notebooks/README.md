@@ -123,9 +123,14 @@ USE_MOCK_MODE = False  # Set in Section 0
 ```
 
 **Requirements:**
-- OpenAI API key (for AI email generation)
+- **OpenAI API key** (for AI email generation) - OR -
+- **Groq API key** (alternative AI provider with faster inference using open-source models like Llama 3.3, Mixtral)
 - Clearbit API key (optional, for company enrichment)
 - HubSpot API key (optional, for CRM integration)
+
+**AI Provider Options:**
+- **OpenAI**: GPT-3.5-turbo, GPT-4, GPT-4-turbo
+- **Groq**: llama-3.3-70b-versatile, llama-3.1-70b-versatile, mixtral-8x7b-32768 (faster inference, open-source models)
 
 ## Notebook Structure
 
@@ -345,11 +350,22 @@ Use environment variables or the notebook's secure input:
 ```python
 from getpass import getpass
 OPENAI_API_KEY = getpass("OpenAI API Key: ")
+# OR for Groq
+GROQ_API_KEY = getpass("Groq API Key: ")
+```
+
+Alternatively, set up environment variables:
+
+```bash
+export OPENAI_API_KEY="your-api-key"
+# OR for Groq
+export GROQ_API_KEY="your-api-key"
 ```
 
 ### API Key Permissions
 
 - **OpenAI**: Requires API access with GPT-3.5/4 permissions
+- **Groq**: Requires API access (get free key at https://console.groq.com/keys)
 - **Clearbit**: Requires Enrichment API access
 - **HubSpot**: Requires CRM and Engagement permissions
 
@@ -362,7 +378,7 @@ OPENAI_API_KEY = getpass("OpenAI API Key: ")
 
 ### Live API Mode Performance
 - Enrichment: 1-3s (depending on Clearbit)
-- Email generation: 2-5s (OpenAI API)
+- Email generation: 2-5s (OpenAI API) or 0.5-2s (Groq API - faster)
 - HubSpot operations: 0.5-2s
 
 ## Next Steps
@@ -389,6 +405,7 @@ To improve this experimental notebook:
 ## Resources
 
 - [OpenAI API Documentation](https://platform.openai.com/docs)
+- [Groq API Documentation](https://console.groq.com/docs)
 - [Clearbit API Documentation](https://clearbit.com/docs)
 - [HubSpot API Documentation](https://developers.hubspot.com/docs/api/overview)
 - [Pydantic Documentation](https://docs.pydantic.dev/)
