@@ -30,7 +30,7 @@ jobs:
       - name: Download Recent Bot Reports
         id: download_reports
         continue-on-error: true
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: |
             const fs = require('fs');
@@ -317,7 +317,7 @@ jobs:
           cat weekly-report.md
       
       - name: Create GitHub Issue with Report
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: |
             const fs = require('fs');
