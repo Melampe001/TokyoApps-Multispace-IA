@@ -1,0 +1,2404 @@
+{
+  "generated": "2025-12-14T07:35:23.871852",
+  "total_files": 75,
+  "files": [
+    {
+      "file": {
+        "path": "CONTRIBUTING.md",
+        "name": "CONTRIBUTING.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 7304,
+        "lines": 287
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "general",
+        "purpose": "general",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-13T21:32:45-06:00",
+        "modified": "2025-12-13T21:32:45-06:00"
+      },
+      "authorship": {
+        "author": "Artur Orozco",
+        "contributors": [
+          "Artur Orozco"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "Contributing to Tokyo-IA",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "Sin limite",
+        "name": "Sin limite",
+        "type": "other",
+        "extension": "",
+        "size_bytes": 738,
+        "lines": 17
+      },
+      "classification": {
+        "category": "other",
+        "area": "general",
+        "purpose": "general",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-13T21:32:45-06:00",
+        "modified": "2025-12-13T21:32:45-06:00"
+      },
+      "authorship": {
+        "author": "Artur Orozco",
+        "contributors": [
+          "Artur Orozco"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "Sin limite - other",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": ".gitignore",
+        "name": ".gitignore",
+        "type": "other",
+        "extension": "",
+        "size_bytes": 788,
+        "lines": 80
+      },
+      "classification": {
+        "category": "other",
+        "area": "general",
+        "purpose": "general",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-13T21:32:45-06:00",
+        "modified": "2025-12-14T07:25:29Z"
+      },
+      "authorship": {
+        "author": "Artur Orozco",
+        "contributors": [
+          "copilot-swe-agent[bot]",
+          "Artur Orozco"
+        ],
+        "commits": 2
+      },
+      "content": {
+        "description": ".gitignore - other",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "Fllutter",
+        "name": "Fllutter",
+        "type": "other",
+        "extension": "",
+        "size_bytes": 873,
+        "lines": 18
+      },
+      "classification": {
+        "category": "other",
+        "area": "general",
+        "purpose": "general",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-13T21:32:45-06:00",
+        "modified": "2025-12-13T21:32:45-06:00"
+      },
+      "authorship": {
+        "author": "Artur Orozco",
+        "contributors": [
+          "Artur Orozco"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "Fllutter - other",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "README.md",
+        "name": "README.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 4547,
+        "lines": 139
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "general",
+        "purpose": "documentation",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-13T21:32:45-06:00",
+        "modified": "2025-12-13T21:32:45-06:00"
+      },
+      "authorship": {
+        "author": "Artur Orozco",
+        "contributors": [
+          "Artur Orozco"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "Tokyo-IA",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "Cuerpo",
+        "name": "Cuerpo",
+        "type": "other",
+        "extension": "",
+        "size_bytes": 695,
+        "lines": 16
+      },
+      "classification": {
+        "category": "other",
+        "area": "general",
+        "purpose": "general",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-13T21:32:45-06:00",
+        "modified": "2025-12-13T21:32:45-06:00"
+      },
+      "authorship": {
+        "author": "Artur Orozco",
+        "contributors": [
+          "Artur Orozco"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "Cuerpo - other",
+        "dependencies": [
+          "'package:flutter_gemini/flutter_gemini.dart';",
+          "'package:openai_flutter/openai_flutter.dart';",
+          "package:flutter_gemini/flutter_gemini.dart",
+          "package:openai_flutter/openai_flutter.dart"
+        ]
+      }
+    },
+    {
+      "file": {
+        "path": "Real",
+        "name": "Real",
+        "type": "other",
+        "extension": "",
+        "size_bytes": 159,
+        "lines": 4
+      },
+      "classification": {
+        "category": "other",
+        "area": "general",
+        "purpose": "general",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-13T21:32:45-06:00",
+        "modified": "2025-12-13T21:32:45-06:00"
+      },
+      "authorship": {
+        "author": "Artur Orozco",
+        "contributors": [
+          "Artur Orozco"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "Real - other",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "Agentes y bots",
+        "name": "Agentes y bots",
+        "type": "other",
+        "extension": "",
+        "size_bytes": 3651,
+        "lines": 54
+      },
+      "classification": {
+        "category": "other",
+        "area": "general",
+        "purpose": "automation",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-13T21:32:45-06:00",
+        "modified": "2025-12-13T21:32:45-06:00"
+      },
+      "authorship": {
+        "author": "Artur Orozco",
+        "contributors": [
+          "Artur Orozco"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "Agentes y bots - other",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "TAREAS.md",
+        "name": "TAREAS.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 2799,
+        "lines": 82
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "general",
+        "purpose": "general",
+        "tags": [
+          "golang"
+        ]
+      },
+      "dates": {
+        "created": "2025-12-13T21:32:45-06:00",
+        "modified": "2025-12-13T21:32:45-06:00"
+      },
+      "authorship": {
+        "author": "Artur Orozco",
+        "contributors": [
+          "Artur Orozco"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "\u00bfQu\u00e9 tengo que hacer? - Gu\u00eda de Tareas para Tokyo IA",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "Imitar",
+        "name": "Imitar",
+        "type": "other",
+        "extension": "",
+        "size_bytes": 462,
+        "lines": 12
+      },
+      "classification": {
+        "category": "other",
+        "area": "general",
+        "purpose": "general",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-13T21:32:45-06:00",
+        "modified": "2025-12-13T21:32:45-06:00"
+      },
+      "authorship": {
+        "author": "Artur Orozco",
+        "contributors": [
+          "Artur Orozco"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "Imitar - other",
+        "dependencies": [
+          "'package:huggingface_flutter/transformers.dart';",
+          "package:huggingface_flutter/transformers.dart"
+        ]
+      }
+    },
+    {
+      "file": {
+        "path": "go.mod",
+        "name": "go.mod",
+        "type": "other",
+        "extension": ".mod",
+        "size_bytes": 50,
+        "lines": 3
+      },
+      "classification": {
+        "category": "other",
+        "area": "general",
+        "purpose": "general",
+        "tags": [
+          "golang"
+        ]
+      },
+      "dates": {
+        "created": "2025-12-13T21:32:45-06:00",
+        "modified": "2025-12-13T21:32:45-06:00"
+      },
+      "authorship": {
+        "author": "Artur Orozco",
+        "contributors": [
+          "Artur Orozco"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "go.mod - other",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "Makefile",
+        "name": "Makefile",
+        "type": "build",
+        "extension": "Makefile",
+        "size_bytes": 229,
+        "lines": 17
+      },
+      "classification": {
+        "category": "build",
+        "area": "general",
+        "purpose": "deployment",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-13T21:32:45-06:00",
+        "modified": "2025-12-13T21:32:45-06:00"
+      },
+      "authorship": {
+        "author": "Artur Orozco",
+        "contributors": [
+          "Artur Orozco"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "Makefile - build",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "Sincero",
+        "name": "Sincero",
+        "type": "other",
+        "extension": "",
+        "size_bytes": 286,
+        "lines": 1
+      },
+      "classification": {
+        "category": "other",
+        "area": "general",
+        "purpose": "general",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-13T21:32:45-06:00",
+        "modified": "2025-12-13T21:32:45-06:00"
+      },
+      "authorship": {
+        "author": "Artur Orozco",
+        "contributors": [
+          "Artur Orozco"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "Sincero - other",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "SECURITY.md",
+        "name": "SECURITY.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 5948,
+        "lines": 208
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "general",
+        "purpose": "security",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-13T21:32:45-06:00",
+        "modified": "2025-12-13T21:32:45-06:00"
+      },
+      "authorship": {
+        "author": "Artur Orozco",
+        "contributors": [
+          "Artur Orozco"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "Security Policy",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "Setup",
+        "name": "Setup",
+        "type": "other",
+        "extension": "",
+        "size_bytes": 2964,
+        "lines": 50
+      },
+      "classification": {
+        "category": "other",
+        "area": "general",
+        "purpose": "general",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-13T21:32:45-06:00",
+        "modified": "2025-12-13T21:32:45-06:00"
+      },
+      "authorship": {
+        "author": "Artur Orozco",
+        "contributors": [
+          "Artur Orozco"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "Setup - other",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "admin/hello.go",
+        "name": "hello.go",
+        "type": "source",
+        "extension": ".go",
+        "size_bytes": 163,
+        "lines": 7
+      },
+      "classification": {
+        "category": "source",
+        "area": "frontend",
+        "purpose": "general",
+        "tags": [
+          "golang"
+        ]
+      },
+      "dates": {
+        "created": "2025-12-13T21:32:45-06:00",
+        "modified": "2025-12-13T21:32:45-06:00"
+      },
+      "authorship": {
+        "author": "Artur Orozco",
+        "contributors": [
+          "Artur Orozco"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "hello.go - source",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "proto/hello.proto",
+        "name": "hello.proto",
+        "type": "schema",
+        "extension": ".proto",
+        "size_bytes": 487,
+        "lines": 21
+      },
+      "classification": {
+        "category": "schema",
+        "area": "general",
+        "purpose": "general",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-13T21:32:45-06:00",
+        "modified": "2025-12-13T21:32:45-06:00"
+      },
+      "authorship": {
+        "author": "Artur Orozco",
+        "contributors": [
+          "Artur Orozco"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "hello.proto - schema",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": ".github/copilot-instructions.md",
+        "name": "copilot-instructions.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 3753,
+        "lines": 115
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "ci-cd",
+        "purpose": "general",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-13T21:32:45-06:00",
+        "modified": "2025-12-13T21:32:45-06:00"
+      },
+      "authorship": {
+        "author": "Artur Orozco",
+        "contributors": [
+          "Artur Orozco"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "Copilot Instructions for Tokyo-IA",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": ".github/dependabot.yml",
+        "name": "dependabot.yml",
+        "type": "workflow",
+        "extension": ".yml",
+        "size_bytes": 1377,
+        "lines": 62
+      },
+      "classification": {
+        "category": "workflow",
+        "area": "ci-cd",
+        "purpose": "automation",
+        "tags": [
+          "yaml",
+          "github-actions"
+        ]
+      },
+      "dates": {
+        "created": "2025-12-13T21:32:45-06:00",
+        "modified": "2025-12-13T21:32:45-06:00"
+      },
+      "authorship": {
+        "author": "Artur Orozco",
+        "contributors": [
+          "Artur Orozco"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "dependabot.yml - workflow",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": ".github/pull_request_template.md",
+        "name": "pull_request_template.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 1841,
+        "lines": 70
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "ci-cd",
+        "purpose": "general",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-13T21:32:45-06:00",
+        "modified": "2025-12-13T21:32:45-06:00"
+      },
+      "authorship": {
+        "author": "Artur Orozco",
+        "contributors": [
+          "Artur Orozco"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "Description",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": ".github/workflows/ci.yml",
+        "name": "ci.yml",
+        "type": "workflow",
+        "extension": ".yml",
+        "size_bytes": 3068,
+        "lines": 136
+      },
+      "classification": {
+        "category": "workflow",
+        "area": "ci-cd",
+        "purpose": "general",
+        "tags": [
+          "yaml"
+        ]
+      },
+      "dates": {
+        "created": "2025-12-13T21:32:45-06:00",
+        "modified": "2025-12-13T21:32:45-06:00"
+      },
+      "authorship": {
+        "author": "Artur Orozco",
+        "contributors": [
+          "Artur Orozco"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "CI Pipeline",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": ".github/workflows/library-report.yml",
+        "name": "library-report.yml",
+        "type": "workflow",
+        "extension": ".yml",
+        "size_bytes": 7178,
+        "lines": 138
+      },
+      "classification": {
+        "category": "workflow",
+        "area": "ci-cd",
+        "purpose": "general",
+        "tags": [
+          "yaml"
+        ]
+      },
+      "dates": {
+        "created": "2025-12-14T07:22:11Z",
+        "modified": "2025-12-14T07:34:24Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 3
+      },
+      "content": {
+        "description": "Library Report",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": ".github/workflows/auto-documenter.yml",
+        "name": "auto-documenter.yml",
+        "type": "workflow",
+        "extension": ".yml",
+        "size_bytes": 5631,
+        "lines": 150
+      },
+      "classification": {
+        "category": "workflow",
+        "area": "ci-cd",
+        "purpose": "documentation",
+        "tags": [
+          "yaml"
+        ]
+      },
+      "dates": {
+        "created": "2025-12-14T07:22:11Z",
+        "modified": "2025-12-14T07:34:24Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 2
+      },
+      "content": {
+        "description": "Auto Documenter",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": ".github/workflows/library-indexer.yml",
+        "name": "library-indexer.yml",
+        "type": "workflow",
+        "extension": ".yml",
+        "size_bytes": 3916,
+        "lines": 121
+      },
+      "classification": {
+        "category": "workflow",
+        "area": "ci-cd",
+        "purpose": "general",
+        "tags": [
+          "yaml"
+        ]
+      },
+      "dates": {
+        "created": "2025-12-14T07:22:11Z",
+        "modified": "2025-12-14T07:34:24Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 2
+      },
+      "content": {
+        "description": "Library Indexer",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": ".github/workflows/scripts/library_cataloger.py",
+        "name": "library_cataloger.py",
+        "type": "script",
+        "extension": ".py",
+        "size_bytes": 20290,
+        "lines": 535
+      },
+      "classification": {
+        "category": "script",
+        "area": "ci-cd",
+        "purpose": "general",
+        "tags": [
+          "python"
+        ]
+      },
+      "dates": {
+        "created": "2025-12-14T07:22:11Z",
+        "modified": "2025-12-14T07:31:12Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 3
+      },
+      "content": {
+        "description": "!/usr/bin/env python3",
+        "dependencies": [
+          "os",
+          "json",
+          "hashlib",
+          "subprocess",
+          "datetime"
+        ]
+      }
+    },
+    {
+      "file": {
+        "path": ".github/workflows/scripts/library_search.py",
+        "name": "library_search.py",
+        "type": "script",
+        "extension": ".py",
+        "size_bytes": 6437,
+        "lines": 193
+      },
+      "classification": {
+        "category": "script",
+        "area": "ci-cd",
+        "purpose": "general",
+        "tags": [
+          "python"
+        ]
+      },
+      "dates": {
+        "created": "2025-12-14T07:22:11Z",
+        "modified": "2025-12-14T07:22:11Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "!/usr/bin/env python3",
+        "dependencies": [
+          "json",
+          "argparse",
+          "sys",
+          "pathlib",
+          "datetime"
+        ]
+      }
+    },
+    {
+      "file": {
+        "path": ".github/agents/my-agent.agent.md",
+        "name": "my-agent.agent.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 383,
+        "lines": 13
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "ci-cd",
+        "purpose": "general",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-13T21:32:45-06:00",
+        "modified": "2025-12-13T21:32:45-06:00"
+      },
+      "authorship": {
+        "author": "Artur Orozco",
+        "contributors": [
+          "Artur Orozco"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "---",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": ".github/ISSUE_TEMPLATE/feature_request.md",
+        "name": "feature_request.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 1208,
+        "lines": 59
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "ci-cd",
+        "purpose": "general",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-13T21:32:45-06:00",
+        "modified": "2025-12-13T21:32:45-06:00"
+      },
+      "authorship": {
+        "author": "Artur Orozco",
+        "contributors": [
+          "Artur Orozco"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "---",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": ".github/ISSUE_TEMPLATE/bug_report.md",
+        "name": "bug_report.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 1202,
+        "lines": 63
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "ci-cd",
+        "purpose": "general",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-13T21:32:45-06:00",
+        "modified": "2025-12-13T21:32:45-06:00"
+      },
+      "authorship": {
+        "author": "Artur Orozco",
+        "contributors": [
+          "Artur Orozco"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "---",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": ".github/ISSUE_TEMPLATE/documentation.md",
+        "name": "documentation.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 822,
+        "lines": 46
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "ci-cd",
+        "purpose": "documentation",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-13T21:32:45-06:00",
+        "modified": "2025-12-13T21:32:45-06:00"
+      },
+      "authorship": {
+        "author": "Artur Orozco",
+        "contributors": [
+          "Artur Orozco"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "---",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": ".github/templates/FILE_TEMPLATE.md",
+        "name": "FILE_TEMPLATE.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 2185,
+        "lines": 120
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "ci-cd",
+        "purpose": "general",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-14T07:22:11Z",
+        "modified": "2025-12-14T07:22:11Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "[Nombre del Archivo]",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "LIBRARY/SEARCH_INDEX.json",
+        "name": "SEARCH_INDEX.json",
+        "type": "configuration",
+        "extension": ".json",
+        "size_bytes": 56787,
+        "lines": 2404
+      },
+      "classification": {
+        "category": "configuration",
+        "area": "general",
+        "purpose": "general",
+        "tags": [
+          "javascript"
+        ]
+      },
+      "dates": {
+        "created": "2025-12-14T07:22:11Z",
+        "modified": "2025-12-14T07:34:24Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 3
+      },
+      "content": {
+        "description": "SEARCH_INDEX.json - configuration",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "LIBRARY/dashboard.html",
+        "name": "dashboard.html",
+        "type": "other",
+        "extension": ".html",
+        "size_bytes": 12927,
+        "lines": 413
+      },
+      "classification": {
+        "category": "other",
+        "area": "general",
+        "purpose": "general",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-14T07:22:11Z",
+        "modified": "2025-12-14T07:22:11Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "dashboard.html - other",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "LIBRARY/GUIDE.md",
+        "name": "GUIDE.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 14826,
+        "lines": 542
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "general",
+        "purpose": "documentation",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-14T07:25:29Z",
+        "modified": "2025-12-14T07:25:29Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "Digital Library System - Complete Guide",
+        "dependencies": [
+          "json",
+          "datetime"
+        ]
+      }
+    },
+    {
+      "file": {
+        "path": "LIBRARY/README.md",
+        "name": "README.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 6070,
+        "lines": 171
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "general",
+        "purpose": "documentation",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-14T07:22:11Z",
+        "modified": "2025-12-14T07:22:11Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "\ud83d\udcda Tokyo-IA Digital Library",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "LIBRARY/CATALOG.md",
+        "name": "CATALOG.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 5339,
+        "lines": 132
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "general",
+        "purpose": "general",
+        "tags": [
+          "golang"
+        ]
+      },
+      "dates": {
+        "created": "2025-12-14T07:22:11Z",
+        "modified": "2025-12-14T07:34:24Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 3
+      },
+      "content": {
+        "description": "\ud83d\udcda Cat\u00e1logo Completo de la Biblioteca",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "LIBRARY/TIMELINE.md",
+        "name": "TIMELINE.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 1865,
+        "lines": 57
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "general",
+        "purpose": "general",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-14T07:22:11Z",
+        "modified": "2025-12-14T07:34:24Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 3
+      },
+      "content": {
+        "description": "\ud83d\udcc5 L\u00ednea de Tiempo de Creaciones",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "LIBRARY/by-technology/Makefile.md",
+        "name": "Makefile.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 53,
+        "lines": 5
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "general",
+        "purpose": "general",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-14T07:22:11Z",
+        "modified": "2025-12-14T07:29:03Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 2
+      },
+      "content": {
+        "description": "MAKEFILE",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "LIBRARY/by-technology/md.md",
+        "name": "md.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 2089,
+        "lines": 50
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "general",
+        "purpose": "general",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-14T07:22:11Z",
+        "modified": "2025-12-14T07:29:03Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 2
+      },
+      "content": {
+        "description": "MD",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "LIBRARY/by-technology/html.md",
+        "name": "html.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 69,
+        "lines": 5
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "general",
+        "purpose": "general",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-14T07:22:11Z",
+        "modified": "2025-12-14T07:29:03Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 2
+      },
+      "content": {
+        "description": "HTML",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "LIBRARY/by-technology/yml.md",
+        "name": "yml.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 293,
+        "lines": 9
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "general",
+        "purpose": "general",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-14T07:22:11Z",
+        "modified": "2025-12-14T07:22:11Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "YML",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "LIBRARY/by-technology/go.md",
+        "name": "go.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 221,
+        "lines": 10
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "general",
+        "purpose": "general",
+        "tags": [
+          "golang"
+        ]
+      },
+      "dates": {
+        "created": "2025-12-14T07:22:11Z",
+        "modified": "2025-12-14T07:22:11Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "GO",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "LIBRARY/by-technology/mod.md",
+        "name": "mod.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 44,
+        "lines": 5
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "general",
+        "purpose": "general",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-14T07:22:11Z",
+        "modified": "2025-12-14T07:29:03Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 2
+      },
+      "content": {
+        "description": "MOD",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "LIBRARY/by-technology/proto.md",
+        "name": "proto.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 62,
+        "lines": 5
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "general",
+        "purpose": "general",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-14T07:22:11Z",
+        "modified": "2025-12-14T07:29:03Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 2
+      },
+      "content": {
+        "description": "PROTO",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "LIBRARY/by-technology/json.md",
+        "name": "json.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 75,
+        "lines": 5
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "general",
+        "purpose": "general",
+        "tags": [
+          "javascript"
+        ]
+      },
+      "dates": {
+        "created": "2025-12-14T07:29:03Z",
+        "modified": "2025-12-14T07:29:03Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "JSON",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "LIBRARY/by-technology/rb.md",
+        "name": "rb.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 77,
+        "lines": 5
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "general",
+        "purpose": "general",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-14T07:22:11Z",
+        "modified": "2025-12-14T07:29:03Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 2
+      },
+      "content": {
+        "description": "RB",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "LIBRARY/by-technology/py.md",
+        "name": "py.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 165,
+        "lines": 6
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "general",
+        "purpose": "general",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-14T07:22:11Z",
+        "modified": "2025-12-14T07:22:11Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "PY",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "LIBRARY/reports/README.md",
+        "name": "README.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 1369,
+        "lines": 48
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "general",
+        "purpose": "documentation",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-14T07:25:29Z",
+        "modified": "2025-12-14T07:25:29Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "Library Reports",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "LIBRARY/stats/file-count.md",
+        "name": "file-count.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 169,
+        "lines": 13
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "general",
+        "purpose": "general",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-14T07:22:11Z",
+        "modified": "2025-12-14T07:29:03Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 2
+      },
+      "content": {
+        "description": "File Count Statistics",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "LIBRARY/by-category/script.md",
+        "name": "script.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 300,
+        "lines": 13
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "general",
+        "purpose": "general",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-14T07:22:11Z",
+        "modified": "2025-12-14T07:22:11Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "Script",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "LIBRARY/by-category/configuration.md",
+        "name": "configuration.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 120,
+        "lines": 7
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "general",
+        "purpose": "general",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-14T07:29:03Z",
+        "modified": "2025-12-14T07:29:03Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "Configuration",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "LIBRARY/by-category/source.md",
+        "name": "source.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 355,
+        "lines": 22
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "general",
+        "purpose": "general",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-14T07:22:11Z",
+        "modified": "2025-12-14T07:22:11Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "Source",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "LIBRARY/by-category/other.md",
+        "name": "other.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 561,
+        "lines": 40
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "general",
+        "purpose": "general",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-14T07:22:11Z",
+        "modified": "2025-12-14T07:22:11Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "Other",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "LIBRARY/by-category/schema.md",
+        "name": "schema.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 86,
+        "lines": 7
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "general",
+        "purpose": "general",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-14T07:22:11Z",
+        "modified": "2025-12-14T07:29:03Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 2
+      },
+      "content": {
+        "description": "Schema",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "LIBRARY/by-category/workflow.md",
+        "name": "workflow.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 393,
+        "lines": 19
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "general",
+        "purpose": "automation",
+        "tags": [
+          "github-actions"
+        ]
+      },
+      "dates": {
+        "created": "2025-12-14T07:22:11Z",
+        "modified": "2025-12-14T07:22:11Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "Workflow",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "LIBRARY/by-category/build.md",
+        "name": "build.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 69,
+        "lines": 7
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "general",
+        "purpose": "deployment",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-14T07:22:11Z",
+        "modified": "2025-12-14T07:29:03Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 2
+      },
+      "content": {
+        "description": "Build",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "LIBRARY/by-category/documentation.md",
+        "name": "documentation.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 2919,
+        "lines": 142
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "general",
+        "purpose": "documentation",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-14T07:22:11Z",
+        "modified": "2025-12-14T07:29:03Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 2
+      },
+      "content": {
+        "description": "Documentation",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "LIBRARY/by-purpose/deployment.md",
+        "name": "deployment.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 191,
+        "lines": 7
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "general",
+        "purpose": "deployment",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-14T07:22:11Z",
+        "modified": "2025-12-14T07:29:03Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 2
+      },
+      "content": {
+        "description": "Deployment",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "LIBRARY/by-purpose/testing.md",
+        "name": "testing.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 170,
+        "lines": 6
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "general",
+        "purpose": "testing",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-14T07:22:11Z",
+        "modified": "2025-12-14T07:29:03Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 2
+      },
+      "content": {
+        "description": "Testing",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "LIBRARY/by-purpose/general.md",
+        "name": "general.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 3191,
+        "lines": 57
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "general",
+        "purpose": "general",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-14T07:22:11Z",
+        "modified": "2025-12-14T07:29:03Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 2
+      },
+      "content": {
+        "description": "General",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "LIBRARY/by-purpose/automation.md",
+        "name": "automation.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 289,
+        "lines": 8
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "general",
+        "purpose": "automation",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-14T07:22:11Z",
+        "modified": "2025-12-14T07:29:03Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 2
+      },
+      "content": {
+        "description": "Automation",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "LIBRARY/by-purpose/security.md",
+        "name": "security.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 137,
+        "lines": 6
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "general",
+        "purpose": "security",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-14T07:22:11Z",
+        "modified": "2025-12-14T07:29:03Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 2
+      },
+      "content": {
+        "description": "Security",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "LIBRARY/by-purpose/documentation.md",
+        "name": "documentation.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 775,
+        "lines": 15
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "general",
+        "purpose": "documentation",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-14T07:22:11Z",
+        "modified": "2025-12-14T07:29:03Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 2
+      },
+      "content": {
+        "description": "Documentation",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "testing/placeholder_test.go",
+        "name": "placeholder_test.go",
+        "type": "source",
+        "extension": ".go",
+        "size_bytes": 356,
+        "lines": 13
+      },
+      "classification": {
+        "category": "source",
+        "area": "testing",
+        "purpose": "testing",
+        "tags": [
+          "golang"
+        ]
+      },
+      "dates": {
+        "created": "2025-12-13T21:32:45-06:00",
+        "modified": "2025-12-13T21:32:45-06:00"
+      },
+      "authorship": {
+        "author": "Artur Orozco",
+        "contributors": [
+          "Artur Orozco"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "placeholder_test.go - source",
+        "dependencies": [
+          "\"testing\"",
+          "testing"
+        ]
+      }
+    },
+    {
+      "file": {
+        "path": "internal/hello.go",
+        "name": "hello.go",
+        "type": "source",
+        "extension": ".go",
+        "size_bytes": 172,
+        "lines": 7
+      },
+      "classification": {
+        "category": "source",
+        "area": "backend",
+        "purpose": "general",
+        "tags": [
+          "golang"
+        ]
+      },
+      "dates": {
+        "created": "2025-12-13T21:32:45-06:00",
+        "modified": "2025-12-13T21:32:45-06:00"
+      },
+      "authorship": {
+        "author": "Artur Orozco",
+        "contributors": [
+          "Artur Orozco"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "hello.go - source",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "lib/hello.go",
+        "name": "hello.go",
+        "type": "source",
+        "extension": ".go",
+        "size_bytes": 161,
+        "lines": 7
+      },
+      "classification": {
+        "category": "source",
+        "area": "backend",
+        "purpose": "general",
+        "tags": [
+          "golang"
+        ]
+      },
+      "dates": {
+        "created": "2025-12-13T21:32:45-06:00",
+        "modified": "2025-12-13T21:32:45-06:00"
+      },
+      "authorship": {
+        "author": "Artur Orozco",
+        "contributors": [
+          "Artur Orozco"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "hello.go - source",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "ruby/lib/billing-platform/version.rb",
+        "name": "version.rb",
+        "type": "script",
+        "extension": ".rb",
+        "size_bytes": 78,
+        "lines": 5
+      },
+      "classification": {
+        "category": "script",
+        "area": "backend",
+        "purpose": "general",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-13T21:32:45-06:00",
+        "modified": "2025-12-13T21:32:45-06:00"
+      },
+      "authorship": {
+        "author": "Artur Orozco",
+        "contributors": [
+          "Artur Orozco"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "frozen_string_literal: true",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "cmd/main.go",
+        "name": "main.go",
+        "type": "source",
+        "extension": ".go",
+        "size_bytes": 132,
+        "lines": 8
+      },
+      "classification": {
+        "category": "source",
+        "area": "cli",
+        "purpose": "general",
+        "tags": [
+          "golang"
+        ]
+      },
+      "dates": {
+        "created": "2025-12-13T21:32:45-06:00",
+        "modified": "2025-12-13T21:32:45-06:00"
+      },
+      "authorship": {
+        "author": "Artur Orozco",
+        "contributors": [
+          "Artur Orozco"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "main.go - source",
+        "dependencies": [
+          "\"fmt\"",
+          "fmt"
+        ]
+      }
+    },
+    {
+      "file": {
+        "path": "docs/README.md",
+        "name": "README.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 1713,
+        "lines": 44
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "documentation",
+        "purpose": "documentation",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-13T21:32:45-06:00",
+        "modified": "2025-12-13T21:32:45-06:00"
+      },
+      "authorship": {
+        "author": "Artur Orozco",
+        "contributors": [
+          "Artur Orozco"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "Tokyo-IA Documentation",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "docs/BRANCH_PROTECTION.md",
+        "name": "BRANCH_PROTECTION.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 10359,
+        "lines": 443
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "documentation",
+        "purpose": "general",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-13T21:32:45-06:00",
+        "modified": "2025-12-13T21:32:45-06:00"
+      },
+      "authorship": {
+        "author": "Artur Orozco",
+        "contributors": [
+          "Artur Orozco"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "Branch Protection Rules",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "docs/CI_CD.md",
+        "name": "CI_CD.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 8724,
+        "lines": 380
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "documentation",
+        "purpose": "documentation",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-13T21:32:45-06:00",
+        "modified": "2025-12-13T21:32:45-06:00"
+      },
+      "authorship": {
+        "author": "Artur Orozco",
+        "contributors": [
+          "Artur Orozco"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "CI/CD Documentation",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "prompts/JS-Supremo.md",
+        "name": "JS-Supremo.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 9999,
+        "lines": 256
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "general",
+        "purpose": "general",
+        "tags": [
+          "javascript"
+        ]
+      },
+      "dates": {
+        "created": "2025-12-13T21:32:45-06:00",
+        "modified": "2025-12-13T21:32:45-06:00"
+      },
+      "authorship": {
+        "author": "Artur Orozco",
+        "contributors": [
+          "Artur Orozco"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "JS-Supremo.md \u2013 Premium JavaScript Expert Prompt",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "prompts/IA suprema",
+        "name": "IA suprema",
+        "type": "other",
+        "extension": "",
+        "size_bytes": 1934,
+        "lines": 31
+      },
+      "classification": {
+        "category": "other",
+        "area": "general",
+        "purpose": "general",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-13T21:32:45-06:00",
+        "modified": "2025-12-13T21:32:45-06:00"
+      },
+      "authorship": {
+        "author": "Artur Orozco",
+        "contributors": [
+          "Artur Orozco"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "IA suprema - other",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "prompts/GitHub-Pro.md",
+        "name": "GitHub-Pro.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 14753,
+        "lines": 510
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "general",
+        "purpose": "documentation",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-13T21:32:45-06:00",
+        "modified": "2025-12-13T21:32:45-06:00"
+      },
+      "authorship": {
+        "author": "Artur Orozco",
+        "contributors": [
+          "Artur Orozco"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "GitHub-Pro.md \u2013 Step-by-Step Guide for GitHub Pro (2025)",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "config/hello.go",
+        "name": "hello.go",
+        "type": "source",
+        "extension": ".go",
+        "size_bytes": 173,
+        "lines": 7
+      },
+      "classification": {
+        "category": "source",
+        "area": "configuration",
+        "purpose": "general",
+        "tags": [
+          "golang"
+        ]
+      },
+      "dates": {
+        "created": "2025-12-13T21:32:45-06:00",
+        "modified": "2025-12-13T21:32:45-06:00"
+      },
+      "authorship": {
+        "author": "Artur Orozco",
+        "contributors": [
+          "Artur Orozco"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "hello.go - source",
+        "dependencies": []
+      }
+    }
+  ]
+}

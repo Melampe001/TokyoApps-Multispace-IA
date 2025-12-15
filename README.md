@@ -1,8 +1,19 @@
-Tokyo-IA
+# Tokyo-IA
+
+[![CI Pipeline](https://github.com/Melampe001/Tokyo-IA/actions/workflows/ci.yml/badge.svg)](https://github.com/Melampe001/Tokyo-IA/actions/workflows/ci.yml)
 
 Tokyo-IA is a mobile + web + server project that provides Tokyo-themed AI features and a MCP server.
 
-Repository layout
+## 📋 Table of Contents
+
+- [Repository Structure](#repository-structure)
+- [Quick Start](#quick-start)
+- [Documentation](#documentation)
+- [Contributing](#contributing)
+- [Security](#security)
+- [License](#license)
+
+## 🏗️ Repository Structure
 tokyoia/
 │
 ├── app/                                   # Android – main project
@@ -43,10 +54,16 @@ tokyoia/
 │   └── es-MX/whatsnew.txt
 │
 ├── .github/
-│   └── workflows/
-│       ├── android-build.yml              # Build AAB
-│       ├── tokyoia-release-to-play.yml    # Auto release to Play Store
-│       └── security-scan.yml              # Optional
+│   ├── workflows/
+│   │   └── ci.yml                       # CI pipeline for all components
+│   ├── ISSUE_TEMPLATE/                  # Issue templates
+│   ├── dependabot.yml                   # Automated dependency updates
+│   └── pull_request_template.md         # PR template
+│
+├── docs/
+│   ├── README.md                        # Documentation index
+│   ├── CI_CD.md                         # CI/CD documentation
+│   └── BRANCH_PROTECTION.md             # Branch protection guide
 │
 ├── scripts/
 │   ├── bump-version.sh                    # Increment version
@@ -54,34 +71,104 @@ tokyoia/
 │
 ├── .gitignore
 ├── README.md
+├── CONTRIBUTING.md                        # Contribution guidelines
+├── SECURITY.md                            # Security policy
 └── LICENSE
 
-Quick start (high level)
-- Android (local debug):
-  - ./gradlew assembleDebug
-  - ./gradlew installDebug
-- Web (dev):
-  - cd web && npm install && npm run dev
-- Server (local):
-  - cd server-mcp && npm install && npm start
+## 🚀 Quick Start
 
-Security / Secrets (IMPORTANT)
-Do NOT store service account JSONs, keystore files, private keys, or other secrets in the repository. If you need to provide credentials for CI:
-- Create the credential (e.g., Google Play service account JSON) locally.
-- Encode keystore files or JSON as base64 (or keep them as files) and store them in GitHub Actions Secrets.
-- Reference secrets in workflows using: ${{ secrets.GOOGLE_PLAY_JSON }}, ${{ secrets.ANDROID_KEYSTORE_BASE64 }}, etc.
+### Android (local debug)
+```bash
+./gradlew assembleDebug
+./gradlew installDebug
+```
+
+### Web (dev)
+```bash
+cd web
+npm install
+npm run dev
+```
+
+### Server (local)
+```bash
+cd server-mcp
+npm install
+npm start
+```
+
+## 📚 Documentation
+
+- **[Elite Framework](docs/elite-framework.md)** - Automated project generation system
+- **[Contributing Guide](CONTRIBUTING.md)** - How to contribute to the project
+- **[CI/CD Documentation](docs/CI_CD.md)** - Continuous Integration and Deployment
+- **[Branch Protection](docs/BRANCH_PROTECTION.md)** - Git workflow and branch rules
+- **[Security Policy](SECURITY.md)** - Security best practices
+
+## 🎯 Elite Framework - Generate Projects Instantly
+
+Tokyo-IA includes the **Elite Framework**, an automated project generator that creates complete, production-ready projects from simple descriptions.
+
+### Quick Start
+
+```bash
+# Build the elite CLI
+make elite
+
+# Generate a project
+./bin/elite generate "REST API for task management"
+
+# Or use make command
+make generate IDEA="Telegram bot for weather updates"
+```
+
+### Supported Project Types
+
+- **PWAs** - Progressive Web Apps with React/Vite
+- **Bots** - Telegram, Discord, Slack bots
+- **APIs** - REST/GraphQL APIs with Go
+- **E-commerce** - Online stores with Stripe
+- **AI Agents** - CrewAI/Groq powered agents
+
+Each generated project includes:
+- ✅ Complete source code
+- ✅ Tests (unit + integration)
+- ✅ Docker deployment
+- ✅ CI/CD workflows
+- ✅ Full documentation
+
+See the [Elite Framework Documentation](docs/elite-framework.md) for details.
+
+## 🔒 Security / Secrets (IMPORTANT)
+
+**Do NOT store service account JSONs, keystore files, private keys, or other secrets in the repository.**
+
+If you need to provide credentials for CI:
+- Create the credential (e.g., Google Play service account JSON) locally
+- Encode keystore files or JSON as base64 and store them in GitHub Actions Secrets
+- Reference secrets in workflows using: `${{ secrets.GOOGLE_PLAY_JSON }}`, `${{ secrets.ANDROID_KEYSTORE_BASE64 }}`, etc.
 
 If any secret was ever committed:
-1. Rotate the exposed credential immediately (revoke old key).
-2. Remove the secret from the repository and history (see docs/SECRETS.md).
-3. Notify collaborators and ask them to reclone if history was rewritten.
+1. Rotate the exposed credential immediately (revoke old key)
+2. Remove the secret from the repository and history
+3. Notify collaborators and ask them to reclone if history was rewritten
 
-Where to find release notes
-- whatsnew/en-US/whatsnew.txt
-- whatsnew/es-MX/whatsnew.txt
+For more details, see the [Security Policy](SECURITY.md).
 
-Contributing
-See docs/CONTRIBUTING.md (if present) or open issues/PRs for proposed changes.
+## 📝 Release Notes
 
-License
-See LICENSE
+Release notes for Play Store:
+- `whatsnew/en-US/whatsnew.txt`
+- `whatsnew/es-MX/whatsnew.txt`
+
+## 🤝 Contributing
+
+We welcome contributions! Please read our [Contributing Guide](CONTRIBUTING.md) for details on:
+- Development setup
+- Code standards
+- Pull request process
+- Branch protection rules
+
+## 📄 License
+
+See [LICENSE](LICENSE) file for details.
