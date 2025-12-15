@@ -7,7 +7,7 @@ import (
 
 func TestSimpleDetection(t *testing.T) {
 	analyzer := NewAnalyzer("non-existent-manifest.yaml")
-	
+
 	tests := []struct {
 		name         string
 		keywords     []string
@@ -39,7 +39,7 @@ func TestSimpleDetection(t *testing.T) {
 			expectedType: ProjectTypeAPI,
 		},
 	}
-	
+
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			result, err := analyzer.DetectProjectType(tt.keywords)
@@ -55,7 +55,7 @@ func TestSimpleDetection(t *testing.T) {
 
 func TestDefaultStack(t *testing.T) {
 	analyzer := NewAnalyzer("non-existent-manifest.yaml")
-	
+
 	tests := []struct {
 		name         string
 		projectType  ProjectType
@@ -87,7 +87,7 @@ func TestDefaultStack(t *testing.T) {
 			expectedSize: 4,
 		},
 	}
-	
+
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			stack, err := analyzer.GetOptimalStack(tt.projectType)

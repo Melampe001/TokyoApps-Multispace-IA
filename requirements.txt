@@ -3,6 +3,23 @@
 
 # CrewAI - Framework for orchestrating role-playing, autonomous AI agents
 crewai>=0.80.0
+crewai-tools>=0.12.0
 
 # Groq - Fast inference API for LLMs
 groq>=0.13.0
+
+# LLM Providers
+openai>=1.30.0
+anthropic>=0.25.0
+google-generativeai>=0.5.0
+
+# Development and Testing
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
+pytest-cov>=4.1.0
+pytest-mock>=3.11.0
+
+# Utilities
+python-dotenv>=1.0.0
+pyyaml>=6.0
+requests>=2.31.0
