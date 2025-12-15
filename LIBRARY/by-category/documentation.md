@@ -1,6 +1,6 @@
 # Documentation
 
-Total: 46 archivos
+Total: 59 archivos
 
 ## [BRANCH_PROTECTION.md](docs/BRANCH_PROTECTION.md)
 Branch Protection Rules
@@ -23,14 +23,29 @@ Digital Library System - Complete Guide
 ## [GitHub-Pro.md](prompts/GitHub-Pro.md)
 GitHub-Pro.md – Step-by-Step Guide for GitHub Pro (2025)
 
+## [IMPLEMENTATION_SUMMARY.md](docs/IMPLEMENTATION_SUMMARY.md)
+Elite Framework - Implementation Summary
+
 ## [JS-Supremo.md](prompts/JS-Supremo.md)
 JS-Supremo.md – Premium JavaScript Expert Prompt
 
 ## [Makefile.md](LIBRARY/by-technology/Makefile.md)
 MAKEFILE
 
+## [README-python.md](README-python.md)
+Tokyo-IA Python Setup Guide
+
 ## [README.md](README.md)
 Tokyo-IA
+
+## [README.md](examples/python/README.md)
+Tokyo-IA Python Examples
+
+## [README.md](.github/workflows/README.md)
+GitHub Workflows Documentation
+
+## [README.md](.github/workflows/bots/README.md)
+🤖 Tokyo-IA Automated Bots Documentation
 
 ## [README.md](LIBRARY/README.md)
 📚 Tokyo-IA Digital Library
@@ -40,6 +55,21 @@ Library Reports
 
 ## [README.md](docs/README.md)
 Tokyo-IA Documentation
+
+## [README.md](templates/bot/README.md)
+Bot Template
+
+## [README.md](templates/api/README.md)
+API Template
+
+## [README.md](templates/ai-agent/README.md)
+AI Agent Template
+
+## [README.md](templates/ecommerce/README.md)
+E-commerce Template
+
+## [README.md](templates/pwa/README.md)
+PWA Template
 
 ## [SECURITY.md](SECURITY.md)
 Security Policy
@@ -76,6 +106,12 @@ Documentation
 
 ## [documentation.md](LIBRARY/by-purpose/documentation.md)
 Documentation
+
+## [elite-framework-examples.md](docs/elite-framework-examples.md)
+Elite Framework Examples
+
+## [elite-framework.md](docs/elite-framework.md)
+Elite Framework Documentation
 
 ## [feature_request.md](.github/ISSUE_TEMPLATE/feature_request.md)
 ---
@@ -118,6 +154,9 @@ PY
 
 ## [rb.md](LIBRARY/by-technology/rb.md)
 RB
+
+## [requirements.txt](requirements.txt)
+Tokyo-IA Python Dependencies
 
 ## [schema.md](LIBRARY/by-category/schema.md)
 Schema

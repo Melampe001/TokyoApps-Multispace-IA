@@ -1,9 +1,12 @@
 # Other
 
-Total: 12 archivos
+Total: 15 archivos
 
 ## [.gitignore](.gitignore)
 .gitignore - other
+
+## [.python-version](.python-version)
+.python-version - other
 
 ## [Agentes y bots](Agentes y bots)
 Agentes y bots - other
@@ -37,4 +40,10 @@ dashboard.html - other
 
 ## [go.mod](go.mod)
 go.mod - other
+
+## [go.sum](go.sum)
+go.sum - other
+
+## [pre-commit](.githooks/pre-commit)
+pre-commit - other
 

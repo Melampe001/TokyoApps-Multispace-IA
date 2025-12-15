@@ -1,12 +1,30 @@
 # Workflow
 
-Total: 5 archivos
+Total: 13 archivos
 
 ## [auto-documenter.yml](.github/workflows/auto-documenter.yml)
 Auto Documenter
 
+## [blocker-detector.yml](.github/workflows/blocker-detector.yml)
+Blocker Detector
+
+## [bot-backend-performance.yml](.github/workflows/bot-backend-performance.yml)
+Bot #2 - Backend Performance Monitor
+
+## [bot-backend-quality.yml](.github/workflows/bot-backend-quality.yml)
+Bot #1 - Backend Code Quality Guardian
+
+## [bot-coordinator.yml](.github/workflows/bot-coordinator.yml)
+Bot Coordinator - Weekly Report
+
+## [bot-frontend-build.yml](.github/workflows/bot-frontend-build.yml)
+Bot #4 - Frontend Build & Asset Optimizer
+
+## [bot-frontend-ux.yml](.github/workflows/bot-frontend-ux.yml)
+Bot #3 - Frontend UI/UX Compliance Bot
+
 ## [ci.yml](.github/workflows/ci.yml)
-CI Pipeline
+CI
 
 ## [dependabot.yml](.github/dependabot.yml)
 dependabot.yml - workflow
@@ -16,4 +34,10 @@ Library Indexer
 
 ## [library-report.yml](.github/workflows/library-report.yml)
 Library Report
+
+## [manifest.yaml](templates/manifest.yaml)
+"Progressive Web App"
+
+## [weekly-report.yml](.github/workflows/weekly-report.yml)
+Weekly Report
 

@@ -1,8 +1,9 @@
 # General
 
-Total: 53 archivos
+Total: 76 archivos
 
 - [.gitignore](.gitignore) - .gitignore - other
+- [.python-version](.python-version) - .python-version - other
 - [BRANCH_PROTECTION.md](docs/BRANCH_PROTECTION.md) - Branch Protection Rules
 - [CATALOG.md](LIBRARY/CATALOG.md) - 📚 Catálogo Completo de la Biblioteca
 - [CONTRIBUTING.md](CONTRIBUTING.md) - Contributing to Tokyo-IA
@@ -10,6 +11,7 @@ Total: 53 archivos
 - [FILE_TEMPLATE.md](.github/templates/FILE_TEMPLATE.md) - [Nombre del Archivo]
 - [Fllutter](Fllutter) - Fllutter - other
 - [IA suprema](prompts/IA suprema) - IA suprema - other
+- [IMPLEMENTATION_SUMMARY.md](docs/IMPLEMENTATION_SUMMARY.md) - Elite Framework - Implementation Summary
 - [Imitar](Imitar) - Imitar - other
 - [JS-Supremo.md](prompts/JS-Supremo.md) - JS-Supremo.md – Premium JavaScript Expert Prompt
 - [Makefile.md](LIBRARY/by-technology/Makefile.md) - MAKEFILE
@@ -20,16 +22,28 @@ Total: 53 archivos
 - [Sincero](Sincero) - Sincero - other
 - [TAREAS.md](TAREAS.md) - ¿Qué tengo que hacer? - Guía de Tareas para Tokyo IA
 - [TIMELINE.md](LIBRARY/TIMELINE.md) - 📅 Línea de Tiempo de Creaciones
+- [analyze_dart_code.py](.github/workflows/bots/scripts/analyze_dart_code.py) - !/usr/bin/env python3
+- [analyze_go_code.py](.github/workflows/bots/scripts/analyze_go_code.py) - !/usr/bin/env python3
+- [analyzer.go](lib/generator/analyzer.go) - analyzer.go - source
+- [backend-quality-rules.json](.github/workflows/bots/backend-quality-rules.json) - backend-quality-rules.json - configuration
+- [basic_agent.py](examples/python/basic_agent.py) - !/usr/bin/env python3
+- [blocker-detector.yml](.github/workflows/blocker-detector.yml) - Blocker Detector
 - [bug_report.md](.github/ISSUE_TEMPLATE/bug_report.md) - ---
-- [ci.yml](.github/workflows/ci.yml) - CI Pipeline
+- [ci.yml](.github/workflows/ci.yml) - CI
+- [compress_assets.sh](.github/workflows/bots/scripts/compress_assets.sh) - !/bin/bash
 - [configuration.md](LIBRARY/by-category/configuration.md) - Configuration
 - [copilot-instructions.md](.github/copilot-instructions.md) - Copilot Instructions for Tokyo-IA
+- [create_and_merge_pr.sh](scripts/create_and_merge_pr.sh) - !/usr/bin/env bash
 - [dashboard.html](LIBRARY/dashboard.html) - dashboard.html - other
+- [elite-framework-examples.md](docs/elite-framework-examples.md) - Elite Framework Examples
 - [feature_request.md](.github/ISSUE_TEMPLATE/feature_request.md) - ---
 - [file-count.md](LIBRARY/stats/file-count.md) - File Count Statistics
 - [general.md](LIBRARY/by-purpose/general.md) - General
+- [generate_report.py](.github/workflows/bots/scripts/generate_report.py) - !/usr/bin/env python3
+- [generator.go](lib/generator/generator.go) - generator.go - source
 - [go.md](LIBRARY/by-technology/go.md) - GO
 - [go.mod](go.mod) - go.mod - other
+- [go.sum](go.sum) - go.sum - other
 - [hello.go](admin/hello.go) - hello.go - source
 - [hello.go](internal/hello.go) - hello.go - source
 - [hello.go](lib/hello.go) - hello.go - source
@@ -42,16 +56,25 @@ Total: 53 archivos
 - [library_cataloger.py](.github/workflows/scripts/library_cataloger.py) - !/usr/bin/env python3
 - [library_search.py](.github/workflows/scripts/library_search.py) - !/usr/bin/env python3
 - [main.go](cmd/main.go) - main.go - source
+- [main.go](cmd/elite/main.go) - main.go - source
+- [manifest.yaml](templates/manifest.yaml) - "Progressive Web App"
 - [md.md](LIBRARY/by-technology/md.md) - MD
 - [mod.md](LIBRARY/by-technology/mod.md) - MOD
 - [my-agent.agent.md](.github/agents/my-agent.agent.md) - ---
 - [other.md](LIBRARY/by-category/other.md) - Other
+- [parser.go](lib/generator/parser.go) - parser.go - source
+- [pre-commit](.githooks/pre-commit) - pre-commit - other
 - [proto.md](LIBRARY/by-technology/proto.md) - PROTO
 - [pull_request_template.md](.github/pull_request_template.md) - Description
 - [py.md](LIBRARY/by-technology/py.md) - PY
 - [rb.md](LIBRARY/by-technology/rb.md) - RB
+- [requirements.txt](requirements.txt) - Tokyo-IA Python Dependencies
+- [scaffolder.go](lib/generator/scaffolder.go) - scaffolder.go - source
 - [schema.md](LIBRARY/by-category/schema.md) - Schema
 - [script.md](LIBRARY/by-category/script.md) - Script
 - [source.md](LIBRARY/by-category/source.md) - Source
+- [templater.go](lib/generator/templater.go) - {{.ProjectName}}
+- [types.go](lib/generator/types.go) - types.go - source
 - [version.rb](ruby/lib/billing-platform/version.rb) - frozen_string_literal: true
+- [weekly-report.yml](.github/workflows/weekly-report.yml) - Weekly Report
 - [yml.md](LIBRARY/by-technology/yml.md) - YML

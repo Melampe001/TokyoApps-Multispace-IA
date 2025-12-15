@@ -1,6 +1,6 @@
 # MD
 
-Total: 46 archivos
+Total: 58 archivos
 
 - [BRANCH_PROTECTION.md](docs/BRANCH_PROTECTION.md)
 - [CATALOG.md](LIBRARY/CATALOG.md)
@@ -9,12 +9,22 @@ Total: 46 archivos
 - [FILE_TEMPLATE.md](.github/templates/FILE_TEMPLATE.md)
 - [GUIDE.md](LIBRARY/GUIDE.md)
 - [GitHub-Pro.md](prompts/GitHub-Pro.md)
+- [IMPLEMENTATION_SUMMARY.md](docs/IMPLEMENTATION_SUMMARY.md)
 - [JS-Supremo.md](prompts/JS-Supremo.md)
 - [Makefile.md](LIBRARY/by-technology/Makefile.md)
+- [README-python.md](README-python.md)
 - [README.md](README.md)
+- [README.md](examples/python/README.md)
+- [README.md](.github/workflows/README.md)
+- [README.md](.github/workflows/bots/README.md)
 - [README.md](LIBRARY/README.md)
 - [README.md](LIBRARY/reports/README.md)
 - [README.md](docs/README.md)
+- [README.md](templates/bot/README.md)
+- [README.md](templates/api/README.md)
+- [README.md](templates/ai-agent/README.md)
+- [README.md](templates/ecommerce/README.md)
+- [README.md](templates/pwa/README.md)
 - [SECURITY.md](SECURITY.md)
 - [TAREAS.md](TAREAS.md)
 - [TIMELINE.md](LIBRARY/TIMELINE.md)
@@ -27,6 +37,8 @@ Total: 46 archivos
 - [documentation.md](.github/ISSUE_TEMPLATE/documentation.md)
 - [documentation.md](LIBRARY/by-category/documentation.md)
 - [documentation.md](LIBRARY/by-purpose/documentation.md)
+- [elite-framework-examples.md](docs/elite-framework-examples.md)
+- [elite-framework.md](docs/elite-framework.md)
 - [feature_request.md](.github/ISSUE_TEMPLATE/feature_request.md)
 - [file-count.md](LIBRARY/stats/file-count.md)
 - [general.md](LIBRARY/by-purpose/general.md)
