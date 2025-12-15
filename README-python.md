@@ -75,8 +75,8 @@ Create a `.env` file in the project root directory (or set these variables in yo
 # Groq API Configuration
 GROQ_API_KEY=your_groq_api_key_here
 
-# Optional: Specify a default model
-GROQ_MODEL=mixtral-8x7b-32768
+# Optional: Specify a default model (use groq/ prefix format)
+GROQ_MODEL=groq/llama-3.1-70b-versatile
 ```
 
 ### Obtaining a Groq API Key
@@ -122,13 +122,11 @@ CrewAI allows you to create AI agents with specific roles and goals. Here's a ba
 
 ```python
 import os
-from crewai import Agent, Task, Crew
-from langchain_groq import ChatGroq
+from crewai import Agent, Task, Crew, LLM
 
-# Initialize Groq LLM
-llm = ChatGroq(
-    api_key=os.environ.get("GROQ_API_KEY"),
-    model="mixtral-8x7b-32768"
+# Initialize Groq LLM using CrewAI's native LLM class
+llm = LLM(
+    model="groq/llama-3.1-70b-versatile"
 )
 
 # Create an agent
@@ -191,9 +189,13 @@ print(result)
 
 ### Supported Models
 
-- **Mixtral 8x7B**: High-quality general-purpose model
-- **LLaMA 3**: Meta's latest open-source model
-- **Gemma**: Google's efficient model series
+When using CrewAI's LLM class with Groq, use the `groq/` prefix:
+
+- **groq/llama-3.1-70b-versatile**: Meta's LLaMA 3.1 70B model (recommended)
+- **groq/mixtral-8x7b-32768**: Mixtral 8x7B model
+- **groq/gemma-7b-it**: Google's Gemma 7B model
+
+See the full list of available models on the [Groq Models page](https://console.groq.com/docs/models).
 
 ### Key Features
 

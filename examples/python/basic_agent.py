@@ -14,7 +14,7 @@ Usage:
     python examples/python/basic_agent.py
     
 Optional:
-    export GROQ_MODEL=mixtral-8x7b-32768  # Default model if not specified
+    export GROQ_MODEL=groq/llama-3.1-70b-versatile  # Default model if not specified
 """
 
 import os
@@ -43,8 +43,7 @@ def main():
     print("✅ API key found")
     
     try:
-        from crewai import Agent, Task, Crew
-        from langchain_groq import ChatGroq
+        from crewai import Agent, Task, Crew, LLM
         print("✅ Dependencies loaded successfully\n")
     except ImportError as e:
         print(f"❌ Error importing dependencies: {e}")
@@ -52,13 +51,12 @@ def main():
         print("  pip install -r requirements.txt")
         sys.exit(1)
     
-    # Initialize Groq LLM
+    # Initialize Groq LLM using CrewAI's LLM class
     print("🔧 Initializing Groq LLM...")
-    model = os.environ.get("GROQ_MODEL", "mixtral-8x7b-32768")
+    model = os.environ.get("GROQ_MODEL", "groq/llama-3.1-70b-versatile")
     print(f"   Using model: {model}")
     try:
-        llm = ChatGroq(
-            api_key=api_key,
+        llm = LLM(
             model=model,
             temperature=0.7
         )
