@@ -227,7 +227,7 @@ jobs:
       
       - name: Post PR Comment
         if: github.event_name == 'pull_request'
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: |
             const fs = require('fs');
@@ -261,7 +261,7 @@ jobs:
       
       - name: Add Performance Labels
         if: github.event_name == 'pull_request'
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: |
             const totalIssues = parseInt('${{ steps.perf_analysis.outputs.total_issues }}');
@@ -286,7 +286,7 @@ jobs:
         if: |
           github.event_name == 'pull_request' && 
           steps.perf_analysis.outputs.total_issues > 3
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: |
             // Request review from tech leads (would need to configure team/users)

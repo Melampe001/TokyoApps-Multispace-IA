@@ -231,7 +231,7 @@ jobs:
       
       - name: Post PR Comment
         if: github.event_name == 'pull_request' && steps.analysis.outputs.report_exists == 'true'
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: |
             const fs = require('fs');
@@ -265,7 +265,7 @@ jobs:
       
       - name: Add Labels
         if: github.event_name == 'pull_request' && steps.analysis.outputs.report_exists == 'true'
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: |
             const labels = ['frontend', 'ui'];
