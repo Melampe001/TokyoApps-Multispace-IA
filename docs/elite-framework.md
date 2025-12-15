@@ -14,6 +14,8 @@ The Elite Framework is an automated project generation system that creates compl
 - [Architecture](#architecture)
 - [Customization](#customization)
 
+> 📚 **For detailed, real-world examples, see [Elite Framework Examples](elite-framework-examples.md)**
+
 ## Overview
 
 The Elite Framework automates the entire process of creating new projects, including:
