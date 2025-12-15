@@ -1,0 +1,184 @@
+name: AI Integration CI
+
+on:
+  push:
+    branches: [ Main ]
+    paths:
+      - 'internal/ai/**'
+      - 'lib/agents/**'
+      - 'cmd/ai-api/**'
+      - 'requirements.txt'
+      - '.github/workflows/ai-ci.yml'
+  pull_request:
+    branches: [ Main ]
+    paths:
+      - 'internal/ai/**'
+      - 'lib/agents/**'
+      - 'cmd/ai-api/**'
+      - 'requirements.txt'
+      - '.github/workflows/ai-ci.yml'
+
+jobs:
+  test-go:
+    name: Test Go AI Components
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.21'
+      
+      - name: Cache Go modules
+        uses: actions/cache@v4
+        with:
+          path: ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
+      
+      - name: Download dependencies
+        run: go mod download
+      
+      - name: Format check
+        run: |
+          if [ -n "$(gofmt -l internal/ai cmd/ai-api)" ]; then
+            echo "Go code is not formatted:"
+            gofmt -l internal/ai cmd/ai-api
+            exit 1
+          fi
+      
+      - name: Run Go tests
+        run: go test ./internal/ai/... -v -race -coverprofile=coverage.txt -covermode=atomic
+      
+      - name: Upload coverage
+        uses: codecov/codecov-action@v4
+        with:
+          file: ./coverage.txt
+          flags: golang
+          name: go-coverage
+        continue-on-error: true
+      
+      - name: Build AI API
+        run: go build -o bin/ai-api cmd/ai-api/main.go
+      
+      - name: Upload AI API binary
+        uses: actions/upload-artifact@v4
+        with:
+          name: ai-api-binary
+          path: bin/ai-api
+          retention-days: 7
+
+  test-python:
+    name: Test Python AI Agents
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.9', '3.10', '3.11']
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      
+      - name: Cache pip packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest
+      
+      - name: Run Python tests
+        run: |
+          python -m pytest lib/agents/test_tools.py -v --tb=short
+      
+      - name: Check Python code style (if black is available)
+        run: |
+          pip install black || true
+          black --check lib/agents/ || echo "Black not enforcing style yet"
+        continue-on-error: true
+
+  integration:
+    name: Integration Test
+    runs-on: ubuntu-latest
+    needs: [test-go, test-python]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.21'
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Build AI API
+        run: make ai-build
+      
+      - name: Start AI API in background
+        run: |
+          ./bin/ai-api &
+          echo $! > api.pid
+          sleep 3
+      
+      - name: Test API health endpoint
+        run: |
+          curl -f http://localhost:8080/health || exit 1
+      
+      - name: Test AI completion endpoint
+        run: |
+          response=$(curl -s -X POST http://localhost:8080/ai/complete \
+            -H "Content-Type: application/json" \
+            -d '{"prompt":"test","task_type":"general"}')
+          echo "$response"
+          echo "$response" | grep -q "content" || exit 1
+      
+      - name: Test metrics endpoint
+        run: |
+          curl -f http://localhost:8080/ai/metrics || exit 1
+      
+      - name: Stop AI API
+        if: always()
+        run: |
+          if [ -f api.pid ]; then
+            kill $(cat api.pid) || true
+          fi
+
+  security-scan:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Run Gosec Security Scanner
+        uses: securego/gosec@master
+        with:
+          args: '-no-fail -fmt json -out gosec-report.json ./...'
+        continue-on-error: true
+      
+      - name: Upload security scan results
+        uses: actions/upload-artifact@v4
+        with:
+          name: gosec-report
+          path: gosec-report.json
+        if: always()
