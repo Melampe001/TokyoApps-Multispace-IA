@@ -1,81 +1,376 @@
-# Tokyo-IA
+# Tokyo-IA 🗼
 
 [![CI Pipeline](https://github.com/Melampe001/Tokyo-IA/actions/workflows/ci.yml/badge.svg)](https://github.com/Melampe001/Tokyo-IA/actions/workflows/ci.yml)
+[![Go Version](https://img.shields.io/badge/Go-1.21-blue)](https://go.dev/)
+[![Python Version](https://img.shields.io/badge/Python-3.10+-blue)](https://www.python.org/)
+[![License](https://img.shields.io/badge/License-Apache%202.0-green.svg)](LICENSE)
 
-Tokyo-IA is a mobile + web + server project that provides Tokyo-themed AI features and a MCP server.
+**Tokyo-IA** is a complete AI agent orchestration platform featuring 5 specialized agents with unique personalities and expertise. Built with Go, Python, React, and Android support.
+
+## ✨ Features
+
+- 🤖 **5 Specialized AI Agents**: Each with unique personality and LLM model
+- 🔄 **Multi-Agent Orchestration**: Coordinate complex workflows across agents
+- 📊 **Complete Tracking**: PostgreSQL database records all activities
+- 🌐 **REST API**: Full programmatic access to all features
+- 📱 **Cross-Platform**: Web dashboard and Android app support
+- 📈 **Performance Metrics**: Track tokens, costs, and latencies
+- 🛡️ **Production Ready**: Built for scale with Go and Kubernetes support
+
+## 🎭 The Five Agents
+
+| Agent | ID | Role | Model | Specialties |
+|-------|-----|------|-------|-------------|
+| 侍 **Akira** | akira-001 | Code Review Master | Claude Opus 4.1 | Security, Performance, Architecture |
+| ❄️ **Yuki** | yuki-002 | Test Engineering | OpenAI o3 | Unit/Integration/E2E Testing |
+| 🛡️ **Hiro** | hiro-003 | SRE & DevOps | Llama 4 405B | Kubernetes, CI/CD, Monitoring |
+| 🌸 **Sakura** | sakura-004 | Documentation | Gemini 3.0 Ultra | Technical Writing, Diagrams |
+| 🏗️ **Kenji** | kenji-005 | Architecture | OpenAI o3 | System Design, Patterns |
 
 ## 📋 Table of Contents
 
-- [Repository Structure](#repository-structure)
 - [Quick Start](#quick-start)
+- [Architecture](#architecture)
+- [Repository Structure](#repository-structure)
 - [Documentation](#documentation)
+- [API Reference](#api-reference)
+- [Development](#development)
 - [Contributing](#contributing)
 - [Security](#security)
-- [License](#license)
-
-## 🏗️ Repository Structure
-tokyoia/
-│
-├── app/                                   # Android – main project
-│   ├── build.gradle                       # Config signed + release
-│   ├── proguard-rules.pro
-│   ├── src/
-│   │   ├── main/
-│   │   │   ├── AndroidManifest.xml
-│   │   │   ├── java/com/tokyoia/app/
-│   │   │   │   └── TokyoApp.kt
-│   │   │   └── res/
-│   │   │       ├── layout/activity_main.xml
-│   │   │       ├── mipmap-*/              # App icons
-│   │   │       └── values/strings.xml
-│   │   └── test/
-│   │       └── ExampleUnitTest.kt
-│   └── gradle.properties
-│
-├── web/                                   # Web site + admin panel
-│   ├── index.html
-│   ├── vite.config.js
-│   ├── package.json
-│   └── src/
-│       ├── App.jsx
-│       ├── components/
-│       └── styles/
-│
-├── server-mcp/                            # Node server for MCP
-│   ├── index.js
-│   ├── package.json
-│   ├── tokyo-rules.json
-│   └── src/
-│       ├── actions/
-│       └── context/
-│
-├── whatsnew/                              # Play Store release notes
-│   ├── en-US/whatsnew.txt
-│   └── es-MX/whatsnew.txt
-│
-├── .github/
-│   ├── workflows/
-│   │   └── ci.yml                       # CI pipeline for all components
-│   ├── ISSUE_TEMPLATE/                  # Issue templates
-│   ├── dependabot.yml                   # Automated dependency updates
-│   └── pull_request_template.md         # PR template
-│
-├── docs/
-│   ├── README.md                        # Documentation index
-│   ├── CI_CD.md                         # CI/CD documentation
-│   └── BRANCH_PROTECTION.md             # Branch protection guide
-│
-├── scripts/
-│   ├── bump-version.sh                    # Increment version
-│   └── generate-release.sh                # Build + tag + push
-│
-├── .gitignore
-├── README.md
-├── CONTRIBUTING.md                        # Contribution guidelines
-├── SECURITY.md                            # Security policy
-└── LICENSE
 
 ## 🚀 Quick Start
+
+### 1. Setup Database
+
+```bash
+# Create PostgreSQL database
+createdb tokyoia
+
+# Run schema
+psql tokyoia < db/schema.sql
+
+# Set environment variable
+export DATABASE_URL="postgresql://user:password@localhost:5432/tokyoia"
+```
+
+### 2. Start Registry API (Go)
+
+```bash
+# Install dependencies
+go mod download
+
+# Build and run
+make build
+./bin/registry-api
+
+# Or directly
+go run ./cmd/registry-api/main.go
+```
+
+The API will be available at `http://localhost:8080`
+
+### 3. Setup Python Environment
+
+```bash
+# Install Python dependencies
+pip install -r requirements.txt
+
+# Set API keys
+export ANTHROPIC_API_KEY="sk-ant-..."
+export OPENAI_API_KEY="sk-..."
+export GROQ_API_KEY="gsk_..."
+export GOOGLE_API_KEY="..."
+```
+
+### 4. Run Your First Workflow
+
+```python
+from lib.orchestrator import AgentOrchestrator
+from lib.orchestrator.workflows import full_code_review_workflow
+
+# Initialize orchestrator
+orchestrator = AgentOrchestrator()
+orchestrator.initialize_agents()
+
+# Run a code review workflow
+code = """
+def authenticate_user(username, password):
+    query = f"SELECT * FROM users WHERE name = '{username}'"
+    # ... rest of code
+"""
+
+result = full_code_review_workflow(orchestrator, code, "python")
+print(result)
+```
+
+## 🏗️ Architecture
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                     Client Layer                            │
+│  Web Dashboard  │  Android App  │  CLI Tools  │  API Calls  │
+└────────────────────────┬────────────────────────────────────┘
+                         │
+┌────────────────────────▼────────────────────────────────────┐
+│                   Registry API (Go)                         │
+│         REST Server - Port 8080                             │
+│  Agents │ Tasks │ Workflows │ Metrics │ Sessions            │
+└────────────────────────┬────────────────────────────────────┘
+                         │
+┌────────────────────────▼────────────────────────────────────┐
+│               PostgreSQL Database                           │
+│  agents │ agent_tasks │ workflows │ metrics │ interactions  │
+└────────────────────────┬────────────────────────────────────┘
+                         │
+┌────────────────────────▼────────────────────────────────────┐
+│            Agent Orchestrator (Python)                      │
+│         Multi-Agent Workflow Coordinator                    │
+└────┬─────┬──────┬──────┬──────┬─────────────────────────────┘
+     │     │      │      │      │
+     ▼     ▼      ▼      ▼      ▼
+  Akira  Yuki   Hiro  Sakura  Kenji
+   侍     ❄️     🛡️    🌸     🏗️
+```
+
+See [docs/agents/ORCHESTRATION.md](docs/agents/ORCHESTRATION.md) for detailed architecture.
+
+## 🏗️ Repository Structure
+## 🏗️ Repository Structure
+
+```
+tokyoia/
+│
+├── cmd/                                # Go applications
+│   ├── main.go                         # Main Tokyo-IA application
+│   ├── elite/main.go                   # Elite framework CLI
+│   └── registry-api/main.go            # REST API server ⭐
+│
+├── internal/                           # Internal Go packages
+│   └── registry/                       # Agent registry system ⭐
+│       ├── models.go                   # Data models
+│       └── agent_registry.go           # Database operations
+│
+├── lib/                                # Shared libraries
+│   ├── generator/                      # Code generation
+│   ├── agents/                         # AI agents ⭐
+│   │   └── specialized/                # 5 specialized agents
+│   │       ├── akira_code_reviewer.py  # 侍 Code Review Master
+│   │       ├── yuki_test_engineer.py   # ❄️ Test Specialist
+│   │       ├── hiro_sre.py             # 🛡️ SRE/DevOps Guardian
+│   │       ├── sakura_documentation.py # 🌸 Documentation Artist
+│   │       └── kenji_architect.py      # 🏗️ Architecture Visionary
+│   └── orchestrator/                   # Multi-agent coordinator ⭐
+│       ├── agent_orchestrator.py       # Orchestration engine
+│       └── workflows.py                # Pre-built workflows
+│
+├── db/                                 # Database ⭐
+│   ├── schema.sql                      # PostgreSQL schema
+│   └── README.md                       # Database documentation
+│
+├── admin/                              # Web dashboard ⭐
+│   └── src/components/
+│       ├── AgentDashboard.tsx          # Agent monitoring
+│       └── WorkflowMonitor.tsx         # Workflow tracking
+│
+├── app/                                # Android app ⭐
+│   └── src/main/java/com/tokyoia/app/
+│       ├── ui/agents/                  # Agent UI screens
+│       │   ├── AgentsScreen.kt
+│       │   └── AgentsViewModel.kt
+│       └── data/repository/            # Data layer
+│           └── AgentRepository.kt
+│
+├── docs/                               # Documentation
+│   └── agents/                         # Agent system docs ⭐
+│       └── ORCHESTRATION.md            # Complete guide
+│
+├── examples/                           # Example code
+│   └── python/
+│       └── basic_agent.py              # Basic agent usage
+│
+├── .github/
+│   └── workflows/
+│       └── ci.yml                      # CI pipeline
+│
+├── go.mod                              # Go dependencies
+├── requirements.txt                    # Python dependencies ⭐
+├── Makefile                            # Build commands
+├── README.md                           # This file
+├── CONTRIBUTING.md                     # Contribution guidelines
+└── SECURITY.md                         # Security policy
+
+⭐ = New in Agent Orchestration System
+```
+
+## 📚 Documentation
+
+- **[Agent Orchestration Guide](docs/agents/ORCHESTRATION.md)** - Complete system documentation
+- **[Database Schema](db/README.md)** - Database setup and operations
+- **[API Reference](docs/agents/ORCHESTRATION.md#api-reference)** - REST API endpoints
+- **[Workflow Examples](lib/orchestrator/workflows.py)** - Pre-built workflows
+- **[Contributing Guide](CONTRIBUTING.md)** - How to contribute
+- **[Security Policy](SECURITY.md)** - Security guidelines
+
+## 🔌 API Reference
+
+### Registry API Endpoints
+
+The Registry API runs on `http://localhost:8080` by default.
+
+#### Agents
+- `GET /api/agents` - List all agents
+- `GET /api/agents/{id}` - Get agent details
+- `GET /api/agents/{id}/stats` - Get agent statistics
+- `GET /api/agents/{id}/tasks` - Get agent tasks
+
+#### Tasks
+- `POST /api/tasks` - Create new task
+- `PUT /api/tasks/{id}` - Update task status
+
+#### Workflows
+- `GET /api/workflows` - List workflows
+- `POST /api/workflows` - Create workflow
+- `GET /api/workflows/{id}` - Get workflow details
+- `GET /api/workflows/{id}/tasks` - Get workflow tasks
+
+#### Metrics
+- `GET /api/metrics?agent_id={id}&metric_type={type}` - Get metrics
+
+See [API documentation](docs/agents/ORCHESTRATION.md#registry-api) for details.
+
+## 💻 Development
+
+### Build Commands
+
+```bash
+# Build main application
+make build
+
+# Build Registry API
+go build -o bin/registry-api ./cmd/registry-api/main.go
+
+# Build Elite Framework
+make elite
+
+# Format code
+make fmt
+
+# Run tests
+make test
+
+# Clean build artifacts
+make clean
+```
+
+### Running Tests
+
+```bash
+# Go tests
+go test ./...
+
+# Python agent tests (when available)
+pytest lib/agents/
+
+# Full CI suite
+make ci
+```
+
+### Environment Variables
+
+```bash
+# Database
+export DATABASE_URL="postgresql://user:password@localhost:5432/tokyoia"
+
+# Registry API
+export PORT="8080"
+export REGISTRY_API_URL="http://localhost:8080"
+
+# LLM API Keys
+export ANTHROPIC_API_KEY="sk-ant-..."    # For Akira
+export OPENAI_API_KEY="sk-..."           # For Yuki & Kenji
+export GROQ_API_KEY="gsk_..."            # For Hiro
+export GOOGLE_API_KEY="..."              # For Sakura
+```
+
+## 🎯 Use Cases
+
+### 1. Code Review Pipeline
+Automatically review code for security, generate tests, setup CI/CD, and create documentation.
+
+```python
+from lib.orchestrator.workflows import full_code_review_workflow
+
+result = full_code_review_workflow(orchestrator, code, "python")
+```
+
+### 2. New Feature Development
+Design architecture, plan testing, and create specifications for new features.
+
+```python
+from lib.orchestrator.workflows import new_feature_workflow
+
+result = new_feature_workflow(orchestrator, {
+    "name": "User Authentication",
+    "description": "OAuth2 + JWT",
+    "scale": "10k users"
+})
+```
+
+### 3. Production Deployment
+Design Kubernetes deployment, setup monitoring, and create deployment docs.
+
+```python
+from lib.orchestrator.workflows import production_deployment_workflow
+
+result = production_deployment_workflow(orchestrator, {
+    "name": "my-app",
+    "image": "my-app:latest",
+    "port": 8080
+})
+```
+
+## 🤝 Contributing
+
+We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+
+### Getting Started
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Make your changes
+4. Run tests (`make test`)
+5. Commit your changes (`git commit -m 'Add amazing feature'`)
+6. Push to the branch (`git push origin feature/amazing-feature`)
+7. Open a Pull Request
+
+## 🔒 Security
+
+Security is a top priority. See [SECURITY.md](SECURITY.md) for:
+- Vulnerability reporting
+- Security best practices
+- Supported versions
+
+**Never commit API keys or secrets!**
+
+## 📝 License
+
+This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- CrewAI for the agent framework
+- Anthropic, OpenAI, Meta, and Google for LLM APIs
+- The Go and Python communities
+
+## 📞 Support
+
+- 🐛 [Report Issues](https://github.com/Melampe001/Tokyo-IA/issues)
+- 💬 [Discussions](https://github.com/Melampe001/Tokyo-IA/discussions)
+- 📧 [Contact](mailto:support@example.com)
+
+---
+
+Made with ❤️ by the Tokyo-IA team
 
 ### Android (local debug)
 ```bash
