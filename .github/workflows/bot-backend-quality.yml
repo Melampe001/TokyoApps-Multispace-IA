@@ -253,7 +253,7 @@ jobs:
       
       - name: Upload Report Artifact
         if: steps.analysis.outputs.report_exists == 'true'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: backend-quality-report
           path: backend-quality-report.json
