@@ -1,0 +1,103 @@
+package main
+
+import (
+	"log"
+	"os"
+
+	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
+)
+
+func main() {
+	// Load environment variables
+	if err := godotenv.Load(); err != nil {
+		log.Println("No .env file found")
+	}
+
+	// Get configuration
+	port := getEnv("PORT", "8080")
+	mode := getEnv("GIN_MODE", "debug")
+
+	// Set Gin mode
+	gin.SetMode(mode)
+
+	// Create router
+	r := gin.Default()
+
+	// Setup routes
+	setupRoutes(r)
+
+	// Start server
+	log.Printf("Starting server on port %s", port)
+	if err := r.Run(":" + port); err != nil {
+		log.Fatal("Failed to start server:", err)
+	}
+}
+
+func setupRoutes(r *gin.Engine) {
+	// Health check
+	r.GET("/health", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"status": "ok",
+			"message": "API is running",
+		})
+	})
+
+	// API v1 routes
+	v1 := r.Group("/api/v1")
+	{
+		// Authentication
+		auth := v1.Group("/auth")
+		{
+			auth.POST("/register", registerHandler)
+			auth.POST("/login", loginHandler)
+			auth.POST("/refresh", refreshHandler)
+		}
+
+		// Users (protected routes)
+		users := v1.Group("/users")
+		// users.Use(authMiddleware())
+		{
+			users.GET("", listUsersHandler)
+			users.GET("/:id", getUserHandler)
+			users.PUT("/:id", updateUserHandler)
+			users.DELETE("/:id", deleteUserHandler)
+		}
+	}
+}
+
+// Handler stubs - implement these in internal/handlers/
+func registerHandler(c *gin.Context) {
+	c.JSON(200, gin.H{"message": "register endpoint"})
+}
+
+func loginHandler(c *gin.Context) {
+	c.JSON(200, gin.H{"message": "login endpoint"})
+}
+
+func refreshHandler(c *gin.Context) {
+	c.JSON(200, gin.H{"message": "refresh endpoint"})
+}
+
+func listUsersHandler(c *gin.Context) {
+	c.JSON(200, gin.H{"message": "list users endpoint"})
+}
+
+func getUserHandler(c *gin.Context) {
+	c.JSON(200, gin.H{"message": "get user endpoint"})
+}
+
+func updateUserHandler(c *gin.Context) {
+	c.JSON(200, gin.H{"message": "update user endpoint"})
+}
+
+func deleteUserHandler(c *gin.Context) {
+	c.JSON(200, gin.H{"message": "delete user endpoint"})
+}
+
+func getEnv(key, defaultValue string) string {
+	if value := os.Getenv(key); value != "" {
+		return value
+	}
+	return defaultValue
+}

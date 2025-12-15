@@ -74,3 +74,21 @@ logs/
 tmp/
 temp/
 .cache/
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Elite Framework generated projects
+projects/
+generated/
+
+# Coverage reports
+coverage/
+*.coverage
+htmlcov/
+.nyc_output/
+
+# Elite Framework temp files
+.scaffold-cache/
