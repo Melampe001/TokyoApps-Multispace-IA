@@ -9,10 +9,16 @@ on:
     branches:
       - Main
 
+# Set minimal permissions by default
+permissions:
+  contents: read
+
 jobs:
   # Validate Elite Framework configuration
   validate-framework:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -53,6 +59,8 @@ jobs:
   # Test Go project
   test-go:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -88,6 +96,8 @@ jobs:
   # Test Makefile commands
   test-makefile:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -115,6 +125,8 @@ jobs:
   # Test templates
   test-templates:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     strategy:
       matrix:
         template: [api, bot, web, agent]
@@ -142,6 +154,8 @@ jobs:
   # Test project generation script
   test-generator:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -160,6 +174,8 @@ jobs:
   # Security scan
   security-scan:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -186,6 +202,8 @@ jobs:
   # Documentation check
   docs-check:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -210,6 +228,8 @@ jobs:
   deploy-check:
     needs: [validate-framework, test-go, test-makefile, test-templates]
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     if: github.ref == 'refs/heads/Main'
     steps:
       - name: Checkout code
