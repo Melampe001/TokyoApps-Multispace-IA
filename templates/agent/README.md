@@ -201,14 +201,42 @@ search_tool = Tool(
 ### Calculator Tool
 
 ```python
-def calculator(expression: str) -> float:
-    """Calculate mathematical expressions"""
-    return eval(expression)
+import ast
+import re
+
+def safe_calculator(expression: str) -> str:
+    """
+    Safely calculate mathematical expressions.
+    Uses AST parsing to prevent code injection.
+    Only allows: +, -, *, /, **, ()
+    """
+    expression = expression.replace(" ", "")
+    
+    # Validate characters
+    if not re.match(r'^[\d+\-*/().\s**]+$', expression):
+        return "Error: Invalid characters"
+    
+    try:
+        tree = ast.parse(expression, mode='eval')
+        
+        # Validate only safe operations
+        for node in ast.walk(tree):
+            if not isinstance(node, (
+                ast.Add, ast.Sub, ast.Mult, ast.Div, ast.Pow,
+                ast.USub, ast.UAdd, ast.Num, ast.Constant,
+                ast.Expression, ast.Load, ast.BinOp, ast.UnaryOp
+            )):
+                return "Error: Unsupported operation"
+        
+        result = eval(compile(tree, filename='', mode='eval'))
+        return str(result)
+    except Exception as e:
+        return f"Error: {e}"
 
 calc_tool = Tool(
     name="Calculator",
-    func=calculator,
-    description="Calculate mathematical expressions"
+    func=safe_calculator,
+    description="Calculate mathematical expressions safely"
 )
 ```
 

@@ -100,7 +100,7 @@ generate_project_name() {
 
 create_directory_structure() {
     local project_dir="$1"
-    local language="$3"
+    local language="$2"
     
     print_info "Creating directory structure..."
     
@@ -247,7 +247,7 @@ generate_project() {
     fi
     
     print_header "Creating Project Structure"
-    create_directory_structure "$project_dir" "$project_type" "$language"
+    create_directory_structure "$project_dir" "$language"
     
     print_header "Generating Base Files"
     generate_readme "$project_dir" "$project_name" "$description" "$project_type" "$language"

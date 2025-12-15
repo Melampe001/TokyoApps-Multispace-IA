@@ -13,7 +13,6 @@
     "rust": true
   },
   "github.copilot.advanced": {
-    "debug.overrideEngine": "gpt-4",
     "inlineSuggestCount": 3
   },
   
