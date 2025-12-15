@@ -6,7 +6,6 @@ out/
 
 # IDE files
 .idea/
-.vscode/
 *.iml
 *.swp
 *.swo
@@ -26,6 +25,33 @@ out/
 # Dependency directories
 vendor/
 node_modules/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+.venv
+pip-log.txt
+pip-delete-this-directory.txt
+.tox/
+.coverage
+.coverage.*
+htmlcov/
+.pytest_cache/
+.mypy_cache/
+.dmypy.json
+dmypy.json
+*.egg-info/
+dist/
+build/
+*.egg
+.env
+.env.python
 
 # Android
 *.apk
@@ -78,3 +104,5 @@ temp/
 # Library reports (auto-generated)
 LIBRARY/reports/*.md
 !LIBRARY/reports/README.md
+# Generated projects (Elite Framework output)
+output/

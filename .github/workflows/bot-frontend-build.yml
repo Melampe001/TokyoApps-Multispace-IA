@@ -1,0 +1,338 @@
+name: Bot #4 - Frontend Build & Asset Optimizer
+
+on:
+  # Run on PRs with frontend changes
+  pull_request:
+    paths:
+      - '**.dart'
+      - '**.png'
+      - '**.jpg'
+      - '**.jpeg'
+      - '**.webp'
+      - 'web/**'
+      - 'app/src/main/res/**'
+  
+  # Run on push to PR branches
+  push:
+    branches-ignore:
+      - main
+      - develop
+  
+  # Allow manual trigger
+  workflow_dispatch:
+
+permissions:
+  contents: write  # Need write for auto-commit
+  pull-requests: write
+  issues: write
+
+jobs:
+  asset-optimization:
+    runs-on: ubuntu-latest
+    name: Optimize Frontend Assets
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Install Optimization Tools
+        run: |
+          echo "Installing asset optimization tools..."
+          
+          # Install pngquant for PNG compression
+          sudo apt-get update
+          sudo apt-get install -y pngquant || echo "pngquant install failed"
+          
+          # Install webp tools for image conversion
+          sudo apt-get install -y webp || echo "webp install failed"
+          
+          # Install imagemagick for EXIF removal
+          sudo apt-get install -y imagemagick || echo "imagemagick install failed"
+          
+          echo "Tool installation complete"
+      
+      - name: Analyze Asset Sizes Before
+        id: before_analysis
+        run: |
+          echo "Analyzing assets before optimization..."
+          
+          # Count and size of images
+          png_count=$(find . -name "*.png" ! -path "*/node_modules/*" ! -path "*/.git/*" | wc -l)
+          jpg_count=$(find . -name "*.jpg" -o -name "*.jpeg" ! -path "*/node_modules/*" ! -path "*/.git/*" | wc -l)
+          
+          # Calculate total size (in bytes)
+          total_size=0
+          if [ "$png_count" -gt 0 ]; then
+            png_size=$(find . -name "*.png" ! -path "*/node_modules/*" ! -path "*/.git/*" -exec stat -f%z {} \; 2>/dev/null | awk '{s+=$1} END {print s}' || echo 0)
+            total_size=$((total_size + png_size))
+          fi
+          
+          if [ "$jpg_count" -gt 0 ]; then
+            jpg_size=$(find . -name "*.jpg" -o -name "*.jpeg" ! -path "*/node_modules/*" ! -path "*/.git/*" -exec stat -c%s {} \; 2>/dev/null | awk '{s+=$1} END {print s}' || echo 0)
+            total_size=$((total_size + jpg_size))
+          fi
+          
+          echo "png_count=$png_count" >> $GITHUB_OUTPUT
+          echo "jpg_count=$jpg_count" >> $GITHUB_OUTPUT
+          echo "before_size=$total_size" >> $GITHUB_OUTPUT
+          
+          echo "Assets before optimization:"
+          echo "  PNG files: $png_count"
+          echo "  JPG files: $jpg_count"
+          echo "  Total size: $total_size bytes"
+      
+      - name: Run Asset Optimization
+        id: optimization
+        run: |
+          echo "Running asset optimization..."
+          
+          # Make script executable
+          chmod +x .github/workflows/bots/scripts/compress_assets.sh
+          
+          # Run optimization script
+          bash .github/workflows/bots/scripts/compress_assets.sh > optimization-log.txt 2>&1 || true
+          
+          cat optimization-log.txt
+          
+          # Check if any files were changed
+          if git diff --name-only | grep -qE '\.(png|jpg|jpeg|webp)$'; then
+            echo "optimizations_applied=true" >> $GITHUB_OUTPUT
+            
+            # Count optimized files
+            optimized_count=$(git diff --name-only | grep -E '\.(png|jpg|jpeg|webp)$' | wc -l)
+            echo "optimized_count=$optimized_count" >> $GITHUB_OUTPUT
+          else
+            echo "optimizations_applied=false" >> $GITHUB_OUTPUT
+            echo "optimized_count=0" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Analyze Asset Sizes After
+        id: after_analysis
+        if: steps.optimization.outputs.optimizations_applied == 'true'
+        run: |
+          echo "Analyzing assets after optimization..."
+          
+          # Calculate total size after optimization
+          total_size=0
+          
+          png_size=$(find . -name "*.png" ! -path "*/node_modules/*" ! -path "*/.git/*" -exec stat -f%z {} \; 2>/dev/null | awk '{s+=$1} END {print s}' || \
+                     find . -name "*.png" ! -path "*/node_modules/*" ! -path "*/.git/*" -exec stat -c%s {} \; 2>/dev/null | awk '{s+=$1} END {print s}' || echo 0)
+          jpg_size=$(find . -name "*.jpg" -o -name "*.jpeg" ! -path "*/node_modules/*" ! -path "*/.git/*" -exec stat -f%z {} \; 2>/dev/null | awk '{s+=$1} END {print s}' || \
+                     find . -name "*.jpg" -o -name "*.jpeg" ! -path "*/node_modules/*" ! -path "*/.git/*" -exec stat -c%s {} \; 2>/dev/null | awk '{s+=$1} END {print s}' || echo 0)
+          
+          total_size=$((png_size + jpg_size))
+          
+          echo "after_size=$total_size" >> $GITHUB_OUTPUT
+          
+          # Calculate savings
+          before_size=${{ steps.before_analysis.outputs.before_size }}
+          saved=$((before_size - total_size))
+          
+          if [ "$before_size" -gt 0 ]; then
+            percent_saved=$(awk "BEGIN {printf \"%.1f\", ($saved / $before_size) * 100}")
+          else
+            percent_saved="0"
+          fi
+          
+          echo "bytes_saved=$saved" >> $GITHUB_OUTPUT
+          echo "percent_saved=$percent_saved" >> $GITHUB_OUTPUT
+          
+          echo "Assets after optimization:"
+          echo "  Total size: $total_size bytes"
+          echo "  Saved: $saved bytes ($percent_saved%)"
+      
+      - name: Commit Optimized Assets
+        id: commit
+        if: steps.optimization.outputs.optimizations_applied == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          
+          # Add optimized files
+          git add -A
+          
+          # Create commit
+          git commit -m "🤖 Auto-optimize assets: saved ${{ steps.after_analysis.outputs.bytes_saved }} bytes" || true
+          
+          # Push changes
+          git push || echo "Push failed, may need permissions"
+          
+          # Get commit hash
+          commit_hash=$(git rev-parse --short HEAD)
+          echo "commit_hash=$commit_hash" >> $GITHUB_OUTPUT
+      
+      - name: Detect Large Unoptimized Assets
+        id: large_assets
+        run: |
+          echo "Checking for large assets..."
+          
+          # Find images larger than 500KB
+          large_images=""
+          large_count=0
+          
+          while IFS= read -r file; do
+            if [ -f "$file" ]; then
+              size=$(stat -f%z "$file" 2>/dev/null || stat -c%s "$file" 2>/dev/null)
+              if [ "$size" -gt 512000 ]; then
+                large_images="${large_images}${file} ($(numfmt --to=iec-i --suffix=B $size 2>/dev/null || echo $size bytes))\n"
+                large_count=$((large_count + 1))
+              fi
+            fi
+          done < <(find . -type f \( -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" \) ! -path "*/node_modules/*" ! -path "*/.git/*")
+          
+          echo "large_count=$large_count" >> $GITHUB_OUTPUT
+          
+          if [ "$large_count" -gt 0 ]; then
+            echo "large_assets<<EOF" >> $GITHUB_OUTPUT
+            echo -e "$large_images" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+          fi
+          
+          echo "Large assets found: $large_count"
+      
+      - name: Generate Build Report Comment
+        id: generate_comment
+        if: github.event_name == 'pull_request'
+        run: |
+          # Build comment
+          cat > build-comment.md << EOF
+          ## 🎨 Frontend Build & Asset Report
+          
+          ### 📊 Asset Analysis
+          
+          EOF
+          
+          if [ "${{ steps.optimization.outputs.optimizations_applied }}" = "true" ]; then
+            before_mb=$(awk "BEGIN {printf \"%.2f\", ${{ steps.before_analysis.outputs.before_size }} / 1024 / 1024}")
+            after_mb=$(awk "BEGIN {printf \"%.2f\", ${{ steps.after_analysis.outputs.after_size }} / 1024 / 1024}")
+            saved_kb=$(awk "BEGIN {printf \"%.0f\", ${{ steps.after_analysis.outputs.bytes_saved }} / 1024}")
+            
+            echo "**Total Assets Size:** ${before_mb} MB → ${after_mb} MB (-${{ steps.after_analysis.outputs.percent_saved }}%) ✅" >> build-comment.md
+            echo "" >> build-comment.md
+            echo "### 🚀 Optimizations Applied Automatically" >> build-comment.md
+            echo "" >> build-comment.md
+            echo "- ✅ Optimized ${{ steps.optimization.outputs.optimized_count }} asset(s)" >> build-comment.md
+            echo "- ✅ Total saved: ~${saved_kb} KB" >> build-comment.md
+            echo "- ✅ Auto-committed in: \`${{ steps.commit.outputs.commit_hash }}\`" >> build-comment.md
+            echo "" >> build-comment.md
+          else
+            echo "**Status:** No optimizations needed ✅" >> build-comment.md
+            echo "" >> build-comment.md
+            echo "All assets are already optimized!" >> build-comment.md
+            echo "" >> build-comment.md
+          fi
+          
+          # Check for large assets
+          if [ "${{ steps.large_assets.outputs.large_count }}" -gt 0 ]; then
+            echo "### ⚠️ Large Assets Detected" >> build-comment.md
+            echo "" >> build-comment.md
+            echo "The following assets are larger than 500KB:" >> build-comment.md
+            echo "" >> build-comment.md
+            echo "\`\`\`" >> build-comment.md
+            echo "${{ steps.large_assets.outputs.large_assets }}" | head -10 >> build-comment.md
+            echo "\`\`\`" >> build-comment.md
+            echo "" >> build-comment.md
+            echo "Consider:" >> build-comment.md
+            echo "- Further compression" >> build-comment.md
+            echo "- Converting to WebP format" >> build-comment.md
+            echo "- Using lazy loading" >> build-comment.md
+            echo "" >> build-comment.md
+          fi
+          
+          echo "### 📈 Asset Summary" >> build-comment.md
+          echo "" >> build-comment.md
+          echo "- PNG files: ${{ steps.before_analysis.outputs.png_count }}" >> build-comment.md
+          echo "- JPG files: ${{ steps.before_analysis.outputs.jpg_count }}" >> build-comment.md
+          
+          if [ "${{ steps.large_assets.outputs.large_count }}" -gt 0 ]; then
+            echo "- Large assets (>500KB): ${{ steps.large_assets.outputs.large_count }}" >> build-comment.md
+          else
+            echo "- Large assets (>500KB): 0 ✅" >> build-comment.md
+          fi
+          
+          echo "" >> build-comment.md
+          
+          if [ "${{ steps.optimization.outputs.optimizations_applied }}" = "true" ]; then
+            echo "**🏆 Great job! Assets have been automatically optimized.**" >> build-comment.md
+          else
+            echo "**🏆 Excellent! All assets are optimized.**" >> build-comment.md
+          fi
+          
+          echo "" >> build-comment.md
+          echo "---" >> build-comment.md
+          echo "_Asset optimization by Frontend Build & Asset Optimizer_" >> build-comment.md
+          
+          cat build-comment.md > build-comment-body.txt
+      
+      - name: Post PR Comment
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const comment = fs.readFileSync('build-comment-body.txt', 'utf8');
+            
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number
+            });
+            
+            const botComment = comments.find(c => 
+              c.user.type === 'Bot' && c.body.includes('Frontend Build & Asset Report')
+            );
+            
+            if (botComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: comment
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: comment
+              });
+            }
+      
+      - name: Add Labels
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const labels = ['frontend'];
+            
+            if ('${{ steps.optimization.outputs.optimizations_applied }}' === 'true') {
+              labels.push('asset-optimization');
+            }
+            
+            const largeCount = parseInt('${{ steps.large_assets.outputs.large_count }}' || '0');
+            if (largeCount > 0) {
+              labels.push('bundle-size');
+            }
+            
+            try {
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                labels: labels
+              });
+            } catch (error) {
+              console.log('Some labels may not exist:', error.message);
+            }
+      
+      - name: Upload Optimization Report
+        uses: actions/upload-artifact@v6
+        with:
+          name: asset-optimization-report
+          path: |
+            optimization-log.txt
+            build-comment-body.txt
+          retention-days: 30
