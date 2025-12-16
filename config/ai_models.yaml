@@ -1,0 +1,174 @@
+# AI Models Configuration for Tokyo-IA
+# This file defines configuration for all AI model providers and routing rules
+
+models:
+  openai:
+    provider: openai
+    models:
+      - name: o3
+        max_tokens: 128000
+        cost_per_1k_tokens: 0.03
+        use_cases:
+          - reasoning
+          - complex_analysis
+        latency_target_ms: 2000
+      - name: o3-mini
+        max_tokens: 128000
+        cost_per_1k_tokens: 0.015
+        use_cases:
+          - reasoning
+          - code_generation
+        latency_target_ms: 1500
+
+  anthropic:
+    provider: anthropic
+    models:
+      - name: claude-opus-4.1
+        max_tokens: 200000
+        cost_per_1k_tokens: 0.015
+        use_cases:
+          - code_review
+          - code_generation
+          - reasoning
+        latency_target_ms: 1800
+      - name: claude-sonnet-4.5
+        max_tokens: 200000
+        cost_per_1k_tokens: 0.008
+        use_cases:
+          - code_review
+          - documentation
+          - chat
+        latency_target_ms: 1200
+
+  gemini:
+    provider: gemini
+    models:
+      - name: gemini-3.0-ultra
+        max_tokens: 1000000
+        cost_per_1k_tokens: 0.01
+        use_cases:
+          - multimodal
+          - documentation
+          - long_context
+        latency_target_ms: 1500
+
+  grok:
+    provider: grok
+    models:
+      - name: grok-4
+        max_tokens: 128000
+        cost_per_1k_tokens: 0.012
+        use_cases:
+          - multimodal
+          - reasoning
+        latency_target_ms: 1600
+
+  llama:
+    provider: llama
+    models:
+      - name: llama-4-405b
+        max_tokens: 128000
+        cost_per_1k_tokens: 0.0  # Local deployment
+        use_cases:
+          - code_generation
+          - privacy_required
+          - high_throughput
+        latency_target_ms: 200  # Local inference
+
+# Routing rules define how tasks are routed to models
+routing_rules:
+  reasoning:
+    complex:
+      primary: openai/o3
+      fallback:
+        - anthropic/claude-opus-4.1
+        - gemini/gemini-3.0-ultra
+    moderate:
+      primary: anthropic/claude-sonnet-4.5
+      fallback:
+        - openai/o3-mini
+        - gemini/gemini-3.0-ultra
+    simple:
+      primary: anthropic/claude-sonnet-4.5
+      fallback:
+        - llama/llama-4-405b
+
+  code_generation:
+    privacy_required:
+      primary: llama/llama-4-405b
+      fallback: []
+    default:
+      primary: anthropic/claude-opus-4.1
+      fallback:
+        - openai/o3-mini
+        - llama/llama-4-405b
+
+  code_review:
+    primary: anthropic/claude-opus-4.1
+    fallback:
+      - anthropic/claude-sonnet-4.5
+      - openai/o3-mini
+
+  multimodal:
+    primary: gemini/gemini-3.0-ultra
+    fallback:
+      - grok/grok-4
+
+  documentation:
+    primary: gemini/gemini-3.0-ultra
+    fallback:
+      - anthropic/claude-sonnet-4.5
+
+  chat:
+    primary: anthropic/claude-sonnet-4.5
+    fallback:
+      - llama/llama-4-405b
+
+# Budget configuration
+budget:
+  daily_limit_usd: 500.0
+  alert_threshold_percent: 80.0
+  per_request_limit_usd: 10.0
+  
+  # Budget allocation by provider (percentage)
+  allocation:
+    openai: 30
+    anthropic: 40
+    gemini: 15
+    grok: 10
+    llama: 5  # Infrastructure costs
+
+# Cache configuration
+cache:
+  enabled: true
+  ttl_seconds: 3600  # 1 hour
+  max_size_mb: 1024  # 1 GB
+  backend: memory  # memory, redis
+
+# Performance configuration
+performance:
+  max_retries: 3
+  timeout_seconds: 30
+  enable_fallback: true
+  concurrent_requests: 100
+  rate_limit_per_minute: 1000
+
+# Monitoring configuration
+monitoring:
+  prometheus:
+    enabled: true
+    port: 9090
+    path: /metrics
+  
+  langfuse:
+    enabled: false  # Enable when API key is configured
+    public_key: ""
+    secret_key: ""
+    host: "https://cloud.langfuse.com"
+
+# Feature flags
+features:
+  enable_streaming: false
+  enable_function_calling: true
+  enable_vision: true
+  enable_multimodal: true

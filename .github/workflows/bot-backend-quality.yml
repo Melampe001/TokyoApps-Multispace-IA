@@ -1,0 +1,260 @@
+name: Bot #1 - Backend Code Quality Guardian
+
+on:
+  # Run daily at 10:00 UTC
+  schedule:
+    - cron: '0 10 * * *'
+  
+  # Run on PRs that touch backend code
+  pull_request:
+    paths:
+      - 'lib/**'
+      - 'internal/**'
+      - 'cmd/**'
+      - '**.go'
+  
+  # Allow manual trigger
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  backend-quality-check:
+    runs-on: ubuntu-latest
+    name: Analyze Backend Code Quality
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0  # Fetch all history for proper diff
+      
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+      
+      - name: Set up Go
+        uses: actions/setup-go@v6
+        with:
+          go-version: '1.21'
+      
+      - name: Run Backend Quality Analysis
+        id: analysis
+        run: |
+          echo "Running backend quality analysis..."
+          python3 .github/workflows/bots/scripts/analyze_go_code.py \
+            --diff-only \
+            --check-tests \
+            --check-docs \
+            --check-errors \
+            --config .github/workflows/bots/backend-quality-rules.json \
+            --output backend-quality-report.json || true
+          
+          # Read the report
+          if [ -f backend-quality-report.json ]; then
+            echo "report_exists=true" >> $GITHUB_OUTPUT
+            
+            # Extract key metrics
+            quality_score=$(jq -r '.metrics.quality_score' backend-quality-report.json)
+            total_issues=$(jq -r '.summary.total_issues' backend-quality-report.json)
+            tests_found=$(jq -r '.metrics.tests_found' backend-quality-report.json)
+            
+            echo "quality_score=$quality_score" >> $GITHUB_OUTPUT
+            echo "total_issues=$total_issues" >> $GITHUB_OUTPUT
+            echo "tests_found=$tests_found" >> $GITHUB_OUTPUT
+          else
+            echo "report_exists=false" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Check for Proto Changes
+        id: proto_check
+        if: github.event_name == 'pull_request'
+        run: |
+          if git diff --name-only origin/${{ github.base_ref }}...HEAD | grep -q '^proto/'; then
+            echo "proto_changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "proto_changed=false" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Check for Billing Changes
+        id: billing_check
+        if: github.event_name == 'pull_request'
+        run: |
+          if git diff --name-only origin/${{ github.base_ref }}...HEAD | grep -q 'billing'; then
+            echo "billing_changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "billing_changed=false" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Generate Quality Report Comment
+        id: generate_comment
+        if: github.event_name == 'pull_request' && steps.analysis.outputs.report_exists == 'true'
+        run: |
+          quality_score=${{ steps.analysis.outputs.quality_score }}
+          total_issues=${{ steps.analysis.outputs.total_issues }}
+          tests_found=${{ steps.analysis.outputs.tests_found }}
+          
+          # Determine status emoji
+          if [ "$quality_score" -ge 90 ]; then
+            status_emoji="✅"
+            status_text="Approved"
+          elif [ "$quality_score" -ge 70 ]; then
+            status_emoji="⚠️"
+            status_text="Needs Improvement"
+          else
+            status_emoji="❌"
+            status_text="Quality Issues"
+          fi
+          
+          # Build comment
+          cat > comment.md << EOF
+          ## 🤖 Backend Quality Report
+          
+          **Quality Score:** ${quality_score}/100 ${status_emoji}
+          **Status:** ${status_text}
+          
+          ### 📊 Metrics
+          - Tests found: ${tests_found}
+          - Total issues detected: ${total_issues}
+          
+          ### ✅ Checks Performed
+          - [x] Test coverage verification
+          - [x] Documentation comments on exported functions
+          - [x] Error handling patterns
+          - [x] Import cleanliness
+          
+          EOF
+          
+          # Add issues if any
+          if [ "$total_issues" -gt 0 ]; then
+            echo "" >> comment.md
+            echo "### ⚠️ Issues Detected" >> comment.md
+            echo "" >> comment.md
+            jq -r '.issues[] | "- **\(.file):\(.line)** - \(.message)"' backend-quality-report.json >> comment.md
+            echo "" >> comment.md
+            echo "**Estimated fix time:** ~$((total_issues * 5)) minutes" >> comment.md
+          fi
+          
+          # Add proto reminder
+          if [ "${{ steps.proto_check.outputs.proto_changed }}" = "true" ]; then
+            echo "" >> comment.md
+            echo "### 🔔 Reminder" >> comment.md
+            echo "- ⚠️ Proto files modified - remember to run \`make proto\` to regenerate code" >> comment.md
+          fi
+          
+          # Add billing reminder
+          if [ "${{ steps.billing_check.outputs.billing_changed }}" = "true" ]; then
+            echo "" >> comment.md
+            echo "- ⚠️ Billing code modified - ensure comprehensive billing tests are included" >> comment.md
+          fi
+          
+          echo "" >> comment.md
+          echo "---" >> comment.md
+          echo "_Run \`/bot recheck\` to re-analyze after fixes_" >> comment.md
+          
+          # Save comment
+          cat comment.md > comment-body.txt
+      
+      - name: Post PR Comment
+        if: github.event_name == 'pull_request' && steps.analysis.outputs.report_exists == 'true'
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const fs = require('fs');
+            const comment = fs.readFileSync('comment-body.txt', 'utf8');
+            
+            // Check if bot already commented
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number
+            });
+            
+            const botComment = comments.find(c => 
+              c.user.type === 'Bot' && c.body.includes('Backend Quality Report')
+            );
+            
+            if (botComment) {
+              // Update existing comment
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: comment
+              });
+            } else {
+              // Create new comment
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: comment
+              });
+            }
+      
+      - name: Add Labels
+        if: github.event_name == 'pull_request' && steps.analysis.outputs.report_exists == 'true'
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const qualityScore = parseInt('${{ steps.analysis.outputs.quality_score }}');
+            const testsFound = parseInt('${{ steps.analysis.outputs.tests_found }}');
+            
+            const labels = ['backend'];
+            
+            // Add quality-related labels
+            if (qualityScore < 90) {
+              if (testsFound === 0) {
+                labels.push('needs-tests');
+              }
+              const issues = ${{ steps.analysis.outputs.total_issues }};
+              if (issues > 0) {
+                // Check if docs issues exist
+                labels.push('needs-docs');
+              }
+            }
+            
+            // Add labels
+            try {
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                labels: labels
+              });
+            } catch (error) {
+              console.log('Some labels may not exist yet:', error.message);
+            }
+      
+      - name: Auto-approve PR
+        if: |
+          github.event_name == 'pull_request' && 
+          steps.analysis.outputs.report_exists == 'true' &&
+          steps.analysis.outputs.quality_score >= 90
+        uses: actions/github-script@v8
+        with:
+          script: |
+            // Only approve, don't merge
+            try {
+              await github.rest.pulls.createReview({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: context.issue.number,
+                event: 'APPROVE',
+                body: '✅ Automatically approved by Backend Quality Guardian - Quality score: ${{ steps.analysis.outputs.quality_score }}/100'
+              });
+            } catch (error) {
+              console.log('Could not auto-approve:', error.message);
+            }
+      
+      - name: Upload Report Artifact
+        if: steps.analysis.outputs.report_exists == 'true'
+        uses: actions/upload-artifact@v6
+        with:
+          name: backend-quality-report
+          path: backend-quality-report.json
+          retention-days: 30

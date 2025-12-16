@@ -1,0 +1,150 @@
+name: Auto Documenter
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write  # Needed to commit documentation updates
+
+jobs:
+  auto-document:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+      
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+      
+      - name: Check for undocumented files
+        id: check_docs
+        run: |
+          echo "Checking for files without documentation..."
+          
+          # Find directories without README
+          undocumented_dirs=()
+          for dir in $(find . -type d -not -path '*/\.*' -not -path '*/node_modules/*' | head -20); do
+            if [ ! -f "$dir/README.md" ] && [ -n "$(ls -A $dir 2>/dev/null)" ]; then
+              undocumented_dirs+=("$dir")
+            fi
+          done
+          
+          if [ ${#undocumented_dirs[@]} -gt 0 ]; then
+            echo "found_undocumented=true" >> $GITHUB_OUTPUT
+            echo "Directories without README:"
+            printf '%s\n' "${undocumented_dirs[@]}"
+          else
+            echo "found_undocumented=false" >> $GITHUB_OUTPUT
+            echo "All directories are documented!"
+          fi
+      
+      - name: Validate documentation links
+        run: |
+          echo "Validating links in markdown files..."
+          
+          # Find all markdown files
+          md_files=$(find . -name "*.md" -not -path '*/node_modules/*' -not -path '*/.git/*')
+          
+          broken_links=0
+          for file in $md_files; do
+            # Extract markdown links [text](url)
+            links=$(grep -oP '\[([^\]]+)\]\(([^)]+)\)' "$file" | grep -oP '\([^)]+\)' | tr -d '()' || true)
+            
+            for link in $links; do
+              # Check if it's a relative file link
+              if [[ ! "$link" =~ ^https?:// ]] && [[ ! "$link" =~ ^# ]]; then
+                # Get directory of the markdown file
+                dir=$(dirname "$file")
+                full_path="$dir/$link"
+                
+                if [ ! -e "$full_path" ]; then
+                  echo "⚠️  Broken link in $file: $link"
+                  broken_links=$((broken_links + 1))
+                fi
+              fi
+            done
+          done
+          
+          if [ $broken_links -gt 0 ]; then
+            echo "Found $broken_links broken link(s)"
+          else
+            echo "✅ All documentation links are valid!"
+          fi
+      
+      - name: Extract code documentation
+        run: |
+          echo "Extracting documentation from code files..."
+          
+          # Create a summary file
+          cat > LIBRARY/code-documentation.md << 'EOF'
+          # Code Documentation Summary
+
+          This file contains automatically extracted documentation from code files.
+
+          EOF
+          
+          # Extract from Go files
+          go_files=$(find . -name "*.go" -not -path '*/vendor/*' | head -10)
+          if [ -n "$go_files" ]; then
+            echo "## Go Files" >> LIBRARY/code-documentation.md
+            for file in $go_files; do
+              echo "### $file" >> LIBRARY/code-documentation.md
+              # Extract package documentation (first comment block)
+              awk '/^\/\// {print} /^package/ {exit}' "$file" >> LIBRARY/code-documentation.md || true
+              echo "" >> LIBRARY/code-documentation.md
+            done
+          fi
+          
+          # Extract from Python files
+          py_files=$(find . -name "*.py" -not -path '*/venv/*' -not -path '*/__pycache__/*' | head -10)
+          if [ -n "$py_files" ]; then
+            echo "## Python Files" >> LIBRARY/code-documentation.md
+            for file in $py_files; do
+              echo "### $file" >> LIBRARY/code-documentation.md
+              # Extract docstrings (first triple-quoted string)
+              head -20 "$file" | grep -A 10 '"""' | head -11 >> LIBRARY/code-documentation.md || true
+              echo "" >> LIBRARY/code-documentation.md
+            done
+          fi
+          
+          echo "✅ Code documentation extracted to LIBRARY/code-documentation.md"
+      
+      - name: Generate documentation report
+        run: |
+          cat > LIBRARY/documentation-report.md << 'EOF'
+          # Documentation Report
+
+          Generated: $(date -u +"%Y-%m-%d %H:%M:%S UTC")
+
+          ## Coverage Statistics
+
+          EOF
+          
+          total_files=$(find . -type f -not -path '*/\.*' -not -path '*/node_modules/*' | wc -l)
+          doc_files=$(find . -name "*.md" -not -path '*/node_modules/*' | wc -l)
+          
+          echo "- Total project files: $total_files" >> LIBRARY/documentation-report.md
+          echo "- Documentation files: $doc_files" >> LIBRARY/documentation-report.md
+          echo "" >> LIBRARY/documentation-report.md
+          
+          echo "## Recent Changes" >> LIBRARY/documentation-report.md
+          git log --since="7 days ago" --oneline --no-merges -- "*.md" | head -10 >> LIBRARY/documentation-report.md || echo "No recent changes" >> LIBRARY/documentation-report.md
+          
+          echo "✅ Documentation report generated"
+      
+      - name: Commit documentation updates
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add LIBRARY/ || true
+          git diff --staged --quiet || git commit -m "📝 Update auto-generated documentation [automated]" || true
+          git push || echo "No changes to push"
