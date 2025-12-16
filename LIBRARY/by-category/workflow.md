@@ -1,6 +1,9 @@
 # Workflow
 
-Total: 13 archivos
+Total: 14 archivos
+
+## [ai_models.yaml](config/ai_models.yaml)
+o3
 
 ## [auto-documenter.yml](.github/workflows/auto-documenter.yml)
 Auto Documenter

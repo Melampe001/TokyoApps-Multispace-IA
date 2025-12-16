@@ -1,6 +1,6 @@
 # Documentation
 
-Total: 19 archivos
+Total: 20 archivos
 
 - [CI_CD.md](docs/CI_CD.md) - CI/CD Documentation
 - [GUIDE.md](LIBRARY/GUIDE.md) - Digital Library System - Complete Guide
@@ -14,6 +14,7 @@ Total: 19 archivos
 - [README.md](templates/ai-agent/README.md) - AI Agent Template
 - [README.md](templates/ecommerce/README.md) - E-commerce Template
 - [README.md](templates/pwa/README.md) - PWA Template
+- [ai-model-router-guide.md](docs/guides/ai-model-router-guide.md) - AI Model Router Guide
 - [auto-documenter.yml](.github/workflows/auto-documenter.yml) - Auto Documenter
 - [documentation.md](.github/ISSUE_TEMPLATE/documentation.md) - ---
 - [documentation.md](LIBRARY/by-category/documentation.md) - Documentation

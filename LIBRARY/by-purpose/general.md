@@ -1,6 +1,6 @@
 # General
 
-Total: 76 archivos
+Total: 87 archivos
 
 - [.gitignore](.gitignore) - .gitignore - other
 - [.python-version](.python-version) - .python-version - other
@@ -22,6 +22,11 @@ Total: 76 archivos
 - [Sincero](Sincero) - Sincero - other
 - [TAREAS.md](TAREAS.md) - ¿Qué tengo que hacer? - Guía de Tareas para Tokyo IA
 - [TIMELINE.md](LIBRARY/TIMELINE.md) - 📅 Línea de Tiempo de Creaciones
+- [__init__.py](lib/agents/__init__.py) - Tokyo-IA Agent Framework
+
+This package provides multi-agent AI capabilities using CrewAI.
+- [ai_config.go](internal/config/ai_config.go) - ai_config.go - source
+- [ai_models.yaml](config/ai_models.yaml) - o3
 - [analyze_dart_code.py](.github/workflows/bots/scripts/analyze_dart_code.py) - !/usr/bin/env python3
 - [analyze_go_code.py](.github/workflows/bots/scripts/analyze_go_code.py) - !/usr/bin/env python3
 - [analyzer.go](lib/generator/analyzer.go) - analyzer.go - source
@@ -29,6 +34,7 @@ Total: 76 archivos
 - [basic_agent.py](examples/python/basic_agent.py) - !/usr/bin/env python3
 - [blocker-detector.yml](.github/workflows/blocker-detector.yml) - Blocker Detector
 - [bug_report.md](.github/ISSUE_TEMPLATE/bug_report.md) - ---
+- [cache.go](internal/ai/cache.go) - cache.go - source
 - [ci.yml](.github/workflows/ci.yml) - CI
 - [compress_assets.sh](.github/workflows/bots/scripts/compress_assets.sh) - !/bin/bash
 - [configuration.md](LIBRARY/by-category/configuration.md) - Configuration
@@ -56,10 +62,12 @@ Total: 76 archivos
 - [library_cataloger.py](.github/workflows/scripts/library_cataloger.py) - !/usr/bin/env python3
 - [library_search.py](.github/workflows/scripts/library_search.py) - !/usr/bin/env python3
 - [main.go](cmd/main.go) - main.go - source
+- [main.go](cmd/ai-api/main.go) - main.go - source
 - [main.go](cmd/elite/main.go) - main.go - source
 - [manifest.yaml](templates/manifest.yaml) - "Progressive Web App"
 - [md.md](LIBRARY/by-technology/md.md) - MD
 - [mod.md](LIBRARY/by-technology/mod.md) - MOD
+- [model_router.go](internal/ai/model_router.go) - model_router.go - source
 - [my-agent.agent.md](.github/agents/my-agent.agent.md) - ---
 - [other.md](LIBRARY/by-category/other.md) - Other
 - [parser.go](lib/generator/parser.go) - parser.go - source
@@ -72,9 +80,14 @@ Total: 76 archivos
 - [scaffolder.go](lib/generator/scaffolder.go) - scaffolder.go - source
 - [schema.md](LIBRARY/by-category/schema.md) - Schema
 - [script.md](LIBRARY/by-category/script.md) - Script
+- [sh.md](LIBRARY/by-technology/sh.md) - SH
 - [source.md](LIBRARY/by-category/source.md) - Source
+- [sum.md](LIBRARY/by-technology/sum.md) - SUM
 - [templater.go](lib/generator/templater.go) - {{.ProjectName}}
+- [txt.md](LIBRARY/by-technology/txt.md) - TXT
+- [types.go](internal/ai/types.go) - types.go - source
 - [types.go](lib/generator/types.go) - types.go - source
 - [version.rb](ruby/lib/billing-platform/version.rb) - frozen_string_literal: true
 - [weekly-report.yml](.github/workflows/weekly-report.yml) - Weekly Report
+- [yaml.md](LIBRARY/by-technology/yaml.md) - YAML
 - [yml.md](LIBRARY/by-technology/yml.md) - YML

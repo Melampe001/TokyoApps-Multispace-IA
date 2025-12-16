@@ -1,6 +1,6 @@
 # Automation
 
-Total: 12 archivos
+Total: 13 archivos
 
 - [Agentes y bots](Agentes y bots) - Agentes y bots - other
 - [README.md](.github/workflows/README.md) - GitHub Workflows Documentation
@@ -14,3 +14,7 @@ Total: 12 archivos
 - [bot-frontend-ux.yml](.github/workflows/bot-frontend-ux.yml) - Bot #3 - Frontend UI/UX Compliance Bot
 - [dependabot.yml](.github/dependabot.yml) - dependabot.yml - workflow
 - [workflow.md](LIBRARY/by-category/workflow.md) - Workflow
+- [workflows.py](lib/agents/workflows.py) - Multi-agent workflows for Tokyo-IA.
+
+This module defines workflows that coordinate multiple agents:
+
