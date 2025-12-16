@@ -372,32 +372,76 @@ This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENS
 
 Made with ❤️ by the Tokyo-IA team
 
-### Android (local debug)
+### Prerequisites
+
+- **Go 1.21+**: For building the AI services
+- **Python 3.9+**: For agent framework
+- **Make**: For build commands
+
+### Installation
+
 ```bash
-./gradlew assembleDebug
-./gradlew installDebug
+# Clone the repository
+git clone https://github.com/Melampe001/Tokyo-IA.git
+cd Tokyo-IA
+
+# Install Go dependencies
+go mod download
+
+# Install Python dependencies
+pip install -r requirements.txt
 ```
 
-### Web (dev)
+### Build and Run
+
 ```bash
-cd web
-npm install
-npm run dev
+# Build all services
+make build
+
+# Run AI API server
+./bin/ai-api
+
+# Or run main application
+./bin/tokyo-ia
 ```
 
-### Server (local)
+### Running Tests
+
 ```bash
-cd server-mcp
-npm install
-npm start
+# Run Go tests
+make test
+
+# Run Python tests
+python -m pytest lib/agents/test_crew.py
+
+# Check code formatting
+make fmt
 ```
+
+### Configuration
+
+Set up your API keys (optional for development with mock clients):
+
+```bash
+export OPENAI_API_KEY="your-key-here"
+export ANTHROPIC_API_KEY="your-key-here"
+export GEMINI_API_KEY="your-key-here"
+```
+
+Configure models in `config/ai_models.yaml`.
 
 ## 📚 Documentation
 
+### AI Platform
+- **[Architecture Overview](docs/architecture/ai-models-integration-architecture.md)** - System design and components
+- **[Model Router Guide](docs/guides/ai-model-router-guide.md)** - Intelligent routing and cost optimization
+- **[API Reference](docs/api/ai-api-reference.md)** - HTTP API documentation
+- **[Agent Workflows](docs/guides/agent-workflows-guide.md)** - Multi-agent system usage (planned)
+
+### Development
 - **[Elite Framework](docs/elite-framework.md)** - Automated project generation system
 - **[Contributing Guide](CONTRIBUTING.md)** - How to contribute to the project
 - **[CI/CD Documentation](docs/CI_CD.md)** - Continuous Integration and Deployment
-- **[Branch Protection](docs/BRANCH_PROTECTION.md)** - Git workflow and branch rules
 - **[Security Policy](SECURITY.md)** - Security best practices
 
 ## 🎯 Elite Framework - Generate Projects Instantly

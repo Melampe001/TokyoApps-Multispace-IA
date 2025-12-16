@@ -1,6 +1,6 @@
 # MD
 
-Total: 58 archivos
+Total: 67 archivos
 
 - [BRANCH_PROTECTION.md](docs/BRANCH_PROTECTION.md)
 - [CATALOG.md](LIBRARY/CATALOG.md)
@@ -10,6 +10,7 @@ Total: 58 archivos
 - [GUIDE.md](LIBRARY/GUIDE.md)
 - [GitHub-Pro.md](prompts/GitHub-Pro.md)
 - [IMPLEMENTATION_SUMMARY.md](docs/IMPLEMENTATION_SUMMARY.md)
+- [IMPLEMENTATION_SUMMARY_AI.md](docs/IMPLEMENTATION_SUMMARY_AI.md)
 - [JS-Supremo.md](prompts/JS-Supremo.md)
 - [Makefile.md](LIBRARY/by-technology/Makefile.md)
 - [README-python.md](README-python.md)
@@ -28,6 +29,9 @@ Total: 58 archivos
 - [SECURITY.md](SECURITY.md)
 - [TAREAS.md](TAREAS.md)
 - [TIMELINE.md](LIBRARY/TIMELINE.md)
+- [ai-api-reference.md](docs/api/ai-api-reference.md)
+- [ai-model-router-guide.md](docs/guides/ai-model-router-guide.md)
+- [ai-models-integration-architecture.md](docs/architecture/ai-models-integration-architecture.md)
 - [automation.md](LIBRARY/by-purpose/automation.md)
 - [bug_report.md](.github/ISSUE_TEMPLATE/bug_report.md)
 - [build.md](LIBRARY/by-category/build.md)
@@ -44,6 +48,7 @@ Total: 58 archivos
 - [general.md](LIBRARY/by-purpose/general.md)
 - [go.md](LIBRARY/by-technology/go.md)
 - [html.md](LIBRARY/by-technology/html.md)
+- [integration.md](LIBRARY/by-purpose/integration.md)
 - [json.md](LIBRARY/by-technology/json.md)
 - [md.md](LIBRARY/by-technology/md.md)
 - [mod.md](LIBRARY/by-technology/mod.md)
@@ -56,7 +61,11 @@ Total: 58 archivos
 - [schema.md](LIBRARY/by-category/schema.md)
 - [script.md](LIBRARY/by-category/script.md)
 - [security.md](LIBRARY/by-purpose/security.md)
+- [sh.md](LIBRARY/by-technology/sh.md)
 - [source.md](LIBRARY/by-category/source.md)
+- [sum.md](LIBRARY/by-technology/sum.md)
 - [testing.md](LIBRARY/by-purpose/testing.md)
+- [txt.md](LIBRARY/by-technology/txt.md)
 - [workflow.md](LIBRARY/by-category/workflow.md)
+- [yaml.md](LIBRARY/by-technology/yaml.md)
 - [yml.md](LIBRARY/by-technology/yml.md)

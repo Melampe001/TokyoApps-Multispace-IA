@@ -1,9 +1,11 @@
 # GO
 
-Total: 18 archivos
+Total: 26 archivos
 
+- [ai_config.go](internal/config/ai_config.go)
 - [analyzer.go](lib/generator/analyzer.go)
 - [analyzer_test.go](lib/generator/analyzer_test.go)
+- [cache.go](internal/ai/cache.go)
 - [deployer.go](lib/generator/deployer.go)
 - [documenter.go](lib/generator/documenter.go)
 - [generator.go](lib/generator/generator.go)
@@ -12,11 +14,17 @@ Total: 18 archivos
 - [hello.go](lib/hello.go)
 - [hello.go](config/hello.go)
 - [main.go](cmd/main.go)
+- [main.go](cmd/ai-api/main.go)
 - [main.go](cmd/elite/main.go)
+- [metrics.go](internal/ai/metrics.go)
+- [mock_client.go](internal/ai/clients/mock_client.go)
+- [model_router.go](internal/ai/model_router.go)
+- [model_router_test.go](internal/ai/model_router_test.go)
 - [parser.go](lib/generator/parser.go)
 - [parser_test.go](lib/generator/parser_test.go)
 - [placeholder_test.go](testing/placeholder_test.go)
 - [scaffolder.go](lib/generator/scaffolder.go)
 - [scaffolder_test.go](lib/generator/scaffolder_test.go)
 - [templater.go](lib/generator/templater.go)
+- [types.go](internal/ai/types.go)
 - [types.go](lib/generator/types.go)

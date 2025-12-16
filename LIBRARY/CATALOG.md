@@ -1,17 +1,17 @@
 # 📚 Catálogo Completo de la Biblioteca
-Última actualización: 2025-12-15 03:43:27
-Total de archivos: 119
+Última actualización: 2025-12-16 03:26:16
+Total de archivos: 143
 
 ---
 ## 📊 Estadísticas Generales
 - **Build**: 1 archivos
 - **Configuration**: 3 archivos
-- **Documentation**: 59 archivos
+- **Documentation**: 68 archivos
 - **Other**: 15 archivos
 - **Schema**: 1 archivos
-- **Script**: 9 archivos
-- **Source**: 18 archivos
-- **Workflow**: 13 archivos
+- **Script**: 15 archivos
+- **Source**: 26 archivos
+- **Workflow**: 14 archivos
 
 ---
 ## 🗂️ Por Categoría
@@ -24,7 +24,7 @@ Total de archivos: 119
 - **[backend-quality-rules.json](.github/workflows/bots/backend-quality-rules.json)** - backend-quality-rules.json - configuration
 - **[frontend-ux-guidelines.json](.github/workflows/bots/frontend-ux-guidelines.json)** - frontend-ux-guidelines.json - configuration
 
-### Documentation (59 archivos)
+### Documentation (68 archivos)
 - **[BRANCH_PROTECTION.md](docs/BRANCH_PROTECTION.md)** - Branch Protection Rules
 - **[CATALOG.md](LIBRARY/CATALOG.md)** - 📚 Catálogo Completo de la Biblioteca
 - **[CI_CD.md](docs/CI_CD.md)** - CI/CD Documentation
@@ -33,6 +33,7 @@ Total de archivos: 119
 - **[GUIDE.md](LIBRARY/GUIDE.md)** - Digital Library System - Complete Guide
 - **[GitHub-Pro.md](prompts/GitHub-Pro.md)** - GitHub-Pro.md – Step-by-Step Guide for GitHub Pro (2025)
 - **[IMPLEMENTATION_SUMMARY.md](docs/IMPLEMENTATION_SUMMARY.md)** - Elite Framework - Implementation Summary
+- **[IMPLEMENTATION_SUMMARY_AI.md](docs/IMPLEMENTATION_SUMMARY_AI.md)** - Multi-Model AI Integration - Implementation Summary
 - **[JS-Supremo.md](prompts/JS-Supremo.md)** - JS-Supremo.md – Premium JavaScript Expert Prompt
 - **[Makefile.md](LIBRARY/by-technology/Makefile.md)** - MAKEFILE
 - **[README-python.md](README-python.md)** - Tokyo-IA Python Setup Guide
@@ -44,7 +45,6 @@ Total de archivos: 119
 - **[README.md](LIBRARY/reports/README.md)** - Library Reports
 - **[README.md](docs/README.md)** - Tokyo-IA Documentation
 - **[README.md](templates/bot/README.md)** - Bot Template
-- **[README.md](templates/api/README.md)** - API Template
 
 ### Other (15 archivos)
 - **[.gitignore](.gitignore)** - .gitignore - other
@@ -66,20 +66,37 @@ Total de archivos: 119
 ### Schema (1 archivos)
 - **[hello.proto](proto/hello.proto)** - hello.proto - schema
 
-### Script (9 archivos)
+### Script (15 archivos)
+- **[__init__.py](lib/agents/__init__.py)** - Tokyo-IA Agent Framework
+
+This package provides multi-agent AI capabilities using CrewAI.
 - **[analyze_dart_code.py](.github/workflows/bots/scripts/analyze_dart_code.py)** - !/usr/bin/env python3
 - **[analyze_go_code.py](.github/workflows/bots/scripts/analyze_go_code.py)** - !/usr/bin/env python3
 - **[basic_agent.py](examples/python/basic_agent.py)** - !/usr/bin/env python3
 - **[compress_assets.sh](.github/workflows/bots/scripts/compress_assets.sh)** - !/bin/bash
 - **[create_and_merge_pr.sh](scripts/create_and_merge_pr.sh)** - !/usr/bin/env bash
+- **[crew_config.py](lib/agents/crew_config.py)** - CrewAI Configuration for Tokyo-IA Multi-Agent System
+
+This module defines specialized AI agents for 
+- **[demo-ai-integration.sh](scripts/demo-ai-integration.sh)** - !/bin/bash
 - **[generate_report.py](.github/workflows/bots/scripts/generate_report.py)** - !/usr/bin/env python3
 - **[library_cataloger.py](.github/workflows/scripts/library_cataloger.py)** - !/usr/bin/env python3
 - **[library_search.py](.github/workflows/scripts/library_search.py)** - !/usr/bin/env python3
-- **[version.rb](ruby/lib/billing-platform/version.rb)** - frozen_string_literal: true
+- **[test_crew.py](lib/agents/test_crew.py)** - Unit tests for Tokyo-IA agent framework.
+- **[tools.py](lib/agents/tools.py)** - Custom tools for Tokyo-IA agents.
 
-### Source (18 archivos)
+This module provides specialized tools for agents to interact wit
+- **[version.rb](ruby/lib/billing-platform/version.rb)** - frozen_string_literal: true
+- **[workflows.py](lib/agents/workflows.py)** - Multi-agent workflows for Tokyo-IA.
+
+This module defines workflows that coordinate multiple agents:
+
+
+### Source (26 archivos)
+- **[ai_config.go](internal/config/ai_config.go)** - ai_config.go - source
 - **[analyzer.go](lib/generator/analyzer.go)** - analyzer.go - source
 - **[analyzer_test.go](lib/generator/analyzer_test.go)** - analyzer_test.go - source
+- **[cache.go](internal/ai/cache.go)** - cache.go - source
 - **[deployer.go](lib/generator/deployer.go)** - deployer.go - source
 - **[documenter.go](lib/generator/documenter.go)** - Architecture
 - **[generator.go](lib/generator/generator.go)** - generator.go - source
@@ -88,16 +105,17 @@ Total de archivos: 119
 - **[hello.go](lib/hello.go)** - hello.go - source
 - **[hello.go](config/hello.go)** - hello.go - source
 - **[main.go](cmd/main.go)** - main.go - source
+- **[main.go](cmd/ai-api/main.go)** - main.go - source
 - **[main.go](cmd/elite/main.go)** - main.go - source
+- **[metrics.go](internal/ai/metrics.go)** - metrics.go - source
+- **[mock_client.go](internal/ai/clients/mock_client.go)** - mock_client.go - source
+- **[model_router.go](internal/ai/model_router.go)** - model_router.go - source
+- **[model_router_test.go](internal/ai/model_router_test.go)** - model_router_test.go - source
 - **[parser.go](lib/generator/parser.go)** - parser.go - source
 - **[parser_test.go](lib/generator/parser_test.go)** - parser_test.go - source
-- **[placeholder_test.go](testing/placeholder_test.go)** - placeholder_test.go - source
-- **[scaffolder.go](lib/generator/scaffolder.go)** - scaffolder.go - source
-- **[scaffolder_test.go](lib/generator/scaffolder_test.go)** - scaffolder_test.go - source
-- **[templater.go](lib/generator/templater.go)** - {{.ProjectName}}
-- **[types.go](lib/generator/types.go)** - types.go - source
 
-### Workflow (13 archivos)
+### Workflow (14 archivos)
+- **[ai_models.yaml](config/ai_models.yaml)** - o3
 - **[auto-documenter.yml](.github/workflows/auto-documenter.yml)** - Auto Documenter
 - **[blocker-detector.yml](.github/workflows/blocker-detector.yml)** - Blocker Detector
 - **[bot-backend-performance.yml](.github/workflows/bot-backend-performance.yml)** - Bot #2 - Backend Performance Monitor
@@ -115,7 +133,7 @@ Total de archivos: 119
 ---
 ## 🎯 Por Propósito
 
-### Automation (12 archivos)
+### Automation (13 archivos)
 - [Agentes y bots](Agentes y bots)
 - [README.md](.github/workflows/README.md)
 - [README.md](.github/workflows/bots/README.md)
@@ -133,7 +151,7 @@ Total de archivos: 119
 - [deployer.go](lib/generator/deployer.go)
 - [deployment.md](LIBRARY/by-purpose/deployment.md)
 
-### Documentation (19 archivos)
+### Documentation (20 archivos)
 - [CI_CD.md](docs/CI_CD.md)
 - [GUIDE.md](LIBRARY/GUIDE.md)
 - [GitHub-Pro.md](prompts/GitHub-Pro.md)
@@ -145,7 +163,7 @@ Total de archivos: 119
 - [README.md](docs/README.md)
 - [README.md](templates/ai-agent/README.md)
 
-### General (76 archivos)
+### General (87 archivos)
 - [.gitignore](.gitignore)
 - [.python-version](.python-version)
 - [BRANCH_PROTECTION.md](docs/BRANCH_PROTECTION.md)
@@ -157,19 +175,32 @@ Total de archivos: 119
 - [IA suprema](prompts/IA suprema)
 - [IMPLEMENTATION_SUMMARY.md](docs/IMPLEMENTATION_SUMMARY.md)
 
-### Integration (1 archivos)
+### Integration (6 archivos)
+- [IMPLEMENTATION_SUMMARY_AI.md](docs/IMPLEMENTATION_SUMMARY_AI.md)
 - [README.md](templates/api/README.md)
+- [ai-api-reference.md](docs/api/ai-api-reference.md)
+- [ai-models-integration-architecture.md](docs/architecture/ai-models-integration-architecture.md)
+- [demo-ai-integration.sh](scripts/demo-ai-integration.sh)
+- [integration.md](LIBRARY/by-purpose/integration.md)
+
+### Monitoring (1 archivos)
+- [metrics.go](internal/ai/metrics.go)
 
 ### Security (2 archivos)
 - [SECURITY.md](SECURITY.md)
 - [security.md](LIBRARY/by-purpose/security.md)
 
-### Testing (5 archivos)
+### Testing (10 archivos)
 - [analyzer_test.go](lib/generator/analyzer_test.go)
+- [crew_config.py](lib/agents/crew_config.py)
+- [mock_client.go](internal/ai/clients/mock_client.go)
+- [model_router_test.go](internal/ai/model_router_test.go)
 - [parser_test.go](lib/generator/parser_test.go)
 - [placeholder_test.go](testing/placeholder_test.go)
 - [scaffolder_test.go](lib/generator/scaffolder_test.go)
+- [test_crew.py](lib/agents/test_crew.py)
 - [testing.md](LIBRARY/by-purpose/testing.md)
+- [tools.py](lib/agents/tools.py)
 
 ---
 

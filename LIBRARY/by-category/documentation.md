@@ -1,6 +1,6 @@
 # Documentation
 
-Total: 59 archivos
+Total: 68 archivos
 
 ## [BRANCH_PROTECTION.md](docs/BRANCH_PROTECTION.md)
 Branch Protection Rules
@@ -25,6 +25,9 @@ GitHub-Pro.md – Step-by-Step Guide for GitHub Pro (2025)
 
 ## [IMPLEMENTATION_SUMMARY.md](docs/IMPLEMENTATION_SUMMARY.md)
 Elite Framework - Implementation Summary
+
+## [IMPLEMENTATION_SUMMARY_AI.md](docs/IMPLEMENTATION_SUMMARY_AI.md)
+Multi-Model AI Integration - Implementation Summary
 
 ## [JS-Supremo.md](prompts/JS-Supremo.md)
 JS-Supremo.md – Premium JavaScript Expert Prompt
@@ -80,6 +83,15 @@ Security Policy
 ## [TIMELINE.md](LIBRARY/TIMELINE.md)
 📅 Línea de Tiempo de Creaciones
 
+## [ai-api-reference.md](docs/api/ai-api-reference.md)
+Tokyo-IA AI API Reference
+
+## [ai-model-router-guide.md](docs/guides/ai-model-router-guide.md)
+AI Model Router Guide
+
+## [ai-models-integration-architecture.md](docs/architecture/ai-models-integration-architecture.md)
+Multi-Model AI Integration Architecture
+
 ## [automation.md](LIBRARY/by-purpose/automation.md)
 Automation
 
@@ -128,6 +140,9 @@ GO
 ## [html.md](LIBRARY/by-technology/html.md)
 HTML
 
+## [integration.md](LIBRARY/by-purpose/integration.md)
+Integration
+
 ## [json.md](LIBRARY/by-technology/json.md)
 JSON
 
@@ -167,14 +182,26 @@ Script
 ## [security.md](LIBRARY/by-purpose/security.md)
 Security
 
+## [sh.md](LIBRARY/by-technology/sh.md)
+SH
+
 ## [source.md](LIBRARY/by-category/source.md)
 Source
+
+## [sum.md](LIBRARY/by-technology/sum.md)
+SUM
 
 ## [testing.md](LIBRARY/by-purpose/testing.md)
 Testing
 
+## [txt.md](LIBRARY/by-technology/txt.md)
+TXT
+
 ## [workflow.md](LIBRARY/by-category/workflow.md)
 Workflow
+
+## [yaml.md](LIBRARY/by-technology/yaml.md)
+YAML
 
 ## [yml.md](LIBRARY/by-technology/yml.md)
 YML

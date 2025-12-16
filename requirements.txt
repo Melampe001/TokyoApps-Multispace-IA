@@ -3,6 +3,7 @@
 
 # CrewAI - Framework for orchestrating role-playing, autonomous AI agents
 crewai>=0.80.0
+crewai-tools>=0.12.0
 
 # LLM API Clients
 # Groq - Fast inference API for LLMs (Llama models)
