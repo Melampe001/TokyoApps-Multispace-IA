@@ -1,6 +1,6 @@
 # MD
 
-Total: 67 archivos
+Total: 68 archivos
 
 - [BRANCH_PROTECTION.md](docs/BRANCH_PROTECTION.md)
 - [CATALOG.md](LIBRARY/CATALOG.md)
@@ -52,6 +52,7 @@ Total: 67 archivos
 - [json.md](LIBRARY/by-technology/json.md)
 - [md.md](LIBRARY/by-technology/md.md)
 - [mod.md](LIBRARY/by-technology/mod.md)
+- [monitoring.md](LIBRARY/by-purpose/monitoring.md)
 - [my-agent.agent.md](.github/agents/my-agent.agent.md)
 - [other.md](LIBRARY/by-category/other.md)
 - [proto.md](LIBRARY/by-technology/proto.md)

@@ -1,12 +1,12 @@
 # 📚 Catálogo Completo de la Biblioteca
-Última actualización: 2025-12-16 03:26:16
-Total de archivos: 143
+Última actualización: 2025-12-17 03:21:50
+Total de archivos: 144
 
 ---
 ## 📊 Estadísticas Generales
 - **Build**: 1 archivos
 - **Configuration**: 3 archivos
-- **Documentation**: 68 archivos
+- **Documentation**: 69 archivos
 - **Other**: 15 archivos
 - **Schema**: 1 archivos
 - **Script**: 15 archivos
@@ -24,7 +24,7 @@ Total de archivos: 143
 - **[backend-quality-rules.json](.github/workflows/bots/backend-quality-rules.json)** - backend-quality-rules.json - configuration
 - **[frontend-ux-guidelines.json](.github/workflows/bots/frontend-ux-guidelines.json)** - frontend-ux-guidelines.json - configuration
 
-### Documentation (68 archivos)
+### Documentation (69 archivos)
 - **[BRANCH_PROTECTION.md](docs/BRANCH_PROTECTION.md)** - Branch Protection Rules
 - **[CATALOG.md](LIBRARY/CATALOG.md)** - 📚 Catálogo Completo de la Biblioteca
 - **[CI_CD.md](docs/CI_CD.md)** - CI/CD Documentation
@@ -183,8 +183,9 @@ This module defines workflows that coordinate multiple agents:
 - [demo-ai-integration.sh](scripts/demo-ai-integration.sh)
 - [integration.md](LIBRARY/by-purpose/integration.md)
 
-### Monitoring (1 archivos)
+### Monitoring (2 archivos)
 - [metrics.go](internal/ai/metrics.go)
+- [monitoring.md](LIBRARY/by-purpose/monitoring.md)
 
 ### Security (2 archivos)
 - [SECURITY.md](SECURITY.md)

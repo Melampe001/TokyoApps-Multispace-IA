@@ -1,6 +1,6 @@
 # Documentation
 
-Total: 68 archivos
+Total: 69 archivos
 
 ## [BRANCH_PROTECTION.md](docs/BRANCH_PROTECTION.md)
 Branch Protection Rules
@@ -151,6 +151,9 @@ MD
 
 ## [mod.md](LIBRARY/by-technology/mod.md)
 MOD
+
+## [monitoring.md](LIBRARY/by-purpose/monitoring.md)
+Monitoring
 
 ## [my-agent.agent.md](.github/agents/my-agent.agent.md)
 ---
