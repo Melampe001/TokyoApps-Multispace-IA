@@ -14,28 +14,23 @@ from .crew_config import (
     create_test_generation_agent,
     create_sre_agent,
     create_documentation_agent,
-    create_agent_crew
+    create_agent_crew,
 )
-from .tools import (
-    CODE_REVIEW_TOOLS,
-    TEST_GENERATION_TOOLS,
-    SRE_TOOLS,
-    DOCUMENTATION_TOOLS
-)
+from .tools import CODE_REVIEW_TOOLS, TEST_GENERATION_TOOLS, SRE_TOOLS, DOCUMENTATION_TOOLS
 
 
 def pr_review_workflow(pr_data: Dict[str, Any]) -> Dict[str, Any]:
     """
     Execute a comprehensive PR review workflow.
-    
+
     Workflow steps:
     1. Code Review Agent reviews the changes
     2. Test Generation Agent creates tests
     3. SRE Agent validates deployment safety
-    
+
     Args:
         pr_data: Pull request data including diff, metadata, etc.
-        
+
     Returns:
         Dictionary with results from all agents
     """
@@ -43,7 +38,7 @@ def pr_review_workflow(pr_data: Dict[str, Any]) -> Dict[str, Any]:
     code_reviewer = create_code_review_agent(CODE_REVIEW_TOOLS)
     test_generator = create_test_generation_agent(TEST_GENERATION_TOOLS)
     sre = create_sre_agent(SRE_TOOLS)
-    
+
     # Define tasks
     tasks = [
         Task(
@@ -61,7 +56,7 @@ def pr_review_workflow(pr_data: Dict[str, Any]) -> Dict[str, Any]:
             Provide specific, actionable feedback with line references.
             """,
             agent=code_reviewer,
-            expected_output="Detailed code review with specific recommendations"
+            expected_output="Detailed code review with specific recommendations",
         ),
         Task(
             description=f"""
@@ -75,7 +70,7 @@ def pr_review_workflow(pr_data: Dict[str, Any]) -> Dict[str, Any]:
             Aim for >80% coverage of new code.
             """,
             agent=test_generator,
-            expected_output="Test suite code with high coverage"
+            expected_output="Test suite code with high coverage",
         ),
         Task(
             description=f"""
@@ -89,48 +84,48 @@ def pr_review_workflow(pr_data: Dict[str, Any]) -> Dict[str, Any]:
             Provide a deployment checklist and safety recommendations.
             """,
             agent=sre,
-            expected_output="Deployment safety analysis and checklist"
-        )
+            expected_output="Deployment safety analysis and checklist",
+        ),
     ]
-    
+
     # Create and run crew
     crew = create_agent_crew(
         agents=[code_reviewer, test_generator, sre],
         tasks=tasks,
         process=Process.sequential,
-        verbose=True
+        verbose=True,
     )
-    
+
     result = crew.kickoff()
-    
+
     return {
         "workflow": "pr_review",
         "status": "completed",
         "results": result,
-        "pr_number": pr_data.get('number'),
-        "agents_involved": ["code_reviewer", "test_generator", "sre"]
+        "pr_number": pr_data.get("number"),
+        "agents_involved": ["code_reviewer", "test_generator", "sre"],
     }
 
 
 def bug_fix_workflow(bug_report: Dict[str, Any]) -> Dict[str, Any]:
     """
     Execute a bug fix workflow.
-    
+
     Workflow steps:
     1. Code Review Agent analyzes the bug
     2. Test Generation Agent creates reproduction tests
     3. Code Review Agent validates the fix
     4. Test Generation Agent verifies tests pass
-    
+
     Args:
         bug_report: Bug report with description, steps to reproduce, etc.
-        
+
     Returns:
         Dictionary with workflow results
     """
     code_reviewer = create_code_review_agent(CODE_REVIEW_TOOLS)
     test_generator = create_test_generation_agent(TEST_GENERATION_TOOLS)
-    
+
     tasks = [
         Task(
             description=f"""
@@ -147,7 +142,7 @@ def bug_fix_workflow(bug_report: Dict[str, Any]) -> Dict[str, Any]:
             4. Impact assessment
             """,
             agent=code_reviewer,
-            expected_output="Bug analysis with root cause and fix recommendations"
+            expected_output="Bug analysis with root cause and fix recommendations",
         ),
         Task(
             description=f"""
@@ -159,41 +154,41 @@ def bug_fix_workflow(bug_report: Dict[str, Any]) -> Dict[str, Any]:
             Tests should verify the fix once implemented.
             """,
             agent=test_generator,
-            expected_output="Reproduction tests for the bug"
-        )
+            expected_output="Reproduction tests for the bug",
+        ),
     ]
-    
+
     crew = create_agent_crew(
         agents=[code_reviewer, test_generator],
         tasks=tasks,
         process=Process.sequential,
-        verbose=True
+        verbose=True,
     )
-    
+
     result = crew.kickoff()
-    
+
     return {
         "workflow": "bug_fix",
         "status": "completed",
         "results": result,
-        "bug_id": bug_report.get('id'),
-        "agents_involved": ["code_reviewer", "test_generator"]
+        "bug_id": bug_report.get("id"),
+        "agents_involved": ["code_reviewer", "test_generator"],
     }
 
 
 def feature_development_workflow(feature_spec: Dict[str, Any]) -> Dict[str, Any]:
     """
     Execute a feature development workflow.
-    
+
     Workflow steps:
     1. Code Review Agent creates architecture plan
     2. Documentation Agent creates technical design doc
     3. Test Generation Agent creates test strategy
     4. SRE Agent validates operational requirements
-    
+
     Args:
         feature_spec: Feature specification and requirements
-        
+
     Returns:
         Dictionary with workflow results
     """
@@ -201,7 +196,7 @@ def feature_development_workflow(feature_spec: Dict[str, Any]) -> Dict[str, Any]
     doc_agent = create_documentation_agent(DOCUMENTATION_TOOLS)
     test_generator = create_test_generation_agent(TEST_GENERATION_TOOLS)
     sre = create_sre_agent(SRE_TOOLS)
-    
+
     tasks = [
         Task(
             description=f"""
@@ -219,7 +214,7 @@ def feature_development_workflow(feature_spec: Dict[str, Any]) -> Dict[str, Any]
             5. Integration points
             """,
             agent=code_reviewer,
-            expected_output="Detailed architecture plan"
+            expected_output="Detailed architecture plan",
         ),
         Task(
             description=f"""
@@ -231,7 +226,7 @@ def feature_development_workflow(feature_spec: Dict[str, Any]) -> Dict[str, Any]
             5. Usage examples
             """,
             agent=doc_agent,
-            expected_output="Comprehensive technical design document"
+            expected_output="Comprehensive technical design document",
         ),
         Task(
             description=f"""
@@ -243,7 +238,7 @@ def feature_development_workflow(feature_spec: Dict[str, Any]) -> Dict[str, Any]
             5. Performance test criteria
             """,
             agent=test_generator,
-            expected_output="Complete test strategy document"
+            expected_output="Complete test strategy document",
         ),
         Task(
             description=f"""
@@ -255,41 +250,41 @@ def feature_development_workflow(feature_spec: Dict[str, Any]) -> Dict[str, Any]
             5. Deployment strategy
             """,
             agent=sre,
-            expected_output="Operational requirements document"
-        )
+            expected_output="Operational requirements document",
+        ),
     ]
-    
+
     crew = create_agent_crew(
         agents=[code_reviewer, doc_agent, test_generator, sre],
         tasks=tasks,
         process=Process.sequential,
-        verbose=True
+        verbose=True,
     )
-    
+
     result = crew.kickoff()
-    
+
     return {
         "workflow": "feature_development",
         "status": "completed",
         "results": result,
-        "feature_id": feature_spec.get('id'),
-        "agents_involved": ["code_reviewer", "documentation", "test_generator", "sre"]
+        "feature_id": feature_spec.get("id"),
+        "agents_involved": ["code_reviewer", "documentation", "test_generator", "sre"],
     }
 
 
 def documentation_generation_workflow(codebase_path: str) -> Dict[str, Any]:
     """
     Generate comprehensive documentation for a codebase.
-    
+
     Args:
         codebase_path: Path to the codebase
-        
+
     Returns:
         Dictionary with generated documentation
     """
     code_reviewer = create_code_review_agent(CODE_REVIEW_TOOLS)
     doc_agent = create_documentation_agent(DOCUMENTATION_TOOLS)
-    
+
     tasks = [
         Task(
             description=f"""
@@ -300,7 +295,7 @@ def documentation_generation_workflow(codebase_path: str) -> Dict[str, Any]:
             4. Understand architecture
             """,
             agent=code_reviewer,
-            expected_output="Codebase analysis report"
+            expected_output="Codebase analysis report",
         ),
         Task(
             description=f"""
@@ -312,25 +307,22 @@ def documentation_generation_workflow(codebase_path: str) -> Dict[str, Any]:
             5. Contributing guidelines
             """,
             agent=doc_agent,
-            expected_output="Complete documentation set"
-        )
+            expected_output="Complete documentation set",
+        ),
     ]
-    
+
     crew = create_agent_crew(
-        agents=[code_reviewer, doc_agent],
-        tasks=tasks,
-        process=Process.sequential,
-        verbose=True
+        agents=[code_reviewer, doc_agent], tasks=tasks, process=Process.sequential, verbose=True
     )
-    
+
     result = crew.kickoff()
-    
+
     return {
         "workflow": "documentation_generation",
         "status": "completed",
         "results": result,
         "codebase_path": codebase_path,
-        "agents_involved": ["code_reviewer", "documentation"]
+        "agents_involved": ["code_reviewer", "documentation"],
     }
 
 
@@ -339,26 +331,26 @@ WORKFLOWS = {
     "pr_review": pr_review_workflow,
     "bug_fix": bug_fix_workflow,
     "feature_development": feature_development_workflow,
-    "documentation_generation": documentation_generation_workflow
+    "documentation_generation": documentation_generation_workflow,
 }
 
 
 def execute_workflow(workflow_name: str, **kwargs) -> Dict[str, Any]:
     """
     Execute a named workflow.
-    
+
     Args:
         workflow_name: Name of the workflow to execute
         **kwargs: Workflow-specific parameters
-        
+
     Returns:
         Dictionary with workflow results
     """
     if workflow_name not in WORKFLOWS:
         return {
             "error": f"Unknown workflow: {workflow_name}",
-            "available_workflows": list(WORKFLOWS.keys())
+            "available_workflows": list(WORKFLOWS.keys()),
         }
-    
+
     workflow_func = WORKFLOWS[workflow_name]
     return workflow_func(**kwargs)
