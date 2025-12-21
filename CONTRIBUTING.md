@@ -9,7 +9,7 @@ Thank you for your interest in contributing to Tokyo-IA! This document provides 
 - [Development Setup](#development-setup)
 - [Making Changes](#making-changes)
 - [Pull Request Process](#pull-request-process)
-- [Coding Standards](#coding-standards)
+- [Code Standards](#code-standards)
 - [Testing](#testing)
 - [Branch Protection Rules](#branch-protection-rules)
 
@@ -19,83 +19,44 @@ We are committed to providing a welcoming and inclusive environment for all cont
 
 ## Getting Started
 
-1. Fork the repository on GitHub
-2. Clone your fork locally:
-   ```bash
-   git clone https://github.com/YOUR_USERNAME/Tokyo-IA.git
-   cd Tokyo-IA
-   ```
-3. Add the upstream repository as a remote:
-   ```bash
-   git remote add upstream https://github.com/Melampe001/Tokyo-IA.git
-   ```
+1. Fork and clone
+2. Install dependencies: `go mod download && pip install -r requirements.txt`
+3. Install pre-commit: `pre-commit install`
+4. Create feature branch: `git checkout -b feature/amazing-feature`
 
 ## Development Setup
 
-### Android App
+### Go Development
 
-1. Install Android Studio with SDK Platform 33 or higher
-2. Open the project in Android Studio
-3. Sync Gradle files
-4. Run the app:
+1. Install Go 1.21 or higher
+2. Install dependencies:
    ```bash
-   ./gradlew assembleDebug
-   ./gradlew installDebug
+   go mod download
+   ```
+3. Build the application:
+   ```bash
+   make build
    ```
 
-### Web Application
+### Python Development
 
-1. Install Node.js 20 or higher
-2. Navigate to the web directory:
+1. Install Python 3.11 or higher
+2. Install dependencies:
    ```bash
-   cd web
-   npm install
-   npm run dev
+   pip install -r requirements.txt
+   pip install pytest flake8 black
    ```
 
-### MCP Server
+### Pre-commit Hooks Setup
 
-1. Install Node.js 20 or higher
-2. Navigate to the server-mcp directory:
-   ```bash
-   cd server-mcp
-   npm install
-   npm start
-   ```
+Install pre-commit hooks to ensure code quality:
+
+```bash
+pip install pre-commit
+pre-commit install
+```
 
 ## Making Changes
-
-### Setting Up Pre-commit Hooks
-
-We recommend setting up pre-commit hooks to ensure code quality before committing:
-
-1. Install pre-commit hooks for Android (Kotlin):
-   ```bash
-   # Create a pre-commit hook
-   cat > .git/hooks/pre-commit << 'EOF'
-   #!/bin/bash
-   # Run ktlint if available
-   if command -v ktlint &> /dev/null; then
-       ktlint --format "app/src/**/*.kt" || exit 1
-   fi
-   EOF
-   chmod +x .git/hooks/pre-commit
-   ```
-
-2. Install pre-commit hooks for Web/Server (JavaScript):
-   ```bash
-   # For web
-   cd web
-   npm install --save-dev husky lint-staged
-   npx husky install
-   npx husky add .husky/pre-commit "npm run lint"
-   
-   # For server-mcp
-   cd server-mcp
-   npm install --save-dev husky lint-staged
-   npx husky install
-   npx husky add .husky/pre-commit "npm run lint"
-   ```
 
 ### Creating a Branch
 
@@ -123,17 +84,14 @@ Branch naming conventions:
 
 2. Commit with a descriptive message:
    ```bash
-   git commit -m "feat: add user authentication to Android app"
+   git commit -m "feat: add user authentication"
    ```
 
-Commit message format:
-- `feat:` - New feature
-- `fix:` - Bug fix
-- `docs:` - Documentation changes
-- `style:` - Code style changes (formatting, etc.)
-- `refactor:` - Code refactoring
-- `test:` - Test changes
-- `chore:` - Build process or auxiliary tool changes
+Commit message format: `type(scope): description`
+
+Types: feat, fix, docs, style, refactor, test, chore
+
+Example: `feat(branch): add ML-based branch naming`
 
 ## Pull Request Process
 
@@ -152,48 +110,34 @@ Commit message format:
    - Clear title describing the change
    - Detailed description of what changed and why
    - Reference to related issues (e.g., "Closes #123")
-   - Screenshots for UI changes
    - List of testing performed
 
 4. Ensure all CI checks pass:
-   - Android build and tests
-   - Web build and tests
-   - MCP Server build and tests
+   - Go tests and linting
+   - Python tests and formatting
+   - Security scans
 
 5. Address review feedback promptly
 
 6. Once approved, your PR will be merged by a maintainer
 
-## Coding Standards
+## Code Standards
 
-### Android (Kotlin)
+### Go
+- Run `make fmt` before committing
+- Follow [Effective Go](https://go.dev/doc/effective_go)
+- Maintain test coverage >80%
+- Use meaningful variable and function names
+- Keep functions small and focused
 
-- Follow [Kotlin coding conventions](https://kotlinlang.org/docs/coding-conventions.html)
-- Use descriptive names for classes, functions, and variables
-- Prefer data classes for simple data holders
-- Use coroutines for asynchronous operations
-- Add KDoc comments for public APIs
-
-### Web (JavaScript/React)
-
-- Use functional components with hooks
-- Follow React best practices
-- Use consistent naming conventions:
-  - camelCase for variables and functions
-  - PascalCase for components
-- Use ESLint and Prettier for code formatting
-- Add JSDoc comments for complex functions
-
-### MCP Server (Node.js)
-
-- Use async/await for asynchronous operations
-- Handle errors appropriately with try/catch blocks
-- Follow modular architecture patterns
+### Python
+- Use Black formatter: `black .`
+- Follow PEP 8
+- Type hints required
+- Maximum line length: 100 characters
 - Use descriptive variable and function names
-- Add JSDoc comments for public APIs
 
 ### General Guidelines
-
 - Write clear, self-documenting code
 - Keep functions small and focused on a single responsibility
 - Add comments only when the code logic is complex or non-obvious
@@ -206,23 +150,23 @@ Commit message format:
 
 All new features should include appropriate tests:
 
-- **Android**: Write unit tests using JUnit and instrumentation tests using Espresso
-- **Web**: Write unit tests using Jest/Vitest and React Testing Library
-- **Server**: Write unit tests using Jest or Mocha
+- **Go**: Write unit tests using the standard testing package
+- **Python**: Write unit tests using pytest
 
 ### Running Tests
 
 ```bash
-# Android
-./gradlew test
+# Go tests
+make test
+# or
+go test ./...
 
-# Web
-cd web
-npm test
+# Python tests
+pytest
 
-# MCP Server
-cd server-mcp
-npm test
+# With coverage
+go test -coverprofile=coverage.txt ./...
+pytest --cov
 ```
 
 ### Test Coverage
@@ -239,7 +183,8 @@ The `main` branch is protected with the following rules:
 
 2. **Require status checks to pass before merging**
    - CI Pipeline must pass
-   - All component-specific checks must pass (Android, Web, MCP Server)
+   - Security scans must pass
+   - All tests must pass
 
 3. **Require branches to be up to date before merging**
    - Your branch must be rebased on the latest main
@@ -253,35 +198,27 @@ The `main` branch is protected with the following rules:
 6. **Require signed commits** (recommended)
    - Set up GPG key signing for additional security
 
-### Setting Up Branch Protection (For Maintainers)
-
-To configure these rules on GitHub:
-
-1. Go to repository Settings → Branches
-2. Add rule for `main` branch
-3. Enable the protections listed above
-4. Click "Create" or "Save changes"
-
 ## Security
 
 **CRITICAL: Never commit secrets to the repository.**
 
 - Do NOT store service account JSONs, keystore files, private keys, or other secrets
 - Use GitHub Actions Secrets for CI/CD credentials
+- Use environment variables for configuration
 - If you accidentally commit a secret:
   1. Rotate the exposed credential immediately
   2. Contact a maintainer to help remove it from git history
   3. Never commit secrets again
 
-For more details, see the [Security Guidelines](README.md#security--secrets-important) in the README.
+For more details, see the [Security Policy](SECURITY.md).
 
 ## Questions?
 
 If you have questions or need help:
 
 1. Check the [README.md](README.md) for basic information
-2. Search existing issues for similar questions
-3. Open a new issue with the "question" label
-4. Reach out to maintainers
+2. Review the [Architecture documentation](docs/ARCHITECTURE.md)
+3. Search existing issues for similar questions
+4. Open a new issue with the "question" label
 
-Thank you for contributing to Tokyo-IA! 🎌
+Thank you for contributing to Tokyo-IA! 🏛️

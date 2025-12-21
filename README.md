@@ -1,6 +1,11 @@
-# Tokyo-IA
+# 🏛️ Tokyo-IA - Imperial Premium Elite Edition
 
-[![CI Pipeline](https://github.com/Melampe001/Tokyo-IA/actions/workflows/ci.yml/badge.svg)](https://github.com/Melampe001/Tokyo-IA/actions/workflows/ci.yml)
+[![CI Pipeline](https://github.com/Melampe001/Tokyo-IA/workflows/CI%20Pipeline/badge.svg)](https://github.com/Melampe001/Tokyo-IA/actions)
+[![Security](https://github.com/Melampe001/Tokyo-IA/workflows/Security%20Scan/badge.svg)](https://github.com/Melampe001/Tokyo-IA/actions)
+[![Go Report Card](https://goreportcard.com/badge/github.com/Melampe001/Tokyo-IA)](https://goreportcard.com/report/github.com/Melampe001/Tokyo-IA)
+[![codecov](https://codecov.io/gh/Melampe001/Tokyo-IA/branch/main/graph/badge.svg)](https://codecov.io/gh/Melampe001/Tokyo-IA)
+
+> Generador de ramas ordenadas y flujos optimizados con IA integrada
 
 Tokyo-IA is a comprehensive AI platform featuring multi-model integration, intelligent routing, and autonomous agents. Built with Go and Python, it provides production-ready AI capabilities with cost optimization and enterprise-grade reliability.
 
@@ -16,7 +21,13 @@ Tokyo-IA is a comprehensive AI platform featuring multi-model integration, intel
 - [Security](#security)
 - [License](#license)
 
-## 🤖 Features
+## ✨ Features
+
+- 🌿 **Optimized Branch Management**: Intelligent branch creation and workflow
+- 📁 **Automated File Generation**: GitHub file creation with templates
+- 🤖 **AI-Powered**: ML-based repository optimization
+- 🔒 **Enterprise Security**: CodeQL scanning, dependency review
+- 📊 **Web Dashboard**: Real-time monitoring interface
 
 ### Multi-Model AI Integration
 - **5 State-of-the-Art Providers**: OpenAI (o3/o5), Anthropic (Claude Opus/Sonnet), Google (Gemini 3.0), xAI (Grok 4), Meta (Llama 4)
@@ -150,8 +161,9 @@ tokyoia/
 ### Prerequisites
 
 - **Go 1.21+**: For building the AI services
-- **Python 3.9+**: For agent framework
+- **Python 3.11+**: For agent framework
 - **Make**: For build commands
+- **Git**: Version control
 
 ### Installation
 
@@ -165,32 +177,24 @@ go mod download
 
 # Install Python dependencies
 pip install -r requirements.txt
+
+# Setup pre-commit hooks (optional)
+pre-commit install
 ```
 
-### Build and Run
-
+### Usage
 ```bash
-# Build all services
+# Build
 make build
 
-# Run AI API server
-./bin/ai-api
-
-# Or run main application
-./bin/tokyo-ia
-```
-
-### Running Tests
-
-```bash
-# Run Go tests
+# Run tests
 make test
 
-# Run Python tests
-python -m pytest lib/agents/test_crew.py
-
-# Check code formatting
+# Format code
 make fmt
+
+# Full CI locally
+make ci
 ```
 
 ### Configuration
@@ -208,7 +212,8 @@ Configure models in `config/ai_models.yaml`.
 ## 📚 Documentation
 
 ### AI Platform
-- **[Architecture Overview](docs/architecture/ai-models-integration-architecture.md)** - System design and components
+- **[Architecture Overview](docs/ARCHITECTURE.md)** - System design and components
+- **[AI Integration Architecture](docs/architecture/ai-models-integration-architecture.md)** - AI system design
 - **[Model Router Guide](docs/guides/ai-model-router-guide.md)** - Intelligent routing and cost optimization
 - **[API Reference](docs/api/ai-api-reference.md)** - HTTP API documentation
 - **[Agent Workflows](docs/guides/agent-workflows-guide.md)** - Multi-agent system usage (planned)
@@ -253,27 +258,17 @@ Each generated project includes:
 
 See the [Elite Framework Documentation](docs/elite-framework.md) for details.
 
-## 🔒 Security / Secrets (IMPORTANT)
+## 🔒 Security
 
-**Do NOT store service account JSONs, keystore files, private keys, or other secrets in the repository.**
+This project uses:
+- CodeQL analysis
+- Dependabot
+- Pre-commit hooks
+- Automated security scans
 
-If you need to provide credentials for CI:
-- Create the credential (e.g., Google Play service account JSON) locally
-- Encode keystore files or JSON as base64 and store them in GitHub Actions Secrets
-- Reference secrets in workflows using: `${{ secrets.GOOGLE_PLAY_JSON }}`, `${{ secrets.ANDROID_KEYSTORE_BASE64 }}`, etc.
-
-If any secret was ever committed:
-1. Rotate the exposed credential immediately (revoke old key)
-2. Remove the secret from the repository and history
-3. Notify collaborators and ask them to reclone if history was rewritten
+Report vulnerabilities to [security contact]
 
 For more details, see the [Security Policy](SECURITY.md).
-
-## 📝 Release Notes
-
-Release notes for Play Store:
-- `whatsnew/en-US/whatsnew.txt`
-- `whatsnew/es-MX/whatsnew.txt`
 
 ## 🤝 Contributing
 
@@ -282,6 +277,14 @@ We welcome contributions! Please read our [Contributing Guide](CONTRIBUTING.md) 
 - Code standards
 - Pull request process
 - Branch protection rules
+
+## 🏛️ Imperial Premium Elite Standards
+
+This repository follows the **Athena Protocol** with automated:
+- ✅ CI/CD pipelines
+- ✅ Security scanning
+- ✅ Code quality enforcement
+- ✅ Comprehensive documentation
 
 ## 📄 License
 
