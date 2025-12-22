@@ -12,7 +12,7 @@ Requirements:
 Usage:
     export GROQ_API_KEY=your_api_key_here
     python examples/python/basic_agent.py
-    
+
 Optional:
     export GROQ_MODEL=groq/llama-3.1-70b-versatile  # Default model if not specified
 """
@@ -37,50 +37,48 @@ def check_api_key() -> Optional[str]:
 def main():
     """Main function to run the basic agent example."""
     print("🗼 Tokyo-IA - Basic Agent Example\n")
-    
+
     # Check for API key
     api_key = check_api_key()
     print("✅ API key found")
-    
+
     try:
         from crewai import Agent, Task, Crew, LLM
+
         print("✅ Dependencies loaded successfully\n")
     except ImportError as e:
         print(f"❌ Error importing dependencies: {e}")
         print("\nPlease install dependencies:")
         print("  pip install -r requirements.txt")
         sys.exit(1)
-    
+
     # Initialize Groq LLM using CrewAI's LLM class
     # Note: API key is automatically read from GROQ_API_KEY environment variable
     print("🔧 Initializing Groq LLM...")
     model = os.environ.get("GROQ_MODEL", "groq/llama-3.1-70b-versatile")
     print(f"   Using model: {model}")
     try:
-        llm = LLM(
-            model=model,
-            temperature=0.7
-        )
+        llm = LLM(model=model, temperature=0.7)
         print("✅ LLM initialized\n")
     except Exception as e:
         print(f"❌ Error initializing LLM: {e}")
         sys.exit(1)
-    
+
     # Create a Tokyo travel expert agent
     print("🤖 Creating Tokyo Travel Expert agent...")
     tokyo_guide = Agent(
-        role='Tokyo Travel Expert',
-        goal='Provide accurate and helpful information about Tokyo attractions',
+        role="Tokyo Travel Expert",
+        goal="Provide accurate and helpful information about Tokyo attractions",
         backstory="""You are an experienced travel guide who has lived in Tokyo 
         for over 10 years. You have deep knowledge about Tokyo's culture, 
         attractions, food, and transportation. You love sharing insider tips 
         and helping visitors make the most of their Tokyo experience.""",
         verbose=True,
         allow_delegation=False,
-        llm=llm
+        llm=llm,
     )
     print("✅ Agent created\n")
-    
+
     # Create a task for the agent
     print("📋 Creating task...")
     task = Task(
@@ -93,28 +91,24 @@ def main():
         Keep recommendations diverse (traditional, modern, nature/city mix).""",
         agent=tokyo_guide,
         expected_output="""A formatted list of 3 Tokyo attractions with names, 
-        reasons to visit, and practical tips."""
+        reasons to visit, and practical tips.""",
     )
     print("✅ Task created\n")
-    
+
     # Create a crew and execute
     print("🚀 Starting crew execution...\n")
     print("=" * 70)
-    
-    crew = Crew(
-        agents=[tokyo_guide],
-        tasks=[task],
-        verbose=True
-    )
-    
+
+    crew = Crew(agents=[tokyo_guide], tasks=[task], verbose=True)
+
     try:
         result = crew.kickoff()
-        
+
         print("=" * 70)
         print("\n✨ Result:\n")
         print(result)
         print("\n✅ Example completed successfully!")
-        
+
     except Exception as e:
         print(f"\n❌ Error during execution: {e}")
         print("\nPossible causes:")

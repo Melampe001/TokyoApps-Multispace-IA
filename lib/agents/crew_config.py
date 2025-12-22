@@ -14,7 +14,7 @@ from typing import List, Dict, Any
 
 class AgentConfig:
     """Configuration for a single agent."""
-    
+
     def __init__(
         self,
         role: str,
@@ -23,7 +23,7 @@ class AgentConfig:
         model: str,
         provider: str,
         tools: List[Any] = None,
-        verbose: bool = True
+        verbose: bool = True,
     ):
         self.role = role
         self.goal = goal
@@ -43,7 +43,7 @@ CODE_REVIEW_AGENT_CONFIG = AgentConfig(
     You excel at identifying subtle bugs, security vulnerabilities, and performance issues.
     Your reviews are thorough yet constructive, helping developers improve their code quality.""",
     model="claude-opus-4.1",
-    provider="anthropic"
+    provider="anthropic",
 )
 
 
@@ -56,7 +56,7 @@ TEST_GENERATION_AGENT_CONFIG = AgentConfig(
     You understand testing frameworks across multiple languages and can generate tests that
     are maintainable, readable, and comprehensive. You prioritize test quality over quantity.""",
     model="o3",
-    provider="openai"
+    provider="openai",
 )
 
 
@@ -69,7 +69,7 @@ SRE_AGENT_CONFIG = AgentConfig(
     and incident response. You validate configurations for security, scalability, and reliability.
     Your focus is on preventing production incidents and ensuring system stability.""",
     model="llama-4-405b",
-    provider="llama"
+    provider="llama",
 )
 
 
@@ -82,7 +82,7 @@ DOCUMENTATION_AGENT_CONFIG = AgentConfig(
     and can generate documentation that is accurate, complete, and user-friendly.
     You create diagrams, examples, and tutorials that help users understand and use systems effectively.""",
     model="gemini-3.0-ultra",
-    provider="gemini"
+    provider="gemini",
 )
 
 
@@ -95,10 +95,7 @@ def create_code_review_agent(tools: List[Any] = None) -> Agent:
         backstory=config.backstory,
         tools=tools or config.tools,
         verbose=config.verbose,
-        llm_config={
-            "model": config.model,
-            "provider": config.provider
-        }
+        llm_config={"model": config.model, "provider": config.provider},
     )
 
 
@@ -111,10 +108,7 @@ def create_test_generation_agent(tools: List[Any] = None) -> Agent:
         backstory=config.backstory,
         tools=tools or config.tools,
         verbose=config.verbose,
-        llm_config={
-            "model": config.model,
-            "provider": config.provider
-        }
+        llm_config={"model": config.model, "provider": config.provider},
     )
 
 
@@ -127,10 +121,7 @@ def create_sre_agent(tools: List[Any] = None) -> Agent:
         backstory=config.backstory,
         tools=tools or config.tools,
         verbose=config.verbose,
-        llm_config={
-            "model": config.model,
-            "provider": config.provider
-        }
+        llm_config={"model": config.model, "provider": config.provider},
     )
 
 
@@ -143,10 +134,7 @@ def create_documentation_agent(tools: List[Any] = None) -> Agent:
         backstory=config.backstory,
         tools=tools or config.tools,
         verbose=config.verbose,
-        llm_config={
-            "model": config.model,
-            "provider": config.provider
-        }
+        llm_config={"model": config.model, "provider": config.provider},
     )
 
 
@@ -154,37 +142,32 @@ def create_agent_crew(
     agents: List[Agent],
     tasks: List[Task],
     process: Process = Process.sequential,
-    verbose: bool = True
+    verbose: bool = True,
 ) -> Crew:
     """
     Create a crew of agents to work together on tasks.
-    
+
     Args:
         agents: List of Agent instances
         tasks: List of Task instances
         process: Process type (sequential or hierarchical)
         verbose: Whether to output detailed logs
-        
+
     Returns:
         Crew instance configured with the agents and tasks
     """
-    return Crew(
-        agents=agents,
-        tasks=tasks,
-        process=process,
-        verbose=verbose
-    )
+    return Crew(agents=agents, tasks=tasks, process=process, verbose=verbose)
 
 
 # Example usage for PR review workflow
 def create_pr_review_crew(pr_data: Dict[str, Any], tools: Dict[str, List[Any]]) -> Crew:
     """
     Create a specialized crew for PR review workflow.
-    
+
     Args:
         pr_data: Pull request data (title, description, diff, etc.)
         tools: Dictionary of tools for each agent
-        
+
     Returns:
         Configured Crew for PR review
     """
@@ -192,7 +175,7 @@ def create_pr_review_crew(pr_data: Dict[str, Any], tools: Dict[str, List[Any]]) 
     code_reviewer = create_code_review_agent(tools.get("code_review", []))
     test_generator = create_test_generation_agent(tools.get("test_generation", []))
     sre = create_sre_agent(tools.get("sre", []))
-    
+
     # Define tasks
     review_task = Task(
         description=f"""Review the following pull request:
@@ -207,9 +190,9 @@ def create_pr_review_crew(pr_data: Dict[str, Any], tools: Dict[str, List[Any]]) 
         
         Provide detailed feedback with specific line references.""",
         agent=code_reviewer,
-        expected_output="Comprehensive code review with actionable feedback"
+        expected_output="Comprehensive code review with actionable feedback",
     )
-    
+
     test_task = Task(
         description=f"""Based on the code review, generate test cases:
         1. Unit tests for new functions/methods
@@ -219,9 +202,9 @@ def create_pr_review_crew(pr_data: Dict[str, Any], tools: Dict[str, List[Any]]) 
         
         Generate actual test code in the appropriate framework.""",
         agent=test_generator,
-        expected_output="Test suite code with comprehensive coverage"
+        expected_output="Test suite code with comprehensive coverage",
     )
-    
+
     sre_task = Task(
         description=f"""Validate deployment safety:
         1. Check for breaking changes
@@ -231,13 +214,13 @@ def create_pr_review_crew(pr_data: Dict[str, Any], tools: Dict[str, List[Any]]) 
         
         Provide deployment recommendations and safety checklist.""",
         agent=sre,
-        expected_output="Deployment safety analysis and checklist"
+        expected_output="Deployment safety analysis and checklist",
     )
-    
+
     # Create and return crew
     return create_agent_crew(
         agents=[code_reviewer, test_generator, sre],
         tasks=[review_task, test_task, sre_task],
         process=Process.sequential,
-        verbose=True
+        verbose=True,
     )

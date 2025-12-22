@@ -2,29 +2,24 @@
 
 ## Supported Versions
 
-We release patches for security vulnerabilities for the following versions:
-
 | Version | Supported          |
 | ------- | ------------------ |
-| Latest  | :white_check_mark: |
-| < 1.0   | :x:                |
+| main    | :white_check_mark: |
 
 ## Reporting a Vulnerability
 
-**Please do not report security vulnerabilities through public GitHub issues.**
+**DO NOT** create public GitHub issues for security vulnerabilities.
 
-Instead, please report them via email to the project maintainers. You should receive a response within 48 hours. If for some reason you do not, please follow up via email to ensure we received your original message.
+Email: [contact email]
 
-Please include the following information in your report:
+Expected response time: 48 hours
 
-- Type of vulnerability
-- Full paths of source file(s) related to the vulnerability
-- Location of the affected source code (tag/branch/commit or direct URL)
-- Step-by-step instructions to reproduce the issue
-- Proof-of-concept or exploit code (if possible)
-- Impact of the vulnerability, including how an attacker might exploit it
+## Security Measures
 
-This information will help us triage your report more quickly.
+- CodeQL analysis on every PR
+- Dependabot for dependency updates
+- Weekly security scans
+- Pre-commit hooks for secret detection
 
 ## Security Best Practices
 
