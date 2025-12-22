@@ -16,7 +16,12 @@ resource "aws_iam_role" "etl_role" {
             "token.actions.githubusercontent.com:aud" = "sts.amazonaws.com"
           }
           StringLike = {
-            "token.actions.githubusercontent.com:sub" = "repo:Melampe001/Tokyo-IA:*"
+            # Restrict to main branch and specific environments for production
+            # For dev/testing, you can use: "repo:Melampe001/Tokyo-IA:*"
+            "token.actions.githubusercontent.com:sub" = [
+              "repo:Melampe001/Tokyo-IA:ref:refs/heads/main",
+              "repo:Melampe001/Tokyo-IA:environment:production"
+            ]
           }
         }
       }

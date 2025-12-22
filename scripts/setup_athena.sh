@@ -37,10 +37,12 @@ else
 fi
 echo ""
 
-# Load environment variables
+# Load environment variables safely
 if [ -f .env ]; then
     echo "Loading environment variables from .env..."
-    export $(grep -v '^#' .env | xargs)
+    set -a
+    source .env
+    set +a
     echo -e "${GREEN}✓ Environment variables loaded${NC}"
 else
     echo -e "${YELLOW}WARNING: .env file not found. Using defaults.${NC}"

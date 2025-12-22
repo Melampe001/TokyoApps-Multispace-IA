@@ -436,9 +436,15 @@ func getFloatFromRow(row map[string]interface{}, key string) float64 {
 	return 0.0
 }
 
-// sanitizeQuery removes potentially dangerous SQL commands
+// sanitizeQuery provides basic query validation
+// NOTE: This is NOT the primary security mechanism. Security is enforced by:
+// 1. IAM permissions (read-only access to specific tables)
+// 2. Athena workgroup policies
+// 3. S3 bucket policies
+// This function is defense-in-depth only.
 func sanitizeQuery(query string) string {
-	// Basic sanitization - in production, use proper parameterized queries
+	// Basic validation - check for write operations
+	// Real security comes from IAM permissions
 	dangerous := []string{"DROP", "DELETE", "TRUNCATE", "ALTER", "CREATE", "INSERT", "UPDATE"}
 	upperQuery := strings.ToUpper(query)
 

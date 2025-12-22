@@ -76,6 +76,15 @@ class S3Exporter:
         Returns:
             DataFrame with fetched data
         """
+        # Validate table and column names against whitelist
+        valid_tables = ['workflows', 'agent_tasks', 'agent_metrics', 'agent_interactions', 'user_sessions']
+        valid_columns = ['created_at', 'recorded_at', 'started_at']
+        
+        if table_name not in valid_tables:
+            raise ValueError(f"Invalid table name: {table_name}")
+        if date_column not in valid_columns:
+            raise ValueError(f"Invalid date column: {date_column}")
+        
         query = f"""
             SELECT *
             FROM {table_name}
