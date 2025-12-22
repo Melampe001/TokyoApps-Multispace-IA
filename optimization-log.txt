@@ -1,0 +1,28 @@
+🎨 Frontend Asset Optimizer
+============================
+
+Searching for images to optimize...
+  Compressing PNG: ./Captura de pantalla 2025-11-20 152907.png
+    Saved: 41KiB
+  Compressing PNG: ./ChatGPT Image Nov 25, 2025, 03_12_20 PM.png
+    Saved: 1014KiB
+
+============================
+✅ Optimization Complete
+Total saved: 1.1MiB
+
+Changed files:
+./Captura
+de
+pantalla
+2025-11-20
+152907.png
+./ChatGPT
+Image
+Nov
+25,
+2025,
+03_12_20
+PM.png
+
+Files ready to commit

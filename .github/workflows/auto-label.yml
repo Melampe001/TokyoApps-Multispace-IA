@@ -1,0 +1,173 @@
+# Auto-Label Workflow
+# Automatically labels issues and PRs based on content
+
+name: Auto-Label
+
+on:
+  issues:
+    types: [opened, edited]
+  pull_request:
+    types: [opened, edited, synchronize]
+
+jobs:
+  label-issues:
+    name: 🏷️ Label Issues
+    runs-on: ubuntu-latest
+    if: github.event_name == 'issues'
+    permissions:
+      issues: write
+    steps:
+      - name: Auto-label based on content
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issue = context.payload.issue;
+            const title = issue.title.toLowerCase();
+            const body = (issue.body || '').toLowerCase();
+            const content = title + ' ' + body;
+            
+            const labels = [];
+            
+            // Bug detection
+            if (content.includes('bug') || content.includes('error') || 
+                content.includes('fail') || content.includes('crash') ||
+                content.includes('broken') || content.includes('no funciona')) {
+              labels.push('bug');
+            }
+            
+            // Feature request detection
+            if (content.includes('feature') || content.includes('enhancement') ||
+                content.includes('add') || content.includes('request') ||
+                content.includes('nueva funcionalidad') || content.includes('agregar')) {
+              labels.push('enhancement');
+            }
+            
+            // Documentation
+            if (content.includes('doc') || content.includes('readme') ||
+                content.includes('typo') || content.includes('documentation') ||
+                content.includes('documentación')) {
+              labels.push('documentation');
+            }
+            
+            // Security
+            if (content.includes('security') || content.includes('vulnerability') ||
+                content.includes('exploit') || content.includes('seguridad')) {
+              labels.push('security');
+            }
+            
+            // Python specific
+            if (content.includes('python') || content.includes('.py') ||
+                content.includes('pip') || content.includes('pytest')) {
+              labels.push('python');
+            }
+            
+            // Agent related
+            if (content.includes('agent') || content.includes('copilot') ||
+                content.includes('agente')) {
+              labels.push('agent');
+            }
+            
+            // Workflow related
+            if (content.includes('workflow') || content.includes('action') ||
+                content.includes('ci/cd') || content.includes('github actions')) {
+              labels.push('workflow');
+            }
+            
+            // Question
+            if (content.includes('?') || content.includes('how') ||
+                content.includes('cómo') || content.includes('pregunta')) {
+              labels.push('question');
+            }
+            
+            // Priority detection
+            if (content.includes('urgent') || content.includes('critical') ||
+                content.includes('urgente') || content.includes('asap')) {
+              labels.push('priority: high');
+            }
+            
+            if (labels.length > 0) {
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                labels: labels
+              });
+              console.log(`Added labels: ${labels.join(', ')}`);
+            }
+
+  label-prs:
+    name: 🏷️ Label PRs
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          
+      - name: Get changed files
+        id: changed
+        run: |
+          FILES=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} | tr '\n' ' ')
+          echo "files=$FILES" >> $GITHUB_OUTPUT
+          
+      - name: Auto-label based on files
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const files = '${{ steps.changed.outputs.files }}'.split(' ').filter(f => f);
+            const labels = new Set();
+            
+            for (const file of files) {
+              // Python files
+              if (file.endsWith('.py')) {
+                labels.add('python');
+              }
+              
+              // Workflow files
+              if (file.includes('.github/workflows')) {
+                labels.add('workflow');
+              }
+              
+              // Agent files
+              if (file.includes('.github/agents')) {
+                labels.add('agent');
+              }
+              
+              // Documentation
+              if (file.endsWith('.md') || file.includes('docs/')) {
+                labels.add('documentation');
+              }
+              
+              // Configuration
+              if (file.includes('config') || file.endsWith('.yml') || 
+                  file.endsWith('.yaml') || file.endsWith('.json')) {
+                labels.add('configuration');
+              }
+              
+              // Tests
+              if (file.includes('test') || file.includes('spec')) {
+                labels.add('tests');
+              }
+            }
+            
+            // Size labels based on files changed
+            if (files.length <= 3) {
+              labels.add('size: S');
+            } else if (files.length <= 10) {
+              labels.add('size: M');
+            } else {
+              labels.add('size: L');
+            }
+            
+            if (labels.size > 0) {
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.payload.pull_request.number,
+                labels: Array.from(labels)
+              });
+              console.log(`Added labels: ${Array.from(labels).join(', ')}`);
+            }

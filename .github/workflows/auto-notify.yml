@@ -1,0 +1,113 @@
+# Auto Notify Bot
+# Sends notifications for important events
+
+name: Auto Notify
+
+on:
+  issues:
+    types: [opened, closed]
+  pull_request:
+    types: [opened, closed, merged]
+  release:
+    types: [published]
+  workflow_run:
+    workflows: ["Python CI/CD", "Security Scan"]
+    types: [completed]
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  notify-issue:
+    name: 📢 Notify Issue Events
+    runs-on: ubuntu-latest
+    if: github.event_name == 'issues'
+    steps:
+      - name: Notify on issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issue = context.payload.issue;
+            const action = context.payload.action;
+            
+            if (action === 'opened') {
+              // Welcome message for new issues
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                body: `## 👋 Thanks for opening this issue!\n\nWe'll review it as soon as possible.\n\n**Helpful commands:**\n- \`/help\` - Show available commands\n- \`/assign @username\` - Assign to someone\n- \`/label bug\` - Add a label`
+              });
+            }
+
+  notify-pr:
+    name: 📢 Notify PR Events
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Notify on PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            const action = context.payload.action;
+            
+            if (action === 'opened') {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: pr.number,
+                body: `## 🎉 Thanks for your contribution!\n\nI'll run automated checks on your changes.\n\n**Checklist:**\n- [ ] Tests pass\n- [ ] Linting passes\n- [ ] Documentation updated\n- [ ] Changelog updated`
+              });
+            } else if (action === 'closed' && pr.merged) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: pr.number,
+                body: `## 🚀 Merged!\n\nYour changes have been merged into \`${pr.base.ref}\`. Thanks for contributing!`
+              });
+            }
+
+  notify-release:
+    name: 📢 Notify Release
+    runs-on: ubuntu-latest
+    if: github.event_name == 'release'
+    steps:
+      - name: Announce release
+        run: |
+          echo "## 🎉 New Release: ${{ github.event.release.tag_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "${{ github.event.release.body }}" >> $GITHUB_STEP_SUMMARY
+
+  notify-workflow-failure:
+    name: 📢 Notify Workflow Failure
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'failure'
+    steps:
+      - name: Create issue for failure
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const run = context.payload.workflow_run;
+            
+            // Check if issue already exists
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'ci-failure'
+            });
+            
+            const existingIssue = issues.find(i => i.title.includes(run.name));
+            
+            if (!existingIssue) {
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: `🔴 CI Failure: ${run.name}`,
+                body: `## Workflow Failed\n\n**Workflow:** ${run.name}\n**Branch:** ${run.head_branch}\n**Commit:** ${run.head_sha.substring(0, 7)}\n**Run:** [View logs](${run.html_url})\n\nPlease investigate and fix the issue.`,
+                labels: ['ci-failure', 'bug', 'priority: high']
+              });
+            }

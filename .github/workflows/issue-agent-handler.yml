@@ -1,0 +1,131 @@
+# Issue Event Handler
+# Automatically assigns agents to issues based on labels
+
+name: Issue Agent Handler
+
+on:
+  issues:
+    types: [opened, labeled]
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  assign-agent:
+    name: 🤖 Assign Agent to Issue
+    runs-on: ubuntu-latest
+    if: github.event_name == 'issues'
+    steps:
+      - name: Assign agent based on labels
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issue = context.payload.issue;
+            const labels = issue.labels.map(l => l.name.toLowerCase());
+            
+            // Agent assignments based on labels
+            const agentResponses = {
+              'bug': '🐛 **Debug Agent** has been assigned to investigate this bug.',
+              'security': '🔒 **Security Agent** has been assigned to analyze this security issue.',
+              'performance': '⚡ **Performance Agent** has been assigned to optimize this.',
+              'documentation': '📚 **Docs Agent** has been assigned to update documentation.',
+              'enhancement': '♻️ **Refactor Agent** has been assigned to implement this enhancement.',
+              'test': '🧪 **Test Agent** has been assigned to create tests.',
+              'api': '🔌 **API Agent** has been assigned to handle API changes.',
+              'database': '🗄️ **DB Agent** has been assigned to handle database changes.'
+            };
+            
+            let assignedAgents = [];
+            for (const label of labels) {
+              if (agentResponses[label]) {
+                assignedAgents.push(agentResponses[label]);
+              }
+            }
+            
+            if (assignedAgents.length > 0) {
+              const comment = `## 🤖 Agent Assignment\n\n${assignedAgents.join('\n\n')}\n\n---\n*Automated by Agent Task System*`;
+              
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                body: comment
+              });
+            }
+
+  handle-commands:
+    name: 🎮 Handle Agent Commands
+    runs-on: ubuntu-latest
+    if: github.event_name == 'issue_comment' && startsWith(github.event.comment.body, '/')
+    steps:
+      - name: Check authorization
+        id: auth
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { data: permission } = await github.rest.repos.getCollaboratorPermissionLevel({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              username: context.payload.comment.user.login
+            });
+            return ['admin', 'write', 'maintain'].includes(permission.permission);
+            
+      - name: Process command
+        if: steps.auth.outputs.result == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const comment = context.payload.comment.body.trim();
+            const command = comment.split(' ')[0].toLowerCase();
+            
+            const agentCommands = {
+              '/lint': { agent: 'Lint Agent', emoji: '🔍', action: 'Running linting analysis...' },
+              '/test': { agent: 'Test Agent', emoji: '🧪', action: 'Running tests...' },
+              '/coverage': { agent: 'Coverage Agent', emoji: '📊', action: 'Generating coverage report...' },
+              '/security': { agent: 'Security Agent', emoji: '🔒', action: 'Running security scan...' },
+              '/docs': { agent: 'Docs Agent', emoji: '📚', action: 'Generating documentation...' },
+              '/perf': { agent: 'Performance Agent', emoji: '⚡', action: 'Running performance analysis...' },
+              '/debug': { agent: 'Debug Agent', emoji: '🐛', action: 'Starting debug session...' },
+              '/refactor': { agent: 'Refactor Agent', emoji: '♻️', action: 'Analyzing code for refactoring...' },
+              '/api': { agent: 'API Agent', emoji: '🔌', action: 'Processing API request...' },
+              '/db': { agent: 'DB Agent', emoji: '🗄️', action: 'Processing database request...' },
+              '/build': { agent: 'Build Agent', emoji: '📦', action: 'Starting build process...' },
+              '/release': { agent: 'Release Agent', emoji: '🚀', action: 'Preparing release...' },
+              '/help': { agent: 'ChatOps Agent', emoji: '❓', action: 'Showing available commands...' }
+            };
+            
+            if (agentCommands[command]) {
+              const { agent, emoji, action } = agentCommands[command];
+              
+              let response = `## ${emoji} ${agent}\n\n${action}\n\n`;
+              
+              if (command === '/help') {
+                response += '### Available Commands\n\n';
+                response += '| Command | Agent | Description |\n';
+                response += '|---------|-------|-------------|\n';
+                response += '| `/lint` | Lint Agent | Run code linting |\n';
+                response += '| `/test` | Test Agent | Run tests |\n';
+                response += '| `/coverage` | Coverage Agent | Show coverage report |\n';
+                response += '| `/security` | Security Agent | Run security scan |\n';
+                response += '| `/docs` | Docs Agent | Generate documentation |\n';
+                response += '| `/perf` | Perf Agent | Performance analysis |\n';
+                response += '| `/debug` | Debug Agent | Debug assistance |\n';
+                response += '| `/refactor` | Refactor Agent | Code refactoring |\n';
+                response += '| `/api` | API Agent | API development |\n';
+                response += '| `/db` | DB Agent | Database operations |\n';
+                response += '| `/build` | Build Agent | Build project |\n';
+                response += '| `/release` | Release Agent | Create release |\n';
+              }
+              
+              response += '\n---\n*Automated by Agent Task System*';
+              
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: response
+              });
+            }

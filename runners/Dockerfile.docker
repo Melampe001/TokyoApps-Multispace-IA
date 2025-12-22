@@ -1,0 +1,73 @@
+# Docker Self-Hosted Runner for Tokyo IA
+# Supports Docker-in-Docker for container builds
+
+FROM docker:24-dind
+
+# Labels
+LABEL org.opencontainers.image.title="Tokyo IA Docker Runner"
+LABEL org.opencontainers.image.description="Self-hosted GitHub Actions runner with Docker support"
+LABEL org.opencontainers.image.version="1.0.0"
+
+# Install dependencies
+RUN apk add --no-cache \
+    bash \
+    curl \
+    git \
+    jq \
+    python3 \
+    py3-pip \
+    nodejs \
+    npm \
+    sudo \
+    ca-certificates \
+    openssl \
+    libffi-dev \
+    gcc \
+    musl-dev \
+    python3-dev
+
+# Install Docker Compose
+RUN pip3 install docker-compose
+
+# Create runner user
+RUN adduser -D -s /bin/bash runner && \
+    addgroup runner docker && \
+    echo "runner ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+
+# Set up runner directory
+WORKDIR /home/runner/actions-runner
+
+# Download and configure GitHub Actions runner
+ARG RUNNER_VERSION=2.311.0
+RUN curl -o actions-runner-linux.tar.gz -L \
+    https://github.com/actions/runner/releases/download/v${RUNNER_VERSION}/actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz && \
+    tar xzf actions-runner-linux.tar.gz && \
+    rm actions-runner-linux.tar.gz
+
+# Install runner dependencies
+RUN apk add --no-cache \
+    icu-libs \
+    krb5-libs \
+    libgcc \
+    libintl \
+    libssl1.1 \
+    libstdc++ \
+    zlib \
+    lttng-ust
+
+# Change ownership
+RUN chown -R runner:runner /home/runner
+
+# Create startup script
+COPY --chown=runner:runner entrypoint-docker.sh /home/runner/entrypoint.sh
+RUN chmod +x /home/runner/entrypoint.sh
+
+# Environment variables
+ENV RUNNER_LABELS="self-hosted,linux,x64,docker"
+ENV RUNNER_NAME="tokyo-ia-docker-runner"
+ENV DOCKER_TLS_CERTDIR="/certs"
+
+# Expose Docker daemon
+EXPOSE 2375 2376
+
+ENTRYPOINT ["/home/runner/entrypoint.sh"]

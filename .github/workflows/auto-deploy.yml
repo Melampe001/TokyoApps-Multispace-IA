@@ -1,0 +1,168 @@
+# Auto Deploy Bot
+# Automatically deploys to different environments
+
+name: Auto Deploy
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deploy environment'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
+
+permissions:
+  contents: read
+  deployments: write
+
+jobs:
+  prepare:
+    name: 📦 Prepare Deployment
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      environment: ${{ steps.env.outputs.environment }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Determine version
+        id: version
+        run: |
+          if [[ "${{ github.ref }}" == refs/tags/* ]]; then
+            VERSION=${GITHUB_REF#refs/tags/}
+          else
+            VERSION="dev-${{ github.sha }}"
+          fi
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Determine environment
+        id: env
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            ENV="${{ github.event.inputs.environment }}"
+          elif [[ "${{ github.ref }}" == refs/tags/* ]]; then
+            ENV="production"
+          else
+            ENV="staging"
+          fi
+          echo "environment=$ENV" >> $GITHUB_OUTPUT
+
+  build:
+    name: 🏗️ Build Application
+    runs-on: ubuntu-latest
+    needs: prepare
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install build wheel
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Build package
+        run: |
+          if [ -f pyproject.toml ] || [ -f setup.py ]; then
+            python -m build
+          fi
+
+      - name: Build Docker image
+        if: hashFiles('Dockerfile') != ''
+        run: |
+          docker build -t app:${{ needs.prepare.outputs.version }} .
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-${{ needs.prepare.outputs.version }}
+          path: dist/
+          if-no-files-found: ignore
+
+  deploy-staging:
+    name: 🚀 Deploy to Staging
+    runs-on: ubuntu-latest
+    needs: [prepare, build]
+    if: needs.prepare.outputs.environment == 'staging'
+    environment: staging
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-${{ needs.prepare.outputs.version }}
+          path: dist/
+        continue-on-error: true
+
+      - name: Deploy to staging
+        run: |
+          echo "🚀 Deploying version ${{ needs.prepare.outputs.version }} to staging..."
+          # Add your staging deployment commands here
+          echo "✅ Deployed to staging successfully!"
+
+      - name: Notify deployment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.repos.createDeploymentStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              deployment_id: context.payload.deployment?.id || 1,
+              state: 'success',
+              environment: 'staging',
+              description: 'Deployed to staging'
+            }).catch(() => {});
+
+  deploy-production:
+    name: 🎯 Deploy to Production
+    runs-on: ubuntu-latest
+    needs: [prepare, build]
+    if: needs.prepare.outputs.environment == 'production'
+    environment: production
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-${{ needs.prepare.outputs.version }}
+          path: dist/
+        continue-on-error: true
+
+      - name: Deploy to production
+        run: |
+          echo "🎯 Deploying version ${{ needs.prepare.outputs.version }} to production..."
+          # Add your production deployment commands here
+          echo "✅ Deployed to production successfully!"
+
+      - name: Create GitHub Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*
+          generate_release_notes: true
+
+  notify:
+    name: 📢 Notify Deployment
+    runs-on: ubuntu-latest
+    needs: [prepare, deploy-staging, deploy-production]
+    if: always()
+    steps:
+      - name: Post deployment status
+        run: |
+          echo "## 🚀 Deployment Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Version:** ${{ needs.prepare.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Environment:** ${{ needs.prepare.outputs.environment }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Status:** ${{ needs.deploy-staging.result || needs.deploy-production.result }}" >> $GITHUB_STEP_SUMMARY

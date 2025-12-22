@@ -1,0 +1,19 @@
+# Prometheus configuration for runner monitoring
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  - job_name: 'runners'
+    static_configs:
+      - targets: ['python-runner:9090', 'docker-runner:9090']
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+        regex: '(.+):9090'
+        replacement: '${1}'

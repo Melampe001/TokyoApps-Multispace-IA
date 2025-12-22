@@ -1,0 +1,145 @@
+# Dependency Check Workflow
+# Updates and audits dependencies
+
+name: Dependency Check
+
+on:
+  schedule:
+    - cron: '0 8 * * 1'  # Every Monday at 8 AM UTC
+  workflow_dispatch:
+  push:
+    paths:
+      - 'requirements*.txt'
+      - 'pyproject.toml'
+      - 'Pipfile*'
+
+# Default permissions
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    name: 🔍 Audit Dependencies
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          
+      - name: Install audit tools
+        run: pip install safety pip-audit pipdeptree
+        
+      - name: Check with Safety
+        run: |
+          echo "## 🔐 Safety Check" >> $GITHUB_STEP_SUMMARY
+          if [ -f requirements.txt ]; then
+            safety check -r requirements.txt --full-report 2>&1 | head -100 >> $GITHUB_STEP_SUMMARY || true
+          else
+            echo "No requirements.txt found" >> $GITHUB_STEP_SUMMARY
+          fi
+        continue-on-error: true
+        
+      - name: Check with pip-audit
+        run: |
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## 🔍 pip-audit Check" >> $GITHUB_STEP_SUMMARY
+          if [ -f requirements.txt ]; then
+            pip-audit -r requirements.txt 2>&1 | head -100 >> $GITHUB_STEP_SUMMARY || true
+          fi
+        continue-on-error: true
+        
+      - name: Generate dependency tree
+        run: |
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## 🌳 Dependency Tree" >> $GITHUB_STEP_SUMMARY
+          if [ -f requirements.txt ]; then
+            pip install -r requirements.txt 2>/dev/null || true
+          fi
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          pipdeptree 2>&1 | head -50 >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+
+  check-updates:
+    name: 📦 Check for Updates
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          
+      - name: Install pip-tools
+        run: pip install pip-tools
+        
+      - name: Check for outdated packages
+        run: |
+          echo "## 📦 Outdated Packages" >> $GITHUB_STEP_SUMMARY
+          if [ -f requirements.txt ]; then
+            pip install -r requirements.txt 2>/dev/null || true
+            echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+            pip list --outdated 2>&1 | head -30 >> $GITHUB_STEP_SUMMARY
+            echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          fi
+
+  create-update-pr:
+    name: 🔄 Create Update PR
+    runs-on: ubuntu-latest
+    needs: [audit, check-updates]
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          
+      - name: Update dependencies
+        run: |
+          if [ -f requirements.txt ]; then
+            pip install pip-tools
+            # Create backup
+            cp requirements.txt requirements.txt.bak
+            # Try to update
+            pip-compile --upgrade requirements.in 2>/dev/null || true
+          fi
+          
+      - name: Check for changes
+        id: changes
+        run: |
+          if git diff --quiet; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          fi
+          
+      - name: Create Pull Request
+        if: steps.changes.outputs.has_changes == 'true'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: 'chore(deps): Update dependencies'
+          title: '📦 Update dependencies'
+          body: |
+            ## 📦 Dependency Updates
+            
+            This PR updates project dependencies to their latest versions.
+            
+            ### Review Checklist
+            - [ ] All tests pass
+            - [ ] No breaking changes
+            - [ ] Security vulnerabilities fixed
+          branch: deps/update-dependencies
+          labels: dependencies

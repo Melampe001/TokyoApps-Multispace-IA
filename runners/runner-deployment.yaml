@@ -1,0 +1,114 @@
+# Autoscaling Runner Deployment for Kubernetes
+# Uses Actions Runner Controller (ARC)
+
+apiVersion: actions.summerwind.dev/v1alpha1
+kind: RunnerDeployment
+metadata:
+  name: tokyo-ia-runners
+  namespace: actions-runner-system
+spec:
+  replicas: 2
+  template:
+    spec:
+      repository: Melampe001/Tokyo-IA
+      labels:
+        - self-hosted
+        - linux
+        - x64
+        - python
+        - autoscale
+      env:
+        - name: RUNNER_FEATURE_FLAG_EPHEMERAL
+          value: "true"
+      resources:
+        limits:
+          cpu: "2"
+          memory: "4Gi"
+        requests:
+          cpu: "500m"
+          memory: "1Gi"
+      dockerdWithinRunnerContainer: true
+      image: tokyo-ia-runner:python
+      imagePullPolicy: IfNotPresent
+      volumeMounts:
+        - name: work
+          mountPath: /runner/_work
+      volumes:
+        - name: work
+          emptyDir: {}
+
+---
+apiVersion: actions.summerwind.dev/v1alpha1
+kind: HorizontalRunnerAutoscaler
+metadata:
+  name: tokyo-ia-runners-autoscaler
+  namespace: actions-runner-system
+spec:
+  scaleTargetRef:
+    name: tokyo-ia-runners
+  minReplicas: 1
+  maxReplicas: 10
+  scaleDownDelaySecondsAfterScaleOut: 300
+  metrics:
+    - type: PercentageRunnersBusy
+      scaleUpThreshold: "0.75"
+      scaleDownThreshold: "0.25"
+      scaleUpFactor: "2"
+      scaleDownFactor: "0.5"
+
+---
+# Note: Create this secret manually with your GitHub PAT
+# kubectl create secret generic controller-manager \
+#   --namespace=actions-runner-system \
+#   --from-literal=github_token=YOUR_GITHUB_PAT
+apiVersion: v1
+kind: Secret
+metadata:
+  name: controller-manager
+  namespace: actions-runner-system
+  annotations:
+    description: "GitHub PAT for runner registration. Create this secret manually."
+type: Opaque
+# The github_token field should be populated manually:
+# echo -n 'YOUR_GITHUB_PAT' | base64
+# Then add: github_token: <base64-encoded-token>
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: runner-config
+  namespace: actions-runner-system
+data:
+  RUNNER_LABELS: "self-hosted,linux,x64,python,autoscale"
+  RUNNER_WORKDIR: "/runner/_work"
+
+---
+# Service for runner metrics
+apiVersion: v1
+kind: Service
+metadata:
+  name: runner-metrics
+  namespace: actions-runner-system
+  labels:
+    app: actions-runner
+spec:
+  ports:
+    - name: metrics
+      port: 9090
+      targetPort: 9090
+  selector:
+    app: actions-runner
+
+---
+# PodDisruptionBudget for high availability
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: tokyo-ia-runners-pdb
+  namespace: actions-runner-system
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: actions-runner

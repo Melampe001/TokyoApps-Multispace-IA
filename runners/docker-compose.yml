@@ -1,0 +1,67 @@
+# Docker Compose for Self-Hosted Runners
+# Run multiple runners locally for testing
+
+version: '3.8'
+
+services:
+  python-runner:
+    build:
+      context: .
+      dockerfile: Dockerfile.python
+    container_name: tokyo-ia-python-runner
+    environment:
+      - GITHUB_OWNER=${GITHUB_OWNER}
+      - GITHUB_REPO=${GITHUB_REPO}
+      - GITHUB_TOKEN=${GITHUB_TOKEN}
+      - RUNNER_NAME=tokyo-ia-python-runner
+      - RUNNER_LABELS=self-hosted,linux,x64,python
+    volumes:
+      - runner-work:/home/runner/_work
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: unless-stopped
+    networks:
+      - runners
+
+  docker-runner:
+    build:
+      context: .
+      dockerfile: Dockerfile.docker
+    container_name: tokyo-ia-docker-runner
+    privileged: true
+    environment:
+      - GITHUB_OWNER=${GITHUB_OWNER}
+      - GITHUB_REPO=${GITHUB_REPO}
+      - GITHUB_TOKEN=${GITHUB_TOKEN}
+      - RUNNER_NAME=tokyo-ia-docker-runner
+      - RUNNER_LABELS=self-hosted,linux,x64,docker
+    volumes:
+      - docker-work:/home/runner/_work
+      - docker-certs:/certs
+    restart: unless-stopped
+    networks:
+      - runners
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: runner-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus-data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+    restart: unless-stopped
+    networks:
+      - runners
+
+volumes:
+  runner-work:
+  docker-work:
+  docker-certs:
+  prometheus-data:
+
+networks:
+  runners:
+    driver: bridge

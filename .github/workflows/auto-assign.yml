@@ -1,0 +1,120 @@
+# Auto-Assign Issues Workflow
+# Automatically assigns issues based on labels and keywords
+
+name: Auto-Assign Issues
+
+on:
+  issues:
+    types: [opened, labeled]
+  pull_request:
+    types: [opened, labeled]
+
+jobs:
+  auto-assign:
+    name: 🤖 Auto-Assign
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+    steps:
+      - name: Auto-assign based on labels
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issue = context.payload.issue || context.payload.pull_request;
+            const labels = issue.labels.map(l => l.name);
+            
+            // Define label to assignee mapping
+            const labelAssignees = {
+              'bug': ['Melampe001'],
+              'enhancement': ['Melampe001'],
+              'documentation': ['Melampe001'],
+              'security': ['Melampe001'],
+              'python': ['Melampe001'],
+              'agent': ['Melampe001'],
+              'workflow': ['Melampe001']
+            };
+            
+            // Collect assignees based on labels
+            const assignees = new Set();
+            for (const label of labels) {
+              if (labelAssignees[label]) {
+                labelAssignees[label].forEach(a => assignees.add(a));
+              }
+            }
+            
+            // If no specific assignees, assign to default
+            if (assignees.size === 0 && labels.length === 0) {
+              assignees.add('Melampe001');
+            }
+            
+            if (assignees.size > 0) {
+              const assigneeArray = Array.from(assignees);
+              
+              if (context.payload.issue) {
+                await github.rest.issues.addAssignees({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issue.number,
+                  assignees: assigneeArray
+                });
+              } else {
+                await github.rest.pulls.requestReviewers({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  pull_number: issue.number,
+                  reviewers: assigneeArray
+                });
+              }
+              
+              console.log(`Assigned to: ${assigneeArray.join(', ')}`);
+            }
+
+  welcome-new-contributor:
+    name: 👋 Welcome New Contributors
+    runs-on: ubuntu-latest
+    if: github.event_name == 'issues' && github.event.action == 'opened'
+    permissions:
+      issues: write
+    steps:
+      - name: Check if first time contributor
+        id: check
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const creator = context.payload.issue.user.login;
+            
+            // Check if user has any previous issues
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              creator: creator,
+              state: 'all'
+            });
+            
+            return issues.length === 1;
+            
+      - name: Welcome message
+        if: steps.check.outputs.result == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.issue.number,
+              body: `## 👋 ¡Bienvenido a Tokyo IA!
+              
+            Gracias por abrir tu primer issue en este repositorio.
+            
+            ### 📋 Próximos pasos
+            1. Un mantenedor revisará tu issue pronto
+            2. Asegúrate de proporcionar toda la información relevante
+            3. Si es un bug, incluye pasos para reproducirlo
+            
+            ### 📚 Recursos útiles
+            - [README](https://github.com/${context.repo.owner}/${context.repo.repo}/blob/main/README.md)
+            - [Agentes disponibles](https://github.com/${context.repo.owner}/${context.repo.repo}/tree/main/.github/agents)
+            
+            ¡Gracias por contribuir! 🌸`
+            });
