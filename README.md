@@ -24,6 +24,7 @@
 - 📱 **Cross-Platform**: Web dashboard and Android app support
 - 📈 **Performance Metrics**: Track tokens, costs, and latencies
 - 🛡️ **Production Ready**: Built for scale with Go and Kubernetes support
+- 📊 **Hybrid Data Architecture**: PostgreSQL + AWS Athena for hot/cold path analytics
 
 ## 🎭 The Five Agents
 
@@ -39,6 +40,7 @@
 
 - [Quick Start](#quick-start)
 - [Architecture](#architecture)
+- [Hybrid Data Architecture](#hybrid-data-architecture)
 - [Repository Structure](#repository-structure)
 - [Documentation](#documentation)
 - [API Reference](#api-reference)
@@ -151,6 +153,49 @@ print(result)
 
 See [docs/agents/ORCHESTRATION.md](docs/agents/ORCHESTRATION.md) for detailed architecture.
 
+## 📊 Hybrid Data Architecture
+
+Tokyo-IA implements a hybrid data architecture combining PostgreSQL (hot path) and AWS Athena (cold path) for optimal performance and cost-effectiveness:
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│                    Hot Path (Real-time)                       │
+│                                                               │
+│  Go Services  ──────▶  PostgreSQL  ◀──────  Redis Cache      │
+│  (cmd/ & lib/)         (Transactions)       (Performance)     │
+└────────────────────────┬─────────────────────────────────────┘
+                         │ Daily ETL
+                         ▼
+┌──────────────────────────────────────────────────────────────┐
+│                    ETL Pipeline                               │
+│                                                               │
+│  Python ETL  ──────▶  Parquet Files  ──────▶  S3 Data Lake   │
+│  (python/etl/)        (Compressed)            (Partitioned)   │
+└────────────────────────┬─────────────────────────────────────┘
+                         │
+                         ▼
+┌──────────────────────────────────────────────────────────────┐
+│                  Cold Path (Analytics)                        │
+│                                                               │
+│  AWS Glue Catalog  ──────▶  AWS Athena  ◀──────  Go Client   │
+│  (Metadata)                  (SQL Queries)        (lib/analytics/) │
+└──────────────────────────────────────────────────────────────┘
+```
+
+**Key Features**:
+- 🔥 **Hot Path**: PostgreSQL for real-time transactions (&lt;100ms latency)
+- ❄️ **Cold Path**: Athena for historical analytics (petabyte-scale)
+- 🔄 **Daily ETL**: Automated data export to S3 in Parquet format
+- 📊 **Partitioning**: Date-based partitioning for query optimization
+- 💰 **Cost-Effective**: Pay-per-query model with Athena
+- 🔒 **Secure**: SSE-S3 encryption, IAM roles, audit logs
+
+**Documentation**:
+- [Hybrid Architecture Overview](docs/HYBRID_ARCHITECTURE.md)
+- [Athena Setup Guide](docs/ATHENA_SETUP.md)
+- [ETL Pipeline Documentation](docs/ETL_PIPELINE.md)
+- [Query Examples](docs/QUERIES_EXAMPLES.md)
+
 ## 🏗️ Repository Structure
 ## 🏗️ Repository Structure
 
@@ -169,6 +214,11 @@ tokyoia/
 │
 ├── lib/                                # Shared libraries
 │   ├── generator/                      # Code generation
+│   ├── analytics/                      # AWS Athena client ⭐
+│   │   ├── athena_client.go            # Athena client
+│   │   ├── queries.go                  # Analytics queries
+│   │   ├── types.go                    # Data types
+│   │   └── athena_client_test.go       # Tests
 │   ├── agents/                         # AI agents ⭐
 │   │   └── specialized/                # 5 specialized agents
 │   │       ├── akira_code_reviewer.py  # 侍 Code Review Master
@@ -179,6 +229,32 @@ tokyoia/
 │   └── orchestrator/                   # Multi-agent coordinator ⭐
 │       ├── agent_orchestrator.py       # Orchestration engine
 │       └── workflows.py                # Pre-built workflows
+│
+├── python/                             # Python packages
+│   └── etl/                            # ETL pipeline ⭐
+│       ├── config.py                   # ETL configuration
+│       ├── export_to_s3.py             # Data export script
+│       ├── athena_setup.py             # Athena table setup
+│       ├── requirements.txt            # Python dependencies
+│       └── README.md                   # ETL documentation
+│
+├── infrastructure/                     # Terraform IaC ⭐
+│   ├── main.tf                         # Provider config
+│   ├── athena.tf                       # Athena resources
+│   ├── iam.tf                          # IAM roles/policies
+│   ├── variables.tf                    # Input variables
+│   ├── outputs.tf                      # Outputs
+│   ├── terraform.tfvars.example        # Example vars
+│   └── README.md                       # Infrastructure docs
+│
+├── config/                             # Configuration
+│   └── athena/                         # Athena configs ⭐
+│       └── tables.sql                  # Table definitions
+│
+├── scripts/                            # Utility scripts
+│   ├── setup_athena.sh                 # Setup Athena ⭐
+│   ├── run_etl.sh                      # Run ETL manually ⭐
+│   └── validate_data.py                # Data validation ⭐
 │
 ├── db/                                 # Database ⭐
 │   ├── schema.sql                      # PostgreSQL schema
