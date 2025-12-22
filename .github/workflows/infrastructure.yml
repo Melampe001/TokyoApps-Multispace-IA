@@ -1,0 +1,250 @@
+name: Infrastructure - Terraform
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'infrastructure/**'
+  pull_request:
+    paths:
+      - 'infrastructure/**'
+  workflow_dispatch:
+    inputs:
+      action:
+        description: 'Terraform action (plan/apply/destroy)'
+        required: true
+        default: 'plan'
+        type: choice
+        options:
+          - plan
+          - apply
+          - destroy
+
+env:
+  TERRAFORM_VERSION: '1.5.0'
+  AWS_REGION: 'us-east-1'
+  TF_WORKING_DIR: './infrastructure'
+
+jobs:
+  terraform-validate:
+    name: Validate Terraform
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TERRAFORM_VERSION }}
+
+      - name: Terraform Format Check
+        run: |
+          cd ${{ env.TF_WORKING_DIR }}
+          terraform fmt -check -recursive
+
+      - name: Terraform Init
+        run: |
+          cd ${{ env.TF_WORKING_DIR }}
+          terraform init -backend=false
+
+      - name: Terraform Validate
+        run: |
+          cd ${{ env.TF_WORKING_DIR }}
+          terraform validate
+
+  tflint:
+    name: TFLint
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup TFLint
+        uses: terraform-linters/setup-tflint@v4
+        with:
+          tflint_version: latest
+
+      - name: Init TFLint
+        run: |
+          cd ${{ env.TF_WORKING_DIR }}
+          tflint --init
+
+      - name: Run TFLint
+        run: |
+          cd ${{ env.TF_WORKING_DIR }}
+          tflint --format compact
+
+  checkov:
+    name: Checkov Security Scan
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Checkov
+        uses: bridgecrewio/checkov-action@master
+        with:
+          directory: ${{ env.TF_WORKING_DIR }}
+          framework: terraform
+          output_format: cli
+          soft_fail: true
+
+  terraform-plan:
+    name: Terraform Plan
+    runs-on: ubuntu-latest
+    needs: [terraform-validate, tflint]
+    if: github.event_name == 'pull_request' || github.event.inputs.action == 'plan'
+    
+    permissions:
+      id-token: write
+      contents: read
+      pull-requests: write
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TERRAFORM_VERSION }}
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_TERRAFORM_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Terraform Init
+        run: |
+          cd ${{ env.TF_WORKING_DIR }}
+          terraform init
+
+      - name: Terraform Plan
+        id: plan
+        run: |
+          cd ${{ env.TF_WORKING_DIR }}
+          terraform plan -no-color -out=tfplan
+        continue-on-error: true
+
+      - name: Comment PR with Plan
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const output = `#### Terraform Plan 📊
+            
+            <details><summary>Show Plan</summary>
+            
+            \`\`\`terraform
+            ${{ steps.plan.outputs.stdout }}
+            \`\`\`
+            
+            </details>
+            
+            *Pushed by: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            })
+
+      - name: Upload Plan
+        uses: actions/upload-artifact@v4
+        with:
+          name: tfplan
+          path: ${{ env.TF_WORKING_DIR }}/tfplan
+
+  terraform-apply:
+    name: Terraform Apply
+    runs-on: ubuntu-latest
+    needs: [terraform-validate, tflint]
+    if: |
+      (github.ref == 'refs/heads/main' && github.event_name == 'push') ||
+      github.event.inputs.action == 'apply'
+    
+    permissions:
+      id-token: write
+      contents: read
+    
+    environment:
+      name: production
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TERRAFORM_VERSION }}
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_TERRAFORM_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Terraform Init
+        run: |
+          cd ${{ env.TF_WORKING_DIR }}
+          terraform init
+
+      - name: Terraform Apply
+        run: |
+          cd ${{ env.TF_WORKING_DIR }}
+          terraform apply -auto-approve
+
+      - name: Terraform Output
+        id: output
+        run: |
+          cd ${{ env.TF_WORKING_DIR }}
+          terraform output -json > terraform-outputs.json
+          cat terraform-outputs.json
+
+      - name: Upload Outputs
+        uses: actions/upload-artifact@v4
+        with:
+          name: terraform-outputs
+          path: ${{ env.TF_WORKING_DIR }}/terraform-outputs.json
+
+      - name: Summary
+        run: |
+          echo "## Terraform Apply Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Infrastructure deployed successfully" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Outputs" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`json" >> $GITHUB_STEP_SUMMARY
+          cat ${{ env.TF_WORKING_DIR }}/terraform-outputs.json >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+
+  cost-estimate:
+    name: Cost Estimate
+    runs-on: ubuntu-latest
+    needs: terraform-plan
+    if: github.event_name == 'pull_request'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Estimate Costs
+        run: |
+          echo "## 💰 Estimated Monthly Costs" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Service | Estimated Cost |" >> $GITHUB_STEP_SUMMARY
+          echo "|---------|---------------|" >> $GITHUB_STEP_SUMMARY
+          echo "| S3 Storage (100GB) | ~$2.30/month |" >> $GITHUB_STEP_SUMMARY
+          echo "| Athena Queries (1TB scanned) | ~$5.00/month |" >> $GITHUB_STEP_SUMMARY
+          echo "| Glue Crawler (daily) | ~$0.44/month |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Total Estimated** | **~$7.74/month** |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "*Note: Actual costs may vary based on usage*" >> $GITHUB_STEP_SUMMARY

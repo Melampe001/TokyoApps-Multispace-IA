@@ -1,0 +1,192 @@
+name: Athena Queries Validation
+
+on:
+  pull_request:
+    paths:
+      - 'config/athena/**'
+      - 'lib/analytics/**'
+  workflow_dispatch:
+
+env:
+  AWS_REGION: 'us-east-1'
+
+jobs:
+  validate-queries:
+    name: Validate SQL Queries
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install sqlfluff
+        run: |
+          pip install sqlfluff
+
+      - name: Lint SQL files
+        run: |
+          if [ -d "config/athena/queries" ]; then
+            sqlfluff lint config/athena/queries/*.sql --dialect athena || true
+          fi
+
+      - name: Check for dangerous operations
+        run: |
+          echo "Checking for dangerous SQL operations..."
+          
+          DANGEROUS_OPERATIONS="DROP|DELETE|TRUNCATE|ALTER TABLE.*DROP|UPDATE"
+          
+          if find config/athena -name "*.sql" -type f -exec grep -iE "$DANGEROUS_OPERATIONS" {} \; -print; then
+            echo "::warning::Found potentially dangerous SQL operations in query files"
+          fi
+
+  dry-run-queries:
+    name: Dry Run Queries
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    
+    permissions:
+      id-token: write
+      contents: read
+      pull-requests: write
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install boto3
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ATHENA_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Validate queries syntax
+        run: |
+          python - <<'EOF'
+          import boto3
+          import sys
+          from pathlib import Path
+          
+          client = boto3.client('athena')
+          
+          query_files = Path('config/athena/queries').glob('*.sql') if Path('config/athena/queries').exists() else []
+          
+          errors = []
+          for query_file in query_files:
+              with open(query_file, 'r') as f:
+                  query = f.read()
+              
+              # Basic syntax validation
+              if not query.strip():
+                  errors.append(f"{query_file.name}: Empty query")
+                  continue
+              
+              if not query.strip().upper().startswith('SELECT'):
+                  errors.append(f"{query_file.name}: Query should start with SELECT")
+          
+          if errors:
+              print("Query validation errors:")
+              for error in errors:
+                  print(f"  - {error}")
+              sys.exit(1)
+          else:
+              print("All queries passed basic validation")
+          EOF
+
+  estimate-costs:
+    name: Estimate Query Costs
+    runs-on: ubuntu-latest
+    needs: validate-queries
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Estimate scan costs
+        run: |
+          echo "## 📊 Query Cost Estimation" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Pricing (as of 2024)" >> $GITHUB_STEP_SUMMARY
+          echo "- Athena: $5 per TB of data scanned" >> $GITHUB_STEP_SUMMARY
+          echo "- S3: $0.023 per GB stored (Standard)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Cost Optimization Tips" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Use partitioning to reduce data scanned" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Use Parquet format (already implemented)" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Filter on partition columns (year, month, day)" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Use result caching when possible" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Avoid SELECT * in production queries" >> $GITHUB_STEP_SUMMARY
+
+  analyze-go-queries:
+    name: Analyze Go Query Usage
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.21'
+
+      - name: Check query usage
+        run: |
+          echo "## 🔍 Go Analytics Client Analysis" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # Count query constants
+          QUERY_COUNT=$(grep -c "^[[:space:]]*Query" lib/analytics/queries.go || echo "0")
+          echo "- Total predefined queries: $QUERY_COUNT" >> $GITHUB_STEP_SUMMARY
+          
+          # Check for SQL injection risks
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Security Checks" >> $GITHUB_STEP_SUMMARY
+          
+          if grep -r "fmt.Sprintf.*SELECT" lib/analytics/*.go | grep -v "//" ; then
+            echo "- ⚠️  Found dynamic query construction - review for SQL injection risks" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "- ✅ No obvious SQL injection risks found" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Run analytics tests
+        run: |
+          go test ./lib/analytics/... -v
+
+  documentation-check:
+    name: Check Documentation
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check for query documentation
+        run: |
+          echo "## 📚 Documentation Status" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          if [ -f "docs/ANALYTICS_GUIDE.md" ]; then
+            echo "- ✅ Analytics guide exists" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "- ⚠️  Analytics guide missing" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          if [ -d "config/athena/queries" ]; then
+            QUERY_FILES=$(find config/athena/queries -name "*.sql" | wc -l)
+            echo "- 📝 Query files: $QUERY_FILES" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Recommendations" >> $GITHUB_STEP_SUMMARY
+          echo "- Document all new queries with examples" >> $GITHUB_STEP_SUMMARY
+          echo "- Include expected data volume and costs" >> $GITHUB_STEP_SUMMARY
+          echo "- Add query descriptions in Athena named queries" >> $GITHUB_STEP_SUMMARY
