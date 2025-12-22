@@ -35,6 +35,29 @@
 | 🌸 **Sakura** | sakura-004 | Documentation | Gemini 3.0 Ultra | Technical Writing, Diagrams |
 | 🏗️ **Kenji** | kenji-005 | Architecture | OpenAI o3 | System Design, Patterns |
 
+## 📊 Project Composition
+
+Tokyo-IA is a polyglot platform leveraging the strengths of multiple programming languages:
+
+```mermaid
+pie title Lenguajes
+    "Go" : 44.8
+    "Python" : 37.5
+    "TypeScript" : 4.2
+    "Kotlin" : 4.1
+    "HTML" : 4.1
+    "PLpgSQL" : 2.6
+    "Otros" : 2.7
+```
+
+- **Go (44.8%)**: High-performance backend core, APIs, and CLI tools
+- **Python (37.5%)**: AI agents, orchestration, and ML components
+- **TypeScript (4.2%)**: Modern web dashboard
+- **Kotlin (4.1%)**: Native Android application
+- **HTML (4.1%)**: Web interface templates
+- **PLpgSQL (2.6%)**: Database functions and procedures
+- **Others (2.7%)**: Ruby version management, configs, and templates
+
 ## 📋 Table of Contents
 
 - [Quick Start](#quick-start)
@@ -221,6 +244,14 @@ tokyoia/
 
 ## 📚 Documentation
 
+### Architecture & Design
+- **[🏗️ Architecture Documentation](docs/ARCHITECTURE.md)** - Complete visual architecture with Mermaid diagrams
+  - Language composition and project structure
+  - Development workflows and CI/CD pipeline
+  - Branch strategy and component interactions
+  - System architecture and security measures
+
+### API & Integration
 - **[Agent Orchestration Guide](docs/agents/ORCHESTRATION.md)** - Complete system documentation
 - **[Database Schema](db/README.md)** - Database setup and operations
 - **[API Reference](docs/agents/ORCHESTRATION.md#api-reference)** - REST API endpoints
