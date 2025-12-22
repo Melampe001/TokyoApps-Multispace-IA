@@ -24,6 +24,10 @@ jobs:
     name: Export PostgreSQL to S3
     runs-on: ubuntu-latest
     
+    permissions:
+      contents: read
+      actions: write
+    
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
