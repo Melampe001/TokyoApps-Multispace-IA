@@ -1,6 +1,6 @@
 {
-  "generated": "2025-12-21T03:40:12.604744",
-  "total_files": 144,
+  "generated": "2025-12-22T03:44:29.033736",
+  "total_files": 180,
   "files": [
     {
       "file": {
@@ -46,8 +46,8 @@
         "name": "requirements.txt",
         "type": "documentation",
         "extension": ".txt",
-        "size_bytes": 474,
-        "lines": 25
+        "size_bytes": 699,
+        "lines": 31
       },
       "classification": {
         "category": "documentation",
@@ -59,14 +59,14 @@
       },
       "dates": {
         "created": "2025-12-14T23:53:18Z",
-        "modified": "2025-12-15T05:21:58Z"
+        "modified": "2025-12-15T15:33:33Z"
       },
       "authorship": {
         "author": "copilot-swe-agent[bot]",
         "contributors": [
           "copilot-swe-agent[bot]"
         ],
-        "commits": 2
+        "commits": 3
       },
       "content": {
         "description": "Tokyo-IA Python Dependencies",
@@ -132,6 +132,37 @@
       },
       "content": {
         "description": "Sin limite - other",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "IMPLEMENTATION_SUMMARY.md",
+        "name": "IMPLEMENTATION_SUMMARY.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 9568,
+        "lines": 310
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "general",
+        "purpose": "general",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-15T15:45:11Z",
+        "modified": "2025-12-15T15:45:11Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "Tokyo-IA Agent Orchestration System - Implementation Summary",
         "dependencies": []
       }
     },
@@ -203,8 +234,8 @@
         "name": "README.md",
         "type": "documentation",
         "extension": ".md",
-        "size_bytes": 8555,
-        "lines": 288
+        "size_bytes": 16982,
+        "lines": 513
       },
       "classification": {
         "category": "documentation",
@@ -214,7 +245,7 @@
       },
       "dates": {
         "created": "2025-11-24T02:05:59-06:00",
-        "modified": "2025-12-15T05:26:05Z"
+        "modified": "2025-12-15T15:42:58Z"
       },
       "authorship": {
         "author": "Artur Orozco",
@@ -222,12 +253,16 @@
           "copilot-swe-agent[bot]",
           "Artur Orozco"
         ],
-        "commits": 7
+        "commits": 8
       },
       "content": {
-        "description": "Tokyo-IA",
+        "description": "Tokyo-IA \ud83d\uddfc",
         "dependencies": [
-          "lib.agents.workflows"
+          "lib.orchestrator",
+          "lib.orchestrator.workflows",
+          "lib.orchestrator.workflows",
+          "lib.orchestrator.workflows",
+          "lib.orchestrator.workflows"
         ]
       }
     },
@@ -337,8 +372,8 @@
         "name": "go.sum",
         "type": "other",
         "extension": ".sum",
-        "size_bytes": 360,
-        "lines": 4
+        "size_bytes": 678,
+        "lines": 8
       },
       "classification": {
         "category": "other",
@@ -350,14 +385,14 @@
       },
       "dates": {
         "created": "2025-12-15T00:04:26Z",
-        "modified": "2025-12-15T00:04:26Z"
+        "modified": "2025-12-15T15:28:37Z"
       },
       "authorship": {
         "author": "copilot-swe-agent[bot]",
         "contributors": [
           "copilot-swe-agent[bot]"
         ],
-        "commits": 1
+        "commits": 2
       },
       "content": {
         "description": "go.sum - other",
@@ -468,8 +503,8 @@
         "name": "go.mod",
         "type": "other",
         "extension": ".mod",
-        "size_bytes": 80,
-        "lines": 5
+        "size_bytes": 143,
+        "lines": 9
       },
       "classification": {
         "category": "other",
@@ -481,14 +516,14 @@
       },
       "dates": {
         "created": "2025-11-27T23:37:20Z",
-        "modified": "2025-12-15T00:04:26Z"
+        "modified": "2025-12-15T15:28:37Z"
       },
       "authorship": {
         "author": "copilot-swe-agent[bot]",
         "contributors": [
           "copilot-swe-agent[bot]"
         ],
-        "commits": 2
+        "commits": 3
       },
       "content": {
         "description": "go.mod - other",
@@ -621,6 +656,68 @@
     },
     {
       "file": {
+        "path": "db/schema.sql",
+        "name": "schema.sql",
+        "type": "other",
+        "extension": ".sql",
+        "size_bytes": 8270,
+        "lines": 208
+      },
+      "classification": {
+        "category": "other",
+        "area": "general",
+        "purpose": "general",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-15T15:28:37Z",
+        "modified": "2025-12-15T15:28:37Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "schema.sql - other",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "db/README.md",
+        "name": "README.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 3036,
+        "lines": 150
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "general",
+        "purpose": "documentation",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-15T15:28:37Z",
+        "modified": "2025-12-15T15:28:37Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "Tokyo-IA Database",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
         "path": "admin/hello.go",
         "name": "hello.go",
         "type": "source",
@@ -650,6 +747,116 @@
       "content": {
         "description": "hello.go - source",
         "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "admin/src/components/WorkflowMonitor.tsx",
+        "name": "WorkflowMonitor.tsx",
+        "type": "source",
+        "extension": ".tsx",
+        "size_bytes": 6742,
+        "lines": 237
+      },
+      "classification": {
+        "category": "source",
+        "area": "frontend",
+        "purpose": "automation",
+        "tags": [
+          "github-actions"
+        ]
+      },
+      "dates": {
+        "created": "2025-12-15T15:39:40Z",
+        "modified": "2025-12-15T15:39:40Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "WorkflowMonitor.tsx - source",
+        "dependencies": [
+          "React,",
+          "'./WorkflowMonitor.css';",
+          "./WorkflowMonitor.css"
+        ]
+      }
+    },
+    {
+      "file": {
+        "path": "admin/src/components/AgentDashboard.tsx",
+        "name": "AgentDashboard.tsx",
+        "type": "source",
+        "extension": ".tsx",
+        "size_bytes": 6440,
+        "lines": 240
+      },
+      "classification": {
+        "category": "source",
+        "area": "frontend",
+        "purpose": "general",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-15T15:39:40Z",
+        "modified": "2025-12-15T15:39:40Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "AgentDashboard.tsx - source",
+        "dependencies": [
+          "React,",
+          "'./AgentDashboard.css';",
+          "./AgentDashboard.css"
+        ]
+      }
+    },
+    {
+      "file": {
+        "path": "examples/orchestration_demo.py",
+        "name": "orchestration_demo.py",
+        "type": "script",
+        "extension": ".py",
+        "size_bytes": 6990,
+        "lines": 214
+      },
+      "classification": {
+        "category": "script",
+        "area": "general",
+        "purpose": "general",
+        "tags": [
+          "python"
+        ]
+      },
+      "dates": {
+        "created": "2025-12-15T15:42:58Z",
+        "modified": "2025-12-15T15:42:58Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "!/usr/bin/env python3",
+        "dependencies": [
+          "os",
+          "sys",
+          "lib.orchestrator",
+          "lib.agents.specialized"
+        ]
       }
     },
     {
@@ -882,6 +1089,37 @@
     },
     {
       "file": {
+        "path": ".github/ELARA_DASHBOARD.md",
+        "name": "ELARA_DASHBOARD.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 12109,
+        "lines": 414
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "ci-cd",
+        "purpose": "general",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-21T22:21:00Z",
+        "modified": "2025-12-21T22:21:00Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "\ud83d\udcca Elara Operations Dashboard",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
         "path": ".github/pull_request_template.md",
         "name": "pull_request_template.md",
         "type": "documentation",
@@ -908,6 +1146,37 @@
       },
       "content": {
         "description": "Description",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": ".github/ELARA_COMMAND_CENTER.md",
+        "name": "ELARA_COMMAND_CENTER.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 11397,
+        "lines": 473
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "ci-cd",
+        "purpose": "general",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-21T22:21:00Z",
+        "modified": "2025-12-21T22:21:00Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "\ud83d\udc51 Elara Command Center",
         "dependencies": []
       }
     },
@@ -1804,7 +2073,7 @@
         "name": "SEARCH_INDEX.json",
         "type": "configuration",
         "extension": ".json",
-        "size_bytes": 113940,
+        "size_bytes": 113943,
         "lines": 4771
       },
       "classification": {
@@ -1817,7 +2086,7 @@
       },
       "dates": {
         "created": "2025-12-14T07:22:11Z",
-        "modified": "2025-12-20T03:16:40Z"
+        "modified": "2025-12-21T03:40:12Z"
       },
       "authorship": {
         "author": "copilot-swe-agent[bot]",
@@ -1825,7 +2094,7 @@
           "github-actions[bot]",
           "copilot-swe-agent[bot]"
         ],
-        "commits": 10
+        "commits": 11
       },
       "content": {
         "description": "SEARCH_INDEX.json - configuration",
@@ -1948,7 +2217,7 @@
       },
       "dates": {
         "created": "2025-12-14T07:22:11Z",
-        "modified": "2025-12-20T03:16:40Z"
+        "modified": "2025-12-21T03:40:12Z"
       },
       "authorship": {
         "author": "copilot-swe-agent[bot]",
@@ -1956,7 +2225,7 @@
           "github-actions[bot]",
           "copilot-swe-agent[bot]"
         ],
-        "commits": 10
+        "commits": 11
       },
       "content": {
         "description": "\ud83d\udcda Cat\u00e1logo Completo de la Biblioteca",
@@ -1980,7 +2249,7 @@
       },
       "dates": {
         "created": "2025-12-14T07:22:11Z",
-        "modified": "2025-12-20T03:16:40Z"
+        "modified": "2025-12-21T03:40:12Z"
       },
       "authorship": {
         "author": "copilot-swe-agent[bot]",
@@ -1988,7 +2257,7 @@
           "github-actions[bot]",
           "copilot-swe-agent[bot]"
         ],
-        "commits": 10
+        "commits": 11
       },
       "content": {
         "description": "\ud83d\udcc5 L\u00ednea de Tiempo de Creaciones",
@@ -3291,6 +3560,76 @@
     },
     {
       "file": {
+        "path": "internal/registry/models.go",
+        "name": "models.go",
+        "type": "source",
+        "extension": ".go",
+        "size_bytes": 8337,
+        "lines": 184
+      },
+      "classification": {
+        "category": "source",
+        "area": "backend",
+        "purpose": "general",
+        "tags": [
+          "golang"
+        ]
+      },
+      "dates": {
+        "created": "2025-12-15T15:28:37Z",
+        "modified": "2025-12-15T15:28:37Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "models.go - source",
+        "dependencies": [
+          "("
+        ]
+      }
+    },
+    {
+      "file": {
+        "path": "internal/registry/agent_registry.go",
+        "name": "agent_registry.go",
+        "type": "source",
+        "extension": ".go",
+        "size_bytes": 13043,
+        "lines": 418
+      },
+      "classification": {
+        "category": "source",
+        "area": "backend",
+        "purpose": "general",
+        "tags": [
+          "golang"
+        ]
+      },
+      "dates": {
+        "created": "2025-12-15T15:28:37Z",
+        "modified": "2025-12-15T15:28:37Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "agent_registry.go - source",
+        "dependencies": [
+          "("
+        ]
+      }
+    },
+    {
+      "file": {
         "path": "internal/config/ai_config.go",
         "name": "ai_config.go",
         "type": "source",
@@ -3355,6 +3694,117 @@
       "content": {
         "description": "hello.go - source",
         "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "lib/orchestrator/workflows.py",
+        "name": "workflows.py",
+        "type": "script",
+        "extension": ".py",
+        "size_bytes": 8463,
+        "lines": 255
+      },
+      "classification": {
+        "category": "script",
+        "area": "backend",
+        "purpose": "automation",
+        "tags": [
+          "python",
+          "github-actions"
+        ]
+      },
+      "dates": {
+        "created": "2025-12-15T15:39:40Z",
+        "modified": "2025-12-15T15:39:40Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "!/usr/bin/env python3",
+        "dependencies": [
+          "lib.orchestrator"
+        ]
+      }
+    },
+    {
+      "file": {
+        "path": "lib/orchestrator/agent_orchestrator.py",
+        "name": "agent_orchestrator.py",
+        "type": "script",
+        "extension": ".py",
+        "size_bytes": 13862,
+        "lines": 402
+      },
+      "classification": {
+        "category": "script",
+        "area": "backend",
+        "purpose": "general",
+        "tags": [
+          "python"
+        ]
+      },
+      "dates": {
+        "created": "2025-12-15T15:39:40Z",
+        "modified": "2025-12-15T15:39:40Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "!/usr/bin/env python3",
+        "dependencies": [
+          "os",
+          "json",
+          "time",
+          "requests",
+          "typing"
+        ]
+      }
+    },
+    {
+      "file": {
+        "path": "lib/orchestrator/__init__.py",
+        "name": "__init__.py",
+        "type": "script",
+        "extension": ".py",
+        "size_bytes": 233,
+        "lines": 13
+      },
+      "classification": {
+        "category": "script",
+        "area": "backend",
+        "purpose": "automation",
+        "tags": [
+          "python",
+          "github-actions"
+        ]
+      },
+      "dates": {
+        "created": "2025-12-15T15:39:40Z",
+        "modified": "2025-12-15T15:39:40Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "Tokyo-IA Orchestrator\n\nMulti-agent workflow orchestration system.",
+        "dependencies": [
+          ".agent_orchestrator"
+        ]
       }
     },
     {
@@ -3488,14 +3938,14 @@
       },
       "dates": {
         "created": "2025-12-15T05:21:58Z",
-        "modified": "2025-12-15T05:21:58Z"
+        "modified": "2025-12-15T15:33:33Z"
       },
       "authorship": {
         "author": "copilot-swe-agent[bot]",
         "contributors": [
           "copilot-swe-agent[bot]"
         ],
-        "commits": 1
+        "commits": 2
       },
       "content": {
         "description": "Tokyo-IA Agent Framework\n\nThis package provides multi-agent AI capabilities using CrewAI.",
@@ -3546,6 +3996,235 @@
     },
     {
       "file": {
+        "path": "lib/agents/specialized/kenji_architect.py",
+        "name": "kenji_architect.py",
+        "type": "script",
+        "extension": ".py",
+        "size_bytes": 14191,
+        "lines": 427
+      },
+      "classification": {
+        "category": "script",
+        "area": "backend",
+        "purpose": "general",
+        "tags": [
+          "python"
+        ]
+      },
+      "dates": {
+        "created": "2025-12-15T15:33:33Z",
+        "modified": "2025-12-15T15:33:33Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "!/usr/bin/env python3",
+        "dependencies": [
+          "os",
+          "json",
+          "typing",
+          "crewai"
+        ]
+      }
+    },
+    {
+      "file": {
+        "path": "lib/agents/specialized/akira_code_reviewer.py",
+        "name": "akira_code_reviewer.py",
+        "type": "script",
+        "extension": ".py",
+        "size_bytes": 8736,
+        "lines": 281
+      },
+      "classification": {
+        "category": "script",
+        "area": "backend",
+        "purpose": "general",
+        "tags": [
+          "python"
+        ]
+      },
+      "dates": {
+        "created": "2025-12-15T15:33:33Z",
+        "modified": "2025-12-15T15:33:33Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "!/usr/bin/env python3",
+        "dependencies": [
+          "os",
+          "json",
+          "typing",
+          "crewai"
+        ]
+      }
+    },
+    {
+      "file": {
+        "path": "lib/agents/specialized/sakura_documentation.py",
+        "name": "sakura_documentation.py",
+        "type": "script",
+        "extension": ".py",
+        "size_bytes": 12459,
+        "lines": 381
+      },
+      "classification": {
+        "category": "script",
+        "area": "backend",
+        "purpose": "documentation",
+        "tags": [
+          "python"
+        ]
+      },
+      "dates": {
+        "created": "2025-12-15T15:33:33Z",
+        "modified": "2025-12-15T15:33:33Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "!/usr/bin/env python3",
+        "dependencies": [
+          "os",
+          "json",
+          "typing",
+          "crewai"
+        ]
+      }
+    },
+    {
+      "file": {
+        "path": "lib/agents/specialized/yuki_test_engineer.py",
+        "name": "yuki_test_engineer.py",
+        "type": "script",
+        "extension": ".py",
+        "size_bytes": 11489,
+        "lines": 345
+      },
+      "classification": {
+        "category": "script",
+        "area": "backend",
+        "purpose": "testing",
+        "tags": [
+          "python"
+        ]
+      },
+      "dates": {
+        "created": "2025-12-15T15:33:33Z",
+        "modified": "2025-12-15T15:33:33Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "!/usr/bin/env python3",
+        "dependencies": [
+          "os",
+          "json",
+          "typing",
+          "crewai"
+        ]
+      }
+    },
+    {
+      "file": {
+        "path": "lib/agents/specialized/hiro_sre.py",
+        "name": "hiro_sre.py",
+        "type": "script",
+        "extension": ".py",
+        "size_bytes": 11761,
+        "lines": 353
+      },
+      "classification": {
+        "category": "script",
+        "area": "backend",
+        "purpose": "general",
+        "tags": [
+          "python"
+        ]
+      },
+      "dates": {
+        "created": "2025-12-15T15:33:33Z",
+        "modified": "2025-12-15T15:33:33Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "!/usr/bin/env python3",
+        "dependencies": [
+          "os",
+          "json",
+          "typing",
+          "crewai"
+        ]
+      }
+    },
+    {
+      "file": {
+        "path": "lib/agents/specialized/__init__.py",
+        "name": "__init__.py",
+        "type": "script",
+        "extension": ".py",
+        "size_bytes": 2792,
+        "lines": 104
+      },
+      "classification": {
+        "category": "script",
+        "area": "backend",
+        "purpose": "testing",
+        "tags": [
+          "python"
+        ]
+      },
+      "dates": {
+        "created": "2025-12-15T15:33:33Z",
+        "modified": "2025-12-15T15:33:33Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "Tokyo-IA Specialized Agents\n\nFive elite AI agents with unique personalities and expertise:\n- Akira (\u4f8d) - Code Review Master\n- Yuki (\u2744\ufe0f) - Test Engineering Specialist\n- Hiro (\ud83d\udee1\ufe0f) - SRE & DevOps Guardia",
+        "dependencies": [
+          ".akira_code_reviewer",
+          ".yuki_test_engineer",
+          ".hiro_sre",
+          ".sakura_documentation",
+          ".kenji_architect"
+        ]
+      }
+    },
+    {
+      "file": {
         "path": "lib/generator/documenter.go",
         "name": "documenter.go",
         "type": "source",
@@ -3563,14 +4242,14 @@
       },
       "dates": {
         "created": "2025-12-15T00:04:26Z",
-        "modified": "2025-12-15T05:15:38Z"
+        "modified": "2025-12-15T15:28:37Z"
       },
       "authorship": {
         "author": "copilot-swe-agent[bot]",
         "contributors": [
           "copilot-swe-agent[bot]"
         ],
-        "commits": 3
+        "commits": 4
       },
       "content": {
         "description": "Architecture",
@@ -3631,14 +4310,14 @@
       },
       "dates": {
         "created": "2025-12-15T00:04:26Z",
-        "modified": "2025-12-15T05:15:38Z"
+        "modified": "2025-12-15T15:28:37Z"
       },
       "authorship": {
         "author": "copilot-swe-agent[bot]",
         "contributors": [
           "copilot-swe-agent[bot]"
         ],
-        "commits": 2
+        "commits": 3
       },
       "content": {
         "description": "parser_test.go - source",
@@ -3666,14 +4345,14 @@
       },
       "dates": {
         "created": "2025-12-15T00:04:26Z",
-        "modified": "2025-12-15T05:15:38Z"
+        "modified": "2025-12-15T15:28:37Z"
       },
       "authorship": {
         "author": "copilot-swe-agent[bot]",
         "contributors": [
           "copilot-swe-agent[bot]"
         ],
-        "commits": 3
+        "commits": 4
       },
       "content": {
         "description": "generator.go - source",
@@ -3705,14 +4384,14 @@
       },
       "dates": {
         "created": "2025-12-15T00:04:26Z",
-        "modified": "2025-12-15T05:15:38Z"
+        "modified": "2025-12-15T15:28:37Z"
       },
       "authorship": {
         "author": "copilot-swe-agent[bot]",
         "contributors": [
           "copilot-swe-agent[bot]"
         ],
-        "commits": 2
+        "commits": 3
       },
       "content": {
         "description": "scaffolder_test.go - source",
@@ -3740,14 +4419,14 @@
       },
       "dates": {
         "created": "2025-12-15T00:04:26Z",
-        "modified": "2025-12-15T05:15:38Z"
+        "modified": "2025-12-15T15:28:37Z"
       },
       "authorship": {
         "author": "copilot-swe-agent[bot]",
         "contributors": [
           "copilot-swe-agent[bot]"
         ],
-        "commits": 2
+        "commits": 3
       },
       "content": {
         "description": "parser.go - source",
@@ -3775,14 +4454,14 @@
       },
       "dates": {
         "created": "2025-12-15T00:04:26Z",
-        "modified": "2025-12-15T05:15:38Z"
+        "modified": "2025-12-15T15:28:37Z"
       },
       "authorship": {
         "author": "copilot-swe-agent[bot]",
         "contributors": [
           "copilot-swe-agent[bot]"
         ],
-        "commits": 2
+        "commits": 3
       },
       "content": {
         "description": "analyzer_test.go - source",
@@ -3810,14 +4489,14 @@
       },
       "dates": {
         "created": "2025-12-15T00:04:26Z",
-        "modified": "2025-12-15T05:15:38Z"
+        "modified": "2025-12-15T15:28:37Z"
       },
       "authorship": {
         "author": "copilot-swe-agent[bot]",
         "contributors": [
           "copilot-swe-agent[bot]"
         ],
-        "commits": 3
+        "commits": 4
       },
       "content": {
         "description": "scaffolder.go - source",
@@ -3845,14 +4524,14 @@
       },
       "dates": {
         "created": "2025-12-15T00:04:26Z",
-        "modified": "2025-12-15T05:15:38Z"
+        "modified": "2025-12-15T15:28:37Z"
       },
       "authorship": {
         "author": "copilot-swe-agent[bot]",
         "contributors": [
           "copilot-swe-agent[bot]"
         ],
-        "commits": 2
+        "commits": 3
       },
       "content": {
         "description": "analyzer.go - source",
@@ -3880,14 +4559,14 @@
       },
       "dates": {
         "created": "2025-12-15T00:04:26Z",
-        "modified": "2025-12-15T05:15:38Z"
+        "modified": "2025-12-15T15:28:37Z"
       },
       "authorship": {
         "author": "copilot-swe-agent[bot]",
         "contributors": [
           "copilot-swe-agent[bot]"
         ],
-        "commits": 2
+        "commits": 3
       },
       "content": {
         "description": "deployer.go - source",
@@ -3915,14 +4594,14 @@
       },
       "dates": {
         "created": "2025-12-15T00:04:26Z",
-        "modified": "2025-12-15T05:15:38Z"
+        "modified": "2025-12-15T15:28:37Z"
       },
       "authorship": {
         "author": "copilot-swe-agent[bot]",
         "contributors": [
           "copilot-swe-agent[bot]"
         ],
-        "commits": 3
+        "commits": 4
       },
       "content": {
         "description": "{{.ProjectName}}",
@@ -3991,6 +4670,117 @@
       "content": {
         "description": "frozen_string_literal: true",
         "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "app/src/main/java/com/tokyoia/app/ui/agents/AgentsViewModel.kt",
+        "name": "AgentsViewModel.kt",
+        "type": "source",
+        "extension": ".kt",
+        "size_bytes": 1653,
+        "lines": 60
+      },
+      "classification": {
+        "category": "source",
+        "area": "cli",
+        "purpose": "general",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-15T15:39:40Z",
+        "modified": "2025-12-15T15:39:40Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "AgentsViewModel.kt - source",
+        "dependencies": [
+          "androidx.lifecycle.ViewModel",
+          "androidx.lifecycle.viewModelScope",
+          "com.tokyoia.app.data.repository.AgentRepository",
+          "kotlinx.coroutines.flow.MutableStateFlow",
+          "kotlinx.coroutines.flow.StateFlow"
+        ]
+      }
+    },
+    {
+      "file": {
+        "path": "app/src/main/java/com/tokyoia/app/ui/agents/AgentsScreen.kt",
+        "name": "AgentsScreen.kt",
+        "type": "source",
+        "extension": ".kt",
+        "size_bytes": 6454,
+        "lines": 201
+      },
+      "classification": {
+        "category": "source",
+        "area": "cli",
+        "purpose": "general",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-15T15:39:40Z",
+        "modified": "2025-12-15T15:39:40Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "AgentsScreen.kt - source",
+        "dependencies": [
+          "androidx.compose.foundation.layout.*",
+          "androidx.compose.foundation.lazy.LazyColumn",
+          "androidx.compose.foundation.lazy.items",
+          "androidx.compose.material3.*",
+          "androidx.compose.runtime.*"
+        ]
+      }
+    },
+    {
+      "file": {
+        "path": "app/src/main/java/com/tokyoia/app/data/repository/AgentRepository.kt",
+        "name": "AgentRepository.kt",
+        "type": "source",
+        "extension": ".kt",
+        "size_bytes": 4823,
+        "lines": 149
+      },
+      "classification": {
+        "category": "source",
+        "area": "cli",
+        "purpose": "general",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-15T15:39:40Z",
+        "modified": "2025-12-15T15:39:40Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "AgentRepository.kt - source",
+        "dependencies": [
+          "com.tokyoia.app.ui.agents.Agent",
+          "kotlinx.coroutines.Dispatchers",
+          "kotlinx.coroutines.withContext",
+          "okhttp3.OkHttpClient",
+          "okhttp3.Request"
+        ]
       }
     },
     {
@@ -4066,6 +4856,41 @@
     },
     {
       "file": {
+        "path": "cmd/registry-api/main.go",
+        "name": "main.go",
+        "type": "source",
+        "extension": ".go",
+        "size_bytes": 11715,
+        "lines": 417
+      },
+      "classification": {
+        "category": "source",
+        "area": "cli",
+        "purpose": "general",
+        "tags": [
+          "golang"
+        ]
+      },
+      "dates": {
+        "created": "2025-12-15T15:28:37Z",
+        "modified": "2025-12-15T15:28:37Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "main.go - source",
+        "dependencies": [
+          "("
+        ]
+      }
+    },
+    {
+      "file": {
         "path": "cmd/elite/main.go",
         "name": "main.go",
         "type": "source",
@@ -4083,14 +4908,14 @@
       },
       "dates": {
         "created": "2025-12-15T00:04:26Z",
-        "modified": "2025-12-15T05:15:38Z"
+        "modified": "2025-12-15T15:28:37Z"
       },
       "authorship": {
         "author": "copilot-swe-agent[bot]",
         "contributors": [
           "copilot-swe-agent[bot]"
         ],
-        "commits": 3
+        "commits": 4
       },
       "content": {
         "description": "main.go - source",
@@ -4354,6 +5179,402 @@
     },
     {
       "file": {
+        "path": "docs/elara/melampe-preferences.md",
+        "name": "melampe-preferences.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 11621,
+        "lines": 436
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "documentation",
+        "purpose": "general",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-21T22:21:00Z",
+        "modified": "2025-12-21T22:21:00Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "\ud83c\udfaf Melampe001 Preferences",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "docs/elara/communication.md",
+        "name": "communication.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 12631,
+        "lines": 532
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "documentation",
+        "purpose": "general",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-21T22:21:00Z",
+        "modified": "2025-12-21T22:21:00Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "\ud83d\udcac Communication Protocols",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "docs/elara/README.md",
+        "name": "README.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 1650,
+        "lines": 51
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "documentation",
+        "purpose": "documentation",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-21T22:21:00Z",
+        "modified": "2025-12-21T22:21:00Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "\ud83d\udc51 Elara Knowledge Base",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "docs/elara/protocol-athena.md",
+        "name": "protocol-athena.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 16850,
+        "lines": 714
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "documentation",
+        "purpose": "testing",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-21T22:21:00Z",
+        "modified": "2025-12-21T22:21:00Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "\u26a1 Athena Protocol - Complete Specification",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "docs/elara/imperial-standards.md",
+        "name": "imperial-standards.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 17638,
+        "lines": 717
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "documentation",
+        "purpose": "general",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-21T22:21:00Z",
+        "modified": "2025-12-21T22:21:00Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "\ud83c\udfdb\ufe0f Imperial Premium Elite Standards",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "docs/elara/persona.md",
+        "name": "persona.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 10263,
+        "lines": 312
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "documentation",
+        "purpose": "general",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-21T22:21:00Z",
+        "modified": "2025-12-21T22:21:00Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "\ud83d\udc51 Elara - Complete Identity and Personality",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "docs/elara/agents/apollo-cli.md",
+        "name": "apollo-cli.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 4875,
+        "lines": 222
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "documentation",
+        "purpose": "testing",
+        "tags": [
+          "golang"
+        ]
+      },
+      "dates": {
+        "created": "2025-12-21T22:21:00Z",
+        "modified": "2025-12-21T22:21:00Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "\ud83c\udfaa Apollo Agent - Go CLI Specialist",
+        "dependencies": [
+          "(",
+          "(",
+          "("
+        ]
+      }
+    },
+    {
+      "file": {
+        "path": "docs/elara/agents/javascript-modern.md",
+        "name": "javascript-modern.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 5822,
+        "lines": 262
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "documentation",
+        "purpose": "testing",
+        "tags": [
+          "javascript"
+        ]
+      },
+      "dates": {
+        "created": "2025-12-21T22:21:00Z",
+        "modified": "2025-12-21T22:21:00Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "\u26a1 JavaScript Agent - Modern JS Specialist",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "docs/elara/agents/artemis-python.md",
+        "name": "artemis-python.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 14823,
+        "lines": 575
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "documentation",
+        "purpose": "testing",
+        "tags": [
+          "python"
+        ]
+      },
+      "dates": {
+        "created": "2025-12-21T22:21:00Z",
+        "modified": "2025-12-21T22:21:00Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "\ud83c\udfaf Artemis Agent - Python AI/ML Specialist",
+        "dependencies": [
+          "typing",
+          "dataclasses",
+          "logging",
+          "pytest",
+          "unittest.mock"
+        ]
+      }
+    },
+    {
+      "file": {
+        "path": "docs/elara/agents/shell-automation.md",
+        "name": "shell-automation.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 3823,
+        "lines": 185
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "documentation",
+        "purpose": "automation",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-21T22:21:00Z",
+        "modified": "2025-12-21T22:21:00Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "\ud83d\udd27 Shell Agent - Automation Specialist",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "docs/elara/agents/athena-go.md",
+        "name": "athena-go.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 12437,
+        "lines": 542
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "documentation",
+        "purpose": "testing",
+        "tags": [
+          "golang"
+        ]
+      },
+      "dates": {
+        "created": "2025-12-21T22:21:00Z",
+        "modified": "2025-12-21T22:21:00Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "\ud83c\udfdb\ufe0f Athena Agent - Go Backend Specialist",
+        "dependencies": [
+          "(",
+          "(",
+          "(",
+          "(",
+          "_"
+        ]
+      }
+    },
+    {
+      "file": {
+        "path": "docs/elara/agents/hermes-typescript.md",
+        "name": "hermes-typescript.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 4872,
+        "lines": 211
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "documentation",
+        "purpose": "testing",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-21T22:21:00Z",
+        "modified": "2025-12-21T22:21:00Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "\u26a1 Hermes Agent - TypeScript Web Specialist",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
         "path": "docs/architecture/ai-models-integration-architecture.md",
         "name": "ai-models-integration-architecture.md",
         "type": "documentation",
@@ -4415,6 +5636,43 @@
           "(",
           "\"github.com/Melampe001/Tokyo-IA/internal/config\"",
           "github.com/Melampe001/Tokyo-IA/internal/config"
+        ]
+      }
+    },
+    {
+      "file": {
+        "path": "docs/agents/ORCHESTRATION.md",
+        "name": "ORCHESTRATION.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 17002,
+        "lines": 753
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "documentation",
+        "purpose": "general",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-15T15:39:40Z",
+        "modified": "2025-12-15T15:39:40Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "Tokyo-IA Agent Orchestration System",
+        "dependencies": [
+          "lib.orchestrator",
+          "lib.orchestrator.workflows",
+          "lib.orchestrator.workflows",
+          "lib.orchestrator.workflows",
+          "lib.orchestrator"
         ]
       }
     },

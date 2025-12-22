@@ -1,6 +1,6 @@
 # Other
 
-Total: 15 archivos
+Total: 16 archivos
 
 ## [.gitignore](.gitignore)
 .gitignore - other
@@ -46,4 +46,7 @@ go.sum - other
 
 ## [pre-commit](.githooks/pre-commit)
 pre-commit - other
+
+## [schema.sql](db/schema.sql)
+schema.sql - other
 

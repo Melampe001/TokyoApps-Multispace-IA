@@ -1,16 +1,16 @@
 # 📚 Catálogo Completo de la Biblioteca
-Última actualización: 2025-12-21 03:40:12
-Total de archivos: 144
+Última actualización: 2025-12-22 03:44:29
+Total de archivos: 180
 
 ---
 ## 📊 Estadísticas Generales
 - **Build**: 1 archivos
 - **Configuration**: 3 archivos
-- **Documentation**: 69 archivos
-- **Other**: 15 archivos
+- **Documentation**: 86 archivos
+- **Other**: 16 archivos
 - **Schema**: 1 archivos
-- **Script**: 15 archivos
-- **Source**: 26 archivos
+- **Script**: 25 archivos
+- **Source**: 34 archivos
 - **Workflow**: 14 archivos
 
 ---
@@ -24,29 +24,29 @@ Total de archivos: 144
 - **[backend-quality-rules.json](.github/workflows/bots/backend-quality-rules.json)** - backend-quality-rules.json - configuration
 - **[frontend-ux-guidelines.json](.github/workflows/bots/frontend-ux-guidelines.json)** - frontend-ux-guidelines.json - configuration
 
-### Documentation (69 archivos)
+### Documentation (86 archivos)
 - **[BRANCH_PROTECTION.md](docs/BRANCH_PROTECTION.md)** - Branch Protection Rules
 - **[CATALOG.md](LIBRARY/CATALOG.md)** - 📚 Catálogo Completo de la Biblioteca
 - **[CI_CD.md](docs/CI_CD.md)** - CI/CD Documentation
 - **[CONTRIBUTING.md](CONTRIBUTING.md)** - Contributing to Tokyo-IA
+- **[ELARA_COMMAND_CENTER.md](.github/ELARA_COMMAND_CENTER.md)** - 👑 Elara Command Center
+- **[ELARA_DASHBOARD.md](.github/ELARA_DASHBOARD.md)** - 📊 Elara Operations Dashboard
 - **[FILE_TEMPLATE.md](.github/templates/FILE_TEMPLATE.md)** - [Nombre del Archivo]
 - **[GUIDE.md](LIBRARY/GUIDE.md)** - Digital Library System - Complete Guide
 - **[GitHub-Pro.md](prompts/GitHub-Pro.md)** - GitHub-Pro.md – Step-by-Step Guide for GitHub Pro (2025)
+- **[IMPLEMENTATION_SUMMARY.md](IMPLEMENTATION_SUMMARY.md)** - Tokyo-IA Agent Orchestration System - Implementation Summary
 - **[IMPLEMENTATION_SUMMARY.md](docs/IMPLEMENTATION_SUMMARY.md)** - Elite Framework - Implementation Summary
 - **[IMPLEMENTATION_SUMMARY_AI.md](docs/IMPLEMENTATION_SUMMARY_AI.md)** - Multi-Model AI Integration - Implementation Summary
 - **[JS-Supremo.md](prompts/JS-Supremo.md)** - JS-Supremo.md – Premium JavaScript Expert Prompt
 - **[Makefile.md](LIBRARY/by-technology/Makefile.md)** - MAKEFILE
+- **[ORCHESTRATION.md](docs/agents/ORCHESTRATION.md)** - Tokyo-IA Agent Orchestration System
 - **[README-python.md](README-python.md)** - Tokyo-IA Python Setup Guide
-- **[README.md](README.md)** - Tokyo-IA
+- **[README.md](README.md)** - Tokyo-IA 🗼
+- **[README.md](db/README.md)** - Tokyo-IA Database
 - **[README.md](examples/python/README.md)** - Tokyo-IA Python Examples
 - **[README.md](.github/workflows/README.md)** - GitHub Workflows Documentation
-- **[README.md](.github/workflows/bots/README.md)** - 🤖 Tokyo-IA Automated Bots Documentation
-- **[README.md](LIBRARY/README.md)** - 📚 Tokyo-IA Digital Library
-- **[README.md](LIBRARY/reports/README.md)** - Library Reports
-- **[README.md](docs/README.md)** - Tokyo-IA Documentation
-- **[README.md](templates/bot/README.md)** - Bot Template
 
-### Other (15 archivos)
+### Other (16 archivos)
 - **[.gitignore](.gitignore)** - .gitignore - other
 - **[.python-version](.python-version)** - .python-version - other
 - **[Agentes y bots](Agentes y bots)** - Agentes y bots - other
@@ -62,14 +62,24 @@ Total de archivos: 144
 - **[go.mod](go.mod)** - go.mod - other
 - **[go.sum](go.sum)** - go.sum - other
 - **[pre-commit](.githooks/pre-commit)** - pre-commit - other
+- **[schema.sql](db/schema.sql)** - schema.sql - other
 
 ### Schema (1 archivos)
 - **[hello.proto](proto/hello.proto)** - hello.proto - schema
 
-### Script (15 archivos)
+### Script (25 archivos)
+- **[__init__.py](lib/orchestrator/__init__.py)** - Tokyo-IA Orchestrator
+
+Multi-agent workflow orchestration system.
 - **[__init__.py](lib/agents/__init__.py)** - Tokyo-IA Agent Framework
 
 This package provides multi-agent AI capabilities using CrewAI.
+- **[__init__.py](lib/agents/specialized/__init__.py)** - Tokyo-IA Specialized Agents
+
+Five elite AI agents with unique personalities and expertise:
+- Akira (
+- **[agent_orchestrator.py](lib/orchestrator/agent_orchestrator.py)** - !/usr/bin/env python3
+- **[akira_code_reviewer.py](lib/agents/specialized/akira_code_reviewer.py)** - !/usr/bin/env python3
 - **[analyze_dart_code.py](.github/workflows/bots/scripts/analyze_dart_code.py)** - !/usr/bin/env python3
 - **[analyze_go_code.py](.github/workflows/bots/scripts/analyze_go_code.py)** - !/usr/bin/env python3
 - **[basic_agent.py](examples/python/basic_agent.py)** - !/usr/bin/env python3
@@ -80,19 +90,21 @@ This package provides multi-agent AI capabilities using CrewAI.
 This module defines specialized AI agents for 
 - **[demo-ai-integration.sh](scripts/demo-ai-integration.sh)** - !/bin/bash
 - **[generate_report.py](.github/workflows/bots/scripts/generate_report.py)** - !/usr/bin/env python3
+- **[hiro_sre.py](lib/agents/specialized/hiro_sre.py)** - !/usr/bin/env python3
+- **[kenji_architect.py](lib/agents/specialized/kenji_architect.py)** - !/usr/bin/env python3
 - **[library_cataloger.py](.github/workflows/scripts/library_cataloger.py)** - !/usr/bin/env python3
 - **[library_search.py](.github/workflows/scripts/library_search.py)** - !/usr/bin/env python3
+- **[orchestration_demo.py](examples/orchestration_demo.py)** - !/usr/bin/env python3
+- **[sakura_documentation.py](lib/agents/specialized/sakura_documentation.py)** - !/usr/bin/env python3
 - **[test_crew.py](lib/agents/test_crew.py)** - Unit tests for Tokyo-IA agent framework.
-- **[tools.py](lib/agents/tools.py)** - Custom tools for Tokyo-IA agents.
 
-This module provides specialized tools for agents to interact wit
-- **[version.rb](ruby/lib/billing-platform/version.rb)** - frozen_string_literal: true
-- **[workflows.py](lib/agents/workflows.py)** - Multi-agent workflows for Tokyo-IA.
-
-This module defines workflows that coordinate multiple agents:
-
-
-### Source (26 archivos)
+### Source (34 archivos)
+- **[AgentDashboard.tsx](admin/src/components/AgentDashboard.tsx)** - AgentDashboard.tsx - source
+- **[AgentRepository.kt](app/src/main/java/com/tokyoia/app/data/repository/AgentRepository.kt)** - AgentRepository.kt - source
+- **[AgentsScreen.kt](app/src/main/java/com/tokyoia/app/ui/agents/AgentsScreen.kt)** - AgentsScreen.kt - source
+- **[AgentsViewModel.kt](app/src/main/java/com/tokyoia/app/ui/agents/AgentsViewModel.kt)** - AgentsViewModel.kt - source
+- **[WorkflowMonitor.tsx](admin/src/components/WorkflowMonitor.tsx)** - WorkflowMonitor.tsx - source
+- **[agent_registry.go](internal/registry/agent_registry.go)** - agent_registry.go - source
 - **[ai_config.go](internal/config/ai_config.go)** - ai_config.go - source
 - **[analyzer.go](lib/generator/analyzer.go)** - analyzer.go - source
 - **[analyzer_test.go](lib/generator/analyzer_test.go)** - analyzer_test.go - source
@@ -106,13 +118,7 @@ This module defines workflows that coordinate multiple agents:
 - **[hello.go](config/hello.go)** - hello.go - source
 - **[main.go](cmd/main.go)** - main.go - source
 - **[main.go](cmd/ai-api/main.go)** - main.go - source
-- **[main.go](cmd/elite/main.go)** - main.go - source
-- **[metrics.go](internal/ai/metrics.go)** - metrics.go - source
-- **[mock_client.go](internal/ai/clients/mock_client.go)** - mock_client.go - source
-- **[model_router.go](internal/ai/model_router.go)** - model_router.go - source
-- **[model_router_test.go](internal/ai/model_router_test.go)** - model_router_test.go - source
-- **[parser.go](lib/generator/parser.go)** - parser.go - source
-- **[parser_test.go](lib/generator/parser_test.go)** - parser_test.go - source
+- **[main.go](cmd/registry-api/main.go)** - main.go - source
 
 ### Workflow (14 archivos)
 - **[ai_models.yaml](config/ai_models.yaml)** - o3
@@ -133,17 +139,17 @@ This module defines workflows that coordinate multiple agents:
 ---
 ## 🎯 Por Propósito
 
-### Automation (13 archivos)
+### Automation (17 archivos)
 - [Agentes y bots](Agentes y bots)
 - [README.md](.github/workflows/README.md)
 - [README.md](.github/workflows/bots/README.md)
 - [README.md](templates/bot/README.md)
+- [WorkflowMonitor.tsx](admin/src/components/WorkflowMonitor.tsx)
+- [__init__.py](lib/orchestrator/__init__.py)
 - [automation.md](LIBRARY/by-purpose/automation.md)
 - [bot-backend-performance.yml](.github/workflows/bot-backend-performance.yml)
 - [bot-backend-quality.yml](.github/workflows/bot-backend-quality.yml)
 - [bot-coordinator.yml](.github/workflows/bot-coordinator.yml)
-- [bot-frontend-build.yml](.github/workflows/bot-frontend-build.yml)
-- [bot-frontend-ux.yml](.github/workflows/bot-frontend-ux.yml)
 
 ### Deployment (4 archivos)
 - [Makefile](Makefile)
@@ -151,29 +157,29 @@ This module defines workflows that coordinate multiple agents:
 - [deployer.go](lib/generator/deployer.go)
 - [deployment.md](LIBRARY/by-purpose/deployment.md)
 
-### Documentation (20 archivos)
+### Documentation (23 archivos)
 - [CI_CD.md](docs/CI_CD.md)
 - [GUIDE.md](LIBRARY/GUIDE.md)
 - [GitHub-Pro.md](prompts/GitHub-Pro.md)
 - [README-python.md](README-python.md)
 - [README.md](README.md)
+- [README.md](db/README.md)
 - [README.md](examples/python/README.md)
 - [README.md](LIBRARY/README.md)
 - [README.md](LIBRARY/reports/README.md)
 - [README.md](docs/README.md)
-- [README.md](templates/ai-agent/README.md)
 
-### General (87 archivos)
+### General (108 archivos)
 - [.gitignore](.gitignore)
 - [.python-version](.python-version)
+- [AgentDashboard.tsx](admin/src/components/AgentDashboard.tsx)
+- [AgentRepository.kt](app/src/main/java/com/tokyoia/app/data/repository/AgentRepository.kt)
+- [AgentsScreen.kt](app/src/main/java/com/tokyoia/app/ui/agents/AgentsScreen.kt)
+- [AgentsViewModel.kt](app/src/main/java/com/tokyoia/app/ui/agents/AgentsViewModel.kt)
 - [BRANCH_PROTECTION.md](docs/BRANCH_PROTECTION.md)
 - [CATALOG.md](LIBRARY/CATALOG.md)
 - [CONTRIBUTING.md](CONTRIBUTING.md)
 - [Cuerpo](Cuerpo)
-- [FILE_TEMPLATE.md](.github/templates/FILE_TEMPLATE.md)
-- [Fllutter](Fllutter)
-- [IA suprema](prompts/IA suprema)
-- [IMPLEMENTATION_SUMMARY.md](docs/IMPLEMENTATION_SUMMARY.md)
 
 ### Integration (6 archivos)
 - [IMPLEMENTATION_SUMMARY_AI.md](docs/IMPLEMENTATION_SUMMARY_AI.md)
@@ -191,17 +197,17 @@ This module defines workflows that coordinate multiple agents:
 - [SECURITY.md](SECURITY.md)
 - [security.md](LIBRARY/by-purpose/security.md)
 
-### Testing (10 archivos)
+### Testing (18 archivos)
+- [__init__.py](lib/agents/specialized/__init__.py)
 - [analyzer_test.go](lib/generator/analyzer_test.go)
+- [apollo-cli.md](docs/elara/agents/apollo-cli.md)
+- [artemis-python.md](docs/elara/agents/artemis-python.md)
+- [athena-go.md](docs/elara/agents/athena-go.md)
 - [crew_config.py](lib/agents/crew_config.py)
+- [hermes-typescript.md](docs/elara/agents/hermes-typescript.md)
+- [javascript-modern.md](docs/elara/agents/javascript-modern.md)
 - [mock_client.go](internal/ai/clients/mock_client.go)
 - [model_router_test.go](internal/ai/model_router_test.go)
-- [parser_test.go](lib/generator/parser_test.go)
-- [placeholder_test.go](testing/placeholder_test.go)
-- [scaffolder_test.go](lib/generator/scaffolder_test.go)
-- [test_crew.py](lib/agents/test_crew.py)
-- [testing.md](LIBRARY/by-purpose/testing.md)
-- [tools.py](lib/agents/tools.py)
 
 ---
 

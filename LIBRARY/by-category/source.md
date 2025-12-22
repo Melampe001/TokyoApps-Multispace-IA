@@ -1,6 +1,24 @@
 # Source
 
-Total: 26 archivos
+Total: 34 archivos
+
+## [AgentDashboard.tsx](admin/src/components/AgentDashboard.tsx)
+AgentDashboard.tsx - source
+
+## [AgentRepository.kt](app/src/main/java/com/tokyoia/app/data/repository/AgentRepository.kt)
+AgentRepository.kt - source
+
+## [AgentsScreen.kt](app/src/main/java/com/tokyoia/app/ui/agents/AgentsScreen.kt)
+AgentsScreen.kt - source
+
+## [AgentsViewModel.kt](app/src/main/java/com/tokyoia/app/ui/agents/AgentsViewModel.kt)
+AgentsViewModel.kt - source
+
+## [WorkflowMonitor.tsx](admin/src/components/WorkflowMonitor.tsx)
+WorkflowMonitor.tsx - source
+
+## [agent_registry.go](internal/registry/agent_registry.go)
+agent_registry.go - source
 
 ## [ai_config.go](internal/config/ai_config.go)
 ai_config.go - source
@@ -41,6 +59,9 @@ main.go - source
 ## [main.go](cmd/ai-api/main.go)
 main.go - source
 
+## [main.go](cmd/registry-api/main.go)
+main.go - source
+
 ## [main.go](cmd/elite/main.go)
 main.go - source
 
@@ -55,6 +76,9 @@ model_router.go - source
 
 ## [model_router_test.go](internal/ai/model_router_test.go)
 model_router_test.go - source
+
+## [models.go](internal/registry/models.go)
+models.go - source
 
 ## [parser.go](lib/generator/parser.go)
 parser.go - source

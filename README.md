@@ -6,17 +6,43 @@
 [![codecov](https://codecov.io/gh/Melampe001/Tokyo-IA/branch/main/graph/badge.svg)](https://codecov.io/gh/Melampe001/Tokyo-IA)
 
 > Generador de ramas ordenadas y flujos optimizados con IA integrada
+# Tokyo-IA 🗼
 
-Tokyo-IA is a comprehensive AI platform featuring multi-model integration, intelligent routing, and autonomous agents. Built with Go and Python, it provides production-ready AI capabilities with cost optimization and enterprise-grade reliability.
+[![CI Pipeline](https://github.com/Melampe001/Tokyo-IA/actions/workflows/ci.yml/badge.svg)](https://github.com/Melampe001/Tokyo-IA/actions/workflows/ci.yml)
+[![Go Version](https://img.shields.io/badge/Go-1.21-blue)](https://go.dev/)
+[![Python Version](https://img.shields.io/badge/Python-3.10+-blue)](https://www.python.org/)
+[![License](https://img.shields.io/badge/License-Apache%202.0-green.svg)](LICENSE)
+
+**Tokyo-IA** is a complete AI agent orchestration platform featuring 5 specialized agents with unique personalities and expertise. Built with Go, Python, React, and Android support.
+
+## ✨ Features
+
+- 🤖 **5 Specialized AI Agents**: Each with unique personality and LLM model
+- 🔄 **Multi-Agent Orchestration**: Coordinate complex workflows across agents
+- 📊 **Complete Tracking**: PostgreSQL database records all activities
+- 🌐 **REST API**: Full programmatic access to all features
+- 📱 **Cross-Platform**: Web dashboard and Android app support
+- 📈 **Performance Metrics**: Track tokens, costs, and latencies
+- 🛡️ **Production Ready**: Built for scale with Go and Kubernetes support
+
+## 🎭 The Five Agents
+
+| Agent | ID | Role | Model | Specialties |
+|-------|-----|------|-------|-------------|
+| 侍 **Akira** | akira-001 | Code Review Master | Claude Opus 4.1 | Security, Performance, Architecture |
+| ❄️ **Yuki** | yuki-002 | Test Engineering | OpenAI o3 | Unit/Integration/E2E Testing |
+| 🛡️ **Hiro** | hiro-003 | SRE & DevOps | Llama 4 405B | Kubernetes, CI/CD, Monitoring |
+| 🌸 **Sakura** | sakura-004 | Documentation | Gemini 3.0 Ultra | Technical Writing, Diagrams |
+| 🏗️ **Kenji** | kenji-005 | Architecture | OpenAI o3 | System Design, Patterns |
 
 ## 📋 Table of Contents
 
-- [Features](#-features)
-- [AI Integration](#-ai-integration)
-- [Repository Structure](#repository-structure)
 - [Quick Start](#quick-start)
+- [Architecture](#architecture)
+- [Repository Structure](#repository-structure)
 - [Documentation](#documentation)
-- [Elite Framework](#-elite-framework---generate-projects-instantly)
+- [API Reference](#api-reference)
+- [Development](#development)
 - [Contributing](#contributing)
 - [Security](#security)
 - [License](#license)
@@ -29,134 +55,339 @@ Tokyo-IA is a comprehensive AI platform featuring multi-model integration, intel
 - 🔒 **Enterprise Security**: CodeQL scanning, dependency review
 - 📊 **Web Dashboard**: Real-time monitoring interface
 
-### Multi-Model AI Integration
-- **5 State-of-the-Art Providers**: OpenAI (o3/o5), Anthropic (Claude Opus/Sonnet), Google (Gemini 3.0), xAI (Grok 4), Meta (Llama 4)
-- **Intelligent Routing**: Task-based model selection optimizes for quality, cost, and latency
-- **Budget Management**: Real-time cost tracking with configurable daily limits
-- **Fallback Chains**: 99.9% uptime with automatic provider failover
-- **Response Caching**: 40%+ cache hit rate reduces costs and improves speed
+## 🚀 Quick Start
 
-### Autonomous Agent Framework
-- **Code Review Agent**: Deep analysis using Claude Opus 4.1
-- **Test Generation Agent**: Comprehensive test creation with OpenAI o3
-- **SRE/Deployment Agent**: Infrastructure validation using local Llama 4
-- **Documentation Agent**: Automated docs with Gemini 3.0
-
-### Production-Grade Infrastructure
-- **Cost Optimization**: $0.001-$0.01 per request with smart routing
-- **Privacy Support**: Local Llama 4 for sensitive workloads
-- **Comprehensive Metrics**: Prometheus + Grafana monitoring
-- **High Performance**: <100ms p50 latency on local models
-
-## 🚀 AI Integration
-
-Tokyo-IA's AI system provides intelligent routing across multiple LLM providers with comprehensive cost and performance optimization.
-
-### Quick Start
-
-#### 1. Run the AI API Server
+### 1. Setup Database
 
 ```bash
+# Create PostgreSQL database
+createdb tokyoia
+
+# Run schema
+psql tokyoia < db/schema.sql
+
+# Set environment variable
+export DATABASE_URL="postgresql://user:password@localhost:5432/tokyoia"
+```
+
+### 2. Start Registry API (Go)
+
+```bash
+# Install dependencies
+go mod download
+
 # Build and run
 make build
-./bin/ai-api
+./bin/registry-api
 
-# API will be available at http://localhost:8080
+# Or directly
+go run ./cmd/registry-api/main.go
 ```
 
-#### 2. Make Your First Request
+The API will be available at `http://localhost:8080`
+
+### 3. Setup Python Environment
 
 ```bash
-curl -X POST http://localhost:8080/ai/complete \
-  -H "Content-Type: application/json" \
-  -d '{
-    "prompt": "Explain quantum computing",
-    "task_type": "reasoning",
-    "max_tokens": 500
-  }'
+# Install Python dependencies
+pip install -r requirements.txt
+
+# Set API keys
+export ANTHROPIC_API_KEY="sk-ant-..."
+export OPENAI_API_KEY="sk-..."
+export GROQ_API_KEY="gsk_..."
+export GOOGLE_API_KEY="..."
 ```
 
-#### 3. Check Usage Metrics
-
-```bash
-curl http://localhost:8080/ai/metrics
-```
-
-### Available Task Types
-
-- **reasoning**: Complex analysis and problem-solving
-- **code_generation**: Generate code snippets and programs
-- **code_review**: Analyze code quality and security
-- **multimodal**: Process images and diagrams
-- **documentation**: Generate technical documentation
-- **chat**: General conversational AI
-
-### Example: Code Review
-
-```bash
-curl -X POST http://localhost:8080/ai/complete \
-  -H "Content-Type: application/json" \
-  -d '{
-    "prompt": "Review this code:\nfunc Add(a, b int) int { return a + b }",
-    "task_type": "code_review"
-  }'
-```
-
-### Multi-Agent Workflows
+### 4. Run Your First Workflow
 
 ```python
-from lib.agents.workflows import execute_workflow
+from lib.orchestrator import AgentOrchestrator
+from lib.orchestrator.workflows import full_code_review_workflow
 
-# Execute PR review workflow
-result = execute_workflow(
-    "pr_review",
-    pr_data={
-        "number": 123,
-        "title": "Add new feature",
-        "diff": "..."
-    }
-)
+# Initialize orchestrator
+orchestrator = AgentOrchestrator()
+orchestrator.initialize_agents()
+
+# Run a code review workflow
+code = """
+def authenticate_user(username, password):
+    query = f"SELECT * FROM users WHERE name = '{username}'"
+    # ... rest of code
+"""
+
+result = full_code_review_workflow(orchestrator, code, "python")
+print(result)
 ```
 
-See the [AI Model Router Guide](docs/guides/ai-model-router-guide.md) for detailed usage.
+## 🏗️ Architecture
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                     Client Layer                            │
+│  Web Dashboard  │  Android App  │  CLI Tools  │  API Calls  │
+└────────────────────────┬────────────────────────────────────┘
+                         │
+┌────────────────────────▼────────────────────────────────────┐
+│                   Registry API (Go)                         │
+│         REST Server - Port 8080                             │
+│  Agents │ Tasks │ Workflows │ Metrics │ Sessions            │
+└────────────────────────┬────────────────────────────────────┘
+                         │
+┌────────────────────────▼────────────────────────────────────┐
+│               PostgreSQL Database                           │
+│  agents │ agent_tasks │ workflows │ metrics │ interactions  │
+└────────────────────────┬────────────────────────────────────┘
+                         │
+┌────────────────────────▼────────────────────────────────────┐
+│            Agent Orchestrator (Python)                      │
+│         Multi-Agent Workflow Coordinator                    │
+└────┬─────┬──────┬──────┬──────┬─────────────────────────────┘
+     │     │      │      │      │
+     ▼     ▼      ▼      ▼      ▼
+  Akira  Yuki   Hiro  Sakura  Kenji
+   侍     ❄️     🛡️    🌸     🏗️
+```
+
+See [docs/agents/ORCHESTRATION.md](docs/agents/ORCHESTRATION.md) for detailed architecture.
+
+## 🏗️ Repository Structure
 ## 🏗️ Repository Structure
 
 ```
 tokyoia/
 │
-├── cmd/
-│   ├── main.go                # Main Tokyo-IA application
-│   ├── ai-api/                # AI API service
-│   └── elite/                 # Elite framework CLI
+├── cmd/                                # Go applications
+│   ├── main.go                         # Main Tokyo-IA application
+│   ├── elite/main.go                   # Elite framework CLI
+│   └── registry-api/main.go            # REST API server ⭐
 │
-├── internal/
-│   ├── ai/                    # AI orchestration layer
-│   │   ├── model_router.go    # Intelligent routing logic
-│   │   ├── cache.go           # Response caching
-│   │   ├── metrics.go         # Performance metrics
-│   │   └── clients/           # Model provider clients
-│   └── config/                # Configuration management
+├── internal/                           # Internal Go packages
+│   └── registry/                       # Agent registry system ⭐
+│       ├── models.go                   # Data models
+│       └── agent_registry.go           # Database operations
 │
-├── lib/
-│   ├── agents/                # Python agent framework
-│   │   ├── crew_config.py     # Agent definitions
-│   │   ├── tools.py           # Custom agent tools
-│   │   └── workflows.py       # Multi-agent workflows
-│   └── generator/             # Elite framework
+├── lib/                                # Shared libraries
+│   ├── generator/                      # Code generation
+│   ├── agents/                         # AI agents ⭐
+│   │   └── specialized/                # 5 specialized agents
+│   │       ├── akira_code_reviewer.py  # 侍 Code Review Master
+│   │       ├── yuki_test_engineer.py   # ❄️ Test Specialist
+│   │       ├── hiro_sre.py             # 🛡️ SRE/DevOps Guardian
+│   │       ├── sakura_documentation.py # 🌸 Documentation Artist
+│   │       └── kenji_architect.py      # 🏗️ Architecture Visionary
+│   └── orchestrator/                   # Multi-agent coordinator ⭐
+│       ├── agent_orchestrator.py       # Orchestration engine
+│       └── workflows.py                # Pre-built workflows
 │
-├── config/
-│   └── ai_models.yaml         # AI model configuration
+├── db/                                 # Database ⭐
+│   ├── schema.sql                      # PostgreSQL schema
+│   └── README.md                       # Database documentation
 │
-├── docs/
-│   ├── architecture/          # Architecture docs
-│   ├── guides/                # User guides
-│   └── api/                   # API reference
+├── admin/                              # Web dashboard ⭐
+│   └── src/components/
+│       ├── AgentDashboard.tsx          # Agent monitoring
+│       └── WorkflowMonitor.tsx         # Workflow tracking
 │
-├── testing/                   # Tests
-└── deploy/                    # Deployment configs
+├── app/                                # Android app ⭐
+│   └── src/main/java/com/tokyoia/app/
+│       ├── ui/agents/                  # Agent UI screens
+│       │   ├── AgentsScreen.kt
+│       │   └── AgentsViewModel.kt
+│       └── data/repository/            # Data layer
+│           └── AgentRepository.kt
+│
+├── docs/                               # Documentation
+│   └── agents/                         # Agent system docs ⭐
+│       └── ORCHESTRATION.md            # Complete guide
+│
+├── examples/                           # Example code
+│   └── python/
+│       └── basic_agent.py              # Basic agent usage
+│
+├── .github/
+│   └── workflows/
+│       └── ci.yml                      # CI pipeline
+│
+├── go.mod                              # Go dependencies
+├── requirements.txt                    # Python dependencies ⭐
+├── Makefile                            # Build commands
+├── README.md                           # This file
+├── CONTRIBUTING.md                     # Contribution guidelines
+└── SECURITY.md                         # Security policy
+
+⭐ = New in Agent Orchestration System
 ```
 
-## 🚀 Quick Start
+## 📚 Documentation
+
+- **[Agent Orchestration Guide](docs/agents/ORCHESTRATION.md)** - Complete system documentation
+- **[Database Schema](db/README.md)** - Database setup and operations
+- **[API Reference](docs/agents/ORCHESTRATION.md#api-reference)** - REST API endpoints
+- **[Workflow Examples](lib/orchestrator/workflows.py)** - Pre-built workflows
+- **[Contributing Guide](CONTRIBUTING.md)** - How to contribute
+- **[Security Policy](SECURITY.md)** - Security guidelines
+
+## 🔌 API Reference
+
+### Registry API Endpoints
+
+The Registry API runs on `http://localhost:8080` by default.
+
+#### Agents
+- `GET /api/agents` - List all agents
+- `GET /api/agents/{id}` - Get agent details
+- `GET /api/agents/{id}/stats` - Get agent statistics
+- `GET /api/agents/{id}/tasks` - Get agent tasks
+
+#### Tasks
+- `POST /api/tasks` - Create new task
+- `PUT /api/tasks/{id}` - Update task status
+
+#### Workflows
+- `GET /api/workflows` - List workflows
+- `POST /api/workflows` - Create workflow
+- `GET /api/workflows/{id}` - Get workflow details
+- `GET /api/workflows/{id}/tasks` - Get workflow tasks
+
+#### Metrics
+- `GET /api/metrics?agent_id={id}&metric_type={type}` - Get metrics
+
+See [API documentation](docs/agents/ORCHESTRATION.md#registry-api) for details.
+
+## 💻 Development
+
+### Build Commands
+
+```bash
+# Build main application
+make build
+
+# Build Registry API
+go build -o bin/registry-api ./cmd/registry-api/main.go
+
+# Build Elite Framework
+make elite
+
+# Format code
+make fmt
+
+# Run tests
+make test
+
+# Clean build artifacts
+make clean
+```
+
+### Running Tests
+
+```bash
+# Go tests
+go test ./...
+
+# Python agent tests (when available)
+pytest lib/agents/
+
+# Full CI suite
+make ci
+```
+
+### Environment Variables
+
+```bash
+# Database
+export DATABASE_URL="postgresql://user:password@localhost:5432/tokyoia"
+
+# Registry API
+export PORT="8080"
+export REGISTRY_API_URL="http://localhost:8080"
+
+# LLM API Keys
+export ANTHROPIC_API_KEY="sk-ant-..."    # For Akira
+export OPENAI_API_KEY="sk-..."           # For Yuki & Kenji
+export GROQ_API_KEY="gsk_..."            # For Hiro
+export GOOGLE_API_KEY="..."              # For Sakura
+```
+
+## 🎯 Use Cases
+
+### 1. Code Review Pipeline
+Automatically review code for security, generate tests, setup CI/CD, and create documentation.
+
+```python
+from lib.orchestrator.workflows import full_code_review_workflow
+
+result = full_code_review_workflow(orchestrator, code, "python")
+```
+
+### 2. New Feature Development
+Design architecture, plan testing, and create specifications for new features.
+
+```python
+from lib.orchestrator.workflows import new_feature_workflow
+
+result = new_feature_workflow(orchestrator, {
+    "name": "User Authentication",
+    "description": "OAuth2 + JWT",
+    "scale": "10k users"
+})
+```
+
+### 3. Production Deployment
+Design Kubernetes deployment, setup monitoring, and create deployment docs.
+
+```python
+from lib.orchestrator.workflows import production_deployment_workflow
+
+result = production_deployment_workflow(orchestrator, {
+    "name": "my-app",
+    "image": "my-app:latest",
+    "port": 8080
+})
+```
+
+## 🤝 Contributing
+
+We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+
+### Getting Started
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Make your changes
+4. Run tests (`make test`)
+5. Commit your changes (`git commit -m 'Add amazing feature'`)
+6. Push to the branch (`git push origin feature/amazing-feature`)
+7. Open a Pull Request
+
+## 🔒 Security
+
+Security is a top priority. See [SECURITY.md](SECURITY.md) for:
+- Vulnerability reporting
+- Security best practices
+- Supported versions
+
+**Never commit API keys or secrets!**
+
+## 📝 License
+
+This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- CrewAI for the agent framework
+- Anthropic, OpenAI, Meta, and Google for LLM APIs
+- The Go and Python communities
+
+## 📞 Support
+
+- 🐛 [Report Issues](https://github.com/Melampe001/Tokyo-IA/issues)
+- 💬 [Discussions](https://github.com/Melampe001/Tokyo-IA/discussions)
+- 📧 [Contact](mailto:support@example.com)
+
+---
+
+Made with ❤️ by the Tokyo-IA team
 
 ### Prerequisites
 

@@ -1,11 +1,30 @@
 # Script
 
-Total: 15 archivos
+Total: 25 archivos
+
+## [__init__.py](lib/orchestrator/__init__.py)
+Tokyo-IA Orchestrator
+
+Multi-agent workflow orchestration system.
 
 ## [__init__.py](lib/agents/__init__.py)
 Tokyo-IA Agent Framework
 
 This package provides multi-agent AI capabilities using CrewAI.
+
+## [__init__.py](lib/agents/specialized/__init__.py)
+Tokyo-IA Specialized Agents
+
+Five elite AI agents with unique personalities and expertise:
+- Akira (侍) - Code Review Master
+- Yuki (❄️) - Test Engineering Specialist
+- Hiro (🛡️) - SRE & DevOps Guardia
+
+## [agent_orchestrator.py](lib/orchestrator/agent_orchestrator.py)
+!/usr/bin/env python3
+
+## [akira_code_reviewer.py](lib/agents/specialized/akira_code_reviewer.py)
+!/usr/bin/env python3
 
 ## [analyze_dart_code.py](.github/workflows/bots/scripts/analyze_dart_code.py)
 !/usr/bin/env python3
@@ -35,10 +54,22 @@ This module defines specialized AI agents for different tasks:
 ## [generate_report.py](.github/workflows/bots/scripts/generate_report.py)
 !/usr/bin/env python3
 
+## [hiro_sre.py](lib/agents/specialized/hiro_sre.py)
+!/usr/bin/env python3
+
+## [kenji_architect.py](lib/agents/specialized/kenji_architect.py)
+!/usr/bin/env python3
+
 ## [library_cataloger.py](.github/workflows/scripts/library_cataloger.py)
 !/usr/bin/env python3
 
 ## [library_search.py](.github/workflows/scripts/library_search.py)
+!/usr/bin/env python3
+
+## [orchestration_demo.py](examples/orchestration_demo.py)
+!/usr/bin/env python3
+
+## [sakura_documentation.py](lib/agents/specialized/sakura_documentation.py)
 !/usr/bin/env python3
 
 ## [test_crew.py](lib/agents/test_crew.py)
@@ -56,10 +87,16 @@ This module provides specialized tools for agents to interact with:
 ## [version.rb](ruby/lib/billing-platform/version.rb)
 frozen_string_literal: true
 
+## [workflows.py](lib/orchestrator/workflows.py)
+!/usr/bin/env python3
+
 ## [workflows.py](lib/agents/workflows.py)
 Multi-agent workflows for Tokyo-IA.
 
 This module defines workflows that coordinate multiple agents:
 - PR Review Workflow: Code review → Test generation → Deployment check
 - Bug Fix Workflow: Debug → F
+
+## [yuki_test_engineer.py](lib/agents/specialized/yuki_test_engineer.py)
+!/usr/bin/env python3
 
