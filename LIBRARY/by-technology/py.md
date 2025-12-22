@@ -1,0 +1,25 @@
+# PY
+
+Total: 21 archivos
+
+- [__init__.py](lib/orchestrator/__init__.py)
+- [__init__.py](lib/agents/__init__.py)
+- [__init__.py](lib/agents/specialized/__init__.py)
+- [agent_orchestrator.py](lib/orchestrator/agent_orchestrator.py)
+- [akira_code_reviewer.py](lib/agents/specialized/akira_code_reviewer.py)
+- [analyze_dart_code.py](.github/workflows/bots/scripts/analyze_dart_code.py)
+- [analyze_go_code.py](.github/workflows/bots/scripts/analyze_go_code.py)
+- [basic_agent.py](examples/python/basic_agent.py)
+- [crew_config.py](lib/agents/crew_config.py)
+- [generate_report.py](.github/workflows/bots/scripts/generate_report.py)
+- [hiro_sre.py](lib/agents/specialized/hiro_sre.py)
+- [kenji_architect.py](lib/agents/specialized/kenji_architect.py)
+- [library_cataloger.py](.github/workflows/scripts/library_cataloger.py)
+- [library_search.py](.github/workflows/scripts/library_search.py)
+- [orchestration_demo.py](examples/orchestration_demo.py)
+- [sakura_documentation.py](lib/agents/specialized/sakura_documentation.py)
+- [test_crew.py](lib/agents/test_crew.py)
+- [tools.py](lib/agents/tools.py)
+- [workflows.py](lib/orchestrator/workflows.py)
+- [workflows.py](lib/agents/workflows.py)
+- [yuki_test_engineer.py](lib/agents/specialized/yuki_test_engineer.py)

@@ -1,0 +1,114 @@
+# General
+
+Total: 108 archivos
+
+- [.gitignore](.gitignore) - .gitignore - other
+- [.python-version](.python-version) - .python-version - other
+- [AgentDashboard.tsx](admin/src/components/AgentDashboard.tsx) - AgentDashboard.tsx - source
+- [AgentRepository.kt](app/src/main/java/com/tokyoia/app/data/repository/AgentRepository.kt) - AgentRepository.kt - source
+- [AgentsScreen.kt](app/src/main/java/com/tokyoia/app/ui/agents/AgentsScreen.kt) - AgentsScreen.kt - source
+- [AgentsViewModel.kt](app/src/main/java/com/tokyoia/app/ui/agents/AgentsViewModel.kt) - AgentsViewModel.kt - source
+- [BRANCH_PROTECTION.md](docs/BRANCH_PROTECTION.md) - Branch Protection Rules
+- [CATALOG.md](LIBRARY/CATALOG.md) - 📚 Catálogo Completo de la Biblioteca
+- [CONTRIBUTING.md](CONTRIBUTING.md) - Contributing to Tokyo-IA
+- [Cuerpo](Cuerpo) - Cuerpo - other
+- [ELARA_COMMAND_CENTER.md](.github/ELARA_COMMAND_CENTER.md) - 👑 Elara Command Center
+- [ELARA_DASHBOARD.md](.github/ELARA_DASHBOARD.md) - 📊 Elara Operations Dashboard
+- [FILE_TEMPLATE.md](.github/templates/FILE_TEMPLATE.md) - [Nombre del Archivo]
+- [Fllutter](Fllutter) - Fllutter - other
+- [IA suprema](prompts/IA suprema) - IA suprema - other
+- [IMPLEMENTATION_SUMMARY.md](IMPLEMENTATION_SUMMARY.md) - Tokyo-IA Agent Orchestration System - Implementation Summary
+- [IMPLEMENTATION_SUMMARY.md](docs/IMPLEMENTATION_SUMMARY.md) - Elite Framework - Implementation Summary
+- [Imitar](Imitar) - Imitar - other
+- [JS-Supremo.md](prompts/JS-Supremo.md) - JS-Supremo.md – Premium JavaScript Expert Prompt
+- [Makefile.md](LIBRARY/by-technology/Makefile.md) - MAKEFILE
+- [ORCHESTRATION.md](docs/agents/ORCHESTRATION.md) - Tokyo-IA Agent Orchestration System
+- [Real](Real) - Real - other
+- [SEARCH_INDEX.json](LIBRARY/SEARCH_INDEX.json) - SEARCH_INDEX.json - configuration
+- [Setup](Setup) - Setup - other
+- [Sin limite](Sin limite) - Sin limite - other
+- [Sincero](Sincero) - Sincero - other
+- [TAREAS.md](TAREAS.md) - ¿Qué tengo que hacer? - Guía de Tareas para Tokyo IA
+- [TIMELINE.md](LIBRARY/TIMELINE.md) - 📅 Línea de Tiempo de Creaciones
+- [__init__.py](lib/agents/__init__.py) - Tokyo-IA Agent Framework
+
+This package provides multi-agent AI capabilities using CrewAI.
+- [agent_orchestrator.py](lib/orchestrator/agent_orchestrator.py) - !/usr/bin/env python3
+- [agent_registry.go](internal/registry/agent_registry.go) - agent_registry.go - source
+- [ai_config.go](internal/config/ai_config.go) - ai_config.go - source
+- [ai_models.yaml](config/ai_models.yaml) - o3
+- [akira_code_reviewer.py](lib/agents/specialized/akira_code_reviewer.py) - !/usr/bin/env python3
+- [analyze_dart_code.py](.github/workflows/bots/scripts/analyze_dart_code.py) - !/usr/bin/env python3
+- [analyze_go_code.py](.github/workflows/bots/scripts/analyze_go_code.py) - !/usr/bin/env python3
+- [analyzer.go](lib/generator/analyzer.go) - analyzer.go - source
+- [backend-quality-rules.json](.github/workflows/bots/backend-quality-rules.json) - backend-quality-rules.json - configuration
+- [basic_agent.py](examples/python/basic_agent.py) - !/usr/bin/env python3
+- [blocker-detector.yml](.github/workflows/blocker-detector.yml) - Blocker Detector
+- [bug_report.md](.github/ISSUE_TEMPLATE/bug_report.md) - ---
+- [cache.go](internal/ai/cache.go) - cache.go - source
+- [ci.yml](.github/workflows/ci.yml) - CI
+- [communication.md](docs/elara/communication.md) - 💬 Communication Protocols
+- [compress_assets.sh](.github/workflows/bots/scripts/compress_assets.sh) - !/bin/bash
+- [configuration.md](LIBRARY/by-category/configuration.md) - Configuration
+- [copilot-instructions.md](.github/copilot-instructions.md) - Copilot Instructions for Tokyo-IA
+- [create_and_merge_pr.sh](scripts/create_and_merge_pr.sh) - !/usr/bin/env bash
+- [dashboard.html](LIBRARY/dashboard.html) - dashboard.html - other
+- [elite-framework-examples.md](docs/elite-framework-examples.md) - Elite Framework Examples
+- [feature_request.md](.github/ISSUE_TEMPLATE/feature_request.md) - ---
+- [file-count.md](LIBRARY/stats/file-count.md) - File Count Statistics
+- [general.md](LIBRARY/by-purpose/general.md) - General
+- [generate_report.py](.github/workflows/bots/scripts/generate_report.py) - !/usr/bin/env python3
+- [generator.go](lib/generator/generator.go) - generator.go - source
+- [go.md](LIBRARY/by-technology/go.md) - GO
+- [go.mod](go.mod) - go.mod - other
+- [go.sum](go.sum) - go.sum - other
+- [hello.go](admin/hello.go) - hello.go - source
+- [hello.go](internal/hello.go) - hello.go - source
+- [hello.go](lib/hello.go) - hello.go - source
+- [hello.go](config/hello.go) - hello.go - source
+- [hello.proto](proto/hello.proto) - hello.proto - schema
+- [hiro_sre.py](lib/agents/specialized/hiro_sre.py) - !/usr/bin/env python3
+- [html.md](LIBRARY/by-technology/html.md) - HTML
+- [imperial-standards.md](docs/elara/imperial-standards.md) - 🏛️ Imperial Premium Elite Standards
+- [json.md](LIBRARY/by-technology/json.md) - JSON
+- [kenji_architect.py](lib/agents/specialized/kenji_architect.py) - !/usr/bin/env python3
+- [library-indexer.yml](.github/workflows/library-indexer.yml) - Library Indexer
+- [library-report.yml](.github/workflows/library-report.yml) - Library Report
+- [library_cataloger.py](.github/workflows/scripts/library_cataloger.py) - !/usr/bin/env python3
+- [library_search.py](.github/workflows/scripts/library_search.py) - !/usr/bin/env python3
+- [main.go](cmd/main.go) - main.go - source
+- [main.go](cmd/ai-api/main.go) - main.go - source
+- [main.go](cmd/registry-api/main.go) - main.go - source
+- [main.go](cmd/elite/main.go) - main.go - source
+- [manifest.yaml](templates/manifest.yaml) - "Progressive Web App"
+- [md.md](LIBRARY/by-technology/md.md) - MD
+- [melampe-preferences.md](docs/elara/melampe-preferences.md) - 🎯 Melampe001 Preferences
+- [mod.md](LIBRARY/by-technology/mod.md) - MOD
+- [model_router.go](internal/ai/model_router.go) - model_router.go - source
+- [models.go](internal/registry/models.go) - models.go - source
+- [my-agent.agent.md](.github/agents/my-agent.agent.md) - ---
+- [orchestration_demo.py](examples/orchestration_demo.py) - !/usr/bin/env python3
+- [other.md](LIBRARY/by-category/other.md) - Other
+- [parser.go](lib/generator/parser.go) - parser.go - source
+- [persona.md](docs/elara/persona.md) - 👑 Elara - Complete Identity and Personality
+- [pre-commit](.githooks/pre-commit) - pre-commit - other
+- [proto.md](LIBRARY/by-technology/proto.md) - PROTO
+- [pull_request_template.md](.github/pull_request_template.md) - Description
+- [py.md](LIBRARY/by-technology/py.md) - PY
+- [rb.md](LIBRARY/by-technology/rb.md) - RB
+- [requirements.txt](requirements.txt) - Tokyo-IA Python Dependencies
+- [scaffolder.go](lib/generator/scaffolder.go) - scaffolder.go - source
+- [schema.md](LIBRARY/by-category/schema.md) - Schema
+- [schema.sql](db/schema.sql) - schema.sql - other
+- [script.md](LIBRARY/by-category/script.md) - Script
+- [sh.md](LIBRARY/by-technology/sh.md) - SH
+- [source.md](LIBRARY/by-category/source.md) - Source
+- [sum.md](LIBRARY/by-technology/sum.md) - SUM
+- [templater.go](lib/generator/templater.go) - {{.ProjectName}}
+- [txt.md](LIBRARY/by-technology/txt.md) - TXT
+- [types.go](internal/ai/types.go) - types.go - source
+- [types.go](lib/generator/types.go) - types.go - source
+- [version.rb](ruby/lib/billing-platform/version.rb) - frozen_string_literal: true
+- [weekly-report.yml](.github/workflows/weekly-report.yml) - Weekly Report
+- [yaml.md](LIBRARY/by-technology/yaml.md) - YAML
+- [yml.md](LIBRARY/by-technology/yml.md) - YML

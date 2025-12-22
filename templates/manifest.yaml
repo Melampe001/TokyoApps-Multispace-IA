@@ -1,0 +1,186 @@
+templates:
+  pwa:
+    name: "Progressive Web App"
+    description: "Modern PWA with offline support, service workers, and responsive design"
+    stack:
+      - typescript
+      - react
+      - vite
+      - pwa
+      - tailwindcss
+    structure:
+      - src
+      - public
+      - tests
+      - deploy
+    files:
+      - package.json
+      - vite.config.ts
+      - tsconfig.json
+      - README.md
+      - Dockerfile
+      - .github/workflows/deploy.yml
+  
+  bot:
+    name: "Chat Bot"
+    description: "Interactive bot for Telegram, Discord, or Slack"
+    stack:
+      - python
+      - python-telegram-bot
+      - asyncio
+      - pytest
+    structure:
+      - bot
+      - handlers
+      - services
+      - tests
+      - deploy
+    files:
+      - main.py
+      - requirements.txt
+      - config.py
+      - README.md
+      - Dockerfile
+      - .github/workflows/deploy.yml
+  
+  api:
+    name: "REST/GraphQL API"
+    description: "Scalable API with database, authentication, and documentation"
+    stack:
+      - go
+      - gin
+      - gorm
+      - swagger
+      - postgresql
+    structure:
+      - cmd
+      - internal
+      - api
+      - models
+      - tests
+      - deploy
+    files:
+      - main.go
+      - go.mod
+      - README.md
+      - Dockerfile
+      - docker-compose.yml
+      - .github/workflows/deploy.yml
+  
+  ecommerce:
+    name: "E-commerce Platform"
+    description: "Full-featured e-commerce with payments, inventory, and admin panel"
+    stack:
+      - typescript
+      - nextjs
+      - stripe
+      - prisma
+      - postgresql
+      - tailwindcss
+    structure:
+      - app
+      - components
+      - lib
+      - api
+      - prisma
+      - tests
+      - deploy
+    files:
+      - package.json
+      - next.config.js
+      - prisma/schema.prisma
+      - README.md
+      - Dockerfile
+      - .github/workflows/deploy.yml
+  
+  ai-agent:
+    name: "AI Agent"
+    description: "Intelligent agent with CrewAI, Groq, and custom tools"
+    stack:
+      - python
+      - crewai
+      - groq
+      - langchain
+      - openai
+    structure:
+      - agents
+      - tools
+      - tasks
+      - config
+      - tests
+      - deploy
+    files:
+      - main.py
+      - requirements.txt
+      - .env.example
+      - README.md
+      - Dockerfile
+      - .github/workflows/deploy.yml
+
+# Detection patterns for automatic project type identification
+detection_patterns:
+  pwa:
+    keywords:
+      - "progressive web app"
+      - "pwa"
+      - "web application"
+      - "frontend"
+      - "responsive"
+      - "offline"
+    indicators:
+      - "service worker"
+      - "mobile web"
+      - "installable"
+  
+  bot:
+    keywords:
+      - "bot"
+      - "telegram"
+      - "discord"
+      - "slack"
+      - "chatbot"
+      - "messenger"
+    indicators:
+      - "commands"
+      - "chat"
+      - "message"
+  
+  api:
+    keywords:
+      - "api"
+      - "rest"
+      - "graphql"
+      - "backend"
+      - "microservice"
+      - "endpoint"
+    indicators:
+      - "http"
+      - "server"
+      - "database"
+  
+  ecommerce:
+    keywords:
+      - "ecommerce"
+      - "e-commerce"
+      - "shop"
+      - "store"
+      - "marketplace"
+      - "cart"
+    indicators:
+      - "payment"
+      - "product"
+      - "order"
+      - "inventory"
+  
+  ai-agent:
+    keywords:
+      - "ai agent"
+      - "intelligent agent"
+      - "crewai"
+      - "autonomous"
+      - "ai assistant"
+    indicators:
+      - "llm"
+      - "groq"
+      - "langchain"
+      - "openai"
