@@ -1,7 +1,8 @@
 # GO
 
-Total: 26 archivos
+Total: 29 archivos
 
+- [agent_registry.go](internal/registry/agent_registry.go)
 - [ai_config.go](internal/config/ai_config.go)
 - [analyzer.go](lib/generator/analyzer.go)
 - [analyzer_test.go](lib/generator/analyzer_test.go)
@@ -15,11 +16,13 @@ Total: 26 archivos
 - [hello.go](config/hello.go)
 - [main.go](cmd/main.go)
 - [main.go](cmd/ai-api/main.go)
+- [main.go](cmd/registry-api/main.go)
 - [main.go](cmd/elite/main.go)
 - [metrics.go](internal/ai/metrics.go)
 - [mock_client.go](internal/ai/clients/mock_client.go)
 - [model_router.go](internal/ai/model_router.go)
 - [model_router_test.go](internal/ai/model_router_test.go)
+- [models.go](internal/registry/models.go)
 - [parser.go](lib/generator/parser.go)
 - [parser_test.go](lib/generator/parser_test.go)
 - [placeholder_test.go](testing/placeholder_test.go)
