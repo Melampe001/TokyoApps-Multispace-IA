@@ -1,0 +1,9 @@
+environment = "dev"
+aws_region  = "us-east-1"
+
+# Data retention settings
+data_retention_days    = 90
+archive_retention_days = 365
+
+# Project name
+project_name = "tokyo-ia"

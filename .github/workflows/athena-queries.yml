@@ -1,0 +1,61 @@
+name: Athena Queries Validation
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - 'lib/analytics/**'
+      - 'config/athena/**'
+  pull_request:
+    paths:
+      - 'lib/analytics/**'
+      - 'config/athena/**'
+  workflow_dispatch:
+
+jobs:
+  validate-queries:
+    name: Validate SQL Queries
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.23'
+          cache: true
+      
+      - name: Test Analytics Package
+        run: |
+          go test -v ./lib/analytics/...
+      
+      - name: Validate SQL Syntax
+        run: |
+          # Check for basic SQL syntax errors in config files
+          if [ -d "config/athena" ]; then
+            for sql_file in config/athena/*.sql; do
+              echo "Validating $sql_file"
+              # Basic syntax check (looking for obvious errors)
+              if grep -q "CREATE TABLE" "$sql_file" && ! grep -q ";" "$sql_file"; then
+                echo "⚠️ Warning: Missing semicolon in $sql_file"
+              fi
+            done
+          fi
+      
+      - name: Query Cost Estimation
+        run: |
+          echo "📊 Query Cost Estimation"
+          echo "Note: Actual costs will vary based on data volume"
+          echo "- Full table scan: ~\$5 per TB"
+          echo "- Partitioned query: ~\$0.10 per GB"
+          echo "- Use partitioning to minimize costs"
+      
+      - name: Performance Guidelines
+        run: |
+          echo "⚡ Query Performance Guidelines"
+          echo "- Always use partition filters (year, month, day)"
+          echo "- Limit result sets when possible"
+          echo "- Use columnar format (Parquet) for best performance"
+          echo "- Enable result caching in Athena workgroup"
