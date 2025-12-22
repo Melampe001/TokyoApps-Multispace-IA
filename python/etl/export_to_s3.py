@@ -2,6 +2,7 @@
 """Export PostgreSQL tables to S3 in Parquet format for Athena"""
 
 import argparse
+import io
 import logging
 import sys
 from datetime import datetime, timedelta
@@ -123,7 +124,6 @@ class PostgresToS3Exporter:
         for attempt in range(retries):
             try:
                 # Write to parquet in memory
-                import io
                 buffer = io.BytesIO()
                 pq.write_table(
                     table,

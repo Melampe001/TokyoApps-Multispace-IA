@@ -1,3 +1,21 @@
+# Local variables for reusable values
+locals {
+  data_lake_bucket = aws_s3_bucket.data_lake.bucket
+  s3_prefix        = "billing-data"
+  
+  # Common table properties for partition projection
+  partition_projection_properties = {
+    "parquet.compression"       = "SNAPPY"
+    "projection.enabled"        = "true"
+    "projection.year.type"      = "integer"
+    "projection.year.range"     = "2020,2030"
+    "projection.month.type"     = "integer"
+    "projection.month.range"    = "1,12"
+    "projection.day.type"       = "integer"
+    "projection.day.range"      = "1,31"
+  }
+}
+
 # S3 Bucket for Data Lake
 resource "aws_s3_bucket" "data_lake" {
   bucket = "${var.project_name}-data-lake-${var.environment}"
@@ -88,7 +106,7 @@ resource "aws_glue_catalog_database" "tokyo_ia_billing" {
   name        = "${var.project_name}_billing_${var.environment}"
   description = "Tokyo-IA Billing Analytics Database"
 
-  location_uri = "s3://${aws_s3_bucket.data_lake.bucket}/billing-data"
+  location_uri = "s3://${local.data_lake_bucket}/${local.s3_prefix}"
 }
 
 # Glue Table: Invoices
@@ -99,7 +117,7 @@ resource "aws_glue_catalog_table" "invoices" {
   table_type = "EXTERNAL_TABLE"
 
   storage_descriptor {
-    location      = "s3://${aws_s3_bucket.data_lake.bucket}/billing-data/invoices/"
+    location      = "s3://${local.data_lake_bucket}/${local.s3_prefix}/invoices/"
     input_format  = "org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat"
     output_format = "org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat"
 
@@ -177,17 +195,12 @@ resource "aws_glue_catalog_table" "invoices" {
     type = "int"
   }
 
-  parameters = {
-    "parquet.compression"                  = "SNAPPY"
-    "projection.enabled"                   = "true"
-    "projection.year.type"                 = "integer"
-    "projection.year.range"                = "2020,2030"
-    "projection.month.type"                = "integer"
-    "projection.month.range"               = "1,12"
-    "projection.day.type"                  = "integer"
-    "projection.day.range"                 = "1,31"
-    "storage.location.template"            = "s3://${aws_s3_bucket.data_lake.bucket}/billing-data/invoices/year=$${year}/month=$${month}/day=$${day}"
-  }
+  parameters = merge(
+    local.partition_projection_properties,
+    {
+      "storage.location.template" = "s3://${local.data_lake_bucket}/${local.s3_prefix}/invoices/year=$${year}/month=$${month}/day=$${day}"
+    }
+  )
 }
 
 # Glue Table: Transactions
@@ -198,7 +211,7 @@ resource "aws_glue_catalog_table" "transactions" {
   table_type = "EXTERNAL_TABLE"
 
   storage_descriptor {
-    location      = "s3://${aws_s3_bucket.data_lake.bucket}/billing-data/transactions/"
+    location      = "s3://${local.data_lake_bucket}/${local.s3_prefix}/transactions/"
     input_format  = "org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat"
     output_format = "org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat"
 
@@ -271,17 +284,12 @@ resource "aws_glue_catalog_table" "transactions" {
     type = "int"
   }
 
-  parameters = {
-    "parquet.compression"                  = "SNAPPY"
-    "projection.enabled"                   = "true"
-    "projection.year.type"                 = "integer"
-    "projection.year.range"                = "2020,2030"
-    "projection.month.type"                = "integer"
-    "projection.month.range"               = "1,12"
-    "projection.day.type"                  = "integer"
-    "projection.day.range"                 = "1,31"
-    "storage.location.template"            = "s3://${aws_s3_bucket.data_lake.bucket}/billing-data/transactions/year=$${year}/month=$${month}/day=$${day}"
-  }
+  parameters = merge(
+    local.partition_projection_properties,
+    {
+      "storage.location.template" = "s3://${local.data_lake_bucket}/${local.s3_prefix}/transactions/year=$${year}/month=$${month}/day=$${day}"
+    }
+  )
 }
 
 # Athena Workgroup

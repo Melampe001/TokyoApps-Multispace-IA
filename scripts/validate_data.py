@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validar integridad de datos en S3 y Athena"""
+"""Validate data integrity in S3 and Athena"""
 
 import os
 import sys
@@ -10,7 +10,7 @@ from botocore.exceptions import ClientError
 
 
 def validate_daily_export(date: datetime.date) -> bool:
-    """Valida que existan datos para la fecha especificada"""
+    """Validates that data exists for the specified date"""
     s3 = boto3.client('s3')
     bucket = os.getenv('S3_DATA_LAKE_BUCKET', 'tokyo-ia-data-lake')
     
@@ -39,7 +39,7 @@ def validate_daily_export(date: datetime.date) -> bool:
 
 
 def validate_athena_connectivity() -> bool:
-    """Valida conectividad con Athena"""
+    """Validates connectivity with Athena"""
     try:
         athena = boto3.client('athena')
         database = os.getenv('ATHENA_DATABASE', 'tokyo_ia_billing')

@@ -4,12 +4,19 @@ import os
 from typing import Dict, Any
 
 # PostgreSQL Configuration
+def _get_db_port() -> int:
+    """Safely parse DB_PORT environment variable"""
+    try:
+        return int(os.getenv('DB_PORT', '5432'))
+    except ValueError:
+        return 5432
+
 POSTGRES_CONFIG: Dict[str, Any] = {
     'host': os.getenv('DB_HOST', 'localhost'),
     'database': os.getenv('DB_NAME', 'tokyo_ia'),
     'user': os.getenv('DB_USER', 'postgres'),
     'password': os.getenv('DB_PASSWORD', ''),
-    'port': int(os.getenv('DB_PORT', '5432'))
+    'port': _get_db_port()
 }
 
 # S3 Configuration
