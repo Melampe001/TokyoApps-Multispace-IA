@@ -141,7 +141,8 @@ After setting up secrets, verify they work:
 
 1. **Railway Token:**
    ```bash
-   export RAILWAY_TOKEN="your-token"
+   # Authenticate with Railway CLI (safer than exporting token)
+   railway login
    railway whoami
    ```
 

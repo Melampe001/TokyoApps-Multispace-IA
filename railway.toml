@@ -11,16 +11,3 @@ restartPolicyMaxRetries = 10
 
 # Automatically restart on deployment
 numReplicas = 1
-
-# Railway services configuration
-[[services]]
-name = "tokyo-ia-api"
-type = "web"
-
-[services.env]
-PORT = "8080"
-
-[[services]]
-name = "tokyo-ia-db"
-type = "database"
-databaseType = "postgresql"

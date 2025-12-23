@@ -69,7 +69,7 @@ jobs:
           pip install pytest pytest-cov ruff
       
       - name: Run Ruff linting
-        run: ruff check lib/ || true
+        run: ruff check lib/
         continue-on-error: true
       
       - name: Run pytest with coverage

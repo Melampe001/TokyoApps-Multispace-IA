@@ -59,12 +59,13 @@ sleep 30
 
 # Health check
 if [ "$ENVIRONMENT" = "production" ]; then
-    URL="https://tokyo-ia.up.railway.app"
+    URL="${PRODUCTION_URL:-https://tokyo-ia.up.railway.app}"
 else
-    URL="https://tokyo-ia-staging.up.railway.app"
+    URL="${STAGING_URL:-https://tokyo-ia-staging.up.railway.app}"
 fi
 
 section "Health checking: $URL/health"
+info "Note: Update PRODUCTION_URL or STAGING_URL environment variables if using custom domains"
 if curl -f -s "$URL/health" > /dev/null; then
     info "✅ Health check passed!"
 else
