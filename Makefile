@@ -1,8 +1,12 @@
-.PHONY: build fmt test clean elite generate scaffold
+.PHONY: build fmt test clean elite generate scaffold security-agent
 
 # Build the main application
 build:
 	go build -o bin/tokyo-ia ./cmd/main.go
+
+# Build the security agent CLI
+security-agent:
+	go build -o bin/security-agent ./cmd/security-agent/main.go
 
 # Format Go source code (aplica gofmt)
 # Build the elite framework CLI
