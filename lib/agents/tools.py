@@ -13,7 +13,7 @@ import os
 import subprocess
 import json
 from typing import Dict, Any, List, Optional
-from crewai_tools import tool
+from crewai.tools import tool
 
 
 @tool("Git Diff Tool")
