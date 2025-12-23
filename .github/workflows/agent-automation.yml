@@ -1,0 +1,108 @@
+name: 🤖 Agent Automation System
+
+on:
+  workflow_dispatch:
+    inputs:
+      automation_type:
+        description: 'Tipo de automatización'
+        required: true
+        type: choice
+        options:
+          - code_review
+          - feature_design
+          - production_deployment
+          - github_workflow_generation
+      target_path:
+        description: 'Ruta del archivo/directorio objetivo'
+        required: false
+        default: '.'
+  pull_request:
+    types: [opened, synchronize]
+  push:
+    branches: [Main, develop]
+
+jobs:
+  agent-orchestration:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      
+      - name: 📦 Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      
+      - name: 🔑 Configure API Keys
+        run: |
+          echo "✅ API keys configured from secrets"
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+      
+      - name: 🤖 Run Agent Automation
+        id: automation
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+        run: |
+          # Determinar tipo de automatización
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            AUTO_TYPE="code_review"
+          elif [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            AUTO_TYPE="${{ inputs.automation_type }}"
+          else
+            AUTO_TYPE="code_review"
+          fi
+          
+          echo "Running automation type: $AUTO_TYPE"
+          
+          python scripts/intelligent_automation.py \
+            --type="$AUTO_TYPE" \
+            --target="${{ inputs.target_path || '.' }}" \
+            --output="agent_results.json"
+      
+      - name: 📊 Generate Report
+        if: always()
+        run: |
+          python scripts/generate_agent_report.py \
+            --input="agent_results.json" \
+            --output="AGENT_REPORT.md"
+      
+      - name: 💬 Comment on PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const report = fs.readFileSync('AGENT_REPORT.md', 'utf8');
+            
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: `## 🤖 Tokyo-IA Agent Automation Report\n\n${report}`
+            });
+      
+      - name: 📤 Upload artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent-results
+          path: |
+            agent_results.json
+            AGENT_REPORT.md
+          retention-days: 30
