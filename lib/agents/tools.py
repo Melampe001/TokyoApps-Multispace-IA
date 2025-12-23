@@ -1,278 +1,154 @@
 """
-Custom tools for Tokyo-IA agents.
+Tools module for agent-based automation.
 
-This module provides specialized tools for agents to interact with:
-- Git repositories and pull requests
-- Security scanners
-- Test coverage analysis
-- Kubernetes resources
-- Diagram/image analysis
+This module provides various tools that agents can use to perform tasks
+such as file operations, data processing, and system interactions.
 """
 
 import os
-import subprocess
 import json
-from typing import Dict, Any, List, Optional
-from crewai_tools import tool
+import subprocess
+from typing import Any, Dict, List, Optional
+from pathlib import Path
+import logging
+
+# Import CrewAI tool decorator
+from crewai.tools import tool
+
+logger = logging.getLogger(__name__)
 
 
-@tool("Git Diff Tool")
-def git_diff_tool(repo_path: str, base_branch: str = "main", head_branch: str = "HEAD") -> str:
+@tool("Read File")
+def read_file(file_path: str) -> str:
     """
-    Fetch git diff between two branches or commits.
-
+    Read and return the contents of a file.
+    
     Args:
-        repo_path: Path to the git repository
-        base_branch: Base branch name (default: main)
-        head_branch: Head branch name (default: HEAD)
-
+        file_path: Path to the file to read
+        
     Returns:
-        Git diff output as string
+        File contents as string
     """
     try:
-        os.chdir(repo_path)
-        result = subprocess.run(
-            ["git", "diff", f"{base_branch}...{head_branch}"],
-            capture_output=True,
-            text=True,
-            check=True,
-        )
-        return result.stdout
-    except subprocess.CalledProcessError as e:
-        return f"Error fetching git diff: {e.stderr}"
+        with open(file_path, 'r', encoding='utf-8') as f:
+            return f.read()
     except Exception as e:
-        return f"Error: {str(e)}"
+        logger.error(f"Error reading file {file_path}: {e}")
+        return f"Error reading file: {str(e)}"
 
 
-@tool("PR Metadata Tool")
-def pr_metadata_tool(pr_number: int, repo_owner: str, repo_name: str) -> Dict[str, Any]:
+@tool("Write File")
+def write_file(file_path: str, content: str) -> str:
     """
-    Fetch pull request metadata from GitHub.
-
+    Write content to a file.
+    
     Args:
-        pr_number: Pull request number
-        repo_owner: Repository owner
-        repo_name: Repository name
-
+        file_path: Path to the file to write
+        content: Content to write to the file
+        
     Returns:
-        Dictionary with PR metadata
-    """
-    # This would integrate with GitHub API
-    # For now, returning mock data
-    return {
-        "number": pr_number,
-        "title": "Example PR",
-        "description": "This is an example pull request",
-        "author": "developer",
-        "labels": ["feature", "enhancement"],
-        "files_changed": 5,
-        "additions": 150,
-        "deletions": 30,
-    }
-
-
-@tool("Security Scanner Tool")
-def security_scanner_tool(file_path: str, scanner: str = "semgrep") -> Dict[str, Any]:
-    """
-    Run security scanning on code files.
-
-    Args:
-        file_path: Path to file or directory to scan
-        scanner: Scanner to use (semgrep, snyk, etc.)
-
-    Returns:
-        Dictionary with security scan results
-    """
-    if scanner == "semgrep":
-        try:
-            result = subprocess.run(
-                ["semgrep", "--config=auto", "--json", file_path],
-                capture_output=True,
-                text=True,
-                timeout=60,
-            )
-            if result.returncode == 0:
-                return json.loads(result.stdout)
-            else:
-                return {"error": result.stderr, "findings": []}
-        except FileNotFoundError:
-            return {
-                "error": "Semgrep not installed",
-                "findings": [],
-                "note": "Install with: pip install semgrep",
-            }
-        except Exception as e:
-            return {"error": str(e), "findings": []}
-
-    return {"error": f"Unknown scanner: {scanner}", "findings": []}
-
-
-@tool("Coverage Analysis Tool")
-def coverage_tool(coverage_file: str = "coverage.json") -> Dict[str, Any]:
-    """
-    Parse and analyze test coverage reports.
-
-    Args:
-        coverage_file: Path to coverage report file
-
-    Returns:
-        Dictionary with coverage statistics
+        Success or error message
     """
     try:
-        with open(coverage_file, "r") as f:
-            data = json.load(f)
+        # Create directory if it doesn't exist
+        os.makedirs(os.path.dirname(file_path), exist_ok=True)
+        
+        with open(file_path, 'w', encoding='utf-8') as f:
+            f.write(content)
+        return f"Successfully wrote to {file_path}"
+    except Exception as e:
+        logger.error(f"Error writing file {file_path}: {e}")
+        return f"Error writing file: {str(e)}"
 
-        # Extract key metrics
-        return {
-            "total_coverage": data.get("total_coverage", 0),
-            "line_coverage": data.get("line_coverage", 0),
-            "branch_coverage": data.get("branch_coverage", 0),
-            "files_analyzed": len(data.get("files", [])),
-            "uncovered_lines": data.get("uncovered_lines", []),
-            "summary": f"Overall coverage: {data.get('total_coverage', 0)}%",
+
+@tool("List Directory")
+def list_directory(directory_path: str) -> str:
+    """
+    List all files and directories in the specified path.
+    
+    Args:
+        directory_path: Path to the directory to list
+        
+    Returns:
+        JSON string with directory contents
+    """
+    try:
+        path = Path(directory_path)
+        if not path.exists():
+            return f"Directory {directory_path} does not exist"
+        
+        items = {
+            "files": [],
+            "directories": []
         }
-    except FileNotFoundError:
-        return {"error": f"Coverage file not found: {coverage_file}", "total_coverage": 0}
+        
+        for item in path.iterdir():
+            if item.is_file():
+                items["files"].append(str(item.name))
+            elif item.is_dir():
+                items["directories"].append(str(item.name))
+        
+        return json.dumps(items, indent=2)
     except Exception as e:
-        return {"error": str(e), "total_coverage": 0}
+        logger.error(f"Error listing directory {directory_path}: {e}")
+        return f"Error listing directory: {str(e)}"
 
 
-@tool("Kubernetes Resource Tool")
-def kubectl_tool(action: str, resource_type: str = "pods", namespace: str = "default") -> str:
+@tool("Execute Command")
+def execute_command(command: str) -> str:
     """
-    Query Kubernetes resources.
-
+    Execute a shell command and return the output.
+    
     Args:
-        action: Action to perform (get, describe, etc.)
-        resource_type: Type of resource (pods, deployments, services, etc.)
-        namespace: Kubernetes namespace
-
+        command: Command to execute
+        
     Returns:
-        Command output as string
+        Command output or error message
     """
     try:
         result = subprocess.run(
-            ["kubectl", action, resource_type, "-n", namespace],
+            command,
+            shell=True,
             capture_output=True,
             text=True,
-            timeout=30,
+            timeout=30
         )
-        return result.stdout if result.returncode == 0 else result.stderr
-    except FileNotFoundError:
-        return "Error: kubectl not installed or not in PATH"
+        
+        output = {
+            "stdout": result.stdout,
+            "stderr": result.stderr,
+            "returncode": result.returncode
+        }
+        
+        return json.dumps(output, indent=2)
     except subprocess.TimeoutExpired:
-        return "Error: kubectl command timed out"
+        return "Error: Command execution timed out"
     except Exception as e:
-        return f"Error: {str(e)}"
+        logger.error(f"Error executing command: {e}")
+        return f"Error executing command: {str(e)}"
 
 
-@tool("Diagram Parser Tool")
-def diagram_parser_tool(image_path: str) -> Dict[str, Any]:
+@tool("Search Files")
+def search_files(directory: str, pattern: str) -> str:
     """
-    Analyze diagrams and images to extract information.
-    This would integrate with multimodal models.
-
+    Search for files matching a pattern in a directory.
+    
     Args:
-        image_path: Path to image/diagram file
-
+        directory: Directory to search in
+        pattern: File pattern to match (e.g., "*.py")
+        
     Returns:
-        Dictionary with extracted information
-    """
-    # This would use a multimodal model (Gemini, GPT-4V, etc.)
-    # For now, returning mock analysis
-    if not os.path.exists(image_path):
-        return {"error": f"Image not found: {image_path}"}
-
-    return {
-        "type": "architecture_diagram",
-        "components": ["API Gateway", "Service A", "Service B", "Database"],
-        "connections": [
-            {"from": "API Gateway", "to": "Service A"},
-            {"from": "API Gateway", "to": "Service B"},
-            {"from": "Service A", "to": "Database"},
-        ],
-        "description": "Microservices architecture with API gateway pattern",
-    }
-
-
-@tool("Code Quality Tool")
-def code_quality_tool(file_path: str, language: str = "auto") -> Dict[str, Any]:
-    """
-    Analyze code quality metrics.
-
-    Args:
-        file_path: Path to source file
-        language: Programming language (auto-detect if not specified)
-
-    Returns:
-        Dictionary with quality metrics
+        JSON string with matching files
     """
     try:
-        # This would integrate with tools like SonarQube, CodeClimate, etc.
-        # For now, basic file analysis
-        with open(file_path, "r") as f:
-            content = f.read()
-
-        lines = content.split("\n")
-        code_lines = [l for l in lines if l.strip() and not l.strip().startswith("#")]
-
-        return {
-            "file": file_path,
-            "total_lines": len(lines),
-            "code_lines": len(code_lines),
-            "complexity": "moderate",
-            "maintainability_index": 75,
-            "issues": [],
-        }
+        path = Path(directory)
+        if not path.exists():
+            return f"Directory {directory} does not exist"
+        
+        matches = list(path.rglob(pattern))
+        files = [str(match.relative_to(path)) for match in matches if match.is_file()]
+        
+        return json.dumps({"matches": files, "count": len(files)}, indent=2)
     except Exception as e:
-        return {"error": str(e), "file": file_path}
-
-
-@tool("Test Runner Tool")
-def test_runner_tool(test_path: str, framework: str = "pytest") -> Dict[str, Any]:
-    """
-    Run tests and return results.
-
-    Args:
-        test_path: Path to test file or directory
-        framework: Test framework to use
-
-    Returns:
-        Dictionary with test results
-    """
-    try:
-        if framework == "pytest":
-            result = subprocess.run(
-                ["pytest", test_path, "-v", "--json-report"],
-                capture_output=True,
-                text=True,
-                timeout=300,
-            )
-            return {
-                "passed": result.returncode == 0,
-                "output": result.stdout,
-                "summary": "Tests completed",
-            }
-        elif framework == "go":
-            result = subprocess.run(
-                ["go", "test", "-v", test_path], capture_output=True, text=True, timeout=300
-            )
-            return {
-                "passed": result.returncode == 0,
-                "output": result.stdout,
-                "summary": "Tests completed",
-            }
-        else:
-            return {"error": f"Unknown framework: {framework}"}
-    except Exception as e:
-        return {"error": str(e), "passed": False}
-
-
-# Tool collections for different agent types
-CODE_REVIEW_TOOLS = [git_diff_tool, pr_metadata_tool, security_scanner_tool, code_quality_tool]
-
-TEST_GENERATION_TOOLS = [git_diff_tool, coverage_tool, test_runner_tool, code_quality_tool]
-
-SRE_TOOLS = [kubectl_tool, security_scanner_tool, test_runner_tool]
-
-DOCUMENTATION_TOOLS = [git_diff_tool, diagram_parser_tool, code_quality_tool]
+        logger.error(f"Error searching files: {e}")
+        return f"Error searching files: {str(e)}"
