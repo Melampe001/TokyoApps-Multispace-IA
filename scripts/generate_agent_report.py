@@ -9,6 +9,9 @@ import argparse
 from datetime import datetime
 from pathlib import Path
 
+# Constants
+MAX_RESULT_LENGTH = 500  # Maximum length for result preview in report
+
 
 def generate_markdown_report(results: dict) -> str:
     """Genera reporte en Markdown"""
@@ -50,8 +53,8 @@ def generate_markdown_report(results: dict) -> str:
         
         if success and 'result' in task_result:
             result_str = json.dumps(task_result['result'], indent=2)
-            if len(result_str) > 500:
-                result_str = result_str[:500] + "..."
+            if len(result_str) > MAX_RESULT_LENGTH:
+                result_str = result_str[:MAX_RESULT_LENGTH] + "..."
             report += f"""**Result:**
 ```
 {result_str}
@@ -109,17 +112,65 @@ def main():
         }
     else:
         # Load results
-        with open(args.input, 'r') as f:
-            results = json.load(f)
+        try:
+            with open(args.input, 'r') as f:
+                results = json.load(f)
+        except json.JSONDecodeError as e:
+            print(f"⚠️ Error: Invalid JSON in '{args.input}': {e}")
+            results = {
+                'workflow_name': 'Agent Automation',
+                'status': 'failed',
+                'total_tasks': 0,
+                'completed_tasks': 0,
+                'failed_tasks': 1,
+                'results': [{
+                    'agent_name': 'JSON Parser',
+                    'success': False,
+                    'duration_ms': 0,
+                    'error': f'Invalid JSON in {args.input}: {str(e)}'
+                }]
+            }
+        except Exception as e:
+            print(f"⚠️ Error reading file '{args.input}': {e}")
+            results = {
+                'workflow_name': 'Agent Automation',
+                'status': 'failed',
+                'total_tasks': 0,
+                'completed_tasks': 0,
+                'failed_tasks': 1,
+                'results': [{
+                    'agent_name': 'File Reader',
+                    'success': False,
+                    'duration_ms': 0,
+                    'error': f'Error reading {args.input}: {str(e)}'
+                }]
+            }
     
     # Generate report
     report = generate_markdown_report(results)
     
     # Save report
-    with open(args.output, 'w') as f:
-        f.write(report)
-    
-    print(f"✅ Report generated: {args.output}")
+    try:
+        # Ensure output directory exists
+        output_path = Path(args.output)
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        
+        with open(args.output, 'w') as f:
+            f.write(report)
+        
+        print(f"✅ Report generated: {args.output}")
+    except Exception as e:
+        print(f"❌ Error writing report to '{args.output}': {e}")
+        # Try to write to a fallback location
+        fallback = Path("agent_report_fallback.md")
+        try:
+            with open(fallback, 'w') as f:
+                f.write(report)
+            print(f"✅ Report saved to fallback location: {fallback}")
+        except Exception as fallback_error:
+            print(f"❌ Failed to write to fallback location: {fallback_error}")
+            print("Report content:")
+            print(report)
 
 
 if __name__ == "__main__":
