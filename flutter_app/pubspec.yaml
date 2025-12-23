@@ -1,0 +1,64 @@
+name: tokyo_ia_flutter
+description: Tokyo-IA Complete Autonomous Agents System - 7 Specialized Agents
+version: 1.0.0+1
+publish_to: 'none'
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  
+  # Firebase
+  firebase_core: ^3.5.0
+  cloud_firestore: ^5.4.0
+  firebase_storage: ^12.3.0
+  firebase_auth: ^5.3.0
+  
+  # AI & ML
+  google_generative_ai: ^0.4.0
+  http: ^1.2.0
+  
+  # State Management
+  provider: ^6.1.1
+  riverpod: ^2.5.1
+  
+  # Storage
+  flutter_secure_storage: ^9.2.1
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+  
+  # Isolates & Concurrency
+  isolate: ^2.1.2
+  
+  # UI
+  flutter_markdown: ^0.7.3
+  syntax_highlighter: ^0.1.1
+  
+  # Audio/Video
+  audioplayers: ^6.1.0
+  video_player: ^2.9.1
+  
+  # Utils
+  intl: ^0.19.0
+  uuid: ^4.5.0
+  logger: ^2.4.0
+  path_provider: ^2.1.4
+  
+  # Env
+  flutter_dotenv: ^5.1.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+  mockito: ^5.4.4
+  build_runner: ^2.4.12
+  test: ^1.25.8
+
+flutter:
+  uses-material-design: true
+  
+  assets:
+    - .env
