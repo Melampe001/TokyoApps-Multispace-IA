@@ -29,7 +29,7 @@ def generate_markdown_report(results: dict) -> str:
 - **Total Tasks:** {results.get('total_tasks', 0)}
 - **Completed:** {results.get('completed_tasks', 0)} ✅
 - **Failed:** {results.get('failed_tasks', 0)} ❌
-- **Success Rate:** {(results.get('completed_tasks', 0) / max(results.get('total_tasks', 1), 1) * 100):.1f}%
+- **Success Rate:** {(results.get('completed_tasks', 0) / results.get('total_tasks', 1) * 100) if results.get('total_tasks', 0) > 0 else 0.0:.1f}%
 
 ---
 
@@ -52,9 +52,12 @@ def generate_markdown_report(results: dict) -> str:
 """
         
         if success and 'result' in task_result:
-            result_str = json.dumps(task_result['result'], indent=2)
-            if len(result_str) > MAX_RESULT_LENGTH:
-                result_str = result_str[:MAX_RESULT_LENGTH] + "..."
+            try:
+                result_str = json.dumps(task_result['result'], indent=2)
+                if len(result_str) > MAX_RESULT_LENGTH:
+                    result_str = result_str[:MAX_RESULT_LENGTH] + "..."
+            except (TypeError, ValueError) as e:
+                result_str = f"Error serializing result: {str(e)}"
             report += f"""**Result:**
 ```
 {result_str}
