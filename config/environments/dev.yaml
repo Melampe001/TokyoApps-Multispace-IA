@@ -1,0 +1,67 @@
+environment: dev
+
+# AWS Configuration
+aws:
+  region: us-east-1
+  s3_data_lake_bucket: tokyo-ia-data-lake-dev
+  s3_athena_results_bucket: tokyo-ia-athena-results-dev
+  s3_etl_artifacts_bucket: tokyo-ia-etl-artifacts-dev
+
+# Database Configuration
+database:
+  host: localhost
+  port: 5432
+  name: tokyo_ia_dev
+  user: postgres
+  max_connections: 20
+  connection_timeout: 30
+
+# Athena Configuration
+athena:
+  database: tokyo_ia_billing_dev
+  workgroup: tokyo-ia-dev
+  query_timeout: 300
+  result_cache_ttl: 3600
+
+# ETL Configuration
+etl:
+  enabled: true
+  schedule: "0 2 * * *"  # Daily at 2 AM
+  batch_size: 10000
+  retention_days: 90
+  max_retries: 3
+  retry_delay_seconds: 60
+
+# Glue Configuration
+glue:
+  crawler_name: tokyo-ia-analytics-crawler-dev
+  auto_run_crawler: true
+  crawler_schedule: "cron(0 3 * * ? *)"  # Daily at 3 AM
+
+# Data Lifecycle
+data_lifecycle:
+  hot_data_days: 30      # Keep in PostgreSQL
+  warm_data_days: 90     # Keep in S3 Standard
+  cold_data_days: 365    # Move to Glacier
+  delete_after_days: 730 # Permanent deletion
+
+# Monitoring and Alerts
+monitoring:
+  enabled: true
+  cloudwatch_metrics: true
+  log_level: info
+  alert_on_etl_failure: true
+
+# Cost Optimization
+cost_optimization:
+  enable_s3_lifecycle: true
+  enable_athena_caching: true
+  parquet_compression: snappy
+  partition_projection: false
+
+# Security
+security:
+  enable_encryption: true
+  encryption_type: AES256
+  enable_ssl: true
+  min_tls_version: "1.2"

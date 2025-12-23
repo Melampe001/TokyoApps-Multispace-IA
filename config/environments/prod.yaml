@@ -1,0 +1,77 @@
+environment: prod
+
+# AWS Configuration
+aws:
+  region: us-east-1
+  s3_data_lake_bucket: tokyo-ia-data-lake-prod
+  s3_athena_results_bucket: tokyo-ia-athena-results-prod
+  s3_etl_artifacts_bucket: tokyo-ia-etl-artifacts-prod
+
+# Database Configuration
+database:
+  host: prod-db.example.com
+  port: 5432
+  name: tokyo_ia_prod
+  user: tokyo_ia_app
+  max_connections: 100
+  connection_timeout: 30
+
+# Athena Configuration
+athena:
+  database: tokyo_ia_billing_prod
+  workgroup: tokyo-ia-prod
+  query_timeout: 300
+  result_cache_ttl: 7200
+
+# ETL Configuration
+etl:
+  enabled: true
+  schedule: "0 2 * * *"  # Daily at 2 AM
+  batch_size: 50000
+  retention_days: 365
+  max_retries: 5
+  retry_delay_seconds: 120
+
+# Glue Configuration
+glue:
+  crawler_name: tokyo-ia-analytics-crawler-prod
+  auto_run_crawler: true
+  crawler_schedule: "cron(0 3 * * ? *)"  # Daily at 3 AM
+
+# Data Lifecycle
+data_lifecycle:
+  hot_data_days: 90      # Keep in PostgreSQL
+  warm_data_days: 180    # Keep in S3 Standard
+  cold_data_days: 730    # Move to Glacier
+  delete_after_days: 2555 # 7 years retention
+
+# Monitoring and Alerts
+monitoring:
+  enabled: true
+  cloudwatch_metrics: true
+  log_level: warn
+  alert_on_etl_failure: true
+  alert_channels:
+    - email
+    - slack
+
+# Cost Optimization
+cost_optimization:
+  enable_s3_lifecycle: true
+  enable_athena_caching: true
+  parquet_compression: snappy
+  partition_projection: true
+
+# Security
+security:
+  enable_encryption: true
+  encryption_type: AES256
+  enable_ssl: true
+  min_tls_version: "1.3"
+  enable_audit_logging: true
+
+# High Availability
+high_availability:
+  enable_multi_az: true
+  backup_retention_days: 30
+  enable_point_in_time_recovery: true
