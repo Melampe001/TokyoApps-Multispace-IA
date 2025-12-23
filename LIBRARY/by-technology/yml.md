@@ -1,7 +1,8 @@
 # YML
 
-Total: 12 archivos
+Total: 14 archivos
 
+- [.golangci.yml](.golangci.yml)
 - [auto-documenter.yml](.github/workflows/auto-documenter.yml)
 - [blocker-detector.yml](.github/workflows/blocker-detector.yml)
 - [bot-backend-performance.yml](.github/workflows/bot-backend-performance.yml)
@@ -13,4 +14,5 @@ Total: 12 archivos
 - [dependabot.yml](.github/dependabot.yml)
 - [library-indexer.yml](.github/workflows/library-indexer.yml)
 - [library-report.yml](.github/workflows/library-report.yml)
+- [security.yml](.github/workflows/security.yml)
 - [weekly-report.yml](.github/workflows/weekly-report.yml)

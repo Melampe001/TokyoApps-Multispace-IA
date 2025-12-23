@@ -1,17 +1,17 @@
 # 📚 Catálogo Completo de la Biblioteca
-Última actualización: 2025-12-22 03:44:29
-Total de archivos: 180
+Última actualización: 2025-12-23 03:28:25
+Total de archivos: 189
 
 ---
 ## 📊 Estadísticas Generales
 - **Build**: 1 archivos
-- **Configuration**: 3 archivos
-- **Documentation**: 86 archivos
-- **Other**: 16 archivos
+- **Configuration**: 4 archivos
+- **Documentation**: 90 archivos
+- **Other**: 17 archivos
 - **Schema**: 1 archivos
 - **Script**: 25 archivos
 - **Source**: 34 archivos
-- **Workflow**: 14 archivos
+- **Workflow**: 17 archivos
 
 ---
 ## 🗂️ Por Categoría
@@ -19,12 +19,14 @@ Total de archivos: 180
 ### Build (1 archivos)
 - **[Makefile](Makefile)** - Makefile - build
 
-### Configuration (3 archivos)
+### Configuration (4 archivos)
 - **[SEARCH_INDEX.json](LIBRARY/SEARCH_INDEX.json)** - SEARCH_INDEX.json - configuration
 - **[backend-quality-rules.json](.github/workflows/bots/backend-quality-rules.json)** - backend-quality-rules.json - configuration
 - **[frontend-ux-guidelines.json](.github/workflows/bots/frontend-ux-guidelines.json)** - frontend-ux-guidelines.json - configuration
+- **[pyproject.toml](pyproject.toml)** - pyproject.toml - configuration
 
-### Documentation (86 archivos)
+### Documentation (90 archivos)
+- **[ARCHITECTURE.md](docs/ARCHITECTURE.md)** - 🏗️ Tokyo-IA Architecture Documentation
 - **[BRANCH_PROTECTION.md](docs/BRANCH_PROTECTION.md)** - Branch Protection Rules
 - **[CATALOG.md](LIBRARY/CATALOG.md)** - 📚 Catálogo Completo de la Biblioteca
 - **[CI_CD.md](docs/CI_CD.md)** - CI/CD Documentation
@@ -41,12 +43,12 @@ Total de archivos: 180
 - **[Makefile.md](LIBRARY/by-technology/Makefile.md)** - MAKEFILE
 - **[ORCHESTRATION.md](docs/agents/ORCHESTRATION.md)** - Tokyo-IA Agent Orchestration System
 - **[README-python.md](README-python.md)** - Tokyo-IA Python Setup Guide
-- **[README.md](README.md)** - Tokyo-IA 🗼
+- **[README.md](README.md)** - 🏛️ Tokyo-IA - Imperial Premium Elite Edition
 - **[README.md](db/README.md)** - Tokyo-IA Database
 - **[README.md](examples/python/README.md)** - Tokyo-IA Python Examples
-- **[README.md](.github/workflows/README.md)** - GitHub Workflows Documentation
 
-### Other (16 archivos)
+### Other (17 archivos)
+- **[.flake8](.flake8)** - .flake8 - other
 - **[.gitignore](.gitignore)** - .gitignore - other
 - **[.python-version](.python-version)** - .python-version - other
 - **[Agentes y bots](Agentes y bots)** - Agentes y bots - other
@@ -120,7 +122,9 @@ This module defines specialized AI agents for
 - **[main.go](cmd/ai-api/main.go)** - main.go - source
 - **[main.go](cmd/registry-api/main.go)** - main.go - source
 
-### Workflow (14 archivos)
+### Workflow (17 archivos)
+- **[.golangci.yml](.golangci.yml)** - .golangci.yml - workflow
+- **[.pre-commit-config.yaml](.pre-commit-config.yaml)** - .pre-commit-config.yaml - workflow
 - **[ai_models.yaml](config/ai_models.yaml)** - o3
 - **[auto-documenter.yml](.github/workflows/auto-documenter.yml)** - Auto Documenter
 - **[blocker-detector.yml](.github/workflows/blocker-detector.yml)** - Blocker Detector
@@ -129,17 +133,20 @@ This module defines specialized AI agents for
 - **[bot-coordinator.yml](.github/workflows/bot-coordinator.yml)** - Bot Coordinator - Weekly Report
 - **[bot-frontend-build.yml](.github/workflows/bot-frontend-build.yml)** - Bot #4 - Frontend Build & Asset Optimizer
 - **[bot-frontend-ux.yml](.github/workflows/bot-frontend-ux.yml)** - Bot #3 - Frontend UI/UX Compliance Bot
-- **[ci.yml](.github/workflows/ci.yml)** - CI
+- **[ci.yml](.github/workflows/ci.yml)** - CI Pipeline
 - **[dependabot.yml](.github/dependabot.yml)** - dependabot.yml - workflow
 - **[library-indexer.yml](.github/workflows/library-indexer.yml)** - Library Indexer
 - **[library-report.yml](.github/workflows/library-report.yml)** - Library Report
 - **[manifest.yaml](templates/manifest.yaml)** - "Progressive Web App"
+- **[security.yml](.github/workflows/security.yml)** - Security Scan
 - **[weekly-report.yml](.github/workflows/weekly-report.yml)** - Weekly Report
 
 ---
 ## 🎯 Por Propósito
 
-### Automation (17 archivos)
+### Automation (19 archivos)
+- [.golangci.yml](.golangci.yml)
+- [.pre-commit-config.yaml](.pre-commit-config.yaml)
 - [Agentes y bots](Agentes y bots)
 - [README.md](.github/workflows/README.md)
 - [README.md](.github/workflows/bots/README.md)
@@ -148,8 +155,6 @@ This module defines specialized AI agents for
 - [__init__.py](lib/orchestrator/__init__.py)
 - [automation.md](LIBRARY/by-purpose/automation.md)
 - [bot-backend-performance.yml](.github/workflows/bot-backend-performance.yml)
-- [bot-backend-quality.yml](.github/workflows/bot-backend-quality.yml)
-- [bot-coordinator.yml](.github/workflows/bot-coordinator.yml)
 
 ### Deployment (4 archivos)
 - [Makefile](Makefile)
@@ -157,7 +162,8 @@ This module defines specialized AI agents for
 - [deployer.go](lib/generator/deployer.go)
 - [deployment.md](LIBRARY/by-purpose/deployment.md)
 
-### Documentation (23 archivos)
+### Documentation (24 archivos)
+- [ARCHITECTURE.md](docs/ARCHITECTURE.md)
 - [CI_CD.md](docs/CI_CD.md)
 - [GUIDE.md](LIBRARY/GUIDE.md)
 - [GitHub-Pro.md](prompts/GitHub-Pro.md)
@@ -167,9 +173,9 @@ This module defines specialized AI agents for
 - [README.md](examples/python/README.md)
 - [README.md](LIBRARY/README.md)
 - [README.md](LIBRARY/reports/README.md)
-- [README.md](docs/README.md)
 
-### General (108 archivos)
+### General (113 archivos)
+- [.flake8](.flake8)
 - [.gitignore](.gitignore)
 - [.python-version](.python-version)
 - [AgentDashboard.tsx](admin/src/components/AgentDashboard.tsx)
@@ -179,7 +185,6 @@ This module defines specialized AI agents for
 - [BRANCH_PROTECTION.md](docs/BRANCH_PROTECTION.md)
 - [CATALOG.md](LIBRARY/CATALOG.md)
 - [CONTRIBUTING.md](CONTRIBUTING.md)
-- [Cuerpo](Cuerpo)
 
 ### Integration (6 archivos)
 - [IMPLEMENTATION_SUMMARY_AI.md](docs/IMPLEMENTATION_SUMMARY_AI.md)
@@ -193,9 +198,10 @@ This module defines specialized AI agents for
 - [metrics.go](internal/ai/metrics.go)
 - [monitoring.md](LIBRARY/by-purpose/monitoring.md)
 
-### Security (2 archivos)
+### Security (3 archivos)
 - [SECURITY.md](SECURITY.md)
 - [security.md](LIBRARY/by-purpose/security.md)
+- [security.yml](.github/workflows/security.yml)
 
 ### Testing (18 archivos)
 - [__init__.py](lib/agents/specialized/__init__.py)

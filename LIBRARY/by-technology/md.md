@@ -1,7 +1,8 @@
 # MD
 
-Total: 85 archivos
+Total: 89 archivos
 
+- [ARCHITECTURE.md](docs/ARCHITECTURE.md)
 - [BRANCH_PROTECTION.md](docs/BRANCH_PROTECTION.md)
 - [CATALOG.md](LIBRARY/CATALOG.md)
 - [CI_CD.md](docs/CI_CD.md)
@@ -63,6 +64,7 @@ Total: 85 archivos
 - [integration.md](LIBRARY/by-purpose/integration.md)
 - [javascript-modern.md](docs/elara/agents/javascript-modern.md)
 - [json.md](LIBRARY/by-technology/json.md)
+- [kt.md](LIBRARY/by-technology/kt.md)
 - [md.md](LIBRARY/by-technology/md.md)
 - [melampe-preferences.md](docs/elara/melampe-preferences.md)
 - [mod.md](LIBRARY/by-technology/mod.md)
@@ -81,8 +83,10 @@ Total: 85 archivos
 - [sh.md](LIBRARY/by-technology/sh.md)
 - [shell-automation.md](docs/elara/agents/shell-automation.md)
 - [source.md](LIBRARY/by-category/source.md)
+- [sql.md](LIBRARY/by-technology/sql.md)
 - [sum.md](LIBRARY/by-technology/sum.md)
 - [testing.md](LIBRARY/by-purpose/testing.md)
+- [tsx.md](LIBRARY/by-technology/tsx.md)
 - [txt.md](LIBRARY/by-technology/txt.md)
 - [workflow.md](LIBRARY/by-category/workflow.md)
 - [yaml.md](LIBRARY/by-technology/yaml.md)

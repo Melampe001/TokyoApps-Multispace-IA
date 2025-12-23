@@ -1,6 +1,9 @@
 # Documentation
 
-Total: 86 archivos
+Total: 90 archivos
+
+## [ARCHITECTURE.md](docs/ARCHITECTURE.md)
+🏗️ Tokyo-IA Architecture Documentation
 
 ## [BRANCH_PROTECTION.md](docs/BRANCH_PROTECTION.md)
 Branch Protection Rules
@@ -51,7 +54,7 @@ Tokyo-IA Agent Orchestration System
 Tokyo-IA Python Setup Guide
 
 ## [README.md](README.md)
-Tokyo-IA 🗼
+🏛️ Tokyo-IA - Imperial Premium Elite Edition
 
 ## [README.md](db/README.md)
 Tokyo-IA Database
@@ -185,6 +188,9 @@ Integration
 ## [json.md](LIBRARY/by-technology/json.md)
 JSON
 
+## [kt.md](LIBRARY/by-technology/kt.md)
+KT
+
 ## [md.md](LIBRARY/by-technology/md.md)
 MD
 
@@ -242,11 +248,17 @@ SH
 ## [source.md](LIBRARY/by-category/source.md)
 Source
 
+## [sql.md](LIBRARY/by-technology/sql.md)
+SQL
+
 ## [sum.md](LIBRARY/by-technology/sum.md)
 SUM
 
 ## [testing.md](LIBRARY/by-purpose/testing.md)
 Testing
+
+## [tsx.md](LIBRARY/by-technology/tsx.md)
+TSX
 
 ## [txt.md](LIBRARY/by-technology/txt.md)
 TXT

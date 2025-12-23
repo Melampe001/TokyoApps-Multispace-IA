@@ -1,7 +1,9 @@
 # Automation
 
-Total: 17 archivos
+Total: 19 archivos
 
+- [.golangci.yml](.golangci.yml) - .golangci.yml - workflow
+- [.pre-commit-config.yaml](.pre-commit-config.yaml) - .pre-commit-config.yaml - workflow
 - [Agentes y bots](Agentes y bots) - Agentes y bots - other
 - [README.md](.github/workflows/README.md) - GitHub Workflows Documentation
 - [README.md](.github/workflows/bots/README.md) - 🤖 Tokyo-IA Automated Bots Documentation

@@ -1,12 +1,13 @@
 # Documentation
 
-Total: 23 archivos
+Total: 24 archivos
 
+- [ARCHITECTURE.md](docs/ARCHITECTURE.md) - 🏗️ Tokyo-IA Architecture Documentation
 - [CI_CD.md](docs/CI_CD.md) - CI/CD Documentation
 - [GUIDE.md](LIBRARY/GUIDE.md) - Digital Library System - Complete Guide
 - [GitHub-Pro.md](prompts/GitHub-Pro.md) - GitHub-Pro.md – Step-by-Step Guide for GitHub Pro (2025)
 - [README-python.md](README-python.md) - Tokyo-IA Python Setup Guide
-- [README.md](README.md) - Tokyo-IA 🗼
+- [README.md](README.md) - 🏛️ Tokyo-IA - Imperial Premium Elite Edition
 - [README.md](db/README.md) - Tokyo-IA Database
 - [README.md](examples/python/README.md) - Tokyo-IA Python Examples
 - [README.md](LIBRARY/README.md) - 📚 Tokyo-IA Digital Library
