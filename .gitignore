@@ -115,3 +115,4 @@ LIBRARY/reports/*.md
 !LIBRARY/reports/README.md
 # Generated projects (Elite Framework output)
 output/
+simulator/output/
