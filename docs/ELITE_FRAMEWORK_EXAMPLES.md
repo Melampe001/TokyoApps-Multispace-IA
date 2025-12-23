@@ -302,7 +302,9 @@ To add new templates or improve the framework, see [CONTRIBUTING.md](../CONTRIBU
 
 ## License
 
-Apache 2.0 - See [LICENSE](../LICENSE) for details.
+The Tokyo-IA Elite Framework is licensed under Apache 2.0.
+
+**Note:** Generated projects include an MIT License by default. You can modify the license of your generated projects as needed.
 
 ---
 

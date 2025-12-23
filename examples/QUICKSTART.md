@@ -250,6 +250,10 @@ Next steps:
 - [Contributing Guide](../CONTRIBUTING.md)
 - [Project README](../README.md)
 
+## License
+
+The Tokyo-IA Elite Framework is licensed under Apache 2.0. Generated projects include an MIT License by default, which you can modify as needed.
+
 ---
 
 **Happy Coding! 🚀**
