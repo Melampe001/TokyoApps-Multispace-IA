@@ -53,6 +53,15 @@ build/
 .env
 .env.python
 
+# Flutter/Dart
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+pubspec.lock
+
 # Android
 *.apk
 *.aab
