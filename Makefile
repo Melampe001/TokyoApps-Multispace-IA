@@ -1,17 +1,14 @@
-.PHONY: build build-all fmt test test-go test-python clean elite generate scaffold
+.PHONY: build fmt test clean elite generate scaffold orchestrator
 
 # Build the main application
 build:
 	go build -o bin/tokyo-ia ./cmd/main.go
 
-# Build all binaries
-build-all:
-	@mkdir -p bin
-	go build -o bin/tokyo-ia ./cmd/main.go
-	go build -o bin/registry-api ./cmd/registry-api/main.go
-	go build -o bin/elite ./cmd/elite/main.go
-	go build -o bin/ai-api ./cmd/ai-api/main.go
+# Build the orchestrator agent system
+orchestrator:
+	go build -o bin/orchestrator ./cmd/orchestrator/main.go
 
+# Format Go source code (aplica gofmt)
 # Build the elite framework CLI
 elite:
 	go build -o bin/elite ./cmd/elite/main.go

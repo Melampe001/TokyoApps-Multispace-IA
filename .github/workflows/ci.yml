@@ -16,10 +16,10 @@ jobs:
       matrix:
         go-version: ['1.21', '1.22']
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       
-      - name: Set up Go ${{ matrix.go-version }}
-        uses: actions/setup-go@v5
+      - name: Set up Go
+        uses: actions/setup-go@v6
         with:
           go-version: ${{ matrix.go-version }}
           cache: true
@@ -36,9 +36,8 @@ jobs:
       - name: Run tests with race detector
         run: go test -v -race -coverprofile=coverage.out -covermode=atomic ./...
       
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v4
-        if: matrix.go-version == '1.21'
+      - name: Upload coverage
+        uses: codecov/codecov-action@v5
         with:
           files: ./coverage.out
           flags: go
@@ -54,7 +53,7 @@ jobs:
       matrix:
         python-version: ['3.11', '3.12']
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
@@ -97,7 +96,7 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       
       - name: Set up Go
         uses: actions/setup-go@v5

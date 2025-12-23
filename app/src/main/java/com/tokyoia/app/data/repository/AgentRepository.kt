@@ -8,6 +8,7 @@ import okhttp3.Request
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.IOException
+import androidx.compose.runtime.Stable
 
 /**
  * AgentRepository - Data layer for agent operations
@@ -138,6 +139,7 @@ class AgentRepository {
     }
 }
 
+@Stable
 data class AgentStats(
     val totalTasks: Int,
     val completedTasks: Int,

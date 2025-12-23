@@ -1,0 +1,215 @@
+name: Dependency Agent - pubspec.yaml Validator
+
+on:
+  # Run on PRs that modify pubspec.yaml
+  pull_request:
+    paths:
+      - 'pubspec.yaml'
+      - 'pubspec.yml'
+  
+  # Run on pushes to main/master
+  push:
+    branches:
+      - main
+      - master
+    paths:
+      - 'pubspec.yaml'
+      - 'pubspec.yml'
+  
+  # Allow manual trigger
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  dependency-validation:
+    runs-on: ubuntu-latest
+    name: Validate Flutter Dependencies
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install PyYAML
+        run: |
+          pip install PyYAML
+      
+      - name: Run Dependency Validation
+        id: validation
+        run: |
+          echo "Running dependency validation..."
+          
+          if [ ! -f "pubspec.yaml" ]; then
+            echo "❌ pubspec.yaml not found"
+            echo "validation_result=missing" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+          
+          # Run the dependency checker
+          if python3 .github/workflows/bots/scripts/check_dependencies.py; then
+            echo "validation_result=pass" >> $GITHUB_OUTPUT
+            echo "✅ All dependencies are authorized"
+          else
+            echo "validation_result=fail" >> $GITHUB_OUTPUT
+            echo "❌ Unauthorized dependencies detected"
+            exit 1
+          fi
+      
+      - name: Generate Report Comment
+        id: generate_comment
+        if: github.event_name == 'pull_request' && failure()
+        run: |
+          cat > dependency-report.md << 'EOF'
+          ## 🔒 Dependency Agent - Validation Failed
+          
+          **Status:** ❌ UNAUTHORIZED DEPENDENCIES DETECTED
+          
+          ### 🚨 Security Policy Violation
+          
+          This pull request modifies `pubspec.yaml` and introduces **unauthorized dependencies**.
+          
+          ### ✅ Allowed Dependencies
+          
+          Only the following dependencies are permitted:
+          - `flutter_riverpod` - State management
+          - `shared_preferences` - Local storage
+          - `path_provider` - File system paths
+          
+          ### 📋 Action Required
+          
+          Please remove any dependencies that are not in the allowed list above.
+          
+          ### 🔍 How to Fix
+          
+          1. Review the failed check output above
+          2. Remove unauthorized dependencies from `pubspec.yaml`
+          3. Ensure only allowed dependencies are included
+          4. Push your changes to re-run validation
+          
+          ### 📖 Policy
+          
+          This repository enforces strict dependency control to:
+          - Minimize security vulnerabilities
+          - Reduce application size
+          - Maintain code quality
+          - Simplify maintenance
+          
+          ---
+          *Dependency validation by Dependency Agent*
+          EOF
+          
+          cat dependency-report.md
+      
+      - name: Post PR Comment on Failure
+        if: github.event_name == 'pull_request' && failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const comment = fs.readFileSync('dependency-report.md', 'utf8');
+            
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number
+            });
+            
+            const botComment = comments.find(c => 
+              c.user.type === 'Bot' && c.body.includes('Dependency Agent - Validation Failed')
+            );
+            
+            if (botComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: comment
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: comment
+              });
+            }
+      
+      - name: Post Success Comment
+        if: github.event_name == 'pull_request' && success()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const comment = `## 🔒 Dependency Agent - Validation Passed
+            
+            **Status:** ✅ ALL DEPENDENCIES AUTHORIZED
+            
+            ### ✅ Approved Dependencies
+            
+            All dependencies in \`pubspec.yaml\` are in the allowed list:
+            - \`flutter_riverpod\` - State management
+            - \`shared_preferences\` - Local storage
+            - \`path_provider\` - File system paths
+            
+            ---
+            *Dependency validation by Dependency Agent*`;
+            
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number
+            });
+            
+            const botComment = comments.find(c => 
+              c.user.type === 'Bot' && 
+              (c.body.includes('Dependency Agent - Validation') || c.body.includes('Dependency Agent'))
+            );
+            
+            if (botComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: comment
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: comment
+              });
+            }
+      
+      - name: Add Labels
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        continue-on-error: true
+        with:
+          script: |
+            const labels = ['dependencies', 'flutter'];
+            
+            if ('${{ steps.validation.outputs.validation_result }}' === 'fail') {
+              labels.push('security');
+              labels.push('needs-changes');
+            }
+            
+            try {
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                labels: labels
+              });
+            } catch (error) {
+              console.log('Some labels may not exist:', error.message);
+            }
