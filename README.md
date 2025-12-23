@@ -1,17 +1,17 @@
 # 🏛️ Tokyo-IA - Imperial Premium Elite Edition
 
-[![CI Pipeline](https://github.com/Melampe001/Tokyo-IA/workflows/CI%20Pipeline/badge.svg)](https://github.com/Melampe001/Tokyo-IA/actions)
-[![Security](https://github.com/Melampe001/Tokyo-IA/workflows/Security%20Scan/badge.svg)](https://github.com/Melampe001/Tokyo-IA/actions)
+[![CI Pipeline](https://github.com/Melampe001/Tokyo-IA/actions/workflows/ci.yml/badge.svg)](https://github.com/Melampe001/Tokyo-IA/actions/workflows/ci.yml)
+[![CD Pipeline](https://github.com/Melampe001/Tokyo-IA/actions/workflows/cd.yml/badge.svg)](https://github.com/Melampe001/Tokyo-IA/actions/workflows/cd.yml)
+[![Security Scan](https://github.com/Melampe001/Tokyo-IA/actions/workflows/security.yml/badge.svg)](https://github.com/Melampe001/Tokyo-IA/actions/workflows/security.yml)
+[![Release](https://github.com/Melampe001/Tokyo-IA/actions/workflows/release.yml/badge.svg)](https://github.com/Melampe001/Tokyo-IA/actions/workflows/release.yml)
 [![Go Report Card](https://goreportcard.com/badge/github.com/Melampe001/Tokyo-IA)](https://goreportcard.com/report/github.com/Melampe001/Tokyo-IA)
 [![codecov](https://codecov.io/gh/Melampe001/Tokyo-IA/branch/main/graph/badge.svg)](https://codecov.io/gh/Melampe001/Tokyo-IA)
+[![Go Version](https://img.shields.io/badge/Go-1.21%20|%201.22-blue)](https://go.dev/)
+[![Python Version](https://img.shields.io/badge/Python-3.11%20|%203.12-blue)](https://www.python.org/)
+[![License](https://img.shields.io/badge/License-Apache%202.0-green.svg)](LICENSE)
 
 > Generador de ramas ordenadas y flujos optimizados con IA integrada
 # Tokyo-IA 🗼
-
-[![CI Pipeline](https://github.com/Melampe001/Tokyo-IA/actions/workflows/ci.yml/badge.svg)](https://github.com/Melampe001/Tokyo-IA/actions/workflows/ci.yml)
-[![Go Version](https://img.shields.io/badge/Go-1.21-blue)](https://go.dev/)
-[![Python Version](https://img.shields.io/badge/Python-3.10+-blue)](https://www.python.org/)
-[![License](https://img.shields.io/badge/License-Apache%202.0-green.svg)](LICENSE)
 
 **Tokyo-IA** is a complete AI agent orchestration platform featuring 5 specialized agents with unique personalities and expertise. Built with Go, Python, React, and Android support.
 
@@ -339,6 +339,63 @@ export OPENAI_API_KEY="sk-..."           # For Yuki & Kenji
 export GROQ_API_KEY="gsk_..."            # For Hiro
 export GOOGLE_API_KEY="..."              # For Sakura
 ```
+
+## 🚀 CI/CD Pipeline
+
+Tokyo-IA features a comprehensive CI/CD pipeline with automated testing, security scanning, and Railway deployment.
+
+### Continuous Integration
+
+Every push and pull request triggers:
+- ✅ **Go Tests** (1.21 & 1.22) with race detector and coverage
+- ✅ **Python Tests** (3.11 & 3.12) with pytest and coverage
+- ✅ **Linting** (golangci-lint, Ruff)
+- ✅ **Build Verification** for all binaries
+- ✅ **Database Schema Tests** with PostgreSQL
+- ✅ **Security Scanning** (CodeQL, Trivy, TruffleHog)
+
+### Continuous Deployment
+
+**Staging:** Automatic deployment to Railway on every push to `main`
+```bash
+git push origin main  # → Deploys to staging automatically
+```
+
+**Production:** Automatic deployment on version tags
+```bash
+git tag v1.0.0
+git push origin v1.0.0  # → Deploys to production + creates GitHub release
+```
+
+**Manual Deployment:**
+```bash
+./scripts/deploy.sh staging     # Deploy to staging
+./scripts/deploy.sh production  # Deploy to production
+```
+
+### Docker Support
+
+```bash
+# Local development with Docker Compose
+docker-compose up -d
+
+# Build Docker image
+docker build -t tokyo-ia:local .
+
+# Run container
+docker run -p 8080:8080 tokyo-ia:local
+```
+
+### Release Automation
+
+Every version tag automatically:
+1. 📦 Builds binaries for Linux, macOS, Windows (amd64 & arm64)
+2. 🔐 Generates SHA256 checksums
+3. 📝 Creates GitHub release with changelog
+4. 🐳 Builds and pushes Docker images to GHCR
+5. 🚀 Deploys to Railway production
+
+**See [docs/CICD.md](docs/CICD.md) for complete CI/CD documentation.**
 
 ## 🎯 Use Cases
 

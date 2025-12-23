@@ -1,0 +1,26 @@
+[build]
+builder = "DOCKERFILE"
+dockerfilePath = "Dockerfile"
+
+[deploy]
+startCommand = "registry-api"
+healthcheckPath = "/health"
+healthcheckTimeout = 100
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 10
+
+# Automatically restart on deployment
+numReplicas = 1
+
+# Railway services configuration
+[[services]]
+name = "tokyo-ia-api"
+type = "web"
+
+[services.env]
+PORT = "8080"
+
+[[services]]
+name = "tokyo-ia-db"
+type = "database"
+databaseType = "postgresql"
