@@ -244,12 +244,23 @@ tokyoia/
 
 ## 📚 Documentation
 
-### Architecture & Design
+### Getting Started
+- **[🚀 Quick Setup Guide](docs/QUICKSTART.md)** - Get started in 5 minutes
 - **[🏗️ Architecture Documentation](docs/ARCHITECTURE.md)** - Complete visual architecture with Mermaid diagrams
   - Language composition and project structure
   - Development workflows and CI/CD pipeline
   - Branch strategy and component interactions
   - System architecture and security measures
+
+### CI/CD & Deployment
+- **[🚀 CI/CD Pipeline](docs/CICD.md)** - Comprehensive CI/CD documentation
+  - Workflow descriptions and setup
+  - Railway deployment guide
+  - Troubleshooting and rollback procedures
+- **[🔐 Secrets Configuration](docs/SECRETS.md)** - GitHub Actions secrets setup
+  - Required and optional secrets
+  - How to obtain tokens
+  - Security best practices
 
 ### API & Integration
 - **[Agent Orchestration Guide](docs/agents/ORCHESTRATION.md)** - Complete system documentation
