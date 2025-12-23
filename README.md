@@ -4,6 +4,8 @@
 [![CD Pipeline](https://github.com/Melampe001/Tokyo-IA/actions/workflows/cd.yml/badge.svg)](https://github.com/Melampe001/Tokyo-IA/actions/workflows/cd.yml)
 [![Security Scan](https://github.com/Melampe001/Tokyo-IA/actions/workflows/security.yml/badge.svg)](https://github.com/Melampe001/Tokyo-IA/actions/workflows/security.yml)
 [![Release](https://github.com/Melampe001/Tokyo-IA/actions/workflows/release.yml/badge.svg)](https://github.com/Melampe001/Tokyo-IA/actions/workflows/release.yml)
+[![Vercel Deploy](https://github.com/Melampe001/Tokyo-IA/actions/workflows/deploy-vercel.yml/badge.svg)](https://github.com/Melampe001/Tokyo-IA/actions/workflows/deploy-vercel.yml)
+[![Pre-Release Tests](https://github.com/Melampe001/Tokyo-IA/actions/workflows/pre-release-tests.yml/badge.svg)](https://github.com/Melampe001/Tokyo-IA/actions/workflows/pre-release-tests.yml)
 [![Go Report Card](https://goreportcard.com/badge/github.com/Melampe001/Tokyo-IA)](https://goreportcard.com/report/github.com/Melampe001/Tokyo-IA)
 [![codecov](https://codecov.io/gh/Melampe001/Tokyo-IA/branch/main/graph/badge.svg)](https://codecov.io/gh/Melampe001/Tokyo-IA)
 [![Go Version](https://img.shields.io/badge/Go-1.21%20|%201.22-blue)](https://go.dev/)
@@ -262,6 +264,22 @@ tokyoia/
   - How to obtain tokens
   - Security best practices
 
+### Mobile & Web Deployment
+- **[📱 Play Store Checklist](docs/PLAY_STORE_CHECKLIST.md)** - Complete guide for Google Play Store publication
+  - Asset requirements and specifications
+  - Release signing configuration
+  - Testing and submission process
+- **[📝 Store Listing Template](docs/STORE_LISTING.md)** - Pre-written content for Play Store
+- **[🔐 Secrets Setup Guide](docs/SECRETS_SETUP.md)** - All required secrets for deployments
+  - Android release signing
+  - Vercel deployment
+  - Google Play API
+- **[🌐 Vercel Setup](docs/VERCEL_SETUP.md)** - Web dashboard deployment guide
+  - Step-by-step Vercel configuration
+  - Domain setup and SSL
+  - Automated deployment workflow
+- **[🔒 Privacy Policy](docs/PRIVACY_POLICY.md)** - GDPR-compliant privacy policy
+
 ### API & Integration
 - **[Agent Orchestration Guide](docs/agents/ORCHESTRATION.md)** - Complete system documentation
 - **[Database Schema](db/README.md)** - Database setup and operations
@@ -407,6 +425,85 @@ Every version tag automatically:
 5. 🚀 Deploys to Railway production
 
 **See [docs/CICD.md](docs/CICD.md) for complete CI/CD documentation.**
+
+## 📱 Mobile & Web Deployments
+
+### Android App - Google Play Store
+
+Tokyo IA includes a Flutter-based Android application ready for Google Play Store publication.
+
+**Quick Start:**
+```bash
+cd flutter_app/
+
+# Build release AAB
+flutter build appbundle --release
+
+# Output: build/app/outputs/bundle/release/app-release.aab
+```
+
+**Pre-requisites:**
+- Configure release signing in `flutter_app/android/app/build.gradle` ✅
+- Generate and secure your keystore (see [docs/PLAY_STORE_CHECKLIST.md](docs/PLAY_STORE_CHECKLIST.md))
+- Configure GitHub Secrets for automated signing
+
+**Resources:**
+- 📋 [Play Store Checklist](docs/PLAY_STORE_CHECKLIST.md) - Complete publication guide
+- 📝 [Store Listing Template](docs/STORE_LISTING.md) - Pre-written descriptions
+- 🔐 [Privacy Policy](docs/PRIVACY_POLICY.md) - GDPR-compliant policy
+- 🎨 [Assets Guide](assets/play-store/README.md) - Icon and screenshot specs
+
+**Automated Testing:**
+The [pre-release-tests.yml](.github/workflows/pre-release-tests.yml) workflow automatically:
+- Runs Flutter tests
+- Builds release AAB
+- Verifies signing configuration
+
+### Web Dashboard - Vercel
+
+The web interface is automatically deployed to Vercel on every push to `main`.
+
+**Local Development:**
+```bash
+cd web/
+npm install
+npm run dev
+# Visit http://localhost:5173
+```
+
+**Deployment:**
+- **Automatic:** Push to `main` branch triggers Vercel deployment
+- **Manual:** Use Vercel CLI: `vercel --prod`
+- **Preview:** Every PR gets a unique preview URL
+
+**Setup:**
+1. Create Vercel account and link repo
+2. Configure GitHub Secrets:
+   - `VERCEL_TOKEN`
+   - `VERCEL_ORG_ID`
+   - `VERCEL_PROJECT_ID`
+3. See [docs/VERCEL_SETUP.md](docs/VERCEL_SETUP.md) for detailed instructions
+
+**Live Demo:**
+🌐 Web Dashboard: `https://tokyo-ia-web.vercel.app` (update after deployment)
+
+### Secrets Configuration
+
+All deployments require GitHub Secrets. See [docs/SECRETS_SETUP.md](docs/SECRETS_SETUP.md) for complete guide:
+
+**Android Release:**
+- `KEYSTORE_FILE` - Keystore for signing
+- `KEYSTORE_PASSWORD` - Keystore password
+- `KEY_ALIAS` - Key alias
+- `KEY_PASSWORD` - Key password
+
+**Vercel Deployment:**
+- `VERCEL_TOKEN` - Vercel authentication token
+- `VERCEL_ORG_ID` - Organization/Team ID
+- `VERCEL_PROJECT_ID` - Project ID
+
+**Google Play API (Optional):**
+- `GOOGLE_PLAY_JSON` - Service account credentials for automated publishing
 
 ## 🎯 Use Cases
 
