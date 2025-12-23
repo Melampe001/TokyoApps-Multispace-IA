@@ -8,6 +8,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.runtime.Stable
 
 /**
  * AgentsScreen - Main screen displaying all Tokyo-IA agents
@@ -54,7 +55,10 @@ fun AgentsScreen(
                     contentPadding = PaddingValues(16.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    items(agents) { agent ->
+                    items(
+                        items = agents,
+                        key = { agent -> agent.id }
+                    ) { agent ->
                         AgentCard(
                             agent = agent,
                             onClick = { onAgentClick(agent.id) }
@@ -93,8 +97,11 @@ fun AgentCard(
     agent: Agent,
     onClick: () -> Unit
 ) {
+    // Remember the click handler to prevent recomposition
+    val stableOnClick = remember(agent.id) { onClick }
+    
     Card(
-        onClick = onClick,
+        onClick = stableOnClick,
         modifier = Modifier.fillMaxWidth()
     ) {
         Column(
@@ -158,6 +165,7 @@ fun AgentCard(
 }
 
 @Composable
+@Stable
 fun StatItem(label: String, value: String) {
     Column(horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally) {
         Text(
@@ -172,6 +180,7 @@ fun StatItem(label: String, value: String) {
     }
 }
 
+@Stable
 fun formatNumber(num: Long): String {
     return when {
         num >= 1_000_000 -> "${num / 1_000_000}M"
@@ -181,6 +190,7 @@ fun formatNumber(num: Long): String {
 }
 
 // Data models
+@Stable
 data class Agent(
     val id: String,
     val name: String,
@@ -194,6 +204,7 @@ data class Agent(
     val successRate: Double
 )
 
+@Stable
 sealed interface AgentsUiState {
     object Loading : AgentsUiState
     data class Success(val agents: List<Agent>) : AgentsUiState
