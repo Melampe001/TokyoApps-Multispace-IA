@@ -1,0 +1,33 @@
+{
+  "version": "1.0.0",
+  "rules": {
+    "culturalContext": {
+      "theme": "Tokyo",
+      "language": ["Japanese", "English", "Spanish"],
+      "style": "respectful and informative"
+    },
+    "behaviors": {
+      "politeness": "high",
+      "formality": "medium",
+      "responsiveness": "real-time"
+    },
+    "capabilities": {
+      "textGeneration": true,
+      "imageAnalysis": true,
+      "sentimentAnalysis": true,
+      "multilingualSupport": true
+    },
+    "constraints": {
+      "maxResponseLength": 2000,
+      "rateLimit": {
+        "requests": 100,
+        "window": "1m"
+      }
+    }
+  },
+  "endpoints": {
+    "primary": "/mcp",
+    "health": "/health",
+    "context": "/context"
+  }
+}

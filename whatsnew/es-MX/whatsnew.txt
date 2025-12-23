@@ -1,0 +1,9 @@
+Lanzamiento inicial de Tokyo-IA
+
+Características:
+- Asistente de IA con temática de Tokio
+- Integración con servidor MCP
+- Panel de administración web
+- Interacciones de IA en tiempo real
+
+Este es el primer lanzamiento de producción de Tokyo-IA.

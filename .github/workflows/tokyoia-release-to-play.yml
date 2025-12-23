@@ -1,0 +1,67 @@
+name: Release to Google Play
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write  # Needed for creating GitHub releases
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+        cache: 'gradle'
+
+    - name: Decode keystore
+      run: |
+        echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 -d > app/release.keystore
+
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+
+    - name: Build release AAB
+      env:
+        KEYSTORE_FILE: app/release.keystore
+        KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+        KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+        KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+      run: ./gradlew bundleRelease
+
+    - name: Get version from tag
+      id: get_version
+      run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+
+    - name: Create service account JSON
+      run: |
+        echo "${{ secrets.GOOGLE_PLAY_JSON }}" > service-account.json
+
+    - name: Upload to Google Play
+      uses: r0adkll/upload-google-play@v1
+      with:
+        serviceAccountJson: service-account.json
+        packageName: com.tokyoia.app
+        releaseFiles: app/build/outputs/bundle/release/app-release.aab
+        track: internal
+        status: completed
+        whatsNewDirectory: whatsnew/
+
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: app/build/outputs/bundle/release/app-release.aab
+        body: |
+          Release version ${{ steps.get_version.outputs.VERSION }}
+          
+          See whatsnew/ directory for detailed release notes.
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
