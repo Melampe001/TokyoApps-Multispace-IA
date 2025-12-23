@@ -7,7 +7,7 @@ Only allows specific whitelisted dependencies.
 import sys
 import yaml
 from pathlib import Path
-from typing import List, Dict, Set
+from typing import List, Dict, Set, Tuple
 
 # ALLOWED DEPENDENCIES - This is the whitelist
 ALLOWED_DEPENDENCIES = {
@@ -33,7 +33,7 @@ def load_pubspec(file_path: str) -> Dict:
         print(f"❌ ERROR: Invalid YAML in pubspec.yaml: {e}")
         sys.exit(1)
 
-def check_dependencies(pubspec_data: Dict) -> tuple[bool, List[str]]:
+def check_dependencies(pubspec_data: Dict) -> Tuple[bool, List[str]]:
     """
     Check if all dependencies are allowed.
     

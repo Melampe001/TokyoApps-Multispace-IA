@@ -9,8 +9,17 @@ import os
 import sys
 from pathlib import Path
 
-# Add the script directory to path
-script_dir = Path(__file__).parent.parent.parent / '.github' / 'workflows' / 'bots' / 'scripts'
+# Add the script directory to path - find repository root
+def find_repo_root():
+    """Find repository root by looking for .git directory"""
+    current = Path(__file__).resolve()
+    for parent in current.parents:
+        if (parent / '.git').exists():
+            return parent
+    return Path(__file__).parent.parent.parent
+
+repo_root = find_repo_root()
+script_dir = repo_root / '.github' / 'workflows' / 'bots' / 'scripts'
 sys.path.insert(0, str(script_dir))
 
 import check_dependencies
