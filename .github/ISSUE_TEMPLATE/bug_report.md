@@ -1,7 +1,7 @@
 ---
 name: Reportar un Bug
 about: Reporta un problema y ayuda a mejorar Tokyo-IA
-labels: bug, needs-review, automated-check
+labels: bug, needs-review
 ---
 
 # Descripción del Bug
