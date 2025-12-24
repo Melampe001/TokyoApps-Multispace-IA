@@ -1,0 +1,307 @@
+name: Bot #2 - Backend Performance Monitor
+
+on:
+  # Run on PRs that touch backend code
+  pull_request:
+    paths:
+      - 'lib/**'
+      - 'internal/**'
+      - '**.go'
+  
+  # Run on push to PR branches
+  push:
+    branches-ignore:
+      - main
+      - develop
+  
+  # Allow manual trigger
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  performance-analysis:
+    runs-on: ubuntu-latest
+    name: Analyze Backend Performance
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      
+      - name: Set up Go
+        uses: actions/setup-go@v6
+        with:
+          go-version: '1.21'
+      
+      - name: Analyze Performance Issues
+        id: perf_analysis
+        run: |
+          echo "Analyzing performance issues..."
+          
+          # Initialize counters
+          nested_loops=0
+          potential_n_plus_1=0
+          large_allocations=0
+          uncontrolled_goroutines=0
+          
+          # Create issues array
+          echo "[]" > perf-issues.json
+          
+          # Get changed Go files
+          changed_files=$(git diff --name-only origin/${{ github.base_ref }}...HEAD 2>/dev/null | grep '\.go$' || echo "")
+          
+          if [ -z "$changed_files" ]; then
+            # Fallback: analyze all Go files in lib/ and internal/
+            changed_files=$(find lib/ internal/ -name "*.go" 2>/dev/null || echo "")
+          fi
+          
+          for file in $changed_files; do
+            if [ -f "$file" ]; then
+              echo "Analyzing: $file"
+              
+              # Check for nested loops
+              nested_count=$(grep -n "for.*{" "$file" | wc -l)
+              if [ "$nested_count" -gt 1 ]; then
+                # Simple heuristic: if we have multiple for loops, check if nested
+                content=$(cat "$file")
+                # Use extended regex instead of PCRE for better compatibility
+                if echo "$content" | grep -E "for.*\{.*for.*\{" > /dev/null 2>&1; then
+                  nested_loops=$((nested_loops + 1))
+                  echo "  ⚠️  Nested loops detected"
+                fi
+              fi
+              
+              # Check for potential N+1 queries (db calls in loops)
+              if grep -n "for.*{" "$file" | head -5 | while read line; do
+                line_num=$(echo "$line" | cut -d: -f1)
+                # Check next 20 lines for DB operations
+                if tail -n +$line_num "$file" | head -20 | grep -E "Query|Exec|Find|Get|db\." > /dev/null; then
+                  echo "  ⚠️  Potential N+1 query pattern at line $line_num"
+                  potential_n_plus_1=$((potential_n_plus_1 + 1))
+                  return 0
+                fi
+              done; then
+                potential_n_plus_1=$((potential_n_plus_1 + 1))
+              fi
+              
+              # Check for large allocations
+              if grep -n "make(\[\]" "$file" | grep -E "[0-9]{4,}" > /dev/null; then
+                large_allocations=$((large_allocations + 1))
+                echo "  ⚠️  Large allocation detected"
+              fi
+              
+              # Check for goroutines without context or wait groups
+              if grep -n "go func" "$file" > /dev/null; then
+                # Check if WaitGroup or context is nearby
+                if ! grep -E "WaitGroup|context\." "$file" > /dev/null; then
+                  uncontrolled_goroutines=$((uncontrolled_goroutines + 1))
+                  echo "  ⚠️  Goroutine without control mechanism"
+                fi
+              fi
+            fi
+          done
+          
+          # Output results
+          echo "nested_loops=$nested_loops" >> $GITHUB_OUTPUT
+          echo "potential_n_plus_1=$potential_n_plus_1" >> $GITHUB_OUTPUT
+          echo "large_allocations=$large_allocations" >> $GITHUB_OUTPUT
+          echo "uncontrolled_goroutines=$uncontrolled_goroutines" >> $GITHUB_OUTPUT
+          
+          total_issues=$((nested_loops + potential_n_plus_1 + large_allocations + uncontrolled_goroutines))
+          echo "total_issues=$total_issues" >> $GITHUB_OUTPUT
+          
+          echo ""
+          echo "Performance Analysis Summary:"
+          echo "  Nested loops: $nested_loops"
+          echo "  Potential N+1 queries: $potential_n_plus_1"
+          echo "  Large allocations: $large_allocations"
+          echo "  Uncontrolled goroutines: $uncontrolled_goroutines"
+          echo "  Total issues: $total_issues"
+      
+      - name: Run Benchmarks
+        id: benchmarks
+        continue-on-error: true
+        run: |
+          echo "Running benchmarks..."
+          
+          # Check if benchmarks exist
+          if find . -name "*_test.go" -exec grep -l "Benchmark" {} \; | head -1 > /dev/null; then
+            echo "benchmarks_exist=true" >> $GITHUB_OUTPUT
+            
+            # Run benchmarks and save results
+            go test -bench=. -benchmem ./... > benchmark-results.txt 2>&1 || true
+            
+            if [ -f benchmark-results.txt ]; then
+              echo "benchmarks_ran=true" >> $GITHUB_OUTPUT
+            else
+              echo "benchmarks_ran=false" >> $GITHUB_OUTPUT
+            fi
+          else
+            echo "benchmarks_exist=false" >> $GITHUB_OUTPUT
+            echo "benchmarks_ran=false" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Generate Performance Report Comment
+        id: generate_comment
+        if: github.event_name == 'pull_request'
+        run: |
+          total_issues=${{ steps.perf_analysis.outputs.total_issues }}
+          
+          # Determine severity
+          if [ "$total_issues" -eq 0 ]; then
+            status_emoji="✅"
+            status_text="No Performance Issues Detected"
+          elif [ "$total_issues" -le 2 ]; then
+            status_emoji="⚠️"
+            status_text="Minor Performance Concerns"
+          else
+            status_emoji="🔴"
+            status_text="Critical Performance Issues"
+          fi
+          
+          # Build comment
+          cat > perf-comment.md << EOF
+          ## 🚀 Backend Performance Report
+          
+          **Status:** ${status_emoji} ${status_text}
+          **Total Issues:** ${total_issues}
+          
+          ### 📊 Analysis Results
+          
+          EOF
+          
+          # Add detailed findings
+          if [ "${{ steps.perf_analysis.outputs.nested_loops }}" -gt 0 ]; then
+            echo "- ⚠️ **Nested Loops:** ${{ steps.perf_analysis.outputs.nested_loops }} detected" >> perf-comment.md
+            echo "  - Consider using maps or preprocessing data to reduce complexity" >> perf-comment.md
+          fi
+          
+          if [ "${{ steps.perf_analysis.outputs.potential_n_plus_1 }}" -gt 0 ]; then
+            echo "- ⚠️ **Potential N+1 Queries:** ${{ steps.perf_analysis.outputs.potential_n_plus_1 }} patterns found" >> perf-comment.md
+            echo "  - Use batch queries or eager loading to optimize database access" >> perf-comment.md
+          fi
+          
+          if [ "${{ steps.perf_analysis.outputs.large_allocations }}" -gt 0 ]; then
+            echo "- ⚠️ **Large Allocations:** ${{ steps.perf_analysis.outputs.large_allocations }} detected" >> perf-comment.md
+            echo "  - Consider using object pools or streaming for large data" >> perf-comment.md
+          fi
+          
+          if [ "${{ steps.perf_analysis.outputs.uncontrolled_goroutines }}" -gt 0 ]; then
+            echo "- ⚠️ **Uncontrolled Goroutines:** ${{ steps.perf_analysis.outputs.uncontrolled_goroutines }} found" >> perf-comment.md
+            echo "  - Use WaitGroups or context for proper goroutine management" >> perf-comment.md
+          fi
+          
+          if [ "$total_issues" -eq 0 ]; then
+            echo "" >> perf-comment.md
+            echo "✅ No performance issues detected. Great job!" >> perf-comment.md
+          fi
+          
+          # Add benchmark results if available
+          if [ "${{ steps.benchmarks.outputs.benchmarks_ran }}" = "true" ]; then
+            echo "" >> perf-comment.md
+            echo "### 📈 Benchmark Results" >> perf-comment.md
+            echo "" >> perf-comment.md
+            echo "\`\`\`" >> perf-comment.md
+            head -20 benchmark-results.txt >> perf-comment.md
+            echo "\`\`\`" >> perf-comment.md
+          fi
+          
+          # Add warning for critical issues
+          if [ "$total_issues" -gt 3 ]; then
+            echo "" >> perf-comment.md
+            echo "### 🔴 Action Required" >> perf-comment.md
+            echo "" >> perf-comment.md
+            echo "More than 3 performance issues detected. **Tech lead review requested.**" >> perf-comment.md
+          fi
+          
+          echo "" >> perf-comment.md
+          echo "---" >> perf-comment.md
+          echo "_Performance analysis by Backend Performance Monitor_" >> perf-comment.md
+          
+          cat perf-comment.md > perf-comment-body.txt
+      
+      - name: Post PR Comment
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const fs = require('fs');
+            const comment = fs.readFileSync('perf-comment-body.txt', 'utf8');
+            
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number
+            });
+            
+            const botComment = comments.find(c => 
+              c.user.type === 'Bot' && c.body.includes('Backend Performance Report')
+            );
+            
+            if (botComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: comment
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: comment
+              });
+            }
+      
+      - name: Add Performance Labels
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const totalIssues = parseInt('${{ steps.perf_analysis.outputs.total_issues }}');
+            const labels = ['backend', 'performance'];
+            
+            if (totalIssues > 0) {
+              labels.push('needs-optimization');
+            }
+            
+            try {
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                labels: labels
+              });
+            } catch (error) {
+              console.log('Some labels may not exist:', error.message);
+            }
+      
+      - name: Request Tech Lead Review
+        if: |
+          github.event_name == 'pull_request' && 
+          steps.perf_analysis.outputs.total_issues > 3
+        uses: actions/github-script@v8
+        with:
+          script: |
+            // Request review from tech leads (would need to configure team/users)
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: '🔴 @maintainers Tech lead review requested due to critical performance issues detected.'
+            });
+      
+      - name: Upload Performance Report
+        uses: actions/upload-artifact@v6
+        with:
+          name: performance-report
+          path: |
+            perf-issues.json
+            benchmark-results.txt
+          retention-days: 30

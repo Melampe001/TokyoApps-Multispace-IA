@@ -1,0 +1,86 @@
+version: 2
+updates:
+  # Go module dependencies
+  - package-ecosystem: "gomod"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+      - "go"
+
+  # Python pip dependencies
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+      - "pip"
+
+  # GitHub Actions dependencies
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "github-actions"
+
+  # Web npm dependencies
+  - package-ecosystem: "npm"
+    directory: "/web"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+      - "npm"
+      - "web"
+    groups:
+      development-dependencies:
+        dependency-type: "development"
+      production-dependencies:
+        dependency-type: "production"
+
+  # MCP Server npm dependencies
+  - package-ecosystem: "npm"
+    directory: "/server-mcp"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+      - "npm"
+      - "server-mcp"
+    groups:
+      development-dependencies:
+        dependency-type: "development"
+      production-dependencies:
+        dependency-type: "production"
+
+  # Android Gradle dependencies
+  - package-ecosystem: "gradle"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+      - "gradle"
+      - "android"

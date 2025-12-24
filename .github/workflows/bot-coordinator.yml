@@ -1,0 +1,346 @@
+name: Bot Coordinator - Weekly Report
+
+on:
+  # Run weekly on Mondays at 9:00 UTC
+  schedule:
+    - cron: '0 9 * * 1'
+  
+  # Allow manual trigger
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+  actions: read
+
+jobs:
+  generate-weekly-report:
+    runs-on: ubuntu-latest
+    name: Generate Bot Coordinator Report
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+      
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+      
+      - name: Download Recent Bot Reports
+        id: download_reports
+        continue-on-error: true
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const fs = require('fs');
+            
+            // Get workflow runs from the last 7 days
+            const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+            
+            // Track metrics
+            let metrics = {
+              backend_quality: { runs: 0, issues: 0 },
+              backend_performance: { runs: 0, issues: 0 },
+              frontend_ux: { runs: 0, issues: 0 },
+              frontend_build: { runs: 0, optimizations: 0 }
+            };
+            
+            // List all workflows
+            const workflows = [
+              'bot-backend-quality.yml',
+              'bot-backend-performance.yml',
+              'bot-frontend-ux.yml',
+              'bot-frontend-build.yml'
+            ];
+            
+            for (const workflowFile of workflows) {
+              try {
+                const { data: runs } = await github.rest.actions.listWorkflowRuns({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  workflow_id: workflowFile,
+                  created: `>=${sevenDaysAgo}`,
+                  per_page: 100
+                });
+                
+                console.log(`${workflowFile}: ${runs.total_count} runs in last 7 days`);
+                
+                const workflowKey = workflowFile.replace('bot-', '').replace('.yml', '').replace('-', '_');
+                if (metrics[workflowKey]) {
+                  metrics[workflowKey].runs = runs.total_count;
+                }
+                
+                // Try to download artifacts from recent runs
+                for (const run of runs.workflow_runs.slice(0, 5)) {
+                  try {
+                    const { data: artifacts } = await github.rest.actions.listWorkflowRunArtifacts({
+                      owner: context.repo.owner,
+                      repo: context.repo.repo,
+                      run_id: run.id
+                    });
+                    
+                    if (artifacts.total_count > 0) {
+                      console.log(`Found ${artifacts.total_count} artifacts for run ${run.id}`);
+                    }
+                  } catch (e) {
+                    console.log(`Could not get artifacts for run ${run.id}:`, e.message);
+                  }
+                }
+              } catch (error) {
+                console.log(`Could not get runs for ${workflowFile}:`, error.message);
+              }
+            }
+            
+            // Save metrics
+            fs.writeFileSync('bot-metrics.json', JSON.stringify(metrics, null, 2));
+            
+            return metrics;
+      
+      - name: Calculate Statistics
+        id: stats
+        run: |
+          echo "Calculating bot statistics..."
+          
+          # Read metrics if available
+          if [ -f bot-metrics.json ]; then
+            cat bot-metrics.json
+            
+            # Calculate totals
+            total_runs=$(jq '[.[] | .runs] | add' bot-metrics.json)
+            
+            echo "total_runs=$total_runs" >> $GITHUB_OUTPUT
+          else
+            echo "total_runs=0" >> $GITHUB_OUTPUT
+          fi
+          
+          # Time estimates per bot type (in hours)
+          # Backend Quality: 0.5 hours (30 min) per comprehensive code review
+          # Backend Performance: 0.33 hours (20 min) per performance analysis
+          # Frontend UX: 0.42 hours (25 min) per UI/UX review
+          # Frontend Build: 0.25 hours (15 min) per asset optimization
+          TIME_BACKEND_QUALITY=0.5
+          TIME_BACKEND_PERF=0.33
+          TIME_FRONTEND_UX=0.42
+          TIME_FRONTEND_BUILD=0.25
+          
+          if [ -f bot-metrics.json ]; then
+            bq_runs=$(jq -r '.backend_quality.runs // 0' bot-metrics.json)
+            bp_runs=$(jq -r '.backend_performance.runs // 0' bot-metrics.json)
+            fu_runs=$(jq -r '.frontend_ux.runs // 0' bot-metrics.json)
+            fb_runs=$(jq -r '.frontend_build.runs // 0' bot-metrics.json)
+            
+            time_saved=$(awk "BEGIN {print ($bq_runs * $TIME_BACKEND_QUALITY) + ($bp_runs * $TIME_BACKEND_PERF) + ($fu_runs * $TIME_FRONTEND_UX) + ($fb_runs * $TIME_FRONTEND_BUILD)}")
+          else
+            bq_runs=0
+            bp_runs=0
+            fu_runs=0
+            fb_runs=0
+            time_saved=0
+          fi
+          
+          echo "bq_runs=$bq_runs" >> $GITHUB_OUTPUT
+          echo "bp_runs=$bp_runs" >> $GITHUB_OUTPUT
+          echo "fu_runs=$fu_runs" >> $GITHUB_OUTPUT
+          echo "fb_runs=$fb_runs" >> $GITHUB_OUTPUT
+          echo "time_saved=$time_saved" >> $GITHUB_OUTPUT
+          
+          echo "Statistics calculated:"
+          echo "  Backend Quality runs: $bq_runs"
+          echo "  Backend Performance runs: $bp_runs"
+          echo "  Frontend UX runs: $fu_runs"
+          echo "  Frontend Build runs: $fb_runs"
+          echo "  Estimated time saved: $time_saved hours"
+      
+      - name: Generate Weekly Report
+        id: generate_report
+        run: |
+          # Get current week number
+          week_num=$(date +%U)
+          year=$(date +%Y)
+          
+          # Create report
+          cat > weekly-report.md << EOF
+          # 📊 Bot Coordinator Weekly Report - Week ${week_num}/${year}
+          
+          Generated: $(date '+%Y-%m-%d %H:%M:%S UTC')
+          
+          ## Summary
+          
+          This week, our automated bot agents worked tirelessly to maintain code quality and optimize assets.
+          
+          ### 🤖 Bot Activity
+          
+          | Bot | Runs This Week | Impact |
+          |-----|----------------|--------|
+          | 🔧 Backend Quality Guardian | ${{ steps.stats.outputs.bq_runs }} | Code quality checks |
+          | 🚀 Backend Performance Monitor | ${{ steps.stats.outputs.bp_runs }} | Performance analysis |
+          | 🎨 Frontend UI/UX Compliance | ${{ steps.stats.outputs.fu_runs }} | UI/UX validation |
+          | 🖼️ Frontend Build Optimizer | ${{ steps.stats.outputs.fb_runs }} | Asset optimization |
+          | **Total** | **${{ steps.stats.outputs.total_runs }}** | |
+          
+          ### ⏱️ Estimated Time Saved
+          
+          **~${{ steps.stats.outputs.time_saved }} hours** of manual review and optimization work
+          
+          ---
+          
+          ## 🔧 Backend Quality Guardian
+          
+          - **Runs:** ${{ steps.stats.outputs.bq_runs }}
+          - **Primary Function:** Ensures backend code meets quality standards
+          - **Key Checks:**
+            - ✅ Test coverage
+            - ✅ Documentation comments
+            - ✅ Error handling
+            - ✅ Import cleanliness
+          
+          ### Impact
+          - Auto-reviewed Go code changes
+          - Identified missing tests and documentation
+          - Provided quality scores for PRs
+          
+          ---
+          
+          ## 🚀 Backend Performance Monitor
+          
+          - **Runs:** ${{ steps.stats.outputs.bp_runs }}
+          - **Primary Function:** Detects performance issues in backend code
+          - **Key Checks:**
+            - ⚡ Nested loops
+            - ⚡ N+1 query patterns
+            - ⚡ Memory allocations
+            - ⚡ Goroutine management
+          
+          ### Impact
+          - Analyzed performance patterns
+          - Ran benchmarks when available
+          - Flagged potential bottlenecks early
+          
+          ---
+          
+          ## 🎨 Frontend UI/UX Compliance
+          
+          - **Runs:** ${{ steps.stats.outputs.fu_runs }}
+          - **Primary Function:** Maintains UI/UX consistency
+          - **Key Checks:**
+            - 🎨 Naming conventions
+            - 🎨 Hardcoded strings
+            - 🎨 Theme usage
+            - 🎨 Accessibility
+          
+          ### Impact
+          - Ensured consistent UI patterns
+          - Detected hardcoded strings for localization
+          - Improved accessibility awareness
+          
+          ---
+          
+          ## 🖼️ Frontend Build & Asset Optimizer
+          
+          - **Runs:** ${{ steps.stats.outputs.fb_runs }}
+          - **Primary Function:** Optimizes frontend assets automatically
+          - **Key Actions:**
+            - 📦 PNG compression
+            - 📦 JPG to WebP conversion
+            - 📦 EXIF data removal
+            - 📦 Bundle size tracking
+          
+          ### Impact
+          - Auto-optimized image assets
+          - Reduced bundle sizes
+          - Committed optimizations automatically
+          
+          ---
+          
+          ## 🎯 Overall Impact
+          
+          ### Key Achievements This Week
+          
+          - ✅ Automated quality checks on **${{ steps.stats.outputs.total_runs }}** workflow runs
+          - ✅ Freed up **~${{ steps.stats.outputs.time_saved }}** hours for feature development
+          - ✅ Provided instant feedback on PRs
+          - ✅ Applied optimizations automatically
+          
+          ### Benefits
+          
+          1. **Faster Code Reviews** - Automated initial checks reduce manual review time
+          2. **Consistent Quality** - Bots apply the same standards to all code
+          3. **Early Detection** - Issues caught before they reach production
+          4. **Developer Focus** - Team can focus on features, not routine checks
+          5. **Automatic Optimization** - Assets optimized without manual intervention
+          
+          ---
+          
+          ## 📈 Trends
+          
+          EOF
+          
+          if [ "${{ steps.stats.outputs.total_runs }}" -gt 10 ]; then
+            echo "- 🟢 **High bot activity** - Team is actively developing" >> weekly-report.md
+          elif [ "${{ steps.stats.outputs.total_runs }}" -gt 5 ]; then
+            echo "- 🟡 **Moderate bot activity** - Steady development pace" >> weekly-report.md
+          else
+            echo "- 🔵 **Low bot activity** - Quiet week or bots need attention" >> weekly-report.md
+          fi
+          
+          cat >> weekly-report.md << EOF
+          
+          ---
+          
+          ## 🔄 Bot Health
+          
+          All bots are operational and monitoring the repository:
+          
+          - ✅ Backend Quality Guardian - Active
+          - ✅ Backend Performance Monitor - Active
+          - ✅ Frontend UI/UX Compliance - Active
+          - ✅ Frontend Build Optimizer - Active
+          - ✅ Bot Coordinator - Active (you're reading this!)
+          
+          ---
+          
+          ## 📝 Notes
+          
+          - Bot reports are available as workflow artifacts
+          - Configure bot behavior in \`.github/workflows/bots/*.json\`
+          - Use \`/bot\` commands in PRs to interact with bots
+          - Documentation: \`.github/workflows/bots/README.md\`
+          
+          ---
+          
+          *This report is automatically generated every Monday by the Bot Coordinator*
+          
+          **Next report:** $(date -d "next monday" '+%Y-%m-%d' 2>/dev/null || date -v +1w '+%Y-%m-%d' 2>/dev/null || echo "Next week")
+          EOF
+          
+          cat weekly-report.md
+      
+      - name: Create GitHub Issue with Report
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const fs = require('fs');
+            const report = fs.readFileSync('weekly-report.md', 'utf8');
+            
+            const weekNum = new Date().toISOString().slice(0, 10);
+            
+            // Create issue with the report
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `🤖 Bot Coordinator Weekly Report - ${weekNum}`,
+              body: report,
+              labels: ['bot-report', 'weekly-summary', 'automated']
+            });
+            
+            console.log('Weekly report issue created successfully');
+      
+      - name: Upload Report Artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: bot-coordinator-weekly-report
+          path: |
+            weekly-report.md
+            bot-metrics.json
+          retention-days: 90

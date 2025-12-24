@@ -1,0 +1,295 @@
+name: Agent Pipeline
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - 'flutter_app/**'
+      - 'agents/**'
+      - 'simulator/**'
+      - 'orchestrator/**'
+      - 'emulator/**'
+      - 'pipeline.sh'
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - 'flutter_app/**'
+      - 'agents/**'
+      - 'simulator/**'
+      - 'orchestrator/**'
+      - 'emulator/**'
+      - 'pipeline.sh'
+  workflow_dispatch:
+    inputs:
+      platform:
+        description: 'Target Platform'
+        required: true
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - android
+          - ios
+          - web
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  agent-pipeline:
+    name: Execute Agent Pipeline
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.x'
+          channel: 'stable'
+          cache: true
+      
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y jq yq xmllint tree
+      
+      - name: Make scripts executable
+        run: |
+          chmod +x pipeline.sh
+          chmod +x orchestrator/run_flow.sh
+          chmod +x simulator/simulate_design.sh
+          chmod +x agents/*.sh
+          chmod +x emulator/run_emulator.sh
+      
+      - name: Verify Flutter installation
+        run: |
+          flutter --version
+          flutter doctor -v
+      
+      - name: Run Agent Pipeline
+        env:
+          TARGET_PLATFORM: ${{ github.event.inputs.platform || 'all' }}
+        run: |
+          bash pipeline.sh
+      
+      - name: Upload Simulator Outputs
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: simulator-outputs
+          path: |
+            simulator/output/*.json
+            simulator/output/*.txt
+          retention-days: 30
+      
+      - name: Upload Android Code
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: android-code
+          path: output/android/
+          retention-days: 30
+      
+      - name: Upload iOS Code
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ios-code
+          path: output/ios/
+          retention-days: 30
+      
+      - name: Upload Web Code
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: web-code
+          path: output/web/
+          retention-days: 30
+      
+      - name: Generate Pipeline Summary
+        if: always()
+        run: |
+          echo "# 🎯 Agent Pipeline Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## 📊 Execution Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Platform**: ${{ github.event.inputs.platform || 'all' }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Branch**: ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Commit**: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          if [ -f simulator/output/design_model.json ]; then
+            echo "## 🎨 Design Model" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo '```json' >> $GITHUB_STEP_SUMMARY
+            cat simulator/output/design_model.json | jq '.metadata' >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          if [ -f simulator/output/emulator_report.txt ]; then
+            echo "## 🔍 Validation Report" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            tail -n 20 simulator/output/emulator_report.txt >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "## 📁 Generated Files" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Android" >> $GITHUB_STEP_SUMMARY
+          if [ -d output/android ]; then
+            find output/android -type f | sed 's|^|- |' >> $GITHUB_STEP_SUMMARY
+          else
+            echo "- (not generated)" >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          echo "### iOS" >> $GITHUB_STEP_SUMMARY
+          if [ -d output/ios ]; then
+            find output/ios -type f | sed 's|^|- |' >> $GITHUB_STEP_SUMMARY
+          else
+            echo "- (not generated)" >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          echo "### Web" >> $GITHUB_STEP_SUMMARY
+          if [ -d output/web ]; then
+            find output/web -type f | sed 's|^|- |' >> $GITHUB_STEP_SUMMARY
+          else
+            echo "- (not generated)" >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          echo "## 📦 Artifacts" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Artifacts have been uploaded with the following names:" >> $GITHUB_STEP_SUMMARY
+          echo "- \`simulator-outputs\` - Design model and agent outputs" >> $GITHUB_STEP_SUMMARY
+          echo "- \`android-code\` - Generated Android code" >> $GITHUB_STEP_SUMMARY
+          echo "- \`ios-code\` - Generated iOS code" >> $GITHUB_STEP_SUMMARY
+          echo "- \`web-code\` - Generated Web code" >> $GITHUB_STEP_SUMMARY
+      
+      - name: Comment on PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            
+            let comment = '# 🤖 Agent Pipeline Results\n\n';
+            comment += `**Platform**: ${process.env.TARGET_PLATFORM || 'all'}\n`;
+            comment += `**Status**: ✅ Pipeline completed\n\n`;
+            
+            // Read design model
+            if (fs.existsSync('simulator/output/design_model.json')) {
+              const designModel = JSON.parse(fs.readFileSync('simulator/output/design_model.json', 'utf8'));
+              comment += '## 📊 Design Model\n\n';
+              comment += `- **Project**: ${designModel.metadata.project_name}\n`;
+              comment += `- **Flutter**: ${designModel.metadata.flutter_version}\n`;
+              comment += `- **Widgets**: ${designModel.metadata.widget_count}\n`;
+              comment += `- **State Management**: ${designModel.state_management.type}\n\n`;
+            }
+            
+            // Read validation report summary
+            if (fs.existsSync('simulator/output/emulator_report.txt')) {
+              const report = fs.readFileSync('simulator/output/emulator_report.txt', 'utf8');
+              const lines = report.split('\n');
+              const summaryStart = lines.findIndex(l => l.includes('VALIDATION SUMMARY'));
+              if (summaryStart > 0) {
+                comment += '## 🔍 Validation Summary\n\n';
+                comment += '```\n';
+                comment += lines.slice(summaryStart, summaryStart + 10).join('\n');
+                comment += '\n```\n\n';
+              }
+            }
+            
+            comment += '## 📦 Artifacts\n\n';
+            comment += 'Generated code is available in the workflow artifacts:\n';
+            comment += '- `simulator-outputs` - Design model and agent outputs\n';
+            comment += '- `android-code` - Android platform code\n';
+            comment += '- `ios-code` - iOS platform code\n';
+            comment += '- `web-code` - Web platform code\n';
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+        env:
+          TARGET_PLATFORM: ${{ github.event.inputs.platform || 'all' }}
+  
+  security-scan:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    needs: agent-pipeline
+    if: always()
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts/
+      
+      - name: Scan for secrets
+        run: |
+          echo "🔒 Scanning for hardcoded secrets..."
+          
+          # Patterns to search for
+          SECRET_PATTERNS=("api_key" "password" "secret" "token" "private_key" "apikey" "api-key" "Bearer ")
+          
+          FOUND=0
+          for pattern in "${SECRET_PATTERNS[@]}"; do
+            if grep -ri "$pattern" artifacts/ 2>/dev/null | grep -v "Auto-generated" | head -n 1; then
+              echo "⚠️  Found potential secret: $pattern"
+              FOUND=1
+            fi
+          done
+          
+          if [ $FOUND -eq 0 ]; then
+            echo "✅ No secrets detected"
+          else
+            echo "⚠️  Potential secrets found - manual review required"
+          fi
+      
+      - name: Check for deprecated APIs
+        run: |
+          echo "🔍 Scanning for deprecated APIs..."
+          
+          DEPRECATED=0
+          
+          # Check Android
+          if [ -d artifacts/android-code ]; then
+            if grep -r "ActionBarActivity\|PreferenceActivity\|AsyncTask" artifacts/android-code/ 2>/dev/null; then
+              echo "⚠️  Found deprecated Android APIs"
+              DEPRECATED=1
+            fi
+          fi
+          
+          # Check iOS
+          if [ -d artifacts/ios-code ]; then
+            if grep -r "UIWebView\|UIAlertView" artifacts/ios-code/ 2>/dev/null; then
+              echo "⚠️  Found deprecated iOS APIs"
+              DEPRECATED=1
+            fi
+          fi
+          
+          if [ $DEPRECATED -eq 0 ]; then
+            echo "✅ No deprecated APIs detected"
+          fi
+      
+      - name: Security Summary
+        if: always()
+        run: |
+          echo "# 🔒 Security Scan Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Security scan completed. Review the logs above for any findings." >> $GITHUB_STEP_SUMMARY

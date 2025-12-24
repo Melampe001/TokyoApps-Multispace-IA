@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tokyo-IA Digital Library Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 40px;
+            background: #f7f9fc;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #667eea;
+            margin: 10px 0;
+        }
+        
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .search-section {
+            padding: 40px;
+        }
+        
+        .search-box {
+            position: relative;
+            margin-bottom: 30px;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 15px 50px 15px 20px;
+            font-size: 1.1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 50px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        
+        .search-input:focus {
+            border-color: #667eea;
+        }
+        
+        .search-icon {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+        }
+        
+        .filters {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+        
+        .filter-btn {
+            padding: 10px 20px;
+            border: 2px solid #e0e0e0;
+            background: white;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+        
+        .filter-btn:hover {
+            border-color: #667eea;
+            color: #667eea;
+        }
+        
+        .filter-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+        
+        .files-list {
+            padding: 0 40px 40px;
+        }
+        
+        .file-item {
+            background: #f7f9fc;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            transition: all 0.3s;
+        }
+        
+        .file-item:hover {
+            background: #eef1f7;
+            transform: translateX(5px);
+        }
+        
+        .file-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        
+        .file-path {
+            color: #666;
+            font-size: 0.85rem;
+            font-family: monospace;
+            margin-bottom: 8px;
+        }
+        
+        .file-description {
+            color: #777;
+            margin-bottom: 10px;
+        }
+        
+        .file-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .tag {
+            background: #e0e7ff;
+            color: #4c1d95;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+        
+        .error {
+            background: #fee;
+            color: #c33;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #c33;
+        }
+        
+        footer {
+            background: #2d3748;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .chart-container {
+            padding: 40px;
+        }
+        
+        .chart {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .chart-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📚 Tokyo-IA Digital Library</h1>
+            <p class="subtitle">Automated catalog and search system for all project files</p>
+        </header>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">Total Files</div>
+                <div class="stat-number" id="totalFiles">-</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Workflows</div>
+                <div class="stat-number" id="workflowCount">-</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Scripts</div>
+                <div class="stat-number" id="scriptCount">-</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Documentation</div>
+                <div class="stat-number" id="docCount">-</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Source Files</div>
+                <div class="stat-number" id="sourceCount">-</div>
+            </div>
+        </div>
+        
+        <div class="search-section">
+            <div class="search-box">
+                <input type="text" class="search-input" id="searchInput" placeholder="Search files by name, description, or tags...">
+                <span class="search-icon">🔍</span>
+            </div>
+            
+            <div class="filters">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="workflow">Workflows</button>
+                <button class="filter-btn" data-filter="script">Scripts</button>
+                <button class="filter-btn" data-filter="documentation">Documentation</button>
+                <button class="filter-btn" data-filter="source">Source Code</button>
+                <button class="filter-btn" data-filter="configuration">Configuration</button>
+            </div>
+        </div>
+        
+        <div class="files-list">
+            <div id="filesList" class="loading">Loading library data...</div>
+        </div>
+        
+        <footer>
+            <p>🤖 Automatically generated by Tokyo-IA Library Indexer</p>
+            <p>Last updated: <span id="lastUpdated">-</span></p>
+        </footer>
+    </div>
+    
+    <script>
+        let libraryData = null;
+        let currentFilter = 'all';
+        let searchQuery = '';
+        
+        // Load library data
+        async function loadLibraryData() {
+            try {
+                const response = await fetch('SEARCH_INDEX.json');
+                libraryData = await response.json();
+                updateStats();
+                displayFiles();
+                document.getElementById('lastUpdated').textContent = new Date(libraryData.generated).toLocaleString();
+            } catch (error) {
+                document.getElementById('filesList').innerHTML = `
+                    <div class="error">
+                        <strong>Error loading library data:</strong> ${error.message}
+                        <br><br>
+                        Please ensure SEARCH_INDEX.json exists and is accessible.
+                    </div>
+                `;
+            }
+        }
+        
+        // Update statistics
+        function updateStats() {
+            const stats = {
+                total: libraryData.files.length,
+                workflow: 0,
+                script: 0,
+                documentation: 0,
+                source: 0
+            };
+            
+            libraryData.files.forEach(file => {
+                const type = file.file.type;
+                if (stats[type] !== undefined) {
+                    stats[type]++;
+                }
+            });
+            
+            document.getElementById('totalFiles').textContent = stats.total;
+            document.getElementById('workflowCount').textContent = stats.workflow;
+            document.getElementById('scriptCount').textContent = stats.script;
+            document.getElementById('docCount').textContent = stats.documentation;
+            document.getElementById('sourceCount').textContent = stats.source;
+        }
+        
+        // Display files
+        function displayFiles() {
+            if (!libraryData) return;
+            
+            let files = libraryData.files;
+            
+            // Apply filter
+            if (currentFilter !== 'all') {
+                files = files.filter(file => file.file.type === currentFilter);
+            }
+            
+            // Apply search
+            if (searchQuery) {
+                const query = searchQuery.toLowerCase();
+                files = files.filter(file => {
+                    return file.file.name.toLowerCase().includes(query) ||
+                           file.content.description.toLowerCase().includes(query) ||
+                           file.classification.tags.some(tag => tag.toLowerCase().includes(query));
+                });
+            }
+            
+            // Display results
+            const filesList = document.getElementById('filesList');
+            
+            if (files.length === 0) {
+                filesList.innerHTML = '<div class="loading">No files found matching your criteria.</div>';
+                return;
+            }
+            
+            filesList.innerHTML = files.slice(0, 50).map(file => `
+                <div class="file-item">
+                    <div class="file-name">${escapeHtml(file.file.name)}</div>
+                    <div class="file-path">${escapeHtml(file.file.path)}</div>
+                    <div class="file-description">${escapeHtml(file.content.description)}</div>
+                    <div class="file-tags">
+                        <span class="tag">${file.file.type}</span>
+                        <span class="tag">${file.classification.purpose}</span>
+                        ${file.classification.tags.map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('')}
+                    </div>
+                </div>
+            `).join('');
+            
+            if (files.length > 50) {
+                filesList.innerHTML += '<div class="loading">Showing first 50 results...</div>';
+            }
+        }
+        
+        // Escape HTML
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        // Filter buttons
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentFilter = btn.dataset.filter;
+                displayFiles();
+            });
+        });
+        
+        // Search input
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            searchQuery = e.target.value;
+            displayFiles();
+        });
+        
+        // Load data on page load
+        loadLibraryData();
+    </script>
+</body>
+</html>

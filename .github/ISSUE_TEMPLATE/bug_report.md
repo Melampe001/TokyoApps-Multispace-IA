@@ -1,35 +1,63 @@
 ---
-name: Reportar un Bug
-about: Reporta un problema y ayuda a mejorar Tokyo-IA
-labels: bug, needs-review, automated-check
+name: Bug Report
+about: Create a report to help us improve
+title: '[BUG] '
+labels: bug
+assignees: ''
 ---
 
-# Descripción del Bug
+## Bug Description
 
-Por favor, describe el bug de manera clara y concisa. Incluye capturas de pantalla si es posible.
+<!-- A clear and concise description of what the bug is -->
 
-- [ ] ¿El bug ocurrió luego de un despliegue automatizado, cambio de bot o agente?
-- [ ] ¿El problema puede deberse a un flujo automatizado (CI/CD, agente, bot, etc)?
+## Component Affected
 
-## Pasos para reproducirlo
+<!-- Mark the relevant component with an 'x' -->
 
-1. 
-2. 
-3. 
+- [ ] Android App
+- [ ] Web Application
+- [ ] MCP Server
+- [ ] Other (please specify):
 
-## Comportamiento Esperado
+## Steps to Reproduce
 
-Describe qué debería pasar si el sistema funcionara correctamente.
+1. Go to '...'
+2. Click on '...'
+3. Scroll down to '...'
+4. See error
 
-## Logs, evidencias o mensajes relevantes
+## Expected Behavior
 
-Adjunta errores del sistema, registros y evidencia que facilite el trabajo de los agentes.
+<!-- A clear and concise description of what you expected to happen -->
 
-## Checklist de Automatización
-- [ ] ¿El proceso automático (bot/agente) relevante falló?
-- [ ] Se validó que la automatización esté funcionando en el entorno relacionado.
-- [ ] (Opcional) Propuesta de mejora para el agente o bot implicado
+## Actual Behavior
 
-# Información adicional
+<!-- A clear and concise description of what actually happened -->
 
-Agrega datos útiles: versión, sistema operativo, rama, entorno, información sobre agentes/bots involucrados, etc.
+## Screenshots
+
+<!-- If applicable, add screenshots to help explain your problem -->
+
+## Environment
+
+**Android App:**
+- Device: [e.g. Pixel 6]
+- Android Version: [e.g. 13]
+- App Version: [e.g. 1.0.0]
+
+**Web Application:**
+- Browser: [e.g. Chrome, Firefox]
+- Version: [e.g. 120]
+- OS: [e.g. Windows 11, macOS 14]
+
+**MCP Server:**
+- Node.js Version: [e.g. 20.10.0]
+- OS: [e.g. Ubuntu 22.04]
+
+## Additional Context
+
+<!-- Add any other context about the problem here -->
+
+## Possible Solution
+
+<!-- If you have suggestions on how to fix the bug, please describe them here -->
