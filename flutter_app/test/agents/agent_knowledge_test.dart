@@ -2,9 +2,9 @@
 library;
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:tokyo_ia_flutter/agents/agent_knowledge.dart';
-import 'package:tokyo_ia_flutter/models/agent_task.dart';
-import 'package:tokyo_ia_flutter/utils/constants.dart';
+import 'package:tokyo_ia/agents/agent_knowledge.dart';
+import 'package:tokyo_ia/models/agent_task.dart';
+import 'package:tokyo_ia/utils/constants.dart';
 
 void main() {
   group('Agent_Knowledge Tests', () {
