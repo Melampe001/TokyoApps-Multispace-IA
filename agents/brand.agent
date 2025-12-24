@@ -1,0 +1,207 @@
+---
+# Tokyo-IA Brand Agent Configuration
+# This agent extracts brand design tokens from Flutter applications
+# For integration with Tokyo-IA Agent Pipeline System
+---
+
+# 🎨 Brand Agent
+
+## Agent Identity
+
+**Name**: Brand Agent
+**Role**: Design Token Extraction Specialist
+**Version**: 1.0.0
+**Status**: Active
+
+## Purpose
+
+Extracts and standardizes brand design tokens (colors, typography, spacing, elevation, border radius) from Flutter applications to enable consistent cross-platform design implementation.
+
+## Input Requirements
+
+### Primary Input
+- **File**: `simulator/output/design_model.json`
+- **Format**: JSON
+- **Required Fields**:
+  - `metadata.project_name` - Project identifier
+  - `metadata.flutter_version` - Flutter version
+  - Additional metadata for context
+
+### Secondary Input
+- **Directory**: `flutter_app/lib/`
+- **Purpose**: Extract theme configuration from Flutter source code
+- **Key Files**: `main.dart`, theme configuration files
+
+## Output Specification
+
+### Primary Output
+- **File**: `simulator/output/brand_tokens.json`
+- **Format**: JSON
+- **Schema**:
+```json
+{
+  "project_name": "string",
+  "generated_at": "ISO8601 timestamp",
+  "colors": {
+    "primary": "hex color",
+    "secondary": "hex color",
+    "error": "hex color",
+    "background": "hex color",
+    "surface": "hex color",
+    "on_primary": "hex color",
+    "on_secondary": "hex color",
+    "on_error": "hex color",
+    "on_background": "hex color",
+    "on_surface": "hex color"
+  },
+  "typography": {
+    "heading1": {"font_family": "string", "font_weight": "string", "font_size": number, "line_height": number},
+    "heading2": {...},
+    "heading3": {...},
+    "body1": {...},
+    "body2": {...},
+    "caption": {...}
+  },
+  "spacing": {
+    "xs": number,
+    "sm": number,
+    "md": number,
+    "base": number,
+    "lg": number,
+    "xl": number,
+    "2xl": number,
+    "3xl": number
+  },
+  "elevation": {
+    "none": number,
+    "low": number,
+    "medium": number,
+    "high": number,
+    "highest": number
+  },
+  "border_radius": {
+    "sm": number,
+    "md": number,
+    "lg": number,
+    "xl": number,
+    "full": number
+  }
+}
+```
+
+## Agent Rules
+
+### Core Principles
+1. **Consistency First**: Extract and normalize design tokens to ensure cross-platform consistency
+2. **Material Design Alignment**: Default to Material Design 3 guidelines when explicit theme is not found
+3. **Semantic Naming**: Use semantic color names (primary, secondary) rather than specific color values in keys
+4. **Comprehensive Coverage**: Extract all major design token categories
+
+### Extraction Rules
+1. **Color Extraction**:
+   - Parse Flutter `ThemeData` and `ColorScheme` definitions
+   - Detect seed colors from `Colors.*` constants
+   - Map Flutter colors to hex values
+   - Provide sensible defaults if theme is not explicit
+
+2. **Typography Rules**:
+   - Extract font families from theme
+   - Default to Roboto if not specified (Material Design standard)
+   - Map Flutter TextTheme to standard heading/body hierarchy
+   - Include font weight, size, and line height
+
+3. **Spacing System**:
+   - Use 4px base unit (Material Design standard)
+   - Provide 8-step spacing scale
+   - Ensure mathematical consistency (each step is 4px or power of 2)
+
+4. **Elevation and Depth**:
+   - Map Flutter elevation values (0-24) to simplified scale
+   - Provide 5 semantic elevation levels
+
+5. **Border Radius**:
+   - Extract from theme or use Material Design 3 defaults
+   - Provide 5 radius options including "full" for circular elements
+
+### Error Handling
+1. If design_model.json is missing, exit with clear error message
+2. If Flutter source is inaccessible, use Material Design defaults
+3. Log all extraction decisions for debugging
+4. Never fail silently - always produce valid output or clear error
+
+### Quality Standards
+- Output must be valid JSON
+- All color values must be valid hex format (#RRGGBB)
+- All numeric values must be positive integers
+- Typography must specify all four properties for each style
+- Generated timestamp must be ISO 8601 UTC format
+
+## Integration Points
+
+### Upstream Dependencies
+- **Simulator Agent**: Provides design_model.json with project metadata
+- **Flutter App**: Source of truth for theme configuration
+
+### Downstream Consumers
+- **AutoDev Agent**: Uses brand tokens to generate platform-specific styles
+- **Emulator**: Validates consistency of generated code
+- **Human Designers**: Reference for design system documentation
+
+## Execution
+
+### Command
+```bash
+bash agents/brand_executor.sh
+```
+
+### Execution Context
+- Working Directory: Project root
+- Required Permissions: Read access to simulator/output/ and flutter_app/
+- Required Tools: `jq`, `grep`, `bash 4.0+`
+
+### Performance Expectations
+- Execution Time: < 5 seconds
+- Memory Usage: < 50MB
+- Output Size: ~ 2-5KB JSON file
+
+## Validation
+
+### Success Criteria
+1. brand_tokens.json is created in simulator/output/
+2. File contains valid JSON
+3. All required schema fields are present
+4. Color values are valid hex codes
+5. Numeric values are positive
+6. Typography has complete definitions
+
+### Testing
+```bash
+# Verify output exists
+test -f simulator/output/brand_tokens.json
+
+# Validate JSON
+jq empty simulator/output/brand_tokens.json
+
+# Check required fields
+jq -e '.colors.primary, .typography.heading1, .spacing.base' simulator/output/brand_tokens.json
+```
+
+## Maintenance
+
+### Version History
+- **v1.0.0** (2024): Initial implementation with Material Design 3 support
+
+### Future Enhancements
+- Dynamic theme extraction from multiple theme files
+- Support for dark mode / light mode variants
+- Custom font extraction from pubspec.yaml
+- Theme animation token extraction
+- Extended color palette support (gradients, shadows)
+
+## Support
+
+For issues or questions:
+- Check logs in simulator/output/
+- Review AGENTS_README.md for pipeline documentation
+- Verify flutter_app structure is correct
+- Ensure simulator has run successfully first

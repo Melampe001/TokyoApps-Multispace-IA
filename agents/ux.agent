@@ -1,0 +1,313 @@
+---
+# Tokyo-IA UX Agent Configuration
+# This agent analyzes user experience patterns from Flutter applications
+# For integration with Tokyo-IA Agent Pipeline System
+---
+
+# 🧭 UX Agent
+
+## Agent Identity
+
+**Name**: UX Agent
+**Role**: User Experience & Navigation Pattern Analyst
+**Version**: 1.0.0
+**Status**: Active
+
+## Purpose
+
+Analyzes and documents user experience patterns, navigation flows, state management architecture, and interaction models from Flutter applications to guide cross-platform implementation decisions.
+
+## Input Requirements
+
+### Primary Input
+- **File**: `simulator/output/design_model.json`
+- **Format**: JSON
+- **Required Fields**:
+  - `routes` - Array of route paths
+  - `state_management.type` - State management system used
+  - `metadata.stateful_widget_count` - Number of stateful components
+  - `ui_intent` - Flags for navigation, responsiveness, accessibility
+
+### Secondary Input
+- **Directory**: `flutter_app/lib/`
+- **Purpose**: Deep analysis of navigation patterns and interactions
+- **Analysis Areas**:
+  - Navigator API usage patterns
+  - State management implementation
+  - User interaction handlers
+  - Gesture detectors
+
+## Output Specification
+
+### Primary Output
+- **File**: `simulator/output/ux_flow.json`
+- **Format**: JSON
+- **Schema**:
+```json
+{
+  "generated_at": "ISO8601 timestamp",
+  "navigation": {
+    "type": "basic|imperative|named_routes|declarative",
+    "routes": ["array of route paths"],
+    "patterns": {
+      "push_count": number,
+      "push_named_count": number,
+      "pop_count": number,
+      "replace_count": number
+    }
+  },
+  "state_management": {
+    "type": "setState|provider|riverpod|bloc|none",
+    "stateful_widgets": number,
+    "details": {
+      "description": "string",
+      "complexity": "low|medium|high"
+    }
+  },
+  "user_flow": {
+    "entry_point": "string",
+    "primary_actions": ["array of action types"],
+    "example_flow": ["array of step descriptions"]
+  },
+  "state_machine": {
+    "states": [
+      {
+        "name": "string",
+        "description": "string"
+      }
+    ],
+    "transitions": [
+      {
+        "from": "string",
+        "to": "string",
+        "trigger": "string"
+      }
+    ]
+  },
+  "interactions": ["array of interaction types"]
+}
+```
+
+## Agent Rules
+
+### Core Principles
+1. **User-Centric Analysis**: Focus on actual user journeys and interaction patterns
+2. **Pattern Recognition**: Identify common UX patterns and anti-patterns
+3. **Cross-Platform Mapping**: Document how UX translates to each platform
+4. **State Complexity**: Assess state management complexity for implementation guidance
+
+### Analysis Rules
+
+#### 1. Navigation Pattern Detection
+- **Basic**: Minimal navigation, mostly single-screen apps
+- **Imperative**: Using Navigator.push with MaterialPageRoute
+- **Named Routes**: Using pushNamed with route table
+- **Declarative**: Modern declarative navigation (Router API, go_router)
+
+**Detection Logic**:
+```bash
+# If pushNamed found -> named_routes
+# Else if Navigator.push found -> imperative
+# Else -> basic
+```
+
+#### 2. State Management Classification
+- **setState**: Built-in Flutter state management
+- **provider**: Provider package for dependency injection
+- **riverpod**: Modern provider evolution
+- **bloc**: Business Logic Component pattern
+- **none**: Stateless application
+
+**Complexity Assessment**:
+- **Low**: < 5 stateful widgets, simple setState
+- **Medium**: 5-15 stateful widgets, provider/riverpod
+- **High**: > 15 stateful widgets, complex state, bloc/redux
+
+#### 3. Interaction Type Detection
+- **tap**: onPressed, GestureDetector tap handlers
+- **long_press**: onLongPress handlers
+- **double_tap**: onDoubleTap handlers
+- **drag**: Draggable, DragTarget widgets
+- **gesture**: Pan, scale, rotation gestures
+- **text_input**: TextField, TextFormField
+
+#### 4. User Flow Documentation
+- Identify entry point (typically home screen)
+- Map primary user actions
+- Document common user journeys
+- Create example flow sequences
+
+#### 5. State Machine Modeling
+Standard states:
+- **initial**: App launch state
+- **loading**: Data fetching/processing
+- **content**: Normal content display
+- **error**: Error state
+
+Standard transitions:
+- initial → loading (app_start)
+- loading → content (data_loaded)
+- loading → error (load_failed)
+- error → loading (retry)
+
+### Error Handling
+1. If design_model.json missing, exit with error
+2. If flutter_app/ directory inaccessible, use minimal analysis
+3. If no navigation found, document as single-screen app
+4. Always produce valid JSON output
+
+### Quality Standards
+- Output must be valid JSON
+- Navigation type must be one of defined options
+- State management type must be from known systems
+- All arrays must be valid (empty array if no data)
+- Timestamps in ISO 8601 UTC format
+- Descriptions must be clear and actionable
+
+## Integration Points
+
+### Upstream Dependencies
+- **Simulator Agent**: Provides design_model.json with routes and state info
+- **Flutter App**: Source code for deep navigation analysis
+
+### Downstream Consumers
+- **Bridge Agent**: Uses navigation patterns for platform mapping
+- **AutoDev Agent**: Implements navigation in generated code
+- **Emulator**: Validates navigation structure
+- **Product Managers**: UX flow documentation
+
+## Execution
+
+### Command
+```bash
+bash agents/ux_executor.sh
+```
+
+### Execution Context
+- Working Directory: Project root
+- Required Permissions: Read access to simulator/output/ and flutter_app/
+- Required Tools: `jq`, `grep`, `bash 4.0+`, `sort`, `paste`
+
+### Performance Expectations
+- Execution Time: < 10 seconds
+- Memory Usage: < 100MB
+- Output Size: ~ 3-8KB JSON file
+
+## Validation
+
+### Success Criteria
+1. ux_flow.json created in simulator/output/
+2. Valid JSON structure
+3. Navigation type correctly identified
+4. State management accurately detected
+5. At least one interaction type documented
+6. State machine has valid transitions
+
+### Testing
+```bash
+# Verify output
+test -f simulator/output/ux_flow.json
+
+# Validate JSON
+jq empty simulator/output/ux_flow.json
+
+# Check navigation type is valid
+jq -e '.navigation.type | test("basic|imperative|named_routes|declarative")' simulator/output/ux_flow.json
+
+# Verify state management
+jq -e '.state_management.type' simulator/output/ux_flow.json
+
+# Check interactions array
+jq -e '.interactions | length >= 1' simulator/output/ux_flow.json
+```
+
+## Use Cases
+
+### 1. Cross-Platform Navigation Implementation
+**Scenario**: Generate platform-specific navigation
+**Usage**: AutoDev agent reads navigation.type and patterns to implement:
+- Android: Fragment navigation or Compose navigation
+- iOS: UINavigationController or SwiftUI NavigationStack
+- Web: React Router with appropriate pattern
+
+### 2. State Management Architecture Selection
+**Scenario**: Choose appropriate state solution for each platform
+**Usage**: Based on state_management.type and complexity:
+- setState → Simple local state
+- provider → Context providers, ViewModels
+- riverpod → DI containers
+- bloc → State streams, Redux patterns
+
+### 3. User Journey Documentation
+**Scenario**: Document UX for design reviews
+**Usage**: user_flow section provides:
+- Entry points for QA testing
+- Primary actions for feature tracking
+- Example flows for user documentation
+
+### 4. Interaction Implementation
+**Scenario**: Ensure platform-specific interaction patterns
+**Usage**: interactions array guides:
+- Touch event handling
+- Gesture recognition setup
+- Input field configuration
+
+## Best Practices
+
+### For Agent Developers
+1. Always verify design_model.json exists before processing
+2. Use grep with error suppression (2>/dev/null) for file searches
+3. Provide sensible defaults for missing data
+4. Log detection decisions for debugging
+5. Ensure pipefail is handled correctly for grep commands
+
+### For Pipeline Users
+1. Review navigation type matches actual app behavior
+2. Verify state management complexity is accurate
+3. Check that all major interactions are captured
+4. Validate user flow reflects actual user journeys
+5. Use output to guide platform-specific decisions
+
+## Troubleshooting
+
+### Common Issues
+
+**Issue**: Navigation type is "basic" but app has multiple screens
+- **Cause**: Routes not found in code search
+- **Solution**: Check that navigation uses standard Flutter APIs
+
+**Issue**: State management shows "none" but app has state
+- **Cause**: Using custom state solution or inline state
+- **Solution**: Review Flutter app for non-standard state patterns
+
+**Issue**: Interactions array is minimal
+- **Cause**: Using custom gesture handlers
+- **Solution**: App may need manual interaction documentation
+
+**Issue**: Stateful widget count is 0
+- **Cause**: App is fully stateless or uses hooks
+- **Solution**: Verify app architecture and update detection logic
+
+## Maintenance
+
+### Version History
+- **v1.0.0** (2024): Initial implementation with Flutter 3.x support
+
+### Future Enhancements
+- Deep link detection and documentation
+- Accessibility pattern analysis
+- Animation and transition detection
+- Form validation pattern recognition
+- Error handling pattern extraction
+- Performance bottleneck identification
+- A/B testing integration points
+- Analytics event mapping
+
+## Support
+
+For issues or questions:
+- Review execution logs in simulator/output/
+- Check AGENTS_README.md for pipeline flow
+- Verify design_model.json has required fields
+- Ensure flutter_app/lib/ contains source code
+- Validate grep and jq are available

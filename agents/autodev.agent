@@ -1,0 +1,525 @@
+---
+# Tokyo-IA AutoDev Agent Configuration
+# This agent generates production-ready native code for multiple platforms
+# For integration with Tokyo-IA Agent Pipeline System
+---
+
+# 🤖 AutoDev Agent
+
+## Agent Identity
+
+**Name**: AutoDev Agent
+**Role**: Multi-Platform Code Generation Specialist
+**Version**: 1.0.0
+**Status**: Active
+
+## Purpose
+
+Generates production-ready native code for Android (Kotlin), iOS (Swift), and Web (React/TypeScript) platforms based on Flutter design models, brand tokens, UX patterns, and platform bridge mappings. The final step in the Tokyo-IA automated code generation pipeline.
+
+## Input Requirements
+
+### Required Inputs
+1. **File**: `simulator/output/platform_bridge.json`
+   - Widget-to-platform component mappings
+   - State management patterns
+   - Navigation patterns
+
+2. **File**: `simulator/output/brand_tokens.json`
+   - Color palette (primary, secondary, etc.)
+   - Typography system
+   - Spacing, elevation, border radius
+
+### Optional Inputs
+3. **File**: `simulator/output/ux_flow.json`
+   - Navigation structure
+   - User interaction patterns
+   - State management details
+
+4. **File**: `simulator/output/design_model.json`
+   - Project metadata
+   - Platform targets
+
+### Configuration
+- **Environment Variable**: `TARGET_PLATFORM`
+  - Values: `all` (default), `android`, `ios`, `web`
+  - Controls which platforms to generate code for
+
+## Output Specification
+
+### Output Structure
+```
+output/
+├── android/
+│   ├── MainActivity.kt
+│   └── activity_main.xml
+├── ios/
+│   └── MainViewController.swift
+└── web/
+    ├── App.tsx
+    └── App.css
+```
+
+### Android Output
+
+#### MainActivity.kt
+- **Language**: Kotlin
+- **Purpose**: Main activity implementation
+- **Structure**:
+  - Package declaration (com.tokyoia.app)
+  - Imports (AppCompat, Material Components, CoordinatorLayout)
+  - MainActivity class extending AppCompatActivity
+  - onCreate method with initialization
+  - Toolbar setup
+  - Content setup
+- **Styling**: Uses colors from brand_tokens.json
+- **Comments**: Generated timestamp, project name
+
+#### activity_main.xml
+- **Format**: Android XML Layout
+- **Purpose**: Activity layout definition
+- **Structure**:
+  - XML declaration
+  - CoordinatorLayout root
+  - AppBarLayout with MaterialToolbar
+  - Content FrameLayout
+  - TextView for main content
+- **Styling**: Applies primary color from brand tokens
+- **Layout Behavior**: Scrolling behavior configured
+
+### iOS Output
+
+#### MainViewController.swift
+- **Language**: Swift 5+
+- **Purpose**: Main view controller implementation
+- **Structure**:
+  - UIKit import
+  - MainViewController class extending UIViewController
+  - UI component properties
+  - viewDidLoad lifecycle method
+  - setupUI method
+  - setupConstraints method
+  - UIColor extension for hex color support
+- **Features**:
+  - Auto Layout constraints
+  - Navigation bar configuration
+  - Custom color from hex
+- **Styling**: Uses colors from brand_tokens.json
+
+### Web Output
+
+#### App.tsx
+- **Language**: TypeScript + React
+- **Purpose**: Main React app component
+- **Structure**:
+  - React and CSS imports
+  - Functional component with React.FC type
+  - JSX with semantic HTML
+  - Scaffold structure (main > header > container > content)
+- **Features**:
+  - Semantic HTML5 elements
+  - Accessible structure
+  - Component export
+- **Styling**: References App.css
+
+#### App.css
+- **Language**: CSS3
+- **Purpose**: Application styling
+- **Structure**:
+  - Scaffold layout (flexbox)
+  - App bar styling
+  - Container centering
+  - Content styling
+- **Styling**: Uses colors from brand_tokens.json
+- **Layout**: Responsive flexbox layout
+
+## Agent Rules
+
+### Core Principles
+1. **Production Quality**: Generate code that follows platform best practices
+2. **Maintainability**: Clean, readable, well-structured code
+3. **Modern APIs**: Use current platform APIs and patterns
+4. **Type Safety**: Use strong typing (Kotlin, Swift, TypeScript)
+5. **Consistency**: Apply brand tokens consistently across platforms
+
+### Code Generation Rules
+
+#### 1. Platform-Specific Best Practices
+
+**Android (Kotlin)**
+- Use Material Design 3 components
+- Follow Android Architecture Components patterns
+- Use ViewBinding or data binding where appropriate
+- Implement proper lifecycle handling
+- Use CoordinatorLayout for coordinated behaviors
+- Apply theme colors from resources
+
+**iOS (Swift)**
+- Use modern Swift syntax (5.0+)
+- Follow Apple Human Interface Guidelines
+- Use Auto Layout programmatically
+- Implement proper view lifecycle
+- Use computed properties for views
+- Support dark mode considerations
+
+**Web (React + TypeScript)**
+- Use functional components with hooks
+- Apply semantic HTML5 elements
+- Implement responsive design
+- Use CSS flexbox for layout
+- Include TypeScript types
+- Follow React best practices
+
+#### 2. Brand Token Application
+
+**Colors**
+- Extract from `brand_tokens.json`
+- Apply primary color to headers/toolbars
+- Use semantic color names
+- Format: Android (#RRGGBB in XML), iOS (hex parser), Web (CSS hex)
+
+**Typography**
+- Use system fonts as base (Roboto, San Francisco, system-ui)
+- Apply font sizes from brand tokens
+- Respect platform text style hierarchies
+
+**Spacing**
+- Use spacing scale from brand tokens
+- Apply consistent padding/margins
+- Platform conversion: dp (Android), points (iOS), px/rem (Web)
+
+#### 3. Widget Mapping Application
+
+**Scaffold → Platform Components**
+- Android: CoordinatorLayout
+- iOS: UIViewController
+- Web: `<main>` semantic element
+
+**AppBar → Platform Components**
+- Android: MaterialToolbar in AppBarLayout
+- iOS: UINavigationBar
+- Web: `<header>` element
+
+**Content → Platform Components**
+- Android: FrameLayout with behavior
+- iOS: UIView subviews
+- Web: `<div>` containers with flexbox
+
+#### 4. Code Quality Standards
+
+**Documentation**
+- File headers with generation info
+- Timestamp in UTC ISO 8601 format
+- Project name reference
+- Auto-generated notice
+
+**Code Style**
+- Kotlin: 4-space indentation, camelCase
+- Swift: 4-space indentation, camelCase
+- TypeScript: 2-space indentation, camelCase
+- XML: 4-space indentation, lowercase tags
+
+**Safety**
+- No hardcoded secrets
+- No deprecated APIs
+- Proper null safety
+- Type declarations
+
+### Error Handling
+1. Verify all required input files exist before generation
+2. Exit with clear error if inputs missing
+3. Validate color format before application
+4. Ensure output directories are created
+5. Handle platform selection (TARGET_PLATFORM)
+
+### Output Validation
+- Generated files must be syntactically valid
+- Colors must be valid hex format
+- Package/import statements must be complete
+- Indentation must be consistent
+- Encoding must be UTF-8
+
+## Integration Points
+
+### Upstream Dependencies
+- **Simulator**: Provides design model with project metadata
+- **Brand Agent**: Provides brand tokens (colors, typography, spacing)
+- **UX Agent**: Provides navigation and state patterns (optional)
+- **Bridge Agent**: Provides widget-to-platform mappings
+
+### Downstream Consumers
+- **Emulator**: Validates generated code for compliance
+- **Developers**: Integrate generated code into projects
+- **CI/CD**: Automated code generation pipelines
+- **Documentation**: Generated code examples
+
+## Execution
+
+### Command
+```bash
+# Generate for all platforms
+bash agents/autodev_executor.sh
+
+# Generate for specific platform
+TARGET_PLATFORM=android bash agents/autodev_executor.sh
+TARGET_PLATFORM=ios bash agents/autodev_executor.sh
+TARGET_PLATFORM=web bash agents/autodev_executor.sh
+```
+
+### Execution Context
+- Working Directory: Project root
+- Required Permissions: 
+  - Read: simulator/output/
+  - Write: output/
+- Required Tools: `bash 4.0+`, `jq`, `cat`, `mkdir`, `date`
+
+### Performance Expectations
+- Execution Time: < 5 seconds
+- Memory Usage: < 50MB
+- Output Size: 
+  - Android: ~5KB (2 files)
+  - iOS: ~4KB (1 file)
+  - Web: ~3KB (2 files)
+  - Total: ~12KB
+
+## Validation
+
+### Success Criteria
+1. Output directories created (android/, ios/, web/)
+2. All files generated for selected platform(s)
+3. Files contain valid syntax for target language
+4. Brand tokens correctly applied
+5. No compilation/parsing errors
+6. Proper file encodings (UTF-8)
+
+### Testing
+
+#### File Existence
+```bash
+# Android
+test -f output/android/MainActivity.kt
+test -f output/android/activity_main.xml
+
+# iOS
+test -f output/ios/MainViewController.swift
+
+# Web
+test -f output/web/App.tsx
+test -f output/web/App.css
+```
+
+#### Syntax Validation
+```bash
+# Android - Check valid Kotlin syntax markers
+grep -q "package com.tokyoia.app" output/android/MainActivity.kt
+grep -q "class MainActivity : AppCompatActivity" output/android/MainActivity.kt
+
+# Android - Check valid XML
+grep -q '<?xml version="1.0"' output/android/activity_main.xml
+grep -q '</androidx.coordinatorlayout.widget.CoordinatorLayout>' output/android/activity_main.xml
+
+# iOS - Check valid Swift syntax
+grep -q "import UIKit" output/ios/MainViewController.swift
+grep -q "class MainViewController: UIViewController" output/ios/MainViewController.swift
+
+# Web - Check valid TypeScript/React
+grep -q "import React from 'react'" output/web/App.tsx
+grep -q "const App: React.FC" output/web/App.tsx
+```
+
+#### Brand Token Application
+```bash
+# Extract primary color from brand tokens
+PRIMARY=$(jq -r '.colors.primary' simulator/output/brand_tokens.json)
+
+# Verify color applied in Android
+grep -q "$PRIMARY" output/android/activity_main.xml
+
+# Verify color applied in iOS
+grep -q "$PRIMARY" output/ios/MainViewController.swift
+
+# Verify color applied in Web
+grep -q "$PRIMARY" output/web/App.css
+```
+
+## Use Cases
+
+### 1. Rapid Prototyping
+**Scenario**: Design team creates Flutter prototype, needs native versions
+**Process**:
+1. Flutter app in flutter_app/
+2. Run pipeline.sh
+3. Get native code in output/
+4. Integrate into native projects
+5. Customize as needed
+
+### 2. Multi-Platform Consistency
+**Scenario**: Ensure UI consistency across platforms
+**Process**:
+1. Define Flutter as source of truth
+2. Extract brand tokens and UX patterns
+3. Generate platform code with consistent styling
+4. Validate with emulator
+
+### 3. Design System Implementation
+**Scenario**: Implement design system across platforms
+**Process**:
+1. Document design in Flutter
+2. Generate brand tokens
+3. Create platform components
+4. Share with development teams
+
+### 4. Migration Kickstart
+**Scenario**: Migrating from Flutter to native
+**Process**:
+1. Analyze existing Flutter app
+2. Generate equivalent native screens
+3. Use as starting point for migration
+4. Gradually enhance with platform features
+
+## Advanced Features
+
+### Component Generation (Current)
+- Scaffold/AppBar/Content structure
+- Basic text display
+- Toolbar/navigation bar setup
+- Responsive container layout
+
+### Future Enhancements
+
+#### Phase 2: Enhanced Components
+- ListView/RecyclerView generation
+- Form fields with validation
+- Image handling
+- Button actions
+
+#### Phase 3: Navigation Implementation
+- Multi-screen navigation
+- Route definitions
+- Deep linking setup
+- Navigation transitions
+
+#### Phase 4: State Management
+- State management setup
+- Data binding
+- API integration stubs
+- Loading/error states
+
+#### Phase 5: Advanced Features
+- Animation implementation
+- Gesture handling
+- Platform-specific features
+- Accessibility enhancements
+
+## Best Practices
+
+### For Agent Developers
+1. Always validate inputs before generation
+2. Use template heredocs for code generation
+3. Apply brand tokens via variable substitution
+4. Generate idiomatic platform code
+5. Include timestamps for traceability
+6. Handle platform selection gracefully
+7. Create output directories if missing
+
+### For Pipeline Users
+1. Review generated code before integration
+2. Customize for specific project needs
+3. Add business logic to generated scaffolds
+4. Maintain separation between generated and custom code
+5. Use generated code as learning examples
+6. Report generation issues for improvement
+
+### For Code Integration
+1. **Android**: 
+   - Copy to app/src/main/java/com/tokyoia/app/
+   - Copy XML to app/src/main/res/layout/
+   - Add dependencies to build.gradle
+   
+2. **iOS**:
+   - Add to Xcode project
+   - Configure navigation controller
+   - Set as initial view controller
+   
+3. **Web**:
+   - Copy to React src/ directory
+   - Import in index.tsx
+   - Add to routing configuration
+
+## Troubleshooting
+
+### Common Issues
+
+**Issue**: Generated code missing brand colors
+- **Cause**: brand_tokens.json not found or invalid
+- **Solution**: Verify brand agent ran successfully
+
+**Issue**: Invalid package names in Android
+- **Cause**: Project name not extracted correctly
+- **Solution**: Check design_model.json has project_name field
+
+**Issue**: Swift hex color conversion fails
+- **Cause**: Invalid hex color format in brand tokens
+- **Solution**: Verify colors are valid #RRGGBB format
+
+**Issue**: React component doesn't compile
+- **Cause**: TypeScript type mismatch
+- **Solution**: Check React.FC declaration and JSX structure
+
+**Issue**: Files not generated for selected platform
+- **Cause**: TARGET_PLATFORM environment variable not set correctly
+- **Solution**: Verify env var or use "all" for all platforms
+
+## Maintenance
+
+### Version History
+- **v1.0.0** (2024): Initial implementation with basic scaffold generation
+
+### Roadmap
+- v1.1.0: Form component generation
+- v1.2.0: Navigation implementation
+- v1.3.0: State management setup
+- v1.4.0: List view generation
+- v2.0.0: Full component library support
+
+### Template Updates
+
+When updating generation templates:
+1. Test on all three platforms
+2. Verify syntax validity
+3. Check brand token application
+4. Update version number
+5. Document changes
+6. Run emulator validation
+
+## Performance Optimization
+
+### Current Performance
+- Single-threaded generation
+- In-memory template processing
+- Sequential platform generation
+
+### Optimization Opportunities
+- Parallel platform generation
+- Template caching
+- Incremental generation
+- Delta updates for existing files
+
+## Security Considerations
+
+1. **No Secrets**: Never include API keys or credentials
+2. **Input Validation**: Validate all input JSON files
+3. **Output Sanitization**: Escape special characters in generated code
+4. **Path Safety**: Use absolute paths, prevent directory traversal
+5. **Permissions**: Only write to output/ directory
+
+## Support
+
+For issues or questions:
+- Check input files exist and are valid JSON
+- Verify brand_tokens.json has required color fields
+- Review platform_bridge.json for widget mappings
+- Check execution logs for error messages
+- Consult AGENTS_README.md for pipeline flow
+- Review generated code for syntax errors
+- Test with emulator for validation
