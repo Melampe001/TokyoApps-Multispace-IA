@@ -1,0 +1,82 @@
+name: Flutter Build Agent
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths:
+      - 'flutter_app/**'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'flutter_app/**'
+  workflow_dispatch:
+
+jobs:
+  build_android:
+    name: Build Android App Bundle
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+      
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.x'
+          channel: 'stable'
+          cache: true
+      
+      - name: Verify Flutter installation
+        run: |
+          flutter --version
+          flutter doctor -v
+      
+      - name: Get dependencies
+        working-directory: flutter_app
+        run: flutter pub get
+      
+      - name: Run flutter build appbundle --release
+        working-directory: flutter_app
+        run: flutter build appbundle --release
+      
+      - name: Verify .aab output
+        working-directory: flutter_app
+        run: |
+          AAB_FILE="build/app/outputs/bundle/release/app-release.aab"
+          if [ -f "$AAB_FILE" ]; then
+            echo "✓ SUCCESS: App bundle generated"
+            AAB_SIZE=$(stat -c%s "$AAB_FILE")
+            echo "  Location: $AAB_FILE"
+            echo "  Size: $AAB_SIZE bytes"
+            ls -lh "$AAB_FILE"
+          else
+            echo "BUILD FAILED: .aab file not found"
+            exit 1
+          fi
+      
+      - name: Upload AAB artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release-bundle
+          path: flutter_app/build/app/outputs/bundle/release/app-release.aab
+          retention-days: 30
+      
+      - name: Build Status Summary
+        if: always()
+        run: |
+          if [ -f "flutter_app/build/app/outputs/bundle/release/app-release.aab" ]; then
+            echo "## ✅ BUILD SUCCESS" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "Android App Bundle (.aab) generated successfully" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "## ❌ BUILD FAILED" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "Failed to generate .aab file" >> $GITHUB_STEP_SUMMARY
+          fi
