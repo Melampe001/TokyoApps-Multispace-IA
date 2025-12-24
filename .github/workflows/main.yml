@@ -29,9 +29,7 @@ jobs:
           go-version: '1.24'
 
       - name: Format check
-        run: |
-          go fmt ./...
-          git diff --exit-code
+        run: make fmt-check
 
       - name: Run tests
         run: make test
