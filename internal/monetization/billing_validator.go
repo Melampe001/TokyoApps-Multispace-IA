@@ -13,7 +13,7 @@ import (
 
 // BillingValidator validates Google Play billing purchases
 type BillingValidator struct {
-	publicKey *rsa.PublicKey
+	publicKey   *rsa.PublicKey
 	packageName string
 }
 
@@ -44,7 +44,7 @@ func NewBillingValidator(base64PublicKey string, packageName string) (*BillingVa
 	}
 
 	return &BillingValidator{
-		publicKey: rsaPubKey,
+		publicKey:   rsaPubKey,
 		packageName: packageName,
 	}, nil
 }
