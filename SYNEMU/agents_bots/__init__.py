@@ -20,6 +20,11 @@ from .synemu_supreme_orchestrator import (
     AgentStatus,
     QualityLevel
 )
+from .synemu_compliance_validator import (
+    SynemuComplianceValidator,
+    ComplianceStandard,
+    ComplianceLevel
+)
 from .synemu_agent2d_flare import Synemu2DFlareAgent
 from .synemu_agent3d_unity import Synemu3DUnityAgent, PrimitiveType
 from .synemu_agent_video_viz import SynemuVideoVizAgent, VideoFormat, RenderQuality
@@ -40,6 +45,11 @@ __all__ = [
     "AnalysisMode",
     "AgentStatus",
     "QualityLevel",
+    
+    # Enterprise
+    "SynemuComplianceValidator",
+    "ComplianceStandard",
+    "ComplianceLevel",
     
     # Agents
     "Synemu2DFlareAgent",
