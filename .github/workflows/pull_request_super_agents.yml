@@ -43,6 +43,7 @@ permissions:
   pull-requests: write
   checks: write
   statuses: write
+  security-events: write
 
 # Configuración de concurrencia: cancela ejecuciones previas del mismo PR
 concurrency:
@@ -137,12 +138,21 @@ jobs:
   lint-python:
     name: 🐍 Lint Python
     runs-on: ubuntu-latest
-    if: contains(github.event.pull_request.changed_files, '.py') || contains(github.event.pull_request.head.ref, 'python')
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Check for Python files
+        id: check-python
+        run: |
+          if find . -name "*.py" -type f | grep -q .; then
+            echo "has_python=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_python=false" >> $GITHUB_OUTPUT
+          fi
+
       - name: Set up Python
+        if: steps.check-python.outputs.has_python == 'true'
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
@@ -150,25 +160,22 @@ jobs:
           cache-dependency-path: '**/requirements*.txt'
 
       - name: Install linting tools
+        if: steps.check-python.outputs.has_python == 'true'
         run: |
           python -m pip install --upgrade pip
           pip install black flake8 pylint bandit
 
       - name: Run black
+        if: steps.check-python.outputs.has_python == 'true'
         run: |
-          if find . -name "*.py" -type f | grep -q .; then
-            black --check --diff .
-          else
-            echo "No Python files found, skipping"
-          fi
+          black --check --diff .
         continue-on-error: false
 
       - name: Run flake8
+        if: steps.check-python.outputs.has_python == 'true'
         run: |
-          if find . -name "*.py" -type f | grep -q .; then
-            flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-            flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-          fi
+          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
         continue-on-error: true
 
   # ==========================================================================
@@ -179,12 +186,21 @@ jobs:
   lint-dart:
     name: 🎯 Lint Dart
     runs-on: ubuntu-latest
-    if: contains(github.event.pull_request.changed_files, '.dart') || contains(github.event.pull_request.changed_files, 'pubspec.yaml')
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Check for Dart files or pubspec
+        id: check-dart
+        run: |
+          if [ -f "pubspec.yaml" ] || find . -name "*.dart" -type f | grep -q .; then
+            echo "has_dart=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_dart=false" >> $GITHUB_OUTPUT
+          fi
+
       - name: Set up Flutter
+        if: steps.check-dart.outputs.has_dart == 'true'
         uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.16.0'
@@ -192,12 +208,14 @@ jobs:
           cache: true
 
       - name: Get dependencies
+        if: steps.check-dart.outputs.has_dart == 'true'
         run: |
           if [ -f "pubspec.yaml" ]; then
             flutter pub get
           fi
 
       - name: Run dart analyze
+        if: steps.check-dart.outputs.has_dart == 'true'
         run: |
           if [ -f "pubspec.yaml" ]; then
             dart analyze --fatal-infos
@@ -295,27 +313,34 @@ jobs:
   security-bandit:
     name: 🔒 Bandit Security
     runs-on: ubuntu-latest
-    if: contains(github.event.pull_request.changed_files, '.py') || contains(github.event.pull_request.head.ref, 'python')
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Check for Python files
+        id: check-python
+        run: |
+          if find . -name "*.py" -type f | grep -q .; then
+            echo "has_python=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_python=false" >> $GITHUB_OUTPUT
+          fi
+
       - name: Set up Python
+        if: steps.check-python.outputs.has_python == 'true'
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
       - name: Install Bandit
+        if: steps.check-python.outputs.has_python == 'true'
         run: pip install bandit[toml]
 
       - name: Run Bandit
+        if: steps.check-python.outputs.has_python == 'true'
         run: |
-          if find . -name "*.py" -type f | grep -q .; then
-            bandit -r . -f json -o bandit-report.json || true
-            bandit -r . -f screen
-          else
-            echo "No Python files found, skipping Bandit scan"
-          fi
+          bandit -r . -f json -o bandit-report.json || true
+          bandit -r . -f screen
         continue-on-error: true
 
   # ==========================================================================
@@ -543,8 +568,12 @@ jobs:
     needs: [
       validate-commits,
       lint-go,
+      lint-python,
+      lint-dart,
+      lint-shell,
       test-ci,
       security-gosec,
+      security-bandit,
       security-trivy,
       validate-documentation,
       dependency-check,
@@ -560,8 +589,12 @@ jobs:
             const jobs = [
               { name: 'Conventional Commits', status: '${{ needs.validate-commits.result }}' },
               { name: 'Go Linting', status: '${{ needs.lint-go.result }}' },
+              { name: 'Python Linting', status: '${{ needs.lint-python.result }}' },
+              { name: 'Dart Linting', status: '${{ needs.lint-dart.result }}' },
+              { name: 'Shell Linting', status: '${{ needs.lint-shell.result }}' },
               { name: 'Tests & CI', status: '${{ needs.test-ci.result }}' },
               { name: 'Gosec Security', status: '${{ needs.security-gosec.result }}' },
+              { name: 'Bandit Security', status: '${{ needs.security-bandit.result }}' },
               { name: 'Trivy Security', status: '${{ needs.security-trivy.result }}' },
               { name: 'Documentation Check', status: '${{ needs.validate-documentation.result }}' },
               { name: 'Dependency Check', status: '${{ needs.dependency-check.result }}' },
