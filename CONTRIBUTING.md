@@ -16,7 +16,7 @@ Estamos comprometidos con la automatización en el desarrollo. Utilizamos agente
 Es fundamental que no subas secretos al repositorio. Para ello, utilizamos validaciones en CI/bots que lo aseguran.
 
 ### Testing Automatizado
-Realizamos testing automatizado, el cual incluye tests unitarios y de integración donde sea aplicable. Se requiere una cobertura mínima de tests. Asegúrate de que tu código esté suficientemente cubierto antes de enviar un PR.
+Realizamos testing automatizado, el cual incluye tests unitarios y de integración donde sea aplicable. Se requiere una cobertura mínima de tests del **80%** de líneas ejecutadas, medida con `go test ./... -cover`. Los PR que hagan que la cobertura global baje por debajo de este umbral deberán incluir tests adicionales antes de ser aprobados y la CI marcará como fallo cualquier ejecución por debajo de dicho umbral. Asegúrate de que tu código esté suficientemente cubierto antes de enviar un PR.
 
 ### Flujos de Trabajo
 El flujo de trabajo para PR/issues debe alinearse a las plantillas establecidas. Usamos bots para automatizar procesos como asignación de revisores y lanzamientos automáticos.
