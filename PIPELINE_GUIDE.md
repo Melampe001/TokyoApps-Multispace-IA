@@ -696,7 +696,7 @@ Planned features:
 ---
 
 **Version**: 1.0.0  
-**Last Updated**: 2024  
+**Last Updated**: 2024-12-24  
 **Maintainer**: Tokyo-IA Team
 
 For more information, visit the project repository or consult `AGENTS_README.md`.

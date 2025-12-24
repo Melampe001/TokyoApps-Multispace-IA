@@ -422,7 +422,9 @@ Include styling guidance:
 ## Maintenance
 
 ### Version History
-- **v1.0.0** (2024): Initial implementation with 10 core widget mappings
+- **v1.0.0** (December 2024): Initial implementation with 10 core widget mappings
+  - Scaffold, AppBar, Text, Button, Container
+  - Column, Row, ListView, Image, TextField
 
 ### Roadmap
 - v1.1.0: Add 20 more common widgets
