@@ -11,8 +11,8 @@ repo-root/
 ├── proto/              # Definiciones de protocol buffers. Ejecuta `make proto` tras cambios.
 ├── ruby/               # Implementación en Ruby
 │   └── lib/
-│       └── billing-platform/
-│           └── version.rb   # Archivo de control de versión semántica para Ruby
+│       └── tokyoia/
+│           └── core.rb   # Módulo principal de Tokyo-IA en Ruby
 ├── testing/            # Helpers y fixtures de pruebas
 ├── Makefile            # Automatización de build, test, fmt, ci, proto, etc.
 └── README.md           # Información principal del repositorio
@@ -29,7 +29,7 @@ repo-root/
 - **config/**: YAML, plantillas o configuraciones para despliegue, CI/CD, etc.
 - **docs/**: Documentos, tutoriales, diagramas, información para usuarios y desarrolladores.
 - **proto/**: Archivos .proto de Protobuf, generar fuentes después de cambios.
-- **ruby/**: Lógica o wrappers en Ruby, sincronizar con versión en `version.rb` usando semver.
+- **ruby/**: Lógica o wrappers en Ruby, sincronizar con versión en archivo `VERSION` en la raíz del proyecto.
 - **testing/**: Utilidades y datos de test.
 - **Makefile**: Automatización de tareas (compilación, pruebas, formato…).
 - **README.md**: Siempre actualizado para reflejar los componentes y buenas prácticas.
@@ -43,4 +43,4 @@ repo-root/
 - Usa `make test` para ejecutar los tests automatizados.
 - El flujo completo lo ejecuta `make ci`.
 - Cambios en `proto/` requieren regenerar los artefactos con `make proto`.
-- Cambios en `ruby/` requieren actualizar la versión en `ruby/lib/billing-platform/version.rb`.
+- Cambios en `ruby/` y control de versiones se gestionan desde el archivo `VERSION` en la raíz del proyecto.

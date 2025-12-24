@@ -5,8 +5,15 @@
 # Se puede extender para incluir lógica de negocio, integraciones, etc.
 
 module TokyoIA
-  # Versión del módulo TokyoIA
-  VERSION = "0.1.0"
+  # Versión del módulo TokyoIA leída desde el archivo VERSION
+  VERSION = begin
+    version_file = File.expand_path("../../../VERSION", __dir__)
+    if File.exist?(version_file)
+      File.read(version_file).strip.freeze
+    else
+      "0.1.0"
+    end
+  end
 
   # Core proporciona métodos centrales del sistema.
   module Core

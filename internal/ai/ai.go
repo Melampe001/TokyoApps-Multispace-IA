@@ -3,7 +3,12 @@
 // Se puede extender para incluir modelos de ML, procesamiento de lenguaje natural, etc.
 package ai
 
-import "fmt"
+import (
+	"fmt"
+	"os"
+	"path/filepath"
+	"strings"
+)
 
 // Greet devuelve un mensaje de saludo personalizado.
 // Esta función sirve como ejemplo básico de interacción con el módulo de IA.
@@ -20,7 +25,13 @@ func Process(input string) string {
 	return fmt.Sprintf("Procesando entrada: %s", input)
 }
 
-// Version devuelve la versión actual del módulo de IA.
+// Version devuelve la versión actual del módulo de IA desde el archivo VERSION.
 func Version() string {
+	// Intenta leer desde el archivo VERSION en la raíz del proyecto
+	versionFile := filepath.Join("..", "..", "VERSION")
+	if data, err := os.ReadFile(versionFile); err == nil {
+		return strings.TrimSpace(string(data))
+	}
+	// Fallback si no se encuentra el archivo
 	return "0.1.0"
 }
