@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"runtime"
 	"strings"
 )
 
@@ -27,11 +28,32 @@ func Process(input string) string {
 
 // Version devuelve la versión actual del módulo de IA desde el archivo VERSION.
 func Version() string {
-	// Intenta leer desde el archivo VERSION en la raíz del proyecto
-	versionFile := filepath.Join("..", "..", "VERSION")
-	if data, err := os.ReadFile(versionFile); err == nil {
-		return strings.TrimSpace(string(data))
+	// Intenta determinar la ruta al archivo VERSION usando diferentes métodos
+	var versionPaths []string
+
+	// Método 1: Relativo al archivo actual (usando runtime.Caller)
+	_, filename, _, ok := runtime.Caller(0)
+	if ok {
+		dir := filepath.Dir(filename)
+		versionPaths = append(versionPaths, filepath.Join(dir, "..", "..", "VERSION"))
 	}
+
+	// Método 2: Relativo al directorio de trabajo actual
+	if wd, err := os.Getwd(); err == nil {
+		versionPaths = append(versionPaths, filepath.Join(wd, "VERSION"))
+		versionPaths = append(versionPaths, filepath.Join(wd, "..", "..", "VERSION"))
+	}
+
+	// Intenta leer de cada ruta posible
+	for _, path := range versionPaths {
+		if data, err := os.ReadFile(path); err == nil {
+			version := strings.TrimSpace(string(data))
+			if version != "" {
+				return version
+			}
+		}
+	}
+
 	// Fallback si no se encuentra el archivo
 	return "0.1.0"
 }
