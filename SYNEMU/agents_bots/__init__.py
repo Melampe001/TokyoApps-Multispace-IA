@@ -14,6 +14,12 @@ __author__ = "TokyoApps® / TokRaggcorp®"
 # Import all agents for easy access
 from .synemu_integrations import SynemuIntegrations, get_integrations
 from .synemu_orchestrator import SynemuOrchestrator, TaskType, TaskStatus
+from .synemu_supreme_orchestrator import (
+    SynemuSupremeOrchestrator,
+    AnalysisMode,
+    AgentStatus,
+    QualityLevel
+)
 from .synemu_agent2d_flare import Synemu2DFlareAgent
 from .synemu_agent3d_unity import Synemu3DUnityAgent, PrimitiveType
 from .synemu_agent_video_viz import SynemuVideoVizAgent, VideoFormat, RenderQuality
@@ -26,10 +32,14 @@ __all__ = [
     "SynemuIntegrations",
     "get_integrations",
     
-    # Orchestrator
+    # Orchestrators
     "SynemuOrchestrator",
     "TaskType",
     "TaskStatus",
+    "SynemuSupremeOrchestrator",
+    "AnalysisMode",
+    "AgentStatus",
+    "QualityLevel",
     
     # Agents
     "Synemu2DFlareAgent",
