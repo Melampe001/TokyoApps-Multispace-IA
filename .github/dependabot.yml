@@ -84,3 +84,21 @@ updates:
       - "dependencies"
       - "gradle"
       - "android"
+
+  # Ruby Bundler dependencies
+  - package-ecosystem: "bundler"
+    directory: "/ruby/lib"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+      - "ruby"
+      - "bundler"
+    groups:
+      development-dependencies:
+        dependency-type: "development"
+      production-dependencies:
+        dependency-type: "production"

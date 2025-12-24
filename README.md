@@ -1,18 +1,102 @@
 # 🏛️ Tokyo-IA - Imperial Premium Elite Edition
 
+<!-- Health & Status Badges -->
 [![CI Pipeline](https://github.com/Melampe001/Tokyo-IA/actions/workflows/ci.yml/badge.svg)](https://github.com/Melampe001/Tokyo-IA/actions/workflows/ci.yml)
 [![CD Pipeline](https://github.com/Melampe001/Tokyo-IA/actions/workflows/cd.yml/badge.svg)](https://github.com/Melampe001/Tokyo-IA/actions/workflows/cd.yml)
 [![Security Scan](https://github.com/Melampe001/Tokyo-IA/actions/workflows/security.yml/badge.svg)](https://github.com/Melampe001/Tokyo-IA/actions/workflows/security.yml)
 [![Release](https://github.com/Melampe001/Tokyo-IA/actions/workflows/release.yml/badge.svg)](https://github.com/Melampe001/Tokyo-IA/actions/workflows/release.yml)
 [![Vercel Deploy](https://github.com/Melampe001/Tokyo-IA/actions/workflows/deploy-vercel.yml/badge.svg)](https://github.com/Melampe001/Tokyo-IA/actions/workflows/deploy-vercel.yml)
 [![Pre-Release Tests](https://github.com/Melampe001/Tokyo-IA/actions/workflows/pre-release-tests.yml/badge.svg)](https://github.com/Melampe001/Tokyo-IA/actions/workflows/pre-release-tests.yml)
+
+<!-- Code Quality Badges -->
 [![Go Report Card](https://goreportcard.com/badge/github.com/Melampe001/Tokyo-IA)](https://goreportcard.com/report/github.com/Melampe001/Tokyo-IA)
 [![codecov](https://codecov.io/gh/Melampe001/Tokyo-IA/branch/main/graph/badge.svg)](https://codecov.io/gh/Melampe001/Tokyo-IA)
 [![Go Version](https://img.shields.io/badge/Go-1.21%20|%201.22-blue)](https://go.dev/)
 [![Python Version](https://img.shields.io/badge/Python-3.11%20|%203.12-blue)](https://www.python.org/)
-[![License](https://img.shields.io/badge/License-Apache%202.0-green.svg)](LICENSE)
 
-> Generador de ramas ordenadas y flujos optimizados con IA integrada
+<!-- Project Status & Governance -->
+[![License](https://img.shields.io/badge/License-Apache%202.0-green.svg)](LICENSE)
+[![GitHub issues](https://img.shields.io/github/issues/Melampe001/TokyoApps-Multispace-IA)](https://github.com/Melampe001/TokyoApps-Multispace-IA/issues)
+[![GitHub pull requests](https://img.shields.io/github/issues-pr/Melampe001/TokyoApps-Multispace-IA)](https://github.com/Melampe001/TokyoApps-Multispace-IA/pulls)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-brightgreen.svg)](https://github.com/Melampe001/TokyoApps-Multispace-IA/graphs/commit-activity)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
+
+---
+
+## 🎯 Mission & Vision / Misión y Visión
+
+### 🌟 Our Mission / Nuestra Misión
+
+**English:** To democratize AI-powered software development by providing an intelligent, multi-agent orchestration platform that empowers developers to build better software faster, with enhanced security, quality, and efficiency through collaborative AI assistance.
+
+**Español:** Democratizar el desarrollo de software impulsado por IA proporcionando una plataforma inteligente de orquestación de múltiples agentes que empodera a los desarrolladores para construir mejor software más rápido, con mayor seguridad, calidad y eficiencia a través de asistencia colaborativa de IA.
+
+### 🚀 Our Vision / Nuestra Visión
+
+**English:** To become the leading open-source AI agent orchestration platform, fostering a global community of developers who leverage the power of specialized AI agents to transform the software development lifecycle, from code review to deployment, while maintaining the highest standards of security, privacy, and ethical AI use.
+
+**Español:** Convertirse en la plataforma de orquestación de agentes IA de código abierto líder, fomentando una comunidad global de desarrolladores que aprovechan el poder de agentes IA especializados para transformar el ciclo de vida del desarrollo de software, desde revisión de código hasta despliegue, manteniendo los más altos estándares de seguridad, privacidad y uso ético de IA.
+
+### 💡 Core Values / Valores Fundamentales
+
+- **🔒 Security First / Seguridad Primero:** Every feature is designed with security as the foundation
+- **🌐 Open & Transparent / Abierto y Transparente:** Open-source commitment with clear documentation and governance
+- **🤝 Community-Driven / Impulsado por la Comunidad:** Built by and for developers worldwide
+- **⚡ Performance Excellence / Excelencia en Rendimiento:** Optimized for speed, efficiency, and scalability
+- **🎓 Continuous Learning / Aprendizaje Continuo:** Evolving with the latest AI and software engineering advances
+
+---
+
+## 📑 Quick Navigation / Navegación Rápida
+
+### 🔗 Essential Links / Enlaces Esenciales
+
+| Document | Description | Language |
+|----------|-------------|----------|
+| **[📘 Contributing Guide](CONTRIBUTING.md)** | How to contribute to the project | EN/ES |
+| **[📜 Code of Conduct](CODE_OF_CONDUCT.md)** | Community guidelines and standards | EN/ES |
+| **[🔒 Privacy Policy](PRIVACY.md)** | Data handling and privacy practices | EN/ES |
+| **[🛡️ Security Policy](SECURITY.md)** | Security practices and reporting | EN/ES |
+| **[📊 Benchmark & Performance](docs/BENCHMARK.md)** | Performance metrics and standards | EN |
+| **[🤖 Agents & Bots](AGENTS_README.md)** | AI agent documentation | EN |
+| **[📋 Changelog](CHANGELOG.md)** | Version history and updates | EN |
+
+### 📚 Documentation Index / Índice de Documentación
+
+<details>
+<summary>📖 Click to expand full documentation index</summary>
+
+#### Getting Started
+- [🚀 Quick Start Guide](docs/QUICKSTART.md)
+- [🏗️ Architecture Overview](docs/ARCHITECTURE.md)
+- [💻 Development Setup](#development)
+- [🐳 Docker Setup](docker-compose.yml)
+
+#### CI/CD & Deployment
+- [🔄 CI/CD Pipeline Guide](docs/CICD.md)
+- [🚢 Railway Deployment](docs/CICD.md#railway-deployment)
+- [🌐 Vercel Setup](docs/VERCEL_SETUP.md)
+- [📱 Play Store Publication](docs/PLAY_STORE_CHECKLIST.md)
+- [🔐 Secrets Configuration](docs/SECRETS_SETUP.md)
+
+#### API & Integration
+- [🔌 API Reference](docs/agents/ORCHESTRATION.md#api-reference)
+- [🗄️ Database Schema](db/README.md)
+- [🤖 Agent Orchestration](docs/agents/ORCHESTRATION.md)
+- [🎭 SYNEMU Suite](SYNEMU/README.md)
+
+#### Security & Compliance
+- [🔒 Security Policy](SECURITY.md)
+- [🔐 Privacy Policy](PRIVACY.md)
+- [🛡️ Branch Protection](docs/BRANCH_PROTECTION.md)
+- [📊 Dependency Policy](docs/DEPENDENCY_POLICY.md)
+
+</details>
+
+---
+
+> **Generador de ramas ordenadas y flujos optimizados con IA integrada**
+
 # Tokyo-IA 🗼
 
 **Tokyo-IA** is a complete AI agent orchestration platform featuring 5 specialized agents with unique personalities and expertise. Built with Go, Python, React, and Android support.
@@ -761,6 +845,161 @@ This repository follows the **Athena Protocol** with automated:
 - ✅ Security scanning
 - ✅ Code quality enforcement
 - ✅ Comprehensive documentation
+
+---
+
+## 🛡️ Branch & Directory Protection Recommendations
+
+### Critical Branches
+
+To maintain code quality and security, we **strongly recommend** implementing the following branch protection rules:
+
+#### Protected Branches: `main`, `develop`, `release/*`
+
+**Required Settings:**
+- ✅ **Require pull request reviews before merging**
+  - Minimum: 2 approvers
+  - Dismiss stale pull request approvals when new commits are pushed
+  - Require review from Code Owners
+- ✅ **Require status checks to pass before merging**
+  - CI Pipeline (tests, linting, security scans)
+  - CodeQL Analysis
+  - Dependency Review
+- ✅ **Require signed commits**
+- ✅ **Require linear history**
+- ✅ **Include administrators** (enforce rules for everyone)
+- ✅ **Restrict who can push to matching branches**
+  - Only: Maintainers, Release Managers
+
+**Setup Instructions:**
+1. Go to: `Settings` → `Branches` → `Add branch protection rule`
+2. Branch name pattern: `main` (repeat for `develop`, `release/*`)
+3. Enable all recommended settings above
+4. Save changes
+
+### Critical Directories & Files
+
+The following directories and files contain critical documentation and configuration that should be carefully monitored:
+
+#### 🔒 **Privacy & Security** (Require Legal/Compliance Review)
+```
+PRIVACY.md
+SECURITY.md
+docs/PRIVACY_POLICY.md
+```
+
+#### 📚 **Core Documentation** (Require Maintainer Review)
+```
+README.md
+CHANGELOG.md
+CONTRIBUTING.md
+CODE_OF_CONDUCT.md
+```
+
+#### 📊 **Performance & Benchmarks** (Require Performance Team Review)
+```
+docs/BENCHMARK.md
+docs/performance/
+```
+
+#### 🤖 **Agent Documentation** (Require AI/ML Team Review)
+```
+AGENTS_README.md
+docs/agents/
+SYNEMU/README.md
+Agentes y bots
+```
+
+#### 🏛️ **Institutional Documents** (Require Management Review)
+```
+hojas_membretadas/
+manuales/
+instructivos/
+recursos_identidad/
+```
+
+#### 📋 **Templates** (Require DevOps Review)
+```
+plantillas/
+templates/
+```
+
+#### ⚙️ **Configuration Files** (Require DevOps + Security Review)
+```
+.github/dependabot.yml
+.github/workflows/alert-critical-docs.yml
+.github/workflows/security.yml
+Makefile
+docker-compose.yml
+```
+
+### Automated Monitoring
+
+We've implemented the **Critical Documentation Alert Workflow** (`.github/workflows/alert-critical-docs.yml`) that:
+- 🚨 Detects changes to critical files in pull requests
+- 📝 Automatically comments on PRs with required reviewers
+- 🔔 Creates issues for direct pushes to protected branches
+- 📊 Categorizes changes by type (security, performance, agents, etc.)
+
+**This workflow runs automatically on:**
+- All pull requests modifying critical files
+- Direct pushes to `main` or `develop` branches
+
+### CODEOWNERS File
+
+Create a `.github/CODEOWNERS` file to automatically request reviews from the right teams:
+
+```
+# Global owners
+* @Melampe001 @tokyo-ia-maintainers
+
+# Critical Documentation
+/PRIVACY.md @legal-team @compliance-team
+/SECURITY.md @security-team @devops-team
+/docs/BENCHMARK.md @performance-team @sre-team
+
+# Agent & AI Documentation
+/AGENTS_README.md @ai-ml-team @tech-leads
+/docs/agents/ @ai-ml-team @tech-leads
+/SYNEMU/ @synemu-team @ai-ml-team
+
+# Infrastructure
+/.github/workflows/ @devops-team @security-team
+/Makefile @devops-team
+/docker-compose.yml @devops-team @sre-team
+
+# Institutional Documents
+/hojas_membretadas/ @management @legal-team
+/manuales/ @docs-team @management
+/instructivos/ @docs-team @tech-leads
+/recursos_identidad/ @marketing @management
+```
+
+### Deployment Protection
+
+For production deployments, implement:
+- **Required Reviewers:** Minimum 2 approvers from DevOps/SRE team
+- **Environment Secrets:** Store all secrets in GitHub Secrets, never in code
+- **Deployment Gates:** Manual approval required for production
+- **Rollback Plan:** Document and test rollback procedures
+
+### Best Practices Checklist
+
+- [ ] Branch protection rules configured for `main`, `develop`, `release/*`
+- [ ] CODEOWNERS file created and maintained
+- [ ] All secrets stored in GitHub Secrets or secure vault
+- [ ] Critical documentation workflow is active and tested
+- [ ] Team members trained on PR review process
+- [ ] Regular audits of access permissions (quarterly)
+- [ ] Incident response plan documented
+- [ ] Backup and recovery procedures tested
+
+**For detailed instructions, see:**
+- [Branch Protection Guide](docs/BRANCH_PROTECTION.md)
+- [Security Policy](SECURITY.md)
+- [Contributing Guidelines](CONTRIBUTING.md)
+
+---
 
 ## 📄 License
 

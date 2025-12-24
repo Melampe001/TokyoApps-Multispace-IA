@@ -1,0 +1,365 @@
+# Alert on Critical Documentation Changes
+#
+# This workflow monitors changes to critical documentation files and alerts maintainers.
+# Critical files include: PRIVACY.md, SECURITY.md, BENCHMARK.md, AGENTS_README.md,
+# README.md, templates, and other institutional documents.
+#
+# Author: Tokyo-IA DevOps Team
+# Created: December 24, 2025
+# Purpose: Ensure critical documentation changes are reviewed by authorized personnel
+
+name: Alert Critical Documentation Changes
+
+on:
+  pull_request:
+    paths:
+      # Privacy and Security
+      - 'PRIVACY.md'
+      - 'SECURITY.md'
+      - 'docs/PRIVACY_POLICY.md'
+      
+      # Core Documentation
+      - 'README.md'
+      - 'CHANGELOG.md'
+      - 'CONTRIBUTING.md'
+      - 'CODE_OF_CONDUCT.md'
+      
+      # Performance and Benchmarks
+      - 'docs/BENCHMARK.md'
+      - 'docs/performance/**'
+      
+      # Agent Documentation
+      - 'AGENTS_README.md'
+      - 'docs/agents/**'
+      - 'SYNEMU/README.md'
+      - 'Agentes y bots'
+      
+      # Institutional Documents
+      - 'hojas_membretadas/**'
+      - 'manuales/**'
+      - 'instructivos/**'
+      - 'recursos_identidad/**'
+      
+      # Templates
+      - 'plantillas/**'
+      - 'templates/**'
+      
+      # Configuration Files
+      - '.github/dependabot.yml'
+      - '.github/workflows/alert-critical-docs.yml'
+      - 'Makefile'
+      
+  push:
+    branches:
+      - main
+      - develop
+    paths:
+      # Same paths as above for monitoring direct pushes to protected branches
+      - 'PRIVACY.md'
+      - 'SECURITY.md'
+      - 'docs/PRIVACY_POLICY.md'
+      - 'README.md'
+      - 'CHANGELOG.md'
+      - 'CONTRIBUTING.md'
+      - 'CODE_OF_CONDUCT.md'
+      - 'docs/BENCHMARK.md'
+      - 'docs/performance/**'
+      - 'AGENTS_README.md'
+      - 'docs/agents/**'
+      - 'SYNEMU/README.md'
+      - 'Agentes y bots'
+      - 'hojas_membretadas/**'
+      - 'manuales/**'
+      - 'instructivos/**'
+      - 'recursos_identidad/**'
+      - 'plantillas/**'
+      - 'templates/**'
+      - '.github/dependabot.yml'
+      - '.github/workflows/alert-critical-docs.yml'
+      - 'Makefile'
+
+# Permissions: read-only access to repository contents
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  detect-critical-changes:
+    name: Detect Critical Documentation Changes
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2  # Need at least 2 commits to detect changes
+      
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v41
+        with:
+          files: |
+            PRIVACY.md
+            SECURITY.md
+            docs/PRIVACY_POLICY.md
+            README.md
+            CHANGELOG.md
+            CONTRIBUTING.md
+            CODE_OF_CONDUCT.md
+            docs/BENCHMARK.md
+            docs/performance/**
+            AGENTS_README.md
+            docs/agents/**
+            SYNEMU/README.md
+            Agentes y bots
+            hojas_membretadas/**
+            manuales/**
+            instructivos/**
+            recursos_identidad/**
+            plantillas/**
+            templates/**
+            .github/dependabot.yml
+            .github/workflows/alert-critical-docs.yml
+            Makefile
+      
+      - name: Categorize changed files
+        id: categorize
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: |
+          echo "Changed critical files detected:"
+          echo "${{ steps.changed-files.outputs.all_changed_files }}"
+          
+          # Initialize categories
+          privacy_security=""
+          core_docs=""
+          performance=""
+          agents=""
+          institutional=""
+          templates=""
+          config=""
+          
+          # Categorize each changed file
+          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+            echo "Processing: $file"
+            
+            if [[ "$file" == "PRIVACY.md" ]] || [[ "$file" == "SECURITY.md" ]] || [[ "$file" == "docs/PRIVACY_POLICY.md" ]]; then
+              privacy_security="${privacy_security}- $file\n"
+            elif [[ "$file" == "README.md" ]] || [[ "$file" == "CHANGELOG.md" ]] || [[ "$file" == "CONTRIBUTING.md" ]] || [[ "$file" == "CODE_OF_CONDUCT.md" ]]; then
+              core_docs="${core_docs}- $file\n"
+            elif [[ "$file" == "docs/BENCHMARK.md" ]] || [[ "$file" == docs/performance/* ]]; then
+              performance="${performance}- $file\n"
+            elif [[ "$file" == "AGENTS_README.md" ]] || [[ "$file" == docs/agents/* ]] || [[ "$file" == "SYNEMU/README.md" ]] || [[ "$file" == "Agentes y bots" ]]; then
+              agents="${agents}- $file\n"
+            elif [[ "$file" == hojas_membretadas/* ]] || [[ "$file" == manuales/* ]] || [[ "$file" == instructivos/* ]] || [[ "$file" == recursos_identidad/* ]]; then
+              institutional="${institutional}- $file\n"
+            elif [[ "$file" == plantillas/* ]] || [[ "$file" == templates/* ]]; then
+              templates="${templates}- $file\n"
+            elif [[ "$file" == ".github/dependabot.yml" ]] || [[ "$file" == ".github/workflows/alert-critical-docs.yml" ]] || [[ "$file" == "Makefile" ]]; then
+              config="${config}- $file\n"
+            fi
+          done
+          
+          # Save to output (escape newlines for GitHub Actions)
+          echo "privacy_security<<EOF" >> $GITHUB_OUTPUT
+          echo -e "$privacy_security" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+          
+          echo "core_docs<<EOF" >> $GITHUB_OUTPUT
+          echo -e "$core_docs" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+          
+          echo "performance<<EOF" >> $GITHUB_OUTPUT
+          echo -e "$performance" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+          
+          echo "agents<<EOF" >> $GITHUB_OUTPUT
+          echo -e "$agents" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+          
+          echo "institutional<<EOF" >> $GITHUB_OUTPUT
+          echo -e "$institutional" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+          
+          echo "templates<<EOF" >> $GITHUB_OUTPUT
+          echo -e "$templates" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+          
+          echo "config<<EOF" >> $GITHUB_OUTPUT
+          echo -e "$config" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+      
+      - name: Create PR comment with alert
+        if: github.event_name == 'pull_request' && steps.changed-files.outputs.any_changed == 'true'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const privacySecurity = `${{ steps.categorize.outputs.privacy_security }}`;
+            const coreDocs = `${{ steps.categorize.outputs.core_docs }}`;
+            const performance = `${{ steps.categorize.outputs.performance }}`;
+            const agents = `${{ steps.categorize.outputs.agents }}`;
+            const institutional = `${{ steps.categorize.outputs.institutional }}`;
+            const templates = `${{ steps.categorize.outputs.templates }}`;
+            const config = `${{ steps.categorize.outputs.config }}`;
+            
+            let body = `## 🚨 Critical Documentation Changes Detected\n\n`;
+            body += `This PR modifies critical documentation files that require careful review.\n\n`;
+            body += `**⚠️ IMPORTANT:** These changes should be reviewed by:\n`;
+            body += `- Repository maintainers\n`;
+            body += `- Legal/compliance team (for privacy/security)\n`;
+            body += `- Technical leads (for architecture/agents)\n`;
+            body += `- Documentation team (for institutional docs)\n\n`;
+            
+            if (privacySecurity.trim()) {
+              body += `### 🔒 Privacy & Security Documents\n${privacySecurity}\n`;
+              body += `**Required Reviews:** Legal, Compliance, Security Team\n\n`;
+            }
+            
+            if (coreDocs.trim()) {
+              body += `### 📚 Core Documentation\n${coreDocs}\n`;
+              body += `**Required Reviews:** Maintainers, Technical Leads\n\n`;
+            }
+            
+            if (performance.trim()) {
+              body += `### 📊 Performance & Benchmarks\n${performance}\n`;
+              body += `**Required Reviews:** Performance Team, SRE Team\n\n`;
+            }
+            
+            if (agents.trim()) {
+              body += `### 🤖 Agent Documentation\n${agents}\n`;
+              body += `**Required Reviews:** AI/ML Team, Technical Architects\n\n`;
+            }
+            
+            if (institutional.trim()) {
+              body += `### 🏛️ Institutional Documents\n${institutional}\n`;
+              body += `**Required Reviews:** Management, Marketing, Legal\n\n`;
+            }
+            
+            if (templates.trim()) {
+              body += `### 📋 Templates\n${templates}\n`;
+              body += `**Required Reviews:** Development Team, DevOps\n\n`;
+            }
+            
+            if (config.trim()) {
+              body += `### ⚙️ Configuration Files\n${config}\n`;
+              body += `**Required Reviews:** DevOps, Security Team\n\n`;
+            }
+            
+            body += `---\n\n`;
+            body += `### 📋 Review Checklist\n\n`;
+            body += `Before approving this PR, ensure:\n\n`;
+            body += `- [ ] Changes are accurate and complete\n`;
+            body += `- [ ] No sensitive information (secrets, keys, PII) is exposed\n`;
+            body += `- [ ] Legal/compliance requirements are met (if applicable)\n`;
+            body += `- [ ] Version numbers and dates are updated\n`;
+            body += `- [ ] CHANGELOG.md is updated (if applicable)\n`;
+            body += `- [ ] Cross-references and links are valid\n`;
+            body += `- [ ] Formatting and grammar are correct\n`;
+            body += `- [ ] All stakeholders have been notified\n\n`;
+            body += `### 🔐 Branch Protection\n\n`;
+            body += `**Reminder:** Critical directories should have branch protection rules:\n`;
+            body += `- Require pull request reviews (minimum 2 approvers)\n`;
+            body += `- Require review from code owners\n`;
+            body += `- Dismiss stale pull request approvals\n`;
+            body += `- Require status checks to pass\n`;
+            body += `- Require signed commits\n\n`;
+            body += `See [Branch Protection Guide](docs/BRANCH_PROTECTION.md) for details.\n\n`;
+            body += `---\n\n`;
+            body += `*This alert was automatically generated by the Critical Documentation Monitoring workflow.*\n`;
+            body += `*For issues or false positives, contact the DevOps team.*`;
+            
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: body
+            });
+      
+      - name: Create issue for direct push to main/develop
+        if: github.event_name == 'push' && steps.changed-files.outputs.any_changed == 'true'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const privacySecurity = `${{ steps.categorize.outputs.privacy_security }}`;
+            const coreDocs = `${{ steps.categorize.outputs.core_docs }}`;
+            const performance = `${{ steps.categorize.outputs.performance }}`;
+            const agents = `${{ steps.categorize.outputs.agents }}`;
+            const institutional = `${{ steps.categorize.outputs.institutional }}`;
+            const templates = `${{ steps.categorize.outputs.templates }}`;
+            const config = `${{ steps.categorize.outputs.config }}`;
+            
+            let body = `## 🚨 Critical Documentation Changed on ${context.ref}\n\n`;
+            body += `**Commit:** ${context.sha}\n`;
+            body += `**Author:** @${context.actor}\n`;
+            body += `**Branch:** ${context.ref}\n\n`;
+            body += `Critical documentation files were modified directly on a protected branch.\n\n`;
+            
+            if (privacySecurity.trim()) {
+              body += `### 🔒 Privacy & Security\n${privacySecurity}\n`;
+            }
+            if (coreDocs.trim()) {
+              body += `### 📚 Core Documentation\n${coreDocs}\n`;
+            }
+            if (performance.trim()) {
+              body += `### 📊 Performance & Benchmarks\n${performance}\n`;
+            }
+            if (agents.trim()) {
+              body += `### 🤖 Agent Documentation\n${agents}\n`;
+            }
+            if (institutional.trim()) {
+              body += `### 🏛️ Institutional Documents\n${institutional}\n`;
+            }
+            if (templates.trim()) {
+              body += `### 📋 Templates\n${templates}\n`;
+            }
+            if (config.trim()) {
+              body += `### ⚙️ Configuration\n${config}\n`;
+            }
+            
+            body += `\n### ⚠️ Action Required\n\n`;
+            body += `1. Review the changes for accuracy and compliance\n`;
+            body += `2. Verify no sensitive information was exposed\n`;
+            body += `3. Notify relevant stakeholders\n`;
+            body += `4. Update CHANGELOG.md if not already done\n`;
+            body += `5. Consider strengthening branch protection rules\n\n`;
+            body += `**Recommendation:** Use pull requests for critical documentation changes.\n`;
+            
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `🚨 Critical Documentation Changed: ${context.ref}`,
+              body: body,
+              labels: ['critical', 'documentation', 'alert']
+            });
+      
+      - name: Summary
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: |
+          echo "### 🚨 Critical Documentation Changes Detected" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "The following critical files were modified:" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          echo "${{ steps.changed-files.outputs.all_changed_files }}" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Action:** Review changes carefully and ensure all stakeholders are notified." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "See PR comment or issue for detailed categorization." >> $GITHUB_STEP_SUMMARY
+      
+      - name: No critical changes
+        if: steps.changed-files.outputs.any_changed != 'true'
+        run: |
+          echo "### ✅ No Critical Documentation Changes" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "No critical documentation files were modified in this change." >> $GITHUB_STEP_SUMMARY
+
+# Maintenance Instructions:
+# 1. Update the file path patterns when adding new critical documentation
+# 2. Adjust notification recipients based on organizational structure
+# 3. Review and update categorization logic as needed
+# 4. Test workflow after modifications using pull requests
+# 5. Ensure GitHub token has necessary permissions
+# 6. Consider adding Slack/email notifications for high-priority changes
