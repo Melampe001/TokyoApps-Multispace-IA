@@ -17,7 +17,7 @@ from datetime import datetime
 from enum import Enum
 import hashlib
 
-from synemu_integrations import get_integrations
+from .synemu_integrations import get_integrations
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)

@@ -18,7 +18,7 @@ from datetime import datetime
 from dataclasses import dataclass, asdict
 from enum import Enum
 
-from synemu_integrations import get_integrations
+from .synemu_integrations import get_integrations
 
 # Configure logging
 logging.basicConfig(
