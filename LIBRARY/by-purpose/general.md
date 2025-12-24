@@ -1,31 +1,51 @@
 # General
 
-Total: 113 archivos
+Total: 208 archivos
 
+- [.env.example](.env.example) - .env.example - other
+- [.env.example](flutter_app/.env.example) - .env.example - other
 - [.flake8](.flake8) - .flake8 - other
 - [.gitignore](.gitignore) - .gitignore - other
+- [.gitignore](flutter_app/.gitignore) - .gitignore - other
+- [.gitkeep](agents/.gitkeep) - .gitkeep - other
 - [.python-version](.python-version) - .python-version - other
 - [AgentDashboard.tsx](admin/src/components/AgentDashboard.tsx) - AgentDashboard.tsx - source
 - [AgentRepository.kt](app/src/main/java/com/tokyoia/app/data/repository/AgentRepository.kt) - AgentRepository.kt - source
 - [AgentsScreen.kt](app/src/main/java/com/tokyoia/app/ui/agents/AgentsScreen.kt) - AgentsScreen.kt - source
 - [AgentsViewModel.kt](app/src/main/java/com/tokyoia/app/ui/agents/AgentsViewModel.kt) - AgentsViewModel.kt - source
+- [AndroidManifest.xml](flutter_app/android/app/src/main/AndroidManifest.xml) - AndroidManifest.xml - other
+- [App.css](web/src/App.css) - App.css - other
+- [App.jsx](web/src/App.jsx) - App.jsx - source
 - [BRANCH_PROTECTION.md](docs/BRANCH_PROTECTION.md) - Branch Protection Rules
 - [CATALOG.md](LIBRARY/CATALOG.md) - 📚 Catálogo Completo de la Biblioteca
 - [CONTRIBUTING.md](CONTRIBUTING.md) - Contributing to Tokyo-IA
 - [Cuerpo](Cuerpo) - Cuerpo - other
+- [DEPENDENCY_AGENT_SUMMARY.md](DEPENDENCY_AGENT_SUMMARY.md) - Dependency Agent Implementation Summary
+- [DEPENDENCY_POLICY.md](docs/DEPENDENCY_POLICY.md) - Dependency Policy
 - [ELARA_COMMAND_CENTER.md](.github/ELARA_COMMAND_CENTER.md) - 👑 Elara Command Center
 - [ELARA_DASHBOARD.md](.github/ELARA_DASHBOARD.md) - 📊 Elara Operations Dashboard
+- [ELITE_FRAMEWORK_EXAMPLES.md](docs/ELITE_FRAMEWORK_EXAMPLES.md) - Elite Framework - Project Generation Examples
+- [ENTERPRISE_BEST_PRACTICES.md](SYNEMU/docs/ENTERPRISE_BEST_PRACTICES.md) - 🚀 SYNEMU Enterprise Best Practices & Emerging Technologies Framework
 - [FILE_TEMPLATE.md](.github/templates/FILE_TEMPLATE.md) - [Nombre del Archivo]
 - [Fllutter](Fllutter) - Fllutter - other
 - [IA suprema](prompts/IA suprema) - IA suprema - other
 - [IMPLEMENTATION_SUMMARY.md](IMPLEMENTATION_SUMMARY.md) - Tokyo-IA Agent Orchestration System - Implementation Summary
+- [IMPLEMENTATION_SUMMARY.md](flutter_app/IMPLEMENTATION_SUMMARY.md) - Tokyo-IA Flutter Implementation Summary
 - [IMPLEMENTATION_SUMMARY.md](docs/IMPLEMENTATION_SUMMARY.md) - Elite Framework - Implementation Summary
 - [Imitar](Imitar) - Imitar - other
 - [JS-Supremo.md](prompts/JS-Supremo.md) - JS-Supremo.md – Premium JavaScript Expert Prompt
+- [MainActivity.kt](flutter_app/android/app/src/main/kotlin/com/tokyoia/tokyo_ia/MainActivity.kt) - MainActivity.kt - source
 - [Makefile.md](LIBRARY/by-technology/Makefile.md) - MAKEFILE
 - [ORCHESTRATION.md](docs/agents/ORCHESTRATION.md) - Tokyo-IA Agent Orchestration System
+- [ORQUESTACION_SUPREMA_MULTI-AGENTE.md](SYNEMU/docs/ORQUESTACION_SUPREMA_MULTI-AGENTE.md) - ⚡ Orquestación Suprema Multi-Agente: Cobertura Total de Calidad, Seguridad y Compliance
+- [PLAY_STORE_CHECKLIST.md](docs/PLAY_STORE_CHECKLIST.md) - Google Play Store Checklist - Tokyo IA
+- [PRIVACY_POLICY.md](docs/PRIVACY_POLICY.md) - Política de Privacidad - Tokyo IA
+- [PROJECT_STATISTICS.md](flutter_app/PROJECT_STATISTICS.md) - Tokyo-IA Flutter - Project Statistics
 - [Real](Real) - Real - other
 - [SEARCH_INDEX.json](LIBRARY/SEARCH_INDEX.json) - SEARCH_INDEX.json - configuration
+- [STORE_LISTING.md](docs/STORE_LISTING.md) - Store Listing - Tokyo IA
+- [SYNEMU_IMPLEMENTATION_SUMMARY.md](SYNEMU_IMPLEMENTATION_SUMMARY.md) - SYNEMU Suite Implementation Summary
+- [SYNEMU_REVIEW_CHECKLIST.md](SYNEMU_REVIEW_CHECKLIST.md) - 📋 SYNEMU Suite - Lista de Revisión Completa
 - [Setup](Setup) - Setup - other
 - [Sin limite](Sin limite) - Sin limite - other
 - [Sincero](Sincero) - Sincero - other
@@ -34,43 +54,77 @@ Total: 113 archivos
 - [__init__.py](lib/agents/__init__.py) - Tokyo-IA Agent Framework
 
 This package provides multi-agent AI capabilities using CrewAI.
+- [__init__.py](SYNEMU/agents_bots/__init__.py) - !/usr/bin/env python3
+- [agent-pipeline.yml](.github/workflows/agent-pipeline.yml) - Agent Pipeline
+- [agent.go](internal/monetization/agent.go) - agent.go - source
+- [agent.go](internal/orchestrator/agent.go) - agent.go - source
+- [agent_base.dart](flutter_app/lib/agents/agent_base.dart) - agent_base.dart - source
+- [agent_code_master.dart](flutter_app/lib/agents/agent_code_master.dart) - agent_code_master.dart - source
+- [agent_gen_ai.dart](flutter_app/lib/agents/agent_gen_ai.dart) - agent_gen_ai.dart - source
+- [agent_knowledge.dart](flutter_app/lib/agents/agent_knowledge.dart) - agent_knowledge.dart - source
+- [agent_log.dart](flutter_app/lib/models/agent_log.dart) - agent_log.dart - source
+- [agent_orchestrator.dart](flutter_app/lib/services/agent_orchestrator.dart) - agent_orchestrator.dart - source
 - [agent_orchestrator.py](lib/orchestrator/agent_orchestrator.py) - !/usr/bin/env python3
+- [agent_qa.dart](flutter_app/lib/agents/agent_qa.dart) - agent_qa.dart - source
 - [agent_registry.go](internal/registry/agent_registry.go) - agent_registry.go - source
+- [agent_result.dart](flutter_app/lib/models/agent_result.dart) - agent_result.dart - source
+- [agent_sentiment.dart](flutter_app/lib/agents/agent_sentiment.dart) - agent_sentiment.dart - source
+- [agent_task.dart](flutter_app/lib/models/agent_task.dart) - agent_task.dart - source
+- [agent_unrestricted.dart](flutter_app/lib/agents/agent_unrestricted.dart) - agent_unrestricted.dart - source
+- [agents_dashboard_screen.dart](flutter_app/lib/screens/agents_dashboard_screen.dart) - agents_dashboard_screen.dart - source
 - [ai_config.go](internal/config/ai_config.go) - ai_config.go - source
 - [ai_models.yaml](config/ai_models.yaml) - o3
 - [akira_code_reviewer.py](lib/agents/specialized/akira_code_reviewer.py) - !/usr/bin/env python3
 - [analyze_dart_code.py](.github/workflows/bots/scripts/analyze_dart_code.py) - !/usr/bin/env python3
 - [analyze_go_code.py](.github/workflows/bots/scripts/analyze_go_code.py) - !/usr/bin/env python3
 - [analyzer.go](lib/generator/analyzer.go) - analyzer.go - source
+- [architect.go](internal/orchestrator/agents/architect.go) - architect.go - source
+- [autodev_executor.sh](agents/autodev_executor.sh) - !/bin/bash
 - [backend-quality-rules.json](.github/workflows/bots/backend-quality-rules.json) - backend-quality-rules.json - configuration
 - [basic_agent.py](examples/python/basic_agent.py) - !/usr/bin/env python3
+- [billing_validator.go](internal/monetization/billing_validator.go) - billing_validator.go - source
 - [blocker-detector.yml](.github/workflows/blocker-detector.yml) - Blocker Detector
+- [brand_executor.sh](agents/brand_executor.sh) - !/bin/bash
+- [bridge_executor.sh](agents/bridge_executor.sh) - !/bin/bash
 - [bug_report.md](.github/ISSUE_TEMPLATE/bug_report.md) - ---
 - [cache.go](internal/ai/cache.go) - cache.go - source
-- [ci.yml](.github/workflows/ci.yml) - CI Pipeline
+- [cd.yml](.github/workflows/cd.yml) - 🚀 CD Pipeline - Railway
+- [chat_screen.dart](flutter_app/lib/screens/chat_screen.dart) - chat_screen.dart - source
+- [check_dependencies.py](.github/workflows/bots/scripts/check_dependencies.py) - !/usr/bin/env python3
+- [ci.yml](.github/workflows/ci.yml) - 🧪 CI Pipeline
 - [communication.md](docs/elara/communication.md) - 💬 Communication Protocols
 - [compress_assets.sh](.github/workflows/bots/scripts/compress_assets.sh) - !/bin/bash
 - [configuration.md](LIBRARY/by-category/configuration.md) - Configuration
+- [constants.dart](flutter_app/lib/utils/constants.dart) - constants.dart - source
 - [copilot-instructions.md](.github/copilot-instructions.md) - Copilot Instructions for Tokyo-IA
 - [create_and_merge_pr.sh](scripts/create_and_merge_pr.sh) - !/usr/bin/env bash
 - [dashboard.html](LIBRARY/dashboard.html) - dashboard.html - other
+- [dependency.go](internal/orchestrator/agents/dependency.go) - dependency.go - source
 - [elite-framework-examples.md](docs/elite-framework-examples.md) - Elite Framework Examples
+- [factory.go](internal/orchestrator/factory.go) - factory.go - source
 - [feature_request.md](.github/ISSUE_TEMPLATE/feature_request.md) - ---
 - [file-count.md](LIBRARY/stats/file-count.md) - File Count Statistics
+- [firebase_service.dart](flutter_app/lib/services/firebase_service.dart) - firebase_service.dart - source
+- [flutter-agents.yml](.github/workflows/flutter-agents.yml) - Flutter Agents CI/CD
 - [general.md](LIBRARY/by-purpose/general.md) - General
+- [generate_agent_report.py](scripts/generate_agent_report.py) - !/usr/bin/env python3
 - [generate_report.py](.github/workflows/bots/scripts/generate_report.py) - !/usr/bin/env python3
 - [generator.go](lib/generator/generator.go) - generator.go - source
 - [go.md](LIBRARY/by-technology/go.md) - GO
 - [go.mod](go.mod) - go.mod - other
 - [go.sum](go.sum) - go.sum - other
+- [gradle-wrapper.properties](flutter_app/android/gradle/wrapper/gradle-wrapper.properties) - gradle-wrapper.properties - configuration
 - [hello.go](admin/hello.go) - hello.go - source
 - [hello.go](internal/hello.go) - hello.go - source
 - [hello.go](lib/hello.go) - hello.go - source
 - [hello.go](config/hello.go) - hello.go - source
 - [hello.proto](proto/hello.proto) - hello.proto - schema
 - [hiro_sre.py](lib/agents/specialized/hiro_sre.py) - !/usr/bin/env python3
+- [home_screen.dart](flutter_app/lib/screens/home_screen.dart) - home_screen.dart - source
 - [html.md](LIBRARY/by-technology/html.md) - HTML
 - [imperial-standards.md](docs/elara/imperial-standards.md) - 🏛️ Imperial Premium Elite Standards
+- [index.css](web/src/index.css) - index.css - other
+- [index.html](web/index.html) - index.html - other
 - [json.md](LIBRARY/by-technology/json.md) - JSON
 - [kenji_architect.py](lib/agents/specialized/kenji_architect.py) - !/usr/bin/env python3
 - [kt.md](LIBRARY/by-technology/kt.md) - KT
@@ -78,42 +132,83 @@ This package provides multi-agent AI capabilities using CrewAI.
 - [library-report.yml](.github/workflows/library-report.yml) - Library Report
 - [library_cataloger.py](.github/workflows/scripts/library_cataloger.py) - !/usr/bin/env python3
 - [library_search.py](.github/workflows/scripts/library_search.py) - !/usr/bin/env python3
+- [logger.dart](flutter_app/lib/utils/logger.dart) - logger.dart - source
+- [main.dart](flutter_app/lib/main.dart) - main.dart - source
 - [main.go](cmd/main.go) - main.go - source
+- [main.go](cmd/security-agent/main.go) - main.go - source
 - [main.go](cmd/ai-api/main.go) - main.go - source
+- [main.go](cmd/orchestrator/main.go) - main.go - source
 - [main.go](cmd/registry-api/main.go) - main.go - source
 - [main.go](cmd/elite/main.go) - main.go - source
+- [main.jsx](web/src/main.jsx) - main.jsx - source
 - [manifest.yaml](templates/manifest.yaml) - "Progressive Web App"
+- [manifest_auditor.go](internal/security/manifest_auditor.go) - manifest_auditor.go - source
 - [md.md](LIBRARY/by-technology/md.md) - MD
 - [melampe-preferences.md](docs/elara/melampe-preferences.md) - 🎯 Melampe001 Preferences
 - [mod.md](LIBRARY/by-technology/mod.md) - MOD
 - [model_router.go](internal/ai/model_router.go) - model_router.go - source
 - [models.go](internal/registry/models.go) - models.go - source
+- [monetization.go](internal/orchestrator/agents/monetization.go) - monetization.go - source
 - [my-agent.agent.md](.github/agents/my-agent.agent.md) - ---
+- [optimization.go](internal/orchestrator/agents/optimization.go) - optimization.go - source
 - [orchestration_demo.py](examples/orchestration_demo.py) - !/usr/bin/env python3
+- [orchestrator.go](internal/orchestrator/orchestrator.go) - orchestrator.go - source
 - [other.md](LIBRARY/by-category/other.md) - Other
+- [package-lock.json](web/package-lock.json) - package-lock.json - configuration
+- [package.json](web/package.json) - package.json - configuration
 - [parser.go](lib/generator/parser.go) - parser.go - source
 - [persona.md](docs/elara/persona.md) - 👑 Elara - Complete Identity and Personality
+- [pipeline.sh](pipeline.sh) - !/bin/bash
 - [pre-commit](.githooks/pre-commit) - pre-commit - other
+- [proguard-rules.pro](flutter_app/android/app/proguard-rules.pro) - proguard-rules.pro - other
 - [proto.md](LIBRARY/by-technology/proto.md) - PROTO
 - [pull_request_template.md](.github/pull_request_template.md) - Description
 - [py.md](LIBRARY/by-technology/py.md) - PY
 - [pyproject.toml](pyproject.toml) - pyproject.toml - configuration
+- [railway.toml](railway.toml) - railway.toml - configuration
 - [rb.md](LIBRARY/by-technology/rb.md) - RB
 - [requirements.txt](requirements.txt) - Tokyo-IA Python Dependencies
+- [restore_validator.go](internal/monetization/restore_validator.go) - restore_validator.go - source
+- [run_emulator.sh](emulator/run_emulator.sh) - !/bin/bash
+- [run_flow.sh](orchestrator/run_flow.sh) - !/bin/bash
 - [scaffolder.go](lib/generator/scaffolder.go) - scaffolder.go - source
 - [schema.md](LIBRARY/by-category/schema.md) - Schema
 - [schema.sql](db/schema.sql) - schema.sql - other
 - [script.md](LIBRARY/by-category/script.md) - Script
 - [sh.md](LIBRARY/by-technology/sh.md) - SH
+- [simulate_design.sh](simulator/simulate_design.sh) - !/bin/bash
 - [source.md](LIBRARY/by-category/source.md) - Source
 - [sql.md](LIBRARY/by-technology/sql.md) - SQL
+- [styles.xml](flutter_app/android/app/src/main/res/values/styles.xml) - styles.xml - other
 - [sum.md](LIBRARY/by-technology/sum.md) - SUM
+- [synemu_agent2d_flare.py](SYNEMU/agents_bots/synemu_agent2d_flare.py) - !/usr/bin/env python3
+- [synemu_agent3d_unity.py](SYNEMU/agents_bots/synemu_agent3d_unity.py) - !/usr/bin/env python3
+- [synemu_agent_video_viz.py](SYNEMU/agents_bots/synemu_agent_video_viz.py) - !/usr/bin/env python3
+- [synemu_asset_atlas.py](SYNEMU/agents_bots/synemu_asset_atlas.py) - !/usr/bin/env python3
+- [synemu_compliance_validator.py](SYNEMU/agents_bots/synemu_compliance_validator.py) - !/usr/bin/env python3
+- [synemu_logo.placeholder.txt](recursos_identidad/synemu_logo.placeholder.txt) - SYNEMU Suite Logo Placeholder
+- [synemu_orchestrator.py](SYNEMU/agents_bots/synemu_orchestrator.py) - !/usr/bin/env python3
+- [synemu_project_template.md](plantillas/synemu_project_template.md) - SYNEMU Suite Project Template
+- [synemu_qa_owl.py](SYNEMU/agents_bots/synemu_qa_owl.py) - !/usr/bin/env python3
+- [synemu_supreme_orchestrator.py](SYNEMU/agents_bots/synemu_supreme_orchestrator.py) - !/usr/bin/env python3
+- [synemu_user_manual.md](manuales/synemu_user_manual.md) - SYNEMU Suite User Manual
 - [templater.go](lib/generator/templater.go) - {{.ProjectName}}
+- [tokraggcorp_letterhead.md](hojas_membretadas/tokraggcorp_letterhead.md) - TokRaggcorp® Official Letterhead
+- [tokraggcorp_logo_primary.placeholder.txt](recursos_identidad/tokraggcorp_logo_primary.placeholder.txt) - TokRaggcorp® Logo Placeholder
+- [tokyoapps_letterhead.md](hojas_membretadas/tokyoapps_letterhead.md) - TokyoApps® Official Letterhead
+- [tokyoapps_logo_primary.placeholder.txt](recursos_identidad/tokyoapps_logo_primary.placeholder.txt) - TokyoApps® Logo Placeholder
+- [toml.md](LIBRARY/by-technology/toml.md) - TOML
 - [tsx.md](LIBRARY/by-technology/tsx.md) - TSX
 - [txt.md](LIBRARY/by-technology/txt.md) - TXT
 - [types.go](internal/ai/types.go) - types.go - source
+- [types.go](internal/monetization/types.go) - types.go - source
 - [types.go](lib/generator/types.go) - types.go - source
+- [unlock_validator.go](internal/monetization/unlock_validator.go) - unlock_validator.go - source
+- [ux_executor.sh](agents/ux_executor.sh) - !/bin/bash
+- [validator.go](internal/orchestrator/agents/validator.go) - validator.go - source
+- [vercel.json](vercel.json) - vercel.json - configuration
 - [version.rb](ruby/lib/billing-platform/version.rb) - frozen_string_literal: true
+- [vite.config.js](web/vite.config.js) - vite.config.js - script
 - [weekly-report.yml](.github/workflows/weekly-report.yml) - Weekly Report
 - [yaml.md](LIBRARY/by-technology/yaml.md) - YAML
 - [yml.md](LIBRARY/by-technology/yml.md) - YML

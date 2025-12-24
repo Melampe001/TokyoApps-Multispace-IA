@@ -1,6 +1,6 @@
 # Automation
 
-Total: 19 archivos
+Total: 20 archivos
 
 - [.golangci.yml](.golangci.yml) - .golangci.yml - workflow
 - [.pre-commit-config.yaml](.pre-commit-config.yaml) - .pre-commit-config.yaml - workflow
@@ -12,6 +12,7 @@ Total: 19 archivos
 - [__init__.py](lib/orchestrator/__init__.py) - Tokyo-IA Orchestrator
 
 Multi-agent workflow orchestration system.
+- [analysis_options.yaml](flutter_app/analysis_options.yaml) - analysis_options.yaml - workflow
 - [automation.md](LIBRARY/by-purpose/automation.md) - Automation
 - [bot-backend-performance.yml](.github/workflows/bot-backend-performance.yml) - Bot #2 - Backend Performance Monitor
 - [bot-backend-quality.yml](.github/workflows/bot-backend-quality.yml) - Bot #1 - Backend Code Quality Guardian

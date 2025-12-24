@@ -1,28 +1,51 @@
 # Documentation
 
-Total: 24 archivos
+Total: 47 archivos
 
+- [.dockerignore](.dockerignore) - .dockerignore - other
+- [AGENTS_README.md](AGENTS_README.md) - 🤖 Tokyo-IA Agent Pipeline System
 - [ARCHITECTURE.md](docs/ARCHITECTURE.md) - 🏗️ Tokyo-IA Architecture Documentation
+- [CICD.md](docs/CICD.md) - 🚀 CI/CD Pipeline Documentation
 - [CI_CD.md](docs/CI_CD.md) - CI/CD Documentation
+- [Dockerfile](Dockerfile) - Dockerfile - build
 - [GUIDE.md](LIBRARY/GUIDE.md) - Digital Library System - Complete Guide
 - [GitHub-Pro.md](prompts/GitHub-Pro.md) - GitHub-Pro.md – Step-by-Step Guide for GitHub Pro (2025)
+- [QUICKSTART.md](examples/QUICKSTART.md) - Elite Framework - Quick Start Guide
+- [QUICKSTART.md](docs/QUICKSTART.md) - 🚀 Quick Setup Guide
 - [README-python.md](README-python.md) - Tokyo-IA Python Setup Guide
 - [README.md](README.md) - 🏛️ Tokyo-IA - Imperial Premium Elite Edition
 - [README.md](db/README.md) - Tokyo-IA Database
+- [README.md](examples/README.md) - Tokyo-IA Examples
 - [README.md](examples/python/README.md) - Tokyo-IA Python Examples
+- [README.md](reportes_graficos/README.md) - SYNEMU Reports and Graphics
+- [README.md](web/README.md) - Tokyo IA Web Dashboard
 - [README.md](LIBRARY/README.md) - 📚 Tokyo-IA Digital Library
 - [README.md](LIBRARY/reports/README.md) - Library Reports
+- [README.md](flutter_app/README.md) - Tokyo-IA Flutter Application
+- [README.md](assets/play-store/README.md) - Play Store Assets - Tokyo IA
+- [README.md](assets/play-store/icon/README.md) - App Icon Generation - Tokyo IA
 - [README.md](docs/README.md) - Tokyo-IA Documentation
 - [README.md](docs/elara/README.md) - 👑 Elara Knowledge Base
+- [README.md](SYNEMU/README.md) - SYNEMU Suite
+- [README.md](SYNEMU/recursos/README.md) - SYNEMU Additional Resources
+- [README.md](SYNEMU/docs/README.md) - SYNEMU Suite Documentation
 - [README.md](templates/ai-agent/README.md) - AI Agent Template
 - [README.md](templates/ecommerce/README.md) - E-commerce Template
 - [README.md](templates/pwa/README.md) - PWA Template
+- [SECRETS_SETUP.md](docs/SECRETS_SETUP.md) - GitHub Secrets Setup Guide
+- [VERCEL_SETUP.md](docs/VERCEL_SETUP.md) - Vercel Setup Guide - Tokyo IA
 - [ai-model-router-guide.md](docs/guides/ai-model-router-guide.md) - AI Model Router Guide
 - [auto-documenter.yml](.github/workflows/auto-documenter.yml) - Auto Documenter
+- [brand_guidelines.md](recursos_identidad/brand_guidelines.md) - TokyoApps® Brand Resources
+- [docker-compose.yml](docker-compose.yml) - tokyoia-db
 - [documentation.md](.github/ISSUE_TEMPLATE/documentation.md) - ---
 - [documentation.md](LIBRARY/by-category/documentation.md) - Documentation
 - [documentation.md](LIBRARY/by-purpose/documentation.md) - Documentation
 - [documenter.go](lib/generator/documenter.go) - Architecture
 - [elite-framework.md](docs/elite-framework.md) - Elite Framework Documentation
 - [frontend-ux-guidelines.json](.github/workflows/bots/frontend-ux-guidelines.json) - frontend-ux-guidelines.json - configuration
+- [generate-keystore.yml](.github/workflows/generate-keystore.yml) - Generate Keystore Documentation
 - [sakura_documentation.py](lib/agents/specialized/sakura_documentation.py) - !/usr/bin/env python3
+- [synemu_docu_libra.py](SYNEMU/agents_bots/synemu_docu_libra.py) - !/usr/bin/env python3
+- [synemu_installation_guide.md](instructivos/synemu_installation_guide.md) - SYNEMU Installation Guide
+- [synemu_quick_start.md](instructivos/synemu_quick_start.md) - SYNEMU Quick Start Guide

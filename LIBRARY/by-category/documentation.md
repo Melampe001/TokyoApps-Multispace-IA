@@ -1,6 +1,9 @@
 # Documentation
 
-Total: 90 archivos
+Total: 132 archivos
+
+## [AGENTS_README.md](AGENTS_README.md)
+🤖 Tokyo-IA Agent Pipeline System
 
 ## [ARCHITECTURE.md](docs/ARCHITECTURE.md)
 🏗️ Tokyo-IA Architecture Documentation
@@ -8,8 +11,14 @@ Total: 90 archivos
 ## [BRANCH_PROTECTION.md](docs/BRANCH_PROTECTION.md)
 Branch Protection Rules
 
+## [BUILD_AGENT_REPORT.md](flutter_app/BUILD_AGENT_REPORT.md)
+BUILD_AGENT Implementation Report
+
 ## [CATALOG.md](LIBRARY/CATALOG.md)
 📚 Catálogo Completo de la Biblioteca
+
+## [CICD.md](docs/CICD.md)
+🚀 CI/CD Pipeline Documentation
 
 ## [CI_CD.md](docs/CI_CD.md)
 CI/CD Documentation
@@ -17,11 +26,23 @@ CI/CD Documentation
 ## [CONTRIBUTING.md](CONTRIBUTING.md)
 Contributing to Tokyo-IA
 
+## [DEPENDENCY_AGENT_SUMMARY.md](DEPENDENCY_AGENT_SUMMARY.md)
+Dependency Agent Implementation Summary
+
+## [DEPENDENCY_POLICY.md](docs/DEPENDENCY_POLICY.md)
+Dependency Policy
+
 ## [ELARA_COMMAND_CENTER.md](.github/ELARA_COMMAND_CENTER.md)
 👑 Elara Command Center
 
 ## [ELARA_DASHBOARD.md](.github/ELARA_DASHBOARD.md)
 📊 Elara Operations Dashboard
+
+## [ELITE_FRAMEWORK_EXAMPLES.md](docs/ELITE_FRAMEWORK_EXAMPLES.md)
+Elite Framework - Project Generation Examples
+
+## [ENTERPRISE_BEST_PRACTICES.md](SYNEMU/docs/ENTERPRISE_BEST_PRACTICES.md)
+🚀 SYNEMU Enterprise Best Practices & Emerging Technologies Framework
 
 ## [FILE_TEMPLATE.md](.github/templates/FILE_TEMPLATE.md)
 [Nombre del Archivo]
@@ -34,6 +55,9 @@ GitHub-Pro.md – Step-by-Step Guide for GitHub Pro (2025)
 
 ## [IMPLEMENTATION_SUMMARY.md](IMPLEMENTATION_SUMMARY.md)
 Tokyo-IA Agent Orchestration System - Implementation Summary
+
+## [IMPLEMENTATION_SUMMARY.md](flutter_app/IMPLEMENTATION_SUMMARY.md)
+Tokyo-IA Flutter Implementation Summary
 
 ## [IMPLEMENTATION_SUMMARY.md](docs/IMPLEMENTATION_SUMMARY.md)
 Elite Framework - Implementation Summary
@@ -50,6 +74,24 @@ MAKEFILE
 ## [ORCHESTRATION.md](docs/agents/ORCHESTRATION.md)
 Tokyo-IA Agent Orchestration System
 
+## [ORQUESTACION_SUPREMA_MULTI-AGENTE.md](SYNEMU/docs/ORQUESTACION_SUPREMA_MULTI-AGENTE.md)
+⚡ Orquestación Suprema Multi-Agente: Cobertura Total de Calidad, Seguridad y Compliance
+
+## [PLAY_STORE_CHECKLIST.md](docs/PLAY_STORE_CHECKLIST.md)
+Google Play Store Checklist - Tokyo IA
+
+## [PRIVACY_POLICY.md](docs/PRIVACY_POLICY.md)
+Política de Privacidad - Tokyo IA
+
+## [PROJECT_STATISTICS.md](flutter_app/PROJECT_STATISTICS.md)
+Tokyo-IA Flutter - Project Statistics
+
+## [QUICKSTART.md](examples/QUICKSTART.md)
+Elite Framework - Quick Start Guide
+
+## [QUICKSTART.md](docs/QUICKSTART.md)
+🚀 Quick Setup Guide
+
 ## [README-python.md](README-python.md)
 Tokyo-IA Python Setup Guide
 
@@ -59,8 +101,17 @@ Tokyo-IA Python Setup Guide
 ## [README.md](db/README.md)
 Tokyo-IA Database
 
+## [README.md](examples/README.md)
+Tokyo-IA Examples
+
 ## [README.md](examples/python/README.md)
 Tokyo-IA Python Examples
+
+## [README.md](reportes_graficos/README.md)
+SYNEMU Reports and Graphics
+
+## [README.md](web/README.md)
+Tokyo IA Web Dashboard
 
 ## [README.md](.github/workflows/README.md)
 GitHub Workflows Documentation
@@ -74,11 +125,29 @@ GitHub Workflows Documentation
 ## [README.md](LIBRARY/reports/README.md)
 Library Reports
 
+## [README.md](flutter_app/README.md)
+Tokyo-IA Flutter Application
+
+## [README.md](assets/play-store/README.md)
+Play Store Assets - Tokyo IA
+
+## [README.md](assets/play-store/icon/README.md)
+App Icon Generation - Tokyo IA
+
 ## [README.md](docs/README.md)
 Tokyo-IA Documentation
 
 ## [README.md](docs/elara/README.md)
 👑 Elara Knowledge Base
+
+## [README.md](SYNEMU/README.md)
+SYNEMU Suite
+
+## [README.md](SYNEMU/recursos/README.md)
+SYNEMU Additional Resources
+
+## [README.md](SYNEMU/docs/README.md)
+SYNEMU Suite Documentation
 
 ## [README.md](templates/bot/README.md)
 Bot Template
@@ -95,14 +164,32 @@ E-commerce Template
 ## [README.md](templates/pwa/README.md)
 PWA Template
 
+## [SECRETS.md](docs/SECRETS.md)
+GitHub Actions Secrets Configuration
+
+## [SECRETS_SETUP.md](docs/SECRETS_SETUP.md)
+GitHub Secrets Setup Guide
+
 ## [SECURITY.md](SECURITY.md)
 Security Policy
+
+## [STORE_LISTING.md](docs/STORE_LISTING.md)
+Store Listing - Tokyo IA
+
+## [SYNEMU_IMPLEMENTATION_SUMMARY.md](SYNEMU_IMPLEMENTATION_SUMMARY.md)
+SYNEMU Suite Implementation Summary
+
+## [SYNEMU_REVIEW_CHECKLIST.md](SYNEMU_REVIEW_CHECKLIST.md)
+📋 SYNEMU Suite - Lista de Revisión Completa
 
 ## [TAREAS.md](TAREAS.md)
 ¿Qué tengo que hacer? - Guía de Tareas para Tokyo IA
 
 ## [TIMELINE.md](LIBRARY/TIMELINE.md)
 📅 Línea de Tiempo de Creaciones
+
+## [VERCEL_SETUP.md](docs/VERCEL_SETUP.md)
+Vercel Setup Guide - Tokyo IA
 
 ## [ai-api-reference.md](docs/api/ai-api-reference.md)
 Tokyo-IA AI API Reference
@@ -124,6 +211,9 @@ Multi-Model AI Integration Architecture
 
 ## [automation.md](LIBRARY/by-purpose/automation.md)
 Automation
+
+## [brand_guidelines.md](recursos_identidad/brand_guidelines.md)
+TokyoApps® Brand Resources
 
 ## [bug_report.md](.github/ISSUE_TEMPLATE/bug_report.md)
 ---
@@ -236,6 +326,9 @@ Schema
 ## [script.md](LIBRARY/by-category/script.md)
 Script
 
+## [security-agent.md](docs/security-agent.md)
+Security Agent - Android Manifest Auditor
+
 ## [security.md](LIBRARY/by-purpose/security.md)
 Security
 
@@ -254,8 +347,41 @@ SQL
 ## [sum.md](LIBRARY/by-technology/sum.md)
 SUM
 
+## [synemu_installation_guide.md](instructivos/synemu_installation_guide.md)
+SYNEMU Installation Guide
+
+## [synemu_logo.placeholder.txt](recursos_identidad/synemu_logo.placeholder.txt)
+SYNEMU Suite Logo Placeholder
+
+## [synemu_project_template.md](plantillas/synemu_project_template.md)
+SYNEMU Suite Project Template
+
+## [synemu_quick_start.md](instructivos/synemu_quick_start.md)
+SYNEMU Quick Start Guide
+
+## [synemu_technical_spec_template.md](plantillas/synemu_technical_spec_template.md)
+SYNEMU Suite Technical Specification Template
+
+## [synemu_user_manual.md](manuales/synemu_user_manual.md)
+SYNEMU Suite User Manual
+
 ## [testing.md](LIBRARY/by-purpose/testing.md)
 Testing
+
+## [tokraggcorp_letterhead.md](hojas_membretadas/tokraggcorp_letterhead.md)
+TokRaggcorp® Official Letterhead
+
+## [tokraggcorp_logo_primary.placeholder.txt](recursos_identidad/tokraggcorp_logo_primary.placeholder.txt)
+TokRaggcorp® Logo Placeholder
+
+## [tokyoapps_letterhead.md](hojas_membretadas/tokyoapps_letterhead.md)
+TokyoApps® Official Letterhead
+
+## [tokyoapps_logo_primary.placeholder.txt](recursos_identidad/tokyoapps_logo_primary.placeholder.txt)
+TokyoApps® Logo Placeholder
+
+## [toml.md](LIBRARY/by-technology/toml.md)
+TOML
 
 ## [tsx.md](LIBRARY/by-technology/tsx.md)
 TSX
