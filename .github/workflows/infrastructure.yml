@@ -28,6 +28,15 @@ jobs:
         with:
           terraform_version: 1.6.0
       
+      - name: Validate AWS Credentials
+        run: |
+          if [ -z "${{ secrets.AWS_ACCESS_KEY_ID }}" ] || [ -z "${{ secrets.AWS_SECRET_ACCESS_KEY }}" ]; then
+            echo "::error::AWS credentials not configured. Please add AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY to repository secrets."
+            echo "::error::Instructions: https://github.com/${{ github.repository }}/blob/main/docs/ATHENA_SETUP.md#aws-credentials-setup"
+            exit 1
+          fi
+          echo "✅ AWS credentials are configured"
+      
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:

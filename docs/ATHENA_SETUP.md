@@ -163,23 +163,166 @@ go test -v
 
 ## Step 7: Configure GitHub Actions Secrets
 
-In your GitHub repository, go to Settings > Secrets > Actions and add:
+### AWS Credentials Setup
 
+To enable automated infrastructure deployment via GitHub Actions, you need to configure AWS credentials as repository secrets.
+
+#### 7.1: Create AWS IAM User for CI/CD
+
+1. **Sign in to AWS Console** and navigate to IAM
+2. **Create a new IAM user**:
+   - Go to IAM > Users > Add users
+   - User name: `github-actions-tokyo-ia`
+   - Select "Access key - Programmatic access"
+   - Click "Next: Permissions"
+
+3. **Attach Required Permissions**:
+   - Click "Attach existing policies directly"
+   - Or create a custom policy with the minimum required permissions (see policy below)
+
+#### Required IAM Policy
+
+Create a custom policy named `TerraformInfrastructurePolicy` with these permissions:
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "S3BucketManagement",
+      "Effect": "Allow",
+      "Action": [
+        "s3:CreateBucket",
+        "s3:DeleteBucket",
+        "s3:ListBucket",
+        "s3:PutBucketTagging",
+        "s3:PutBucketVersioning",
+        "s3:PutBucketPublicAccessBlock",
+        "s3:GetBucketLocation",
+        "s3:PutObject",
+        "s3:GetObject"
+      ],
+      "Resource": [
+        "arn:aws:s3:::tokyo-ia-*",
+        "arn:aws:s3:::tokyo-ia-*/*"
+      ]
+    },
+    {
+      "Sid": "GlueManagement",
+      "Effect": "Allow",
+      "Action": [
+        "glue:CreateDatabase",
+        "glue:DeleteDatabase",
+        "glue:GetDatabase",
+        "glue:UpdateDatabase",
+        "glue:CreateTable",
+        "glue:DeleteTable",
+        "glue:GetTable",
+        "glue:UpdateTable",
+        "glue:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AthenaManagement",
+      "Effect": "Allow",
+      "Action": [
+        "athena:CreateWorkGroup",
+        "athena:DeleteWorkGroup",
+        "athena:GetWorkGroup",
+        "athena:UpdateWorkGroup",
+        "athena:TagResource",
+        "athena:StartQueryExecution",
+        "athena:GetQueryExecution",
+        "athena:GetQueryResults"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IAMManagement",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateRole",
+        "iam:DeleteRole",
+        "iam:GetRole",
+        "iam:PassRole",
+        "iam:AttachRolePolicy",
+        "iam:DetachRolePolicy",
+        "iam:CreatePolicy",
+        "iam:DeletePolicy",
+        "iam:GetPolicy",
+        "iam:GetPolicyVersion",
+        "iam:ListPolicyVersions",
+        "iam:TagRole",
+        "iam:TagPolicy"
+      ],
+      "Resource": [
+        "arn:aws:iam::*:role/tokyo-ia-*",
+        "arn:aws:iam::*:policy/tokyo-ia-*"
+      ]
+    },
+    {
+      "Sid": "CloudWatchLogs",
+      "Effect": "Allow",
+      "Action": [
+        "logs:CreateLogGroup",
+        "logs:DeleteLogGroup",
+        "logs:DescribeLogGroups",
+        "logs:TagLogGroup",
+        "logs:PutRetentionPolicy"
+      ],
+      "Resource": "arn:aws:logs:*:*:log-group:/aws/tokyo-ia/*"
+    }
+  ]
+}
 ```
-AWS_ACCESS_KEY_ID=<your-access-key>
-AWS_SECRET_ACCESS_KEY=<your-secret-key>
-AWS_REGION=us-east-1
 
-DB_HOST=<your-postgres-host>
-DB_NAME=tokyo_ia
-DB_USER=postgres
-DB_PASSWORD=<your-db-password>
+4. **Save Access Keys Securely**:
+   - After creating the user, AWS will display the Access Key ID and Secret Access Key
+   - **⚠️ CRITICAL**: Save these immediately - the secret key is only shown once
+   - Store them temporarily in a secure location (password manager)
 
-S3_DATA_LAKE_BUCKET=<from-terraform-output>
-ATHENA_DATABASE=<from-terraform-output>
-ATHENA_WORKGROUP=<from-terraform-output>
-ATHENA_OUTPUT_LOCATION=s3://<athena-results-bucket>/
-```
+#### 7.2: Add Secrets to GitHub Repository
+
+1. Navigate to your GitHub repository
+2. Go to **Settings** → **Secrets and variables** → **Actions**
+3. Click **New repository secret**
+4. Add the following secrets:
+
+| Secret Name | Description | Example Value |
+|-------------|-------------|---------------|
+| `AWS_ACCESS_KEY_ID` | IAM user access key ID | `AKIAIOSFODNN7EXAMPLE` |
+| `AWS_SECRET_ACCESS_KEY` | IAM user secret access key | `wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY` |
+| `AWS_REGION` | AWS region for deployment | `us-east-1` |
+| `DB_HOST` | PostgreSQL host | `your-postgres.rds.amazonaws.com` |
+| `DB_NAME` | Database name | `tokyo_ia` |
+| `DB_USER` | Database user | `postgres` |
+| `DB_PASSWORD` | Database password | `your-secure-password` |
+| `S3_DATA_LAKE_BUCKET` | S3 bucket name (from Terraform output) | `tokyo-ia-data-lake-dev` |
+| `ATHENA_DATABASE` | Glue database name (from Terraform output) | `tokyo_ia_billing_dev` |
+| `ATHENA_WORKGROUP` | Athena workgroup (from Terraform output) | `tokyo-ia-analytics-dev` |
+| `ATHENA_OUTPUT_LOCATION` | S3 path for query results | `s3://tokyo-ia-athena-results-dev/` |
+
+#### Security Best Practices
+
+- **Rotate credentials regularly**: Set a calendar reminder to rotate keys every 90 days
+- **Use least-privilege policies**: Only grant permissions required for Terraform operations
+- **Monitor usage**: Enable CloudTrail to audit API calls made by the CI/CD user
+- **Consider OIDC**: For enhanced security, use OpenID Connect instead of long-lived keys (see `docs/AWS_SETUP.md`)
+- **Never commit secrets**: Ensure `.env` files and credentials are in `.gitignore`
+- **Revoke immediately if exposed**: If credentials are accidentally committed or exposed, rotate them immediately
+
+#### Troubleshooting
+
+**Error: "Credentials could not be loaded"**
+- Verify secrets are named exactly as shown above (case-sensitive)
+- Ensure no extra spaces in secret values
+- Check that the IAM user has required permissions
+
+**Error: "Access Denied" during Terraform apply**
+- Review IAM policy permissions
+- Check resource name patterns match your `terraform.tfvars` configuration
+- Ensure IAM user has permissions for the specific AWS region
 
 ## Step 8: Run First ETL Export (Optional)
 
