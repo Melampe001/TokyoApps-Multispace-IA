@@ -1,0 +1,18 @@
+# TokRaggcorp® Logo Placeholder
+
+This is a placeholder file for the TokRaggcorp® primary logo.
+
+**Actual logo files should be provided by the design team.**
+
+## Expected Format
+- SVG vector format
+- Transparent background
+- Full color version
+- Dimensions: Scalable (minimum 120px width for digital use)
+
+## Colors
+- Primary: Tech Blue (#0066CC)
+- Accent: AI Purple (#8B5CF6)
+- Gradient: Blue to Purple
+
+For the actual logo file, contact: branding@tokraggcorp.com
