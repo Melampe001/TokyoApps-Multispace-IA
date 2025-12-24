@@ -1,17 +1,19 @@
 # 🏛️ Tokyo-IA - Imperial Premium Elite Edition
 
-[![CI Pipeline](https://github.com/Melampe001/Tokyo-IA/workflows/CI%20Pipeline/badge.svg)](https://github.com/Melampe001/Tokyo-IA/actions)
-[![Security](https://github.com/Melampe001/Tokyo-IA/workflows/Security%20Scan/badge.svg)](https://github.com/Melampe001/Tokyo-IA/actions)
+[![CI Pipeline](https://github.com/Melampe001/Tokyo-IA/actions/workflows/ci.yml/badge.svg)](https://github.com/Melampe001/Tokyo-IA/actions/workflows/ci.yml)
+[![CD Pipeline](https://github.com/Melampe001/Tokyo-IA/actions/workflows/cd.yml/badge.svg)](https://github.com/Melampe001/Tokyo-IA/actions/workflows/cd.yml)
+[![Security Scan](https://github.com/Melampe001/Tokyo-IA/actions/workflows/security.yml/badge.svg)](https://github.com/Melampe001/Tokyo-IA/actions/workflows/security.yml)
+[![Release](https://github.com/Melampe001/Tokyo-IA/actions/workflows/release.yml/badge.svg)](https://github.com/Melampe001/Tokyo-IA/actions/workflows/release.yml)
+[![Vercel Deploy](https://github.com/Melampe001/Tokyo-IA/actions/workflows/deploy-vercel.yml/badge.svg)](https://github.com/Melampe001/Tokyo-IA/actions/workflows/deploy-vercel.yml)
+[![Pre-Release Tests](https://github.com/Melampe001/Tokyo-IA/actions/workflows/pre-release-tests.yml/badge.svg)](https://github.com/Melampe001/Tokyo-IA/actions/workflows/pre-release-tests.yml)
 [![Go Report Card](https://goreportcard.com/badge/github.com/Melampe001/Tokyo-IA)](https://goreportcard.com/report/github.com/Melampe001/Tokyo-IA)
 [![codecov](https://codecov.io/gh/Melampe001/Tokyo-IA/branch/main/graph/badge.svg)](https://codecov.io/gh/Melampe001/Tokyo-IA)
+[![Go Version](https://img.shields.io/badge/Go-1.21%20|%201.22-blue)](https://go.dev/)
+[![Python Version](https://img.shields.io/badge/Python-3.11%20|%203.12-blue)](https://www.python.org/)
+[![License](https://img.shields.io/badge/License-Apache%202.0-green.svg)](LICENSE)
 
 > Generador de ramas ordenadas y flujos optimizados con IA integrada
 # Tokyo-IA 🗼
-
-[![CI Pipeline](https://github.com/Melampe001/Tokyo-IA/actions/workflows/ci.yml/badge.svg)](https://github.com/Melampe001/Tokyo-IA/actions/workflows/ci.yml)
-[![Go Version](https://img.shields.io/badge/Go-1.21-blue)](https://go.dev/)
-[![Python Version](https://img.shields.io/badge/Python-3.10+-blue)](https://www.python.org/)
-[![License](https://img.shields.io/badge/License-Apache%202.0-green.svg)](LICENSE)
 
 **Tokyo-IA** is a complete AI agent orchestration platform featuring 5 specialized agents with unique personalities and expertise. Built with Go, Python, React, and Android support.
 
@@ -36,6 +38,57 @@
 | 🌸 **Sakura** | sakura-004 | Documentation | Gemini 3.0 Ultra | Technical Writing, Diagrams |
 | 🏗️ **Kenji** | kenji-005 | Architecture | OpenAI o3 | System Design, Patterns |
 
+## 🎭 SYNEMU Suite (NEW!)
+
+**SYNEMU Suite** is a premium, fully automated platform module for **SIM**ulation, **E**mulation, **M**ulti-agent orchestration, and **U**nified automation workflows.
+
+### The SYNEMU Agents
+
+| Agent | ID | Role | Capabilities |
+|-------|-----|------|--------------|
+| 🎭 **Orchestrator** | synemu-orchestrator-001 | Multi-Agent Coordinator | Task management, workflow execution |
+| 🔥 **2D Flare** | synemu-2d-flare-002 | 2D Simulation | Physics, sprites, animations |
+| 🎮 **3D Unity** | synemu-3d-unity-003 | 3D Integration | Unity scenes, 3D objects, physics |
+| 🎬 **Video Viz** | synemu-video-viz-004 | Video Rendering | HD video, effects, format conversion |
+| 🦉 **QA Owl** | synemu-qa-owl-005 | Quality Assurance | Testing, coverage, validation |
+| ⚖️ **Docu Libra** | synemu-docu-libra-006 | Documentation | API docs, manuals, diagrams |
+| 🗺️ **Asset Atlas** | synemu-asset-atlas-007 | Asset Management | Storage, CDN, optimization |
+
+**Documentation:** See [SYNEMU/README.md](SYNEMU/README.md) for complete documentation.
+
+**Quick Start:**
+```python
+from SYNEMU.agents_bots import SynemuOrchestrator, Synemu2DFlareAgent
+
+orchestrator = SynemuOrchestrator()
+agent_2d = Synemu2DFlareAgent()
+scene_id = agent_2d.create_scene(width=1920, height=1080)
+result = agent_2d.run_simulation(scene_id, duration=5.0)
+```
+
+## 📊 Project Composition
+
+Tokyo-IA is a polyglot platform leveraging the strengths of multiple programming languages:
+
+```mermaid
+pie title Lenguajes
+    "Go" : 44.8
+    "Python" : 37.5
+    "TypeScript" : 4.2
+    "Kotlin" : 4.1
+    "HTML" : 4.1
+    "PLpgSQL" : 2.6
+    "Otros" : 2.7
+```
+
+- **Go (44.8%)**: High-performance backend core, APIs, and CLI tools
+- **Python (37.5%)**: AI agents, orchestration, and ML components
+- **TypeScript (4.2%)**: Modern web dashboard
+- **Kotlin (4.1%)**: Native Android application
+- **HTML (4.1%)**: Web interface templates
+- **PLpgSQL (2.6%)**: Database functions and procedures
+- **Others (2.7%)**: Ruby version management, configs, and templates
+
 ## 📋 Table of Contents
 
 - [Quick Start](#quick-start)
@@ -56,6 +109,7 @@
 - 🤖 **AI-Powered**: ML-based repository optimization
 - 🔒 **Enterprise Security**: CodeQL scanning, dependency review
 - 📊 **Web Dashboard**: Real-time monitoring interface
+- 🎭 **SYNEMU Suite**: Complete simulation, emulation, QA, and automation platform (NEW!)
 
 ## 🚀 Quick Start
 
@@ -230,31 +284,25 @@ tokyoia/
 │       ├── agent_orchestrator.py       # Orchestration engine
 │       └── workflows.py                # Pre-built workflows
 │
-├── python/                             # Python packages
-│   └── etl/                            # ETL pipeline ⭐
-│       ├── config.py                   # ETL configuration
-│       ├── export_to_s3.py             # Data export script
-│       ├── athena_setup.py             # Athena table setup
-│       ├── requirements.txt            # Python dependencies
-│       └── README.md                   # ETL documentation
+├── SYNEMU/                             # SYNEMU Suite 🎭 NEW!
+│   ├── agents_bots/                    # 8 specialized SYNEMU agents
+│   │   ├── synemu_integrations.py      # API key management
+│   │   ├── synemu_orchestrator.py      # 🎭 Multi-agent coordinator
+│   │   ├── synemu_agent2d_flare.py     # 🔥 2D simulation
+│   │   ├── synemu_agent3d_unity.py     # 🎮 3D Unity integration
+│   │   ├── synemu_agent_video_viz.py   # 🎬 Video rendering
+│   │   ├── synemu_qa_owl.py            # 🦉 QA automation
+│   │   ├── synemu_docu_libra.py        # ⚖️ Documentation
+│   │   └── synemu_asset_atlas.py       # 🗺️ Asset management
+│   ├── docs/                           # SYNEMU documentation
+│   └── recursos/                       # Additional resources
 │
-├── infrastructure/                     # Terraform IaC ⭐
-│   ├── main.tf                         # Provider config
-│   ├── athena.tf                       # Athena resources
-│   ├── iam.tf                          # IAM roles/policies
-│   ├── variables.tf                    # Input variables
-│   ├── outputs.tf                      # Outputs
-│   ├── terraform.tfvars.example        # Example vars
-│   └── README.md                       # Infrastructure docs
-│
-├── config/                             # Configuration
-│   └── athena/                         # Athena configs ⭐
-│       └── tables.sql                  # Table definitions
-│
-├── scripts/                            # Utility scripts
-│   ├── setup_athena.sh                 # Setup Athena ⭐
-│   ├── run_etl.sh                      # Run ETL manually ⭐
-│   └── validate_data.py                # Data validation ⭐
+├── hojas_membretadas/                  # Official letterheads 📄 NEW!
+├── manuales/                           # User manuals 📖 NEW!
+├── instructivos/                       # How-to guides 📝 NEW!
+├── plantillas/                         # Project templates 📋 NEW!
+├── recursos_identidad/                 # Brand assets 🎨 NEW!
+├── reportes_graficos/                  # Reports & dashboards 📊 NEW!
 │
 ├── db/                                 # Database ⭐
 │   ├── schema.sql                      # PostgreSQL schema
@@ -297,6 +345,41 @@ tokyoia/
 
 ## 📚 Documentation
 
+### Getting Started
+- **[🚀 Quick Setup Guide](docs/QUICKSTART.md)** - Get started in 5 minutes
+- **[🏗️ Architecture Documentation](docs/ARCHITECTURE.md)** - Complete visual architecture with Mermaid diagrams
+  - Language composition and project structure
+  - Development workflows and CI/CD pipeline
+  - Branch strategy and component interactions
+  - System architecture and security measures
+
+### CI/CD & Deployment
+- **[🚀 CI/CD Pipeline](docs/CICD.md)** - Comprehensive CI/CD documentation
+  - Workflow descriptions and setup
+  - Railway deployment guide
+  - Troubleshooting and rollback procedures
+- **[🔐 Secrets Configuration](docs/SECRETS.md)** - GitHub Actions secrets setup
+  - Required and optional secrets
+  - How to obtain tokens
+  - Security best practices
+
+### Mobile & Web Deployment
+- **[📱 Play Store Checklist](docs/PLAY_STORE_CHECKLIST.md)** - Complete guide for Google Play Store publication
+  - Asset requirements and specifications
+  - Release signing configuration
+  - Testing and submission process
+- **[📝 Store Listing Template](docs/STORE_LISTING.md)** - Pre-written content for Play Store
+- **[🔐 Secrets Setup Guide](docs/SECRETS_SETUP.md)** - All required secrets for deployments
+  - Android release signing
+  - Vercel deployment
+  - Google Play API
+- **[🌐 Vercel Setup](docs/VERCEL_SETUP.md)** - Web dashboard deployment guide
+  - Step-by-step Vercel configuration
+  - Domain setup and SSL
+  - Automated deployment workflow
+- **[🔒 Privacy Policy](docs/PRIVACY_POLICY.md)** - GDPR-compliant privacy policy
+
+### API & Integration
 - **[Agent Orchestration Guide](docs/agents/ORCHESTRATION.md)** - Complete system documentation
 - **[Database Schema](db/README.md)** - Database setup and operations
 - **[API Reference](docs/agents/ORCHESTRATION.md#api-reference)** - REST API endpoints
@@ -384,6 +467,142 @@ export OPENAI_API_KEY="sk-..."           # For Yuki & Kenji
 export GROQ_API_KEY="gsk_..."            # For Hiro
 export GOOGLE_API_KEY="..."              # For Sakura
 ```
+
+## 🚀 CI/CD Pipeline
+
+Tokyo-IA features a comprehensive CI/CD pipeline with automated testing, security scanning, and Railway deployment.
+
+### Continuous Integration
+
+Every push and pull request triggers:
+- ✅ **Go Tests** (1.21 & 1.22) with race detector and coverage
+- ✅ **Python Tests** (3.11 & 3.12) with pytest and coverage
+- ✅ **Linting** (golangci-lint, Ruff)
+- ✅ **Build Verification** for all binaries
+- ✅ **Database Schema Tests** with PostgreSQL
+- ✅ **Security Scanning** (CodeQL, Trivy, TruffleHog)
+
+### Continuous Deployment
+
+**Staging:** Automatic deployment to Railway on every push to `main`
+```bash
+git push origin main  # → Deploys to staging automatically
+```
+
+**Production:** Automatic deployment on version tags
+```bash
+git tag v1.0.0
+git push origin v1.0.0  # → Deploys to production + creates GitHub release
+```
+
+**Manual Deployment:**
+```bash
+./scripts/deploy.sh staging     # Deploy to staging
+./scripts/deploy.sh production  # Deploy to production
+```
+
+### Docker Support
+
+```bash
+# Local development with Docker Compose
+docker-compose up -d
+
+# Build Docker image
+docker build -t tokyo-ia:local .
+
+# Run container
+docker run -p 8080:8080 tokyo-ia:local
+```
+
+### Release Automation
+
+Every version tag automatically:
+1. 📦 Builds binaries for Linux, macOS, Windows (amd64 & arm64)
+2. 🔐 Generates SHA256 checksums
+3. 📝 Creates GitHub release with changelog
+4. 🐳 Builds and pushes Docker images to GHCR
+5. 🚀 Deploys to Railway production
+
+**See [docs/CICD.md](docs/CICD.md) for complete CI/CD documentation.**
+
+## 📱 Mobile & Web Deployments
+
+### Android App - Google Play Store
+
+Tokyo IA includes a Flutter-based Android application ready for Google Play Store publication.
+
+**Quick Start:**
+```bash
+cd flutter_app/
+
+# Build release AAB
+flutter build appbundle --release
+
+# Output: build/app/outputs/bundle/release/app-release.aab
+```
+
+**Pre-requisites:**
+- Configure release signing in `flutter_app/android/app/build.gradle` ✅
+- Generate and secure your keystore (see [docs/PLAY_STORE_CHECKLIST.md](docs/PLAY_STORE_CHECKLIST.md))
+- Configure GitHub Secrets for automated signing
+
+**Resources:**
+- 📋 [Play Store Checklist](docs/PLAY_STORE_CHECKLIST.md) - Complete publication guide
+- 📝 [Store Listing Template](docs/STORE_LISTING.md) - Pre-written descriptions
+- 🔐 [Privacy Policy](docs/PRIVACY_POLICY.md) - GDPR-compliant policy
+- 🎨 [Assets Guide](assets/play-store/README.md) - Icon and screenshot specs
+
+**Automated Testing:**
+The [pre-release-tests.yml](.github/workflows/pre-release-tests.yml) workflow automatically:
+- Runs Flutter tests
+- Builds release AAB
+- Verifies signing configuration
+
+### Web Dashboard - Vercel
+
+The web interface is automatically deployed to Vercel on every push to `main`.
+
+**Local Development:**
+```bash
+cd web/
+npm install
+npm run dev
+# Visit http://localhost:5173
+```
+
+**Deployment:**
+- **Automatic:** Push to `main` branch triggers Vercel deployment
+- **Manual:** Use Vercel CLI: `vercel --prod`
+- **Preview:** Every PR gets a unique preview URL
+
+**Setup:**
+1. Create Vercel account and link repo
+2. Configure GitHub Secrets:
+   - `VERCEL_TOKEN`
+   - `VERCEL_ORG_ID`
+   - `VERCEL_PROJECT_ID`
+3. See [docs/VERCEL_SETUP.md](docs/VERCEL_SETUP.md) for detailed instructions
+
+**Live Demo:**
+🌐 Web Dashboard: `https://tokyo-ia-web.vercel.app` (update after deployment)
+
+### Secrets Configuration
+
+All deployments require GitHub Secrets. See [docs/SECRETS_SETUP.md](docs/SECRETS_SETUP.md) for complete guide:
+
+**Android Release:**
+- `KEYSTORE_FILE` - Keystore for signing
+- `KEYSTORE_PASSWORD` - Keystore password
+- `KEY_ALIAS` - Key alias
+- `KEY_PASSWORD` - Key password
+
+**Vercel Deployment:**
+- `VERCEL_TOKEN` - Vercel authentication token
+- `VERCEL_ORG_ID` - Organization/Team ID
+- `VERCEL_PROJECT_ID` - Project ID
+
+**Google Play API (Optional):**
+- `GOOGLE_PLAY_JSON` - Service account credentials for automated publishing
 
 ## 🎯 Use Cases
 

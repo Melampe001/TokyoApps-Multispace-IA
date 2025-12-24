@@ -1,7 +1,8 @@
 # General
 
-Total: 108 archivos
+Total: 113 archivos
 
+- [.flake8](.flake8) - .flake8 - other
 - [.gitignore](.gitignore) - .gitignore - other
 - [.python-version](.python-version) - .python-version - other
 - [AgentDashboard.tsx](admin/src/components/AgentDashboard.tsx) - AgentDashboard.tsx - source
@@ -46,7 +47,7 @@ This package provides multi-agent AI capabilities using CrewAI.
 - [blocker-detector.yml](.github/workflows/blocker-detector.yml) - Blocker Detector
 - [bug_report.md](.github/ISSUE_TEMPLATE/bug_report.md) - ---
 - [cache.go](internal/ai/cache.go) - cache.go - source
-- [ci.yml](.github/workflows/ci.yml) - CI
+- [ci.yml](.github/workflows/ci.yml) - CI Pipeline
 - [communication.md](docs/elara/communication.md) - 💬 Communication Protocols
 - [compress_assets.sh](.github/workflows/bots/scripts/compress_assets.sh) - !/bin/bash
 - [configuration.md](LIBRARY/by-category/configuration.md) - Configuration
@@ -72,6 +73,7 @@ This package provides multi-agent AI capabilities using CrewAI.
 - [imperial-standards.md](docs/elara/imperial-standards.md) - 🏛️ Imperial Premium Elite Standards
 - [json.md](LIBRARY/by-technology/json.md) - JSON
 - [kenji_architect.py](lib/agents/specialized/kenji_architect.py) - !/usr/bin/env python3
+- [kt.md](LIBRARY/by-technology/kt.md) - KT
 - [library-indexer.yml](.github/workflows/library-indexer.yml) - Library Indexer
 - [library-report.yml](.github/workflows/library-report.yml) - Library Report
 - [library_cataloger.py](.github/workflows/scripts/library_cataloger.py) - !/usr/bin/env python3
@@ -95,6 +97,7 @@ This package provides multi-agent AI capabilities using CrewAI.
 - [proto.md](LIBRARY/by-technology/proto.md) - PROTO
 - [pull_request_template.md](.github/pull_request_template.md) - Description
 - [py.md](LIBRARY/by-technology/py.md) - PY
+- [pyproject.toml](pyproject.toml) - pyproject.toml - configuration
 - [rb.md](LIBRARY/by-technology/rb.md) - RB
 - [requirements.txt](requirements.txt) - Tokyo-IA Python Dependencies
 - [scaffolder.go](lib/generator/scaffolder.go) - scaffolder.go - source
@@ -103,8 +106,10 @@ This package provides multi-agent AI capabilities using CrewAI.
 - [script.md](LIBRARY/by-category/script.md) - Script
 - [sh.md](LIBRARY/by-technology/sh.md) - SH
 - [source.md](LIBRARY/by-category/source.md) - Source
+- [sql.md](LIBRARY/by-technology/sql.md) - SQL
 - [sum.md](LIBRARY/by-technology/sum.md) - SUM
 - [templater.go](lib/generator/templater.go) - {{.ProjectName}}
+- [tsx.md](LIBRARY/by-technology/tsx.md) - TSX
 - [txt.md](LIBRARY/by-technology/txt.md) - TXT
 - [types.go](internal/ai/types.go) - types.go - source
 - [types.go](lib/generator/types.go) - types.go - source

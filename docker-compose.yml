@@ -1,0 +1,75 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:14-alpine
+    container_name: tokyoia-db
+    environment:
+      POSTGRES_DB: tokyoia
+      POSTGRES_USER: tokyoia
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-tokyoia_dev}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./db/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U tokyoia"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - tokyoia-network
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: tokyoia-api
+    command: registry-api
+    environment:
+      DATABASE_URL: postgresql://tokyoia:${DB_PASSWORD:-tokyoia_dev}@db:5432/tokyoia
+      PORT: 8080
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      # LLM API Keys
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      GROQ_API_KEY: ${GROQ_API_KEY}
+      GOOGLE_API_KEY: ${GOOGLE_API_KEY}
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - tokyoia-network
+
+  adminer:
+    image: adminer:latest
+    container_name: tokyoia-adminer
+    ports:
+      - "8081:8080"
+    environment:
+      ADMINER_DEFAULT_SERVER: db
+      ADMINER_DESIGN: nette
+    depends_on:
+      - db
+    restart: unless-stopped
+    networks:
+      - tokyoia-network
+
+volumes:
+  postgres_data:
+    name: tokyoia-postgres-data
+
+networks:
+  tokyoia-network:
+    name: tokyoia-network
+    driver: bridge

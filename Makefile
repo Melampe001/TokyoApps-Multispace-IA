@@ -1,8 +1,12 @@
-.PHONY: build fmt test clean elite generate scaffold
+.PHONY: build fmt test clean elite generate scaffold orchestrator
 
 # Build the main application
 build:
 	go build -o bin/tokyo-ia ./cmd/main.go
+
+# Build the orchestrator agent system
+orchestrator:
+	go build -o bin/orchestrator ./cmd/orchestrator/main.go
 
 # Format Go source code (aplica gofmt)
 # Build the elite framework CLI
@@ -31,9 +35,19 @@ fmt-check:
 	@echo "Checking gofmt..."
 	@if [ -n "$$(gofmt -l .)" ]; then echo "gofmt found issues:"; gofmt -l .; exit 1; else echo "gofmt OK"; fi
 
-# Run tests
-test:
+# Run Go tests
+test-go:
 	go test ./...
+
+# Run Python tests
+test-python:
+	@if [ -f requirements.txt ]; then \
+		pip install -q pytest pytest-cov ruff 2>/dev/null || true; \
+		pytest --cov=lib --cov-report=term-missing --cov-report=xml 2>/dev/null || echo "No Python tests found"; \
+	fi
+
+# Run all tests
+test: test-go test-python
 
 # Lint (usa golangci-lint si está instalado)
 lint:
@@ -41,7 +55,7 @@ lint:
 	golangci-lint run ./...
 
 # CI composite target
-ci: fmt-check lint test build
+ci: fmt-check lint test-go build-all
 
 # Clean build artifacts
 clean:

@@ -1,0 +1,23 @@
+# SYNEMU Suite Logo Placeholder
+
+This is a placeholder file for the SYNEMU Suite logo.
+
+**Actual logo files should be provided by the design team.**
+
+## Expected Format
+- SVG vector format
+- Transparent background
+- Full color and monochrome versions
+- Dimensions: Scalable
+
+## Logo Variants
+1. **Full Logo:** SYNEMU text + tagline + icon
+2. **Compact Logo:** SYNEMU text + icon
+3. **Icon Only:** SYNEMU symbol/badge
+
+## Design Elements
+- Modern, tech-forward aesthetic
+- Incorporates simulation/orchestration themes
+- Agent icons: 🔥 (2D), 🎮 (3D), 🎬 (Video), 🦉 (QA), ⚖️ (Docs), 🗺️ (Assets)
+
+For the actual logo file, contact: design@tokyoapps.com

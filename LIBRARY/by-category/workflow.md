@@ -1,6 +1,12 @@
 # Workflow
 
-Total: 14 archivos
+Total: 17 archivos
+
+## [.golangci.yml](.golangci.yml)
+.golangci.yml - workflow
+
+## [.pre-commit-config.yaml](.pre-commit-config.yaml)
+.pre-commit-config.yaml - workflow
 
 ## [ai_models.yaml](config/ai_models.yaml)
 o3
@@ -27,7 +33,7 @@ Bot #4 - Frontend Build & Asset Optimizer
 Bot #3 - Frontend UI/UX Compliance Bot
 
 ## [ci.yml](.github/workflows/ci.yml)
-CI
+CI Pipeline
 
 ## [dependabot.yml](.github/dependabot.yml)
 dependabot.yml - workflow
@@ -40,6 +46,9 @@ Library Report
 
 ## [manifest.yaml](templates/manifest.yaml)
 "Progressive Web App"
+
+## [security.yml](.github/workflows/security.yml)
+Security Scan
 
 ## [weekly-report.yml](.github/workflows/weekly-report.yml)
 Weekly Report

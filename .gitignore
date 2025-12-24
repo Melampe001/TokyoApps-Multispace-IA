@@ -53,6 +53,15 @@ build/
 .env
 .env.python
 
+# Flutter/Dart
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+pubspec.lock
+
 # Android
 *.apk
 *.aab
@@ -88,6 +97,9 @@ yarn-error.log*
 .env.local
 .env.*.local
 
+# Vercel
+.vercel
+
 # OS
 .DS_Store
 Thumbs.db
@@ -106,3 +118,4 @@ LIBRARY/reports/*.md
 !LIBRARY/reports/README.md
 # Generated projects (Elite Framework output)
 output/
+simulator/output/
