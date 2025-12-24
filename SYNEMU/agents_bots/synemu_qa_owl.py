@@ -16,7 +16,7 @@ from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum
 
-from synemu_integrations import get_integrations
+from .synemu_integrations import get_integrations
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
