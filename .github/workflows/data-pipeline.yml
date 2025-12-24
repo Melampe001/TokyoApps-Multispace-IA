@@ -1,0 +1,101 @@
+name: Data Pipeline
+
+on:
+  schedule:
+    # Run daily at 2 AM UTC
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+    inputs:
+      date:
+        description: 'Export date (YYYY-MM-DD)'
+        required: false
+        type: string
+      mode:
+        description: 'Export mode'
+        required: false
+        type: choice
+        options:
+          - incremental
+          - full
+        default: 'incremental'
+
+jobs:
+  export-data:
+    name: Export PostgreSQL to S3
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: read
+      actions: write
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      
+      - name: Install dependencies
+        run: |
+          pip install -r python/etl/requirements.txt
+      
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION || 'us-east-1' }}
+      
+      - name: Export data to S3
+        env:
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          S3_DATA_LAKE_BUCKET: ${{ secrets.S3_DATA_LAKE_BUCKET }}
+          ATHENA_DATABASE: ${{ secrets.ATHENA_DATABASE }}
+          ATHENA_WORKGROUP: ${{ secrets.ATHENA_WORKGROUP }}
+          ATHENA_OUTPUT_LOCATION: ${{ secrets.ATHENA_OUTPUT_LOCATION }}
+        run: |
+          cd python/etl
+          if [ -n "${{ inputs.date }}" ]; then
+            python export_to_s3.py --date ${{ inputs.date }} --mode ${{ inputs.mode || 'incremental' }}
+          else
+            python export_to_s3.py --mode ${{ inputs.mode || 'incremental' }}
+          fi
+      
+      - name: Validate data export
+        run: |
+          cd scripts
+          python validate_data.py
+      
+      - name: Send CloudWatch metrics
+        if: success()
+        run: |
+          aws cloudwatch put-metric-data \
+            --namespace "Tokyo-IA/ETL" \
+            --metric-name "DataExportSuccess" \
+            --value 1 \
+            --timestamp $(date -u +"%Y-%m-%dT%H:%M:%SZ")
+      
+      - name: Send failure notification
+        if: failure()
+        run: |
+          aws cloudwatch put-metric-data \
+            --namespace "Tokyo-IA/ETL" \
+            --metric-name "DataExportFailure" \
+            --value 1 \
+            --timestamp $(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          echo "❌ ETL pipeline failed"
+      
+      - name: Upload logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: etl-logs-${{ github.run_id }}
+          path: |
+            *.log
+          retention-days: 7
