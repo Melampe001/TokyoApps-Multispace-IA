@@ -189,7 +189,7 @@ jq -e '.colors.primary, .typography.heading1, .spacing.base' simulator/output/br
 ## Maintenance
 
 ### Version History
-- **v1.0.0** (2024): Initial implementation with Material Design 3 support
+- **v1.0.0** (December 2024): Initial implementation with Material Design 3 support
 
 ### Future Enhancements
 - Dynamic theme extraction from multiple theme files

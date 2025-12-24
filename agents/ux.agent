@@ -291,7 +291,7 @@ jq -e '.interactions | length >= 1' simulator/output/ux_flow.json
 ## Maintenance
 
 ### Version History
-- **v1.0.0** (2024): Initial implementation with Flutter 3.x support
+- **v1.0.0** (December 2024): Initial implementation with Flutter 3.x support
 
 ### Future Enhancements
 - Deep link detection and documentation

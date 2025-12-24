@@ -473,7 +473,7 @@ grep -q "$PRIMARY" output/web/App.css
 ## Maintenance
 
 ### Version History
-- **v1.0.0** (2024): Initial implementation with basic scaffold generation
+- **v1.0.0** (December 2024): Initial implementation with basic scaffold generation
 
 ### Roadmap
 - v1.1.0: Form component generation
