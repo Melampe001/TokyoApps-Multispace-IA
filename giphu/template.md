@@ -16,7 +16,7 @@ Contenido de la segunda sección.
 
 ## Ejemplos
 
-```code
+```
 // Ejemplo de código o configuración
 ```
 

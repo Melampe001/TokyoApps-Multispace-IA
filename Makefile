@@ -1,8 +1,8 @@
-.PHONY: build fmt test clean elite generate scaffold orchestrator
+.PHONY: build fmt test clean elite generate scaffold orchestrator proto
 
 # Build the main application
 build:
-	go build -o bin/tokyo-ia ./cmd/...
+	go build -o bin/tokyo-ia ./cmd
 
 # Build the orchestrator agent system
 orchestrator:
@@ -25,6 +25,16 @@ generate:
 
 # Scaffold a project (alias for generate)
 scaffold: generate
+
+# Generate protocol buffers
+proto:
+	@if [ -d proto/ ]; then \
+		protoc \
+			--go_out=. --go_opt=paths=source_relative \
+			--go-grpc_out=. --go-grpc_opt=paths=source_relative \
+			--ruby_out=. --ruby_opt=paths=source_relative \
+			proto/*.proto; \
+	fi
 
 # Format Go source code
 fmt:

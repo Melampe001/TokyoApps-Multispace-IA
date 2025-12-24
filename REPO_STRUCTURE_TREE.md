@@ -4,15 +4,15 @@
 repo-root/
 ├── cmd/                # Puntos de entrada principales y ejecutables del servicio
 ├── internal/           # Lógica relacionada con interacciones internas o servicios
-├── lib/                # Paquetes principales de Go para la lógica de billing
+├── lib/                # Paquetes principales de Go para la lógica de Tokyo-IA
 ├── admin/              # Componentes de la interfaz de administración
 ├── config/             # Configuración y plantillas
 ├── docs/               # Documentación técnica, guías, manuales
 ├── proto/              # Definiciones de protocol buffers. Ejecuta `make proto` tras cambios.
 ├── ruby/               # Implementación en Ruby
 │   └── lib/
-│       └── billing-platform/
-│           └── version.rb   # Archivo de control de versión semántica para Ruby
+│       └── tokyoia/
+│           └── core.rb      # Archivo de control de versión semántica para Ruby
 ├── testing/            # Helpers y fixtures de pruebas
 ├── Makefile            # Automatización de build, test, fmt, ci, proto, etc.
 └── README.md           # Información principal del repositorio
@@ -43,4 +43,4 @@ repo-root/
 - Usa `make test` para ejecutar los tests automatizados.
 - El flujo completo lo ejecuta `make ci`.
 - Cambios en `proto/` requieren regenerar los artefactos con `make proto`.
-- Cambios en `ruby/` requieren actualizar la versión en `ruby/lib/billing-platform/version.rb`.
+- Cambios en `ruby/` requieren actualizar la versión en `ruby/lib/tokyoia/core.rb`.
