@@ -1,6 +1,6 @@
 # General
 
-Total: 208 archivos
+Total: 217 archivos
 
 - [.env.example](.env.example) - .env.example - other
 - [.env.example](flutter_app/.env.example) - .env.example - other
@@ -98,9 +98,12 @@ This package provides multi-agent AI capabilities using CrewAI.
 - [constants.dart](flutter_app/lib/utils/constants.dart) - constants.dart - source
 - [copilot-instructions.md](.github/copilot-instructions.md) - Copilot Instructions for Tokyo-IA
 - [create_and_merge_pr.sh](scripts/create_and_merge_pr.sh) - !/usr/bin/env bash
+- [css.md](LIBRARY/by-technology/css.md) - CSS
+- [dart.md](LIBRARY/by-technology/dart.md) - DART
 - [dashboard.html](LIBRARY/dashboard.html) - dashboard.html - other
 - [dependency.go](internal/orchestrator/agents/dependency.go) - dependency.go - source
 - [elite-framework-examples.md](docs/elite-framework-examples.md) - Elite Framework Examples
+- [example.md](LIBRARY/by-technology/example.md) - EXAMPLE
 - [factory.go](internal/orchestrator/factory.go) - factory.go - source
 - [feature_request.md](.github/ISSUE_TEMPLATE/feature_request.md) - ---
 - [file-count.md](LIBRARY/stats/file-count.md) - File Count Statistics
@@ -114,6 +117,7 @@ This package provides multi-agent AI capabilities using CrewAI.
 - [go.mod](go.mod) - go.mod - other
 - [go.sum](go.sum) - go.sum - other
 - [gradle-wrapper.properties](flutter_app/android/gradle/wrapper/gradle-wrapper.properties) - gradle-wrapper.properties - configuration
+- [gradle.md](LIBRARY/by-technology/gradle.md) - GRADLE
 - [hello.go](admin/hello.go) - hello.go - source
 - [hello.go](internal/hello.go) - hello.go - source
 - [hello.go](lib/hello.go) - hello.go - source
@@ -125,7 +129,9 @@ This package provides multi-agent AI capabilities using CrewAI.
 - [imperial-standards.md](docs/elara/imperial-standards.md) - 🏛️ Imperial Premium Elite Standards
 - [index.css](web/src/index.css) - index.css - other
 - [index.html](web/index.html) - index.html - other
+- [js.md](LIBRARY/by-technology/js.md) - JS
 - [json.md](LIBRARY/by-technology/json.md) - JSON
+- [jsx.md](LIBRARY/by-technology/jsx.md) - JSX
 - [kenji_architect.py](lib/agents/specialized/kenji_architect.py) - !/usr/bin/env python3
 - [kt.md](LIBRARY/by-technology/kt.md) - KT
 - [library-indexer.yml](.github/workflows/library-indexer.yml) - Library Indexer
@@ -160,7 +166,9 @@ This package provides multi-agent AI capabilities using CrewAI.
 - [persona.md](docs/elara/persona.md) - 👑 Elara - Complete Identity and Personality
 - [pipeline.sh](pipeline.sh) - !/bin/bash
 - [pre-commit](.githooks/pre-commit) - pre-commit - other
+- [pro.md](LIBRARY/by-technology/pro.md) - PRO
 - [proguard-rules.pro](flutter_app/android/app/proguard-rules.pro) - proguard-rules.pro - other
+- [properties.md](LIBRARY/by-technology/properties.md) - PROPERTIES
 - [proto.md](LIBRARY/by-technology/proto.md) - PROTO
 - [pull_request_template.md](.github/pull_request_template.md) - Description
 - [py.md](LIBRARY/by-technology/py.md) - PY
@@ -210,5 +218,6 @@ This package provides multi-agent AI capabilities using CrewAI.
 - [version.rb](ruby/lib/billing-platform/version.rb) - frozen_string_literal: true
 - [vite.config.js](web/vite.config.js) - vite.config.js - script
 - [weekly-report.yml](.github/workflows/weekly-report.yml) - Weekly Report
+- [xml.md](LIBRARY/by-technology/xml.md) - XML
 - [yaml.md](LIBRARY/by-technology/yaml.md) - YAML
 - [yml.md](LIBRARY/by-technology/yml.md) - YML

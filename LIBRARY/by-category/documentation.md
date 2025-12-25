@@ -1,6 +1,6 @@
 # Documentation
 
-Total: 132 archivos
+Total: 142 archivos
 
 ## [AGENTS_README.md](AGENTS_README.md)
 🤖 Tokyo-IA Agent Pipeline System
@@ -31,6 +31,9 @@ Dependency Agent Implementation Summary
 
 ## [DEPENDENCY_POLICY.md](docs/DEPENDENCY_POLICY.md)
 Dependency Policy
+
+## [Dockerfile.md](LIBRARY/by-technology/Dockerfile.md)
+DOCKERFILE
 
 ## [ELARA_COMMAND_CENTER.md](.github/ELARA_COMMAND_CENTER.md)
 👑 Elara Command Center
@@ -230,6 +233,12 @@ Configuration
 ## [copilot-instructions.md](.github/copilot-instructions.md)
 Copilot Instructions for Tokyo-IA
 
+## [css.md](LIBRARY/by-technology/css.md)
+CSS
+
+## [dart.md](LIBRARY/by-technology/dart.md)
+DART
+
 ## [deployment.md](LIBRARY/by-purpose/deployment.md)
 Deployment
 
@@ -248,6 +257,9 @@ Elite Framework Examples
 ## [elite-framework.md](docs/elite-framework.md)
 Elite Framework Documentation
 
+## [example.md](LIBRARY/by-technology/example.md)
+EXAMPLE
+
 ## [feature_request.md](.github/ISSUE_TEMPLATE/feature_request.md)
 ---
 
@@ -259,6 +271,9 @@ General
 
 ## [go.md](LIBRARY/by-technology/go.md)
 GO
+
+## [gradle.md](LIBRARY/by-technology/gradle.md)
+GRADLE
 
 ## [hermes-typescript.md](docs/elara/agents/hermes-typescript.md)
 ⚡ Hermes Agent - TypeScript Web Specialist
@@ -275,8 +290,14 @@ Integration
 ## [javascript-modern.md](docs/elara/agents/javascript-modern.md)
 ⚡ JavaScript Agent - Modern JS Specialist
 
+## [js.md](LIBRARY/by-technology/js.md)
+JS
+
 ## [json.md](LIBRARY/by-technology/json.md)
 JSON
+
+## [jsx.md](LIBRARY/by-technology/jsx.md)
+JSX
 
 ## [kt.md](LIBRARY/by-technology/kt.md)
 KT
@@ -301,6 +322,12 @@ Other
 
 ## [persona.md](docs/elara/persona.md)
 👑 Elara - Complete Identity and Personality
+
+## [pro.md](LIBRARY/by-technology/pro.md)
+PRO
+
+## [properties.md](LIBRARY/by-technology/properties.md)
+PROPERTIES
 
 ## [proto.md](LIBRARY/by-technology/proto.md)
 PROTO
@@ -391,6 +418,9 @@ TXT
 
 ## [workflow.md](LIBRARY/by-category/workflow.md)
 Workflow
+
+## [xml.md](LIBRARY/by-technology/xml.md)
+XML
 
 ## [yaml.md](LIBRARY/by-technology/yaml.md)
 YAML

@@ -1,12 +1,12 @@
 # 📚 Catálogo Completo de la Biblioteca
-Última actualización: 2025-12-24 03:25:42
-Total de archivos: 344
+Última actualización: 2025-12-25 03:37:21
+Total de archivos: 354
 
 ---
 ## 📊 Estadísticas Generales
 - **Build**: 5 archivos
 - **Configuration**: 9 archivos
-- **Documentation**: 132 archivos
+- **Documentation**: 142 archivos
 - **Other**: 28 archivos
 - **Schema**: 1 archivos
 - **Script**: 51 archivos
@@ -34,7 +34,7 @@ Total de archivos: 344
 - **[railway.toml](railway.toml)** - railway.toml - configuration
 - **[vercel.json](vercel.json)** - vercel.json - configuration
 
-### Documentation (132 archivos)
+### Documentation (142 archivos)
 - **[AGENTS_README.md](AGENTS_README.md)** - 🤖 Tokyo-IA Agent Pipeline System
 - **[ARCHITECTURE.md](docs/ARCHITECTURE.md)** - 🏗️ Tokyo-IA Architecture Documentation
 - **[BRANCH_PROTECTION.md](docs/BRANCH_PROTECTION.md)** - Branch Protection Rules
@@ -45,6 +45,7 @@ Total de archivos: 344
 - **[CONTRIBUTING.md](CONTRIBUTING.md)** - Contributing to Tokyo-IA
 - **[DEPENDENCY_AGENT_SUMMARY.md](DEPENDENCY_AGENT_SUMMARY.md)** - Dependency Agent Implementation Summary
 - **[DEPENDENCY_POLICY.md](docs/DEPENDENCY_POLICY.md)** - Dependency Policy
+- **[Dockerfile.md](LIBRARY/by-technology/Dockerfile.md)** - DOCKERFILE
 - **[ELARA_COMMAND_CENTER.md](.github/ELARA_COMMAND_CENTER.md)** - 👑 Elara Command Center
 - **[ELARA_DASHBOARD.md](.github/ELARA_DASHBOARD.md)** - 📊 Elara Operations Dashboard
 - **[ELITE_FRAMEWORK_EXAMPLES.md](docs/ELITE_FRAMEWORK_EXAMPLES.md)** - Elite Framework - Project Generation Examples
@@ -54,7 +55,6 @@ Total de archivos: 344
 - **[GitHub-Pro.md](prompts/GitHub-Pro.md)** - GitHub-Pro.md – Step-by-Step Guide for GitHub Pro (2025)
 - **[IMPLEMENTATION_SUMMARY.md](IMPLEMENTATION_SUMMARY.md)** - Tokyo-IA Agent Orchestration System - Implementation Summary
 - **[IMPLEMENTATION_SUMMARY.md](flutter_app/IMPLEMENTATION_SUMMARY.md)** - Tokyo-IA Flutter Implementation Summary
-- **[IMPLEMENTATION_SUMMARY.md](docs/IMPLEMENTATION_SUMMARY.md)** - Elite Framework - Implementation Summary
 
 ### Other (28 archivos)
 - **[.dockerignore](.dockerignore)** - .dockerignore - other
@@ -183,19 +183,19 @@ This module defines specialized AI agents for
 - [deploy-vercel.yml](.github/workflows/deploy-vercel.yml)
 - [deploy.sh](scripts/deploy.sh)
 
-### Documentation (47 archivos)
+### Documentation (48 archivos)
 - [.dockerignore](.dockerignore)
 - [AGENTS_README.md](AGENTS_README.md)
 - [ARCHITECTURE.md](docs/ARCHITECTURE.md)
 - [CICD.md](docs/CICD.md)
 - [CI_CD.md](docs/CI_CD.md)
 - [Dockerfile](Dockerfile)
+- [Dockerfile.md](LIBRARY/by-technology/Dockerfile.md)
 - [GUIDE.md](LIBRARY/GUIDE.md)
 - [GitHub-Pro.md](prompts/GitHub-Pro.md)
 - [QUICKSTART.md](examples/QUICKSTART.md)
-- [QUICKSTART.md](docs/QUICKSTART.md)
 
-### General (208 archivos)
+### General (217 archivos)
 - [.env.example](.env.example)
 - [.env.example](flutter_app/.env.example)
 - [.flake8](.flake8)

@@ -1,6 +1,6 @@
 # Documentation
 
-Total: 47 archivos
+Total: 48 archivos
 
 - [.dockerignore](.dockerignore) - .dockerignore - other
 - [AGENTS_README.md](AGENTS_README.md) - 🤖 Tokyo-IA Agent Pipeline System
@@ -8,6 +8,7 @@ Total: 47 archivos
 - [CICD.md](docs/CICD.md) - 🚀 CI/CD Pipeline Documentation
 - [CI_CD.md](docs/CI_CD.md) - CI/CD Documentation
 - [Dockerfile](Dockerfile) - Dockerfile - build
+- [Dockerfile.md](LIBRARY/by-technology/Dockerfile.md) - DOCKERFILE
 - [GUIDE.md](LIBRARY/GUIDE.md) - Digital Library System - Complete Guide
 - [GitHub-Pro.md](prompts/GitHub-Pro.md) - GitHub-Pro.md – Step-by-Step Guide for GitHub Pro (2025)
 - [QUICKSTART.md](examples/QUICKSTART.md) - Elite Framework - Quick Start Guide

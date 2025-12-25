@@ -1,6 +1,6 @@
 {
-  "generated": "2025-12-24T03:25:42.773297",
-  "total_files": 344,
+  "generated": "2025-12-25T03:37:21.083357",
+  "total_files": 354,
   "files": [
     {
       "file": {
@@ -2289,8 +2289,8 @@
       "authorship": {
         "author": "copilot-swe-agent[bot]",
         "contributors": [
-          "dependabot[bot]",
-          "copilot-swe-agent[bot]"
+          "copilot-swe-agent[bot]",
+          "dependabot[bot]"
         ],
         "commits": 17
       },
@@ -2725,8 +2725,8 @@
       "authorship": {
         "author": "copilot-swe-agent[bot]",
         "contributors": [
-          "dependabot[bot]",
-          "copilot-swe-agent[bot]"
+          "copilot-swe-agent[bot]",
+          "dependabot[bot]"
         ],
         "commits": 7
       },
@@ -3427,8 +3427,8 @@
         "name": "SEARCH_INDEX.json",
         "type": "configuration",
         "extension": ".json",
-        "size_bytes": 152018,
-        "lines": 6317
+        "size_bytes": 285832,
+        "lines": 11675
       },
       "classification": {
         "category": "configuration",
@@ -3440,7 +3440,7 @@
       },
       "dates": {
         "created": "2025-12-14T07:22:11Z",
-        "modified": "2025-12-23T03:28:25Z"
+        "modified": "2025-12-24T03:25:42Z"
       },
       "authorship": {
         "author": "copilot-swe-agent[bot]",
@@ -3448,7 +3448,7 @@
           "copilot-swe-agent[bot]",
           "github-actions[bot]"
         ],
-        "commits": 13
+        "commits": 14
       },
       "content": {
         "description": "SEARCH_INDEX.json - configuration",
@@ -3558,8 +3558,8 @@
         "name": "CATALOG.md",
         "type": "documentation",
         "extension": ".md",
-        "size_bytes": 11775,
-        "lines": 220
+        "size_bytes": 14312,
+        "lines": 246
       },
       "classification": {
         "category": "documentation",
@@ -3571,7 +3571,7 @@
       },
       "dates": {
         "created": "2025-12-14T07:22:11Z",
-        "modified": "2025-12-23T03:28:25Z"
+        "modified": "2025-12-24T03:25:42Z"
       },
       "authorship": {
         "author": "copilot-swe-agent[bot]",
@@ -3579,7 +3579,7 @@
           "copilot-swe-agent[bot]",
           "github-actions[bot]"
         ],
-        "commits": 13
+        "commits": 14
       },
       "content": {
         "description": "\ud83d\udcda Cat\u00e1logo Completo de la Biblioteca",
@@ -3592,8 +3592,8 @@
         "name": "TIMELINE.md",
         "type": "documentation",
         "extension": ".md",
-        "size_bytes": 2878,
-        "lines": 65
+        "size_bytes": 2943,
+        "lines": 57
       },
       "classification": {
         "category": "documentation",
@@ -3603,7 +3603,7 @@
       },
       "dates": {
         "created": "2025-12-14T07:22:11Z",
-        "modified": "2025-12-23T03:28:25Z"
+        "modified": "2025-12-24T03:25:42Z"
       },
       "authorship": {
         "author": "copilot-swe-agent[bot]",
@@ -3611,10 +3611,74 @@
           "copilot-swe-agent[bot]",
           "github-actions[bot]"
         ],
-        "commits": 13
+        "commits": 14
       },
       "content": {
         "description": "\ud83d\udcc5 L\u00ednea de Tiempo de Creaciones",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "LIBRARY/by-technology/gradle.md",
+        "name": "gradle.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 192,
+        "lines": 7
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "general",
+        "purpose": "general",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-24T03:25:42Z",
+        "modified": "2025-12-24T03:25:42Z"
+      },
+      "authorship": {
+        "author": "github-actions[bot]",
+        "contributors": [
+          "github-actions[bot]"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "GRADLE",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "LIBRARY/by-technology/Dockerfile.md",
+        "name": "Dockerfile.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 59,
+        "lines": 5
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "general",
+        "purpose": "documentation",
+        "tags": [
+          "docker"
+        ]
+      },
+      "dates": {
+        "created": "2025-12-24T03:25:42Z",
+        "modified": "2025-12-24T03:25:42Z"
+      },
+      "authorship": {
+        "author": "github-actions[bot]",
+        "contributors": [
+          "github-actions[bot]"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "DOCKERFILE",
         "dependencies": []
       }
     },
@@ -3651,12 +3715,105 @@
     },
     {
       "file": {
+        "path": "LIBRARY/by-technology/example.md",
+        "name": "example.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 104,
+        "lines": 6
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "general",
+        "purpose": "general",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-24T03:25:42Z",
+        "modified": "2025-12-24T03:25:42Z"
+      },
+      "authorship": {
+        "author": "github-actions[bot]",
+        "contributors": [
+          "github-actions[bot]"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "EXAMPLE",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "LIBRARY/by-technology/properties.md",
+        "name": "properties.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 124,
+        "lines": 5
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "general",
+        "purpose": "general",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-24T03:25:42Z",
+        "modified": "2025-12-24T03:25:42Z"
+      },
+      "authorship": {
+        "author": "github-actions[bot]",
+        "contributors": [
+          "github-actions[bot]"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "PROPERTIES",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "LIBRARY/by-technology/xml.md",
+        "name": "xml.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 175,
+        "lines": 6
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "general",
+        "purpose": "general",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-24T03:25:42Z",
+        "modified": "2025-12-24T03:25:42Z"
+      },
+      "authorship": {
+        "author": "github-actions[bot]",
+        "contributors": [
+          "github-actions[bot]"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "XML",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
         "path": "LIBRARY/by-technology/kt.md",
         "name": "kt.md",
         "type": "documentation",
         "extension": ".md",
-        "size_bytes": 286,
-        "lines": 7
+        "size_bytes": 384,
+        "lines": 8
       },
       "classification": {
         "category": "documentation",
@@ -3666,14 +3823,14 @@
       },
       "dates": {
         "created": "2025-12-22T03:44:29Z",
-        "modified": "2025-12-22T03:44:29Z"
+        "modified": "2025-12-24T03:25:42Z"
       },
       "authorship": {
         "author": "github-actions[bot]",
         "contributors": [
           "github-actions[bot]"
         ],
-        "commits": 1
+        "commits": 2
       },
       "content": {
         "description": "KT",
@@ -3686,8 +3843,8 @@
         "name": "toml.md",
         "type": "documentation",
         "extension": ".md",
-        "size_bytes": 61,
-        "lines": 5
+        "size_bytes": 93,
+        "lines": 6
       },
       "classification": {
         "category": "documentation",
@@ -3697,14 +3854,14 @@
       },
       "dates": {
         "created": "2025-12-23T03:28:25Z",
-        "modified": "2025-12-23T03:28:25Z"
+        "modified": "2025-12-24T03:25:42Z"
       },
       "authorship": {
         "author": "github-actions[bot]",
         "contributors": [
           "github-actions[bot]"
         ],
-        "commits": 1
+        "commits": 2
       },
       "content": {
         "description": "TOML",
@@ -3748,8 +3905,8 @@
         "name": "md.md",
         "type": "documentation",
         "extension": ".md",
-        "size_bytes": 4263,
-        "lines": 93
+        "size_bytes": 6334,
+        "lines": 132
       },
       "classification": {
         "category": "documentation",
@@ -3759,7 +3916,7 @@
       },
       "dates": {
         "created": "2025-12-14T07:22:11Z",
-        "modified": "2025-12-23T03:28:25Z"
+        "modified": "2025-12-24T03:25:42Z"
       },
       "authorship": {
         "author": "copilot-swe-agent[bot]",
@@ -3767,7 +3924,7 @@
           "copilot-swe-agent[bot]",
           "github-actions[bot]"
         ],
-        "commits": 7
+        "commits": 8
       },
       "content": {
         "description": "MD",
@@ -3780,8 +3937,8 @@
         "name": "html.md",
         "type": "documentation",
         "extension": ".md",
-        "size_bytes": 69,
-        "lines": 5
+        "size_bytes": 101,
+        "lines": 6
       },
       "classification": {
         "category": "documentation",
@@ -3791,17 +3948,51 @@
       },
       "dates": {
         "created": "2025-12-14T07:22:11Z",
-        "modified": "2025-12-14T07:29:03Z"
+        "modified": "2025-12-24T03:25:42Z"
       },
       "authorship": {
         "author": "copilot-swe-agent[bot]",
         "contributors": [
-          "copilot-swe-agent[bot]"
+          "copilot-swe-agent[bot]",
+          "github-actions[bot]"
         ],
-        "commits": 2
+        "commits": 3
       },
       "content": {
         "description": "HTML",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "LIBRARY/by-technology/js.md",
+        "name": "js.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 63,
+        "lines": 5
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "general",
+        "purpose": "general",
+        "tags": [
+          "javascript"
+        ]
+      },
+      "dates": {
+        "created": "2025-12-24T03:25:42Z",
+        "modified": "2025-12-24T03:25:42Z"
+      },
+      "authorship": {
+        "author": "github-actions[bot]",
+        "contributors": [
+          "github-actions[bot]"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "JS",
         "dependencies": []
       }
     },
@@ -3811,8 +4002,8 @@
         "name": "yml.md",
         "type": "documentation",
         "extension": ".md",
-        "size_bytes": 845,
-        "lines": 18
+        "size_bytes": 1423,
+        "lines": 28
       },
       "classification": {
         "category": "documentation",
@@ -3822,7 +4013,7 @@
       },
       "dates": {
         "created": "2025-12-14T07:22:11Z",
-        "modified": "2025-12-23T03:28:25Z"
+        "modified": "2025-12-24T03:25:42Z"
       },
       "authorship": {
         "author": "copilot-swe-agent[bot]",
@@ -3830,7 +4021,7 @@
           "copilot-swe-agent[bot]",
           "github-actions[bot]"
         ],
-        "commits": 3
+        "commits": 4
       },
       "content": {
         "description": "YML",
@@ -3843,8 +4034,8 @@
         "name": "go.md",
         "type": "documentation",
         "extension": ".md",
-        "size_bytes": 1249,
-        "lines": 33
+        "size_bytes": 2596,
+        "lines": 56
       },
       "classification": {
         "category": "documentation",
@@ -3856,7 +4047,7 @@
       },
       "dates": {
         "created": "2025-12-14T07:22:11Z",
-        "modified": "2025-12-22T03:44:29Z"
+        "modified": "2025-12-24T03:25:42Z"
       },
       "authorship": {
         "author": "copilot-swe-agent[bot]",
@@ -3864,10 +4055,74 @@
           "copilot-swe-agent[bot]",
           "github-actions[bot]"
         ],
-        "commits": 4
+        "commits": 5
       },
       "content": {
         "description": "GO",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "LIBRARY/by-technology/pro.md",
+        "name": "pro.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 92,
+        "lines": 5
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "general",
+        "purpose": "general",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-24T03:25:42Z",
+        "modified": "2025-12-24T03:25:42Z"
+      },
+      "authorship": {
+        "author": "github-actions[bot]",
+        "contributors": [
+          "github-actions[bot]"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "PRO",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "LIBRARY/by-technology/jsx.md",
+        "name": "jsx.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 86,
+        "lines": 6
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "general",
+        "purpose": "general",
+        "tags": [
+          "javascript"
+        ]
+      },
+      "dates": {
+        "created": "2025-12-24T03:25:42Z",
+        "modified": "2025-12-24T03:25:42Z"
+      },
+      "authorship": {
+        "author": "github-actions[bot]",
+        "contributors": [
+          "github-actions[bot]"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "JSX",
         "dependencies": []
       }
     },
@@ -3877,8 +4132,8 @@
         "name": "sh.md",
         "type": "documentation",
         "extension": ".md",
-        "size_bytes": 217,
-        "lines": 7
+        "size_bytes": 717,
+        "lines": 18
       },
       "classification": {
         "category": "documentation",
@@ -3888,14 +4143,14 @@
       },
       "dates": {
         "created": "2025-12-15T03:43:28Z",
-        "modified": "2025-12-16T03:26:16Z"
+        "modified": "2025-12-24T03:25:42Z"
       },
       "authorship": {
         "author": "github-actions[bot]",
         "contributors": [
           "github-actions[bot]"
         ],
-        "commits": 2
+        "commits": 3
       },
       "content": {
         "description": "SH",
@@ -4001,8 +4256,8 @@
         "name": "txt.md",
         "type": "documentation",
         "extension": ".md",
-        "size_bytes": 64,
-        "lines": 5
+        "size_bytes": 353,
+        "lines": 8
       },
       "classification": {
         "category": "documentation",
@@ -4012,7 +4267,38 @@
       },
       "dates": {
         "created": "2025-12-15T03:43:28Z",
-        "modified": "2025-12-15T03:43:28Z"
+        "modified": "2025-12-24T03:25:42Z"
+      },
+      "authorship": {
+        "author": "github-actions[bot]",
+        "contributors": [
+          "github-actions[bot]"
+        ],
+        "commits": 2
+      },
+      "content": {
+        "description": "TXT",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "LIBRARY/by-technology/css.md",
+        "name": "css.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 88,
+        "lines": 6
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "general",
+        "purpose": "general",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-24T03:25:42Z",
+        "modified": "2025-12-24T03:25:42Z"
       },
       "authorship": {
         "author": "github-actions[bot]",
@@ -4022,7 +4308,7 @@
         "commits": 1
       },
       "content": {
-        "description": "TXT",
+        "description": "CSS",
         "dependencies": []
       }
     },
@@ -4032,8 +4318,8 @@
         "name": "yaml.md",
         "type": "documentation",
         "extension": ".md",
-        "size_bytes": 165,
-        "lines": 7
+        "size_bytes": 300,
+        "lines": 10
       },
       "classification": {
         "category": "documentation",
@@ -4043,17 +4329,48 @@
       },
       "dates": {
         "created": "2025-12-15T03:43:28Z",
-        "modified": "2025-12-23T03:28:25Z"
+        "modified": "2025-12-24T03:25:42Z"
       },
       "authorship": {
         "author": "github-actions[bot]",
         "contributors": [
           "github-actions[bot]"
         ],
-        "commits": 3
+        "commits": 4
       },
       "content": {
         "description": "YAML",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "LIBRARY/by-technology/dart.md",
+        "name": "dart.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 1962,
+        "lines": 32
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "general",
+        "purpose": "general",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-24T03:25:42Z",
+        "modified": "2025-12-24T03:25:42Z"
+      },
+      "authorship": {
+        "author": "github-actions[bot]",
+        "contributors": [
+          "github-actions[bot]"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "DART",
         "dependencies": []
       }
     },
@@ -4094,8 +4411,8 @@
         "name": "json.md",
         "type": "documentation",
         "extension": ".md",
-        "size_bytes": 242,
-        "lines": 7
+        "size_bytes": 351,
+        "lines": 10
       },
       "classification": {
         "category": "documentation",
@@ -4107,7 +4424,7 @@
       },
       "dates": {
         "created": "2025-12-14T07:29:03Z",
-        "modified": "2025-12-15T03:43:28Z"
+        "modified": "2025-12-24T03:25:42Z"
       },
       "authorship": {
         "author": "copilot-swe-agent[bot]",
@@ -4115,7 +4432,7 @@
           "copilot-swe-agent[bot]",
           "github-actions[bot]"
         ],
-        "commits": 2
+        "commits": 3
       },
       "content": {
         "description": "JSON",
@@ -4159,8 +4476,8 @@
         "name": "py.md",
         "type": "documentation",
         "extension": ".md",
-        "size_bytes": 1257,
-        "lines": 25
+        "size_bytes": 2256,
+        "lines": 39
       },
       "classification": {
         "category": "documentation",
@@ -4170,7 +4487,7 @@
       },
       "dates": {
         "created": "2025-12-14T07:22:11Z",
-        "modified": "2025-12-22T03:44:29Z"
+        "modified": "2025-12-24T03:25:42Z"
       },
       "authorship": {
         "author": "copilot-swe-agent[bot]",
@@ -4178,7 +4495,7 @@
           "copilot-swe-agent[bot]",
           "github-actions[bot]"
         ],
-        "commits": 4
+        "commits": 5
       },
       "content": {
         "description": "PY",
@@ -4222,7 +4539,7 @@
         "name": "file-count.md",
         "type": "documentation",
         "extension": ".md",
-        "size_bytes": 173,
+        "size_bytes": 174,
         "lines": 13
       },
       "classification": {
@@ -4233,7 +4550,7 @@
       },
       "dates": {
         "created": "2025-12-14T07:22:11Z",
-        "modified": "2025-12-23T03:28:25Z"
+        "modified": "2025-12-24T03:25:42Z"
       },
       "authorship": {
         "author": "copilot-swe-agent[bot]",
@@ -4241,7 +4558,7 @@
           "copilot-swe-agent[bot]",
           "github-actions[bot]"
         ],
-        "commits": 7
+        "commits": 8
       },
       "content": {
         "description": "File Count Statistics",
@@ -4254,8 +4571,8 @@
         "name": "script.md",
         "type": "documentation",
         "extension": ".md",
-        "size_bytes": 2951,
-        "lines": 102
+        "size_bytes": 4993,
+        "lines": 180
       },
       "classification": {
         "category": "documentation",
@@ -4265,7 +4582,7 @@
       },
       "dates": {
         "created": "2025-12-14T07:22:11Z",
-        "modified": "2025-12-22T03:44:29Z"
+        "modified": "2025-12-24T03:25:42Z"
       },
       "authorship": {
         "author": "copilot-swe-agent[bot]",
@@ -4273,7 +4590,7 @@
           "copilot-swe-agent[bot]",
           "github-actions[bot]"
         ],
-        "commits": 4
+        "commits": 5
       },
       "content": {
         "description": "Script",
@@ -4286,8 +4603,8 @@
         "name": "configuration.md",
         "type": "documentation",
         "extension": ".md",
-        "size_bytes": 446,
-        "lines": 16
+        "size_bytes": 850,
+        "lines": 31
       },
       "classification": {
         "category": "documentation",
@@ -4297,7 +4614,7 @@
       },
       "dates": {
         "created": "2025-12-14T07:29:03Z",
-        "modified": "2025-12-23T03:28:25Z"
+        "modified": "2025-12-24T03:25:42Z"
       },
       "authorship": {
         "author": "copilot-swe-agent[bot]",
@@ -4305,7 +4622,7 @@
           "copilot-swe-agent[bot]",
           "github-actions[bot]"
         ],
-        "commits": 3
+        "commits": 4
       },
       "content": {
         "description": "Configuration",
@@ -4318,8 +4635,8 @@
         "name": "source.md",
         "type": "documentation",
         "extension": ".md",
-        "size_bytes": 2454,
-        "lines": 106
+        "size_bytes": 7433,
+        "lines": 268
       },
       "classification": {
         "category": "documentation",
@@ -4329,7 +4646,7 @@
       },
       "dates": {
         "created": "2025-12-14T07:22:11Z",
-        "modified": "2025-12-22T03:44:29Z"
+        "modified": "2025-12-24T03:25:42Z"
       },
       "authorship": {
         "author": "copilot-swe-agent[bot]",
@@ -4337,7 +4654,7 @@
           "copilot-swe-agent[bot]",
           "github-actions[bot]"
         ],
-        "commits": 4
+        "commits": 5
       },
       "content": {
         "description": "Source",
@@ -4350,8 +4667,8 @@
         "name": "other.md",
         "type": "documentation",
         "extension": ".md",
-        "size_bytes": 808,
-        "lines": 55
+        "size_bytes": 1542,
+        "lines": 88
       },
       "classification": {
         "category": "documentation",
@@ -4361,7 +4678,7 @@
       },
       "dates": {
         "created": "2025-12-14T07:22:11Z",
-        "modified": "2025-12-23T03:28:25Z"
+        "modified": "2025-12-24T03:25:42Z"
       },
       "authorship": {
         "author": "copilot-swe-agent[bot]",
@@ -4369,7 +4686,7 @@
           "copilot-swe-agent[bot]",
           "github-actions[bot]"
         ],
-        "commits": 4
+        "commits": 5
       },
       "content": {
         "description": "Other",
@@ -4413,8 +4730,8 @@
         "name": "workflow.md",
         "type": "documentation",
         "extension": ".md",
-        "size_bytes": 1426,
-        "lines": 55
+        "size_bytes": 2446,
+        "lines": 94
       },
       "classification": {
         "category": "documentation",
@@ -4426,7 +4743,7 @@
       },
       "dates": {
         "created": "2025-12-14T07:22:11Z",
-        "modified": "2025-12-23T03:28:25Z"
+        "modified": "2025-12-24T03:25:42Z"
       },
       "authorship": {
         "author": "copilot-swe-agent[bot]",
@@ -4434,7 +4751,7 @@
           "copilot-swe-agent[bot]",
           "github-actions[bot]"
         ],
-        "commits": 4
+        "commits": 5
       },
       "content": {
         "description": "Workflow",
@@ -4447,8 +4764,8 @@
         "name": "build.md",
         "type": "documentation",
         "extension": ".md",
-        "size_bytes": 69,
-        "lines": 7
+        "size_bytes": 353,
+        "lines": 19
       },
       "classification": {
         "category": "documentation",
@@ -4458,14 +4775,15 @@
       },
       "dates": {
         "created": "2025-12-14T07:22:11Z",
-        "modified": "2025-12-14T07:29:03Z"
+        "modified": "2025-12-24T03:25:42Z"
       },
       "authorship": {
         "author": "copilot-swe-agent[bot]",
         "contributors": [
-          "copilot-swe-agent[bot]"
+          "copilot-swe-agent[bot]",
+          "github-actions[bot]"
         ],
-        "commits": 2
+        "commits": 3
       },
       "content": {
         "description": "Build",
@@ -4478,8 +4796,8 @@
         "name": "documentation.md",
         "type": "documentation",
         "extension": ".md",
-        "size_bytes": 6471,
-        "lines": 274
+        "size_bytes": 10308,
+        "lines": 400
       },
       "classification": {
         "category": "documentation",
@@ -4489,7 +4807,7 @@
       },
       "dates": {
         "created": "2025-12-14T07:22:11Z",
-        "modified": "2025-12-23T03:28:25Z"
+        "modified": "2025-12-24T03:25:42Z"
       },
       "authorship": {
         "author": "copilot-swe-agent[bot]",
@@ -4497,7 +4815,7 @@
           "copilot-swe-agent[bot]",
           "github-actions[bot]"
         ],
-        "commits": 7
+        "commits": 8
       },
       "content": {
         "description": "Documentation",
@@ -4510,8 +4828,8 @@
         "name": "deployment.md",
         "type": "documentation",
         "extension": ".md",
-        "size_bytes": 257,
-        "lines": 8
+        "size_bytes": 1098,
+        "lines": 19
       },
       "classification": {
         "category": "documentation",
@@ -4521,7 +4839,7 @@
       },
       "dates": {
         "created": "2025-12-14T07:22:11Z",
-        "modified": "2025-12-15T03:43:28Z"
+        "modified": "2025-12-24T03:25:42Z"
       },
       "authorship": {
         "author": "copilot-swe-agent[bot]",
@@ -4529,7 +4847,7 @@
           "copilot-swe-agent[bot]",
           "github-actions[bot]"
         ],
-        "commits": 3
+        "commits": 4
       },
       "content": {
         "description": "Deployment",
@@ -4542,8 +4860,8 @@
         "name": "testing.md",
         "type": "documentation",
         "extension": ".md",
-        "size_bytes": 1825,
-        "lines": 29
+        "size_bytes": 3845,
+        "lines": 49
       },
       "classification": {
         "category": "documentation",
@@ -4553,7 +4871,7 @@
       },
       "dates": {
         "created": "2025-12-14T07:22:11Z",
-        "modified": "2025-12-22T03:44:29Z"
+        "modified": "2025-12-24T03:25:42Z"
       },
       "authorship": {
         "author": "copilot-swe-agent[bot]",
@@ -4561,7 +4879,7 @@
           "copilot-swe-agent[bot]",
           "github-actions[bot]"
         ],
-        "commits": 5
+        "commits": 6
       },
       "content": {
         "description": "Testing",
@@ -4574,8 +4892,8 @@
         "name": "general.md",
         "type": "documentation",
         "extension": ".md",
-        "size_bytes": 7752,
-        "lines": 119
+        "size_bytes": 16005,
+        "lines": 214
       },
       "classification": {
         "category": "documentation",
@@ -4585,7 +4903,7 @@
       },
       "dates": {
         "created": "2025-12-14T07:22:11Z",
-        "modified": "2025-12-23T03:28:25Z"
+        "modified": "2025-12-24T03:25:42Z"
       },
       "authorship": {
         "author": "copilot-swe-agent[bot]",
@@ -4593,7 +4911,7 @@
           "copilot-swe-agent[bot]",
           "github-actions[bot]"
         ],
-        "commits": 6
+        "commits": 7
       },
       "content": {
         "description": "General",
@@ -4637,8 +4955,8 @@
         "name": "automation.md",
         "type": "documentation",
         "extension": ".md",
-        "size_bytes": 1741,
-        "lines": 28
+        "size_bytes": 1837,
+        "lines": 29
       },
       "classification": {
         "category": "documentation",
@@ -4648,7 +4966,7 @@
       },
       "dates": {
         "created": "2025-12-14T07:22:11Z",
-        "modified": "2025-12-23T03:28:25Z"
+        "modified": "2025-12-24T03:25:42Z"
       },
       "authorship": {
         "author": "copilot-swe-agent[bot]",
@@ -4656,7 +4974,7 @@
           "copilot-swe-agent[bot]",
           "github-actions[bot]"
         ],
-        "commits": 6
+        "commits": 7
       },
       "content": {
         "description": "Automation",
@@ -4669,8 +4987,8 @@
         "name": "integration.md",
         "type": "documentation",
         "extension": ".md",
-        "size_bytes": 573,
-        "lines": 10
+        "size_bytes": 759,
+        "lines": 12
       },
       "classification": {
         "category": "documentation",
@@ -4680,14 +4998,14 @@
       },
       "dates": {
         "created": "2025-12-15T03:43:28Z",
-        "modified": "2025-12-16T03:26:16Z"
+        "modified": "2025-12-24T03:25:42Z"
       },
       "authorship": {
         "author": "github-actions[bot]",
         "contributors": [
           "github-actions[bot]"
         ],
-        "commits": 2
+        "commits": 3
       },
       "content": {
         "description": "Integration",
@@ -4700,8 +5018,8 @@
         "name": "security.md",
         "type": "documentation",
         "extension": ".md",
-        "size_bytes": 202,
-        "lines": 7
+        "size_bytes": 449,
+        "lines": 10
       },
       "classification": {
         "category": "documentation",
@@ -4711,7 +5029,7 @@
       },
       "dates": {
         "created": "2025-12-14T07:22:11Z",
-        "modified": "2025-12-23T03:28:25Z"
+        "modified": "2025-12-24T03:25:42Z"
       },
       "authorship": {
         "author": "copilot-swe-agent[bot]",
@@ -4719,7 +5037,7 @@
           "copilot-swe-agent[bot]",
           "github-actions[bot]"
         ],
-        "commits": 3
+        "commits": 4
       },
       "content": {
         "description": "Security",
@@ -4732,8 +5050,8 @@
         "name": "documentation.md",
         "type": "documentation",
         "extension": ".md",
-        "size_bytes": 1801,
-        "lines": 28
+        "size_bytes": 3457,
+        "lines": 51
       },
       "classification": {
         "category": "documentation",
@@ -4743,7 +5061,7 @@
       },
       "dates": {
         "created": "2025-12-14T07:22:11Z",
-        "modified": "2025-12-23T03:28:25Z"
+        "modified": "2025-12-24T03:25:42Z"
       },
       "authorship": {
         "author": "copilot-swe-agent[bot]",
@@ -4751,7 +5069,7 @@
           "copilot-swe-agent[bot]",
           "github-actions[bot]"
         ],
-        "commits": 6
+        "commits": 7
       },
       "content": {
         "description": "Documentation",
@@ -6142,7 +6460,7 @@
         "name": "agent_orchestrator_test.dart",
         "type": "source",
         "extension": ".dart",
-        "size_bytes": 3860,
+        "size_bytes": 3836,
         "lines": 118
       },
       "classification": {
@@ -6153,26 +6471,26 @@
       },
       "dates": {
         "created": "2025-12-23T09:11:38Z",
-        "modified": "2025-12-23T09:11:38Z"
+        "modified": "2025-12-24T04:34:47Z"
       },
       "authorship": {
         "author": "copilot-swe-agent[bot]",
         "contributors": [
           "copilot-swe-agent[bot]"
         ],
-        "commits": 1
+        "commits": 2
       },
       "content": {
         "description": "agent_orchestrator_test.dart - source",
         "dependencies": [
           "'package:flutter_test/flutter_test.dart';",
-          "'package:tokyo_ia_flutter/services/agent_orchestrator.dart';",
-          "'package:tokyo_ia_flutter/models/agent_task.dart';",
-          "'package:tokyo_ia_flutter/utils/constants.dart';",
+          "'package:tokyo_ia/services/agent_orchestrator.dart';",
+          "'package:tokyo_ia/models/agent_task.dart';",
+          "'package:tokyo_ia/utils/constants.dart';",
           "package:flutter_test/flutter_test.dart",
-          "package:tokyo_ia_flutter/services/agent_orchestrator.dart",
-          "package:tokyo_ia_flutter/models/agent_task.dart",
-          "package:tokyo_ia_flutter/utils/constants.dart"
+          "package:tokyo_ia/services/agent_orchestrator.dart",
+          "package:tokyo_ia/models/agent_task.dart",
+          "package:tokyo_ia/utils/constants.dart"
         ]
       }
     },
@@ -6182,7 +6500,7 @@
         "name": "agent_qa_test.dart",
         "type": "source",
         "extension": ".dart",
-        "size_bytes": 2638,
+        "size_bytes": 2614,
         "lines": 100
       },
       "classification": {
@@ -6193,26 +6511,26 @@
       },
       "dates": {
         "created": "2025-12-23T09:14:46Z",
-        "modified": "2025-12-23T09:14:46Z"
+        "modified": "2025-12-24T04:34:47Z"
       },
       "authorship": {
         "author": "copilot-swe-agent[bot]",
         "contributors": [
           "copilot-swe-agent[bot]"
         ],
-        "commits": 1
+        "commits": 2
       },
       "content": {
         "description": "agent_qa_test.dart - source",
         "dependencies": [
           "'package:flutter_test/flutter_test.dart';",
-          "'package:tokyo_ia_flutter/agents/agent_qa.dart';",
-          "'package:tokyo_ia_flutter/models/agent_task.dart';",
-          "'package:tokyo_ia_flutter/utils/constants.dart';",
+          "'package:tokyo_ia/agents/agent_qa.dart';",
+          "'package:tokyo_ia/models/agent_task.dart';",
+          "'package:tokyo_ia/utils/constants.dart';",
           "package:flutter_test/flutter_test.dart",
-          "package:tokyo_ia_flutter/agents/agent_qa.dart",
-          "package:tokyo_ia_flutter/models/agent_task.dart",
-          "package:tokyo_ia_flutter/utils/constants.dart"
+          "package:tokyo_ia/agents/agent_qa.dart",
+          "package:tokyo_ia/models/agent_task.dart",
+          "package:tokyo_ia/utils/constants.dart"
         ]
       }
     },
@@ -6222,7 +6540,7 @@
         "name": "agent_knowledge_test.dart",
         "type": "source",
         "extension": ".dart",
-        "size_bytes": 2749,
+        "size_bytes": 2725,
         "lines": 102
       },
       "classification": {
@@ -6233,26 +6551,26 @@
       },
       "dates": {
         "created": "2025-12-23T09:14:46Z",
-        "modified": "2025-12-23T09:14:46Z"
+        "modified": "2025-12-24T04:34:47Z"
       },
       "authorship": {
         "author": "copilot-swe-agent[bot]",
         "contributors": [
           "copilot-swe-agent[bot]"
         ],
-        "commits": 1
+        "commits": 2
       },
       "content": {
         "description": "agent_knowledge_test.dart - source",
         "dependencies": [
           "'package:flutter_test/flutter_test.dart';",
-          "'package:tokyo_ia_flutter/agents/agent_knowledge.dart';",
-          "'package:tokyo_ia_flutter/models/agent_task.dart';",
-          "'package:tokyo_ia_flutter/utils/constants.dart';",
+          "'package:tokyo_ia/agents/agent_knowledge.dart';",
+          "'package:tokyo_ia/models/agent_task.dart';",
+          "'package:tokyo_ia/utils/constants.dart';",
           "package:flutter_test/flutter_test.dart",
-          "package:tokyo_ia_flutter/agents/agent_knowledge.dart",
-          "package:tokyo_ia_flutter/models/agent_task.dart",
-          "package:tokyo_ia_flutter/utils/constants.dart"
+          "package:tokyo_ia/agents/agent_knowledge.dart",
+          "package:tokyo_ia/models/agent_task.dart",
+          "package:tokyo_ia/utils/constants.dart"
         ]
       }
     },
@@ -6262,7 +6580,7 @@
         "name": "agent_code_master_test.dart",
         "type": "source",
         "extension": ".dart",
-        "size_bytes": 2959,
+        "size_bytes": 2935,
         "lines": 105
       },
       "classification": {
@@ -6273,26 +6591,26 @@
       },
       "dates": {
         "created": "2025-12-23T09:11:38Z",
-        "modified": "2025-12-23T09:11:38Z"
+        "modified": "2025-12-24T04:34:47Z"
       },
       "authorship": {
         "author": "copilot-swe-agent[bot]",
         "contributors": [
           "copilot-swe-agent[bot]"
         ],
-        "commits": 1
+        "commits": 2
       },
       "content": {
         "description": "agent_code_master_test.dart - source",
         "dependencies": [
           "'package:flutter_test/flutter_test.dart';",
-          "'package:tokyo_ia_flutter/agents/agent_code_master.dart';",
-          "'package:tokyo_ia_flutter/models/agent_task.dart';",
-          "'package:tokyo_ia_flutter/utils/constants.dart';",
+          "'package:tokyo_ia/agents/agent_code_master.dart';",
+          "'package:tokyo_ia/models/agent_task.dart';",
+          "'package:tokyo_ia/utils/constants.dart';",
           "package:flutter_test/flutter_test.dart",
-          "package:tokyo_ia_flutter/agents/agent_code_master.dart",
-          "package:tokyo_ia_flutter/models/agent_task.dart",
-          "package:tokyo_ia_flutter/utils/constants.dart"
+          "package:tokyo_ia/agents/agent_code_master.dart",
+          "package:tokyo_ia/models/agent_task.dart",
+          "package:tokyo_ia/utils/constants.dart"
         ]
       }
     },
@@ -6302,7 +6620,7 @@
         "name": "agent_gen_ai_test.dart",
         "type": "source",
         "extension": ".dart",
-        "size_bytes": 2431,
+        "size_bytes": 2407,
         "lines": 88
       },
       "classification": {
@@ -6313,26 +6631,26 @@
       },
       "dates": {
         "created": "2025-12-23T09:14:46Z",
-        "modified": "2025-12-23T09:14:46Z"
+        "modified": "2025-12-24T04:34:47Z"
       },
       "authorship": {
         "author": "copilot-swe-agent[bot]",
         "contributors": [
           "copilot-swe-agent[bot]"
         ],
-        "commits": 1
+        "commits": 2
       },
       "content": {
         "description": "agent_gen_ai_test.dart - source",
         "dependencies": [
           "'package:flutter_test/flutter_test.dart';",
-          "'package:tokyo_ia_flutter/agents/agent_gen_ai.dart';",
-          "'package:tokyo_ia_flutter/models/agent_task.dart';",
-          "'package:tokyo_ia_flutter/utils/constants.dart';",
+          "'package:tokyo_ia/agents/agent_gen_ai.dart';",
+          "'package:tokyo_ia/models/agent_task.dart';",
+          "'package:tokyo_ia/utils/constants.dart';",
           "package:flutter_test/flutter_test.dart",
-          "package:tokyo_ia_flutter/agents/agent_gen_ai.dart",
-          "package:tokyo_ia_flutter/models/agent_task.dart",
-          "package:tokyo_ia_flutter/utils/constants.dart"
+          "package:tokyo_ia/agents/agent_gen_ai.dart",
+          "package:tokyo_ia/models/agent_task.dart",
+          "package:tokyo_ia/utils/constants.dart"
         ]
       }
     },
@@ -6342,7 +6660,7 @@
         "name": "agent_sentiment_test.dart",
         "type": "source",
         "extension": ".dart",
-        "size_bytes": 3048,
+        "size_bytes": 3024,
         "lines": 108
       },
       "classification": {
@@ -6353,26 +6671,26 @@
       },
       "dates": {
         "created": "2025-12-23T09:11:38Z",
-        "modified": "2025-12-23T09:11:38Z"
+        "modified": "2025-12-24T04:34:47Z"
       },
       "authorship": {
         "author": "copilot-swe-agent[bot]",
         "contributors": [
           "copilot-swe-agent[bot]"
         ],
-        "commits": 1
+        "commits": 2
       },
       "content": {
         "description": "agent_sentiment_test.dart - source",
         "dependencies": [
           "'package:flutter_test/flutter_test.dart';",
-          "'package:tokyo_ia_flutter/agents/agent_sentiment.dart';",
-          "'package:tokyo_ia_flutter/models/agent_task.dart';",
-          "'package:tokyo_ia_flutter/utils/constants.dart';",
+          "'package:tokyo_ia/agents/agent_sentiment.dart';",
+          "'package:tokyo_ia/models/agent_task.dart';",
+          "'package:tokyo_ia/utils/constants.dart';",
           "package:flutter_test/flutter_test.dart",
-          "package:tokyo_ia_flutter/agents/agent_sentiment.dart",
-          "package:tokyo_ia_flutter/models/agent_task.dart",
-          "package:tokyo_ia_flutter/utils/constants.dart"
+          "package:tokyo_ia/agents/agent_sentiment.dart",
+          "package:tokyo_ia/models/agent_task.dart",
+          "package:tokyo_ia/utils/constants.dart"
         ]
       }
     },
@@ -6382,7 +6700,7 @@
         "name": "agent_deploy_test.dart",
         "type": "source",
         "extension": ".dart",
-        "size_bytes": 3293,
+        "size_bytes": 3269,
         "lines": 123
       },
       "classification": {
@@ -6393,26 +6711,26 @@
       },
       "dates": {
         "created": "2025-12-23T09:14:46Z",
-        "modified": "2025-12-23T09:14:46Z"
+        "modified": "2025-12-24T04:34:47Z"
       },
       "authorship": {
         "author": "copilot-swe-agent[bot]",
         "contributors": [
           "copilot-swe-agent[bot]"
         ],
-        "commits": 1
+        "commits": 2
       },
       "content": {
         "description": "agent_deploy_test.dart - source",
         "dependencies": [
           "'package:flutter_test/flutter_test.dart';",
-          "'package:tokyo_ia_flutter/agents/agent_deploy.dart';",
-          "'package:tokyo_ia_flutter/models/agent_task.dart';",
-          "'package:tokyo_ia_flutter/utils/constants.dart';",
+          "'package:tokyo_ia/agents/agent_deploy.dart';",
+          "'package:tokyo_ia/models/agent_task.dart';",
+          "'package:tokyo_ia/utils/constants.dart';",
           "package:flutter_test/flutter_test.dart",
-          "package:tokyo_ia_flutter/agents/agent_deploy.dart",
-          "package:tokyo_ia_flutter/models/agent_task.dart",
-          "package:tokyo_ia_flutter/utils/constants.dart"
+          "package:tokyo_ia/agents/agent_deploy.dart",
+          "package:tokyo_ia/models/agent_task.dart",
+          "package:tokyo_ia/utils/constants.dart"
         ]
       }
     },
@@ -6422,7 +6740,7 @@
         "name": "agent_unrestricted_test.dart",
         "type": "source",
         "extension": ".dart",
-        "size_bytes": 2972,
+        "size_bytes": 2948,
         "lines": 112
       },
       "classification": {
@@ -6433,26 +6751,26 @@
       },
       "dates": {
         "created": "2025-12-23T09:14:46Z",
-        "modified": "2025-12-23T09:14:46Z"
+        "modified": "2025-12-24T04:34:47Z"
       },
       "authorship": {
         "author": "copilot-swe-agent[bot]",
         "contributors": [
           "copilot-swe-agent[bot]"
         ],
-        "commits": 1
+        "commits": 2
       },
       "content": {
         "description": "agent_unrestricted_test.dart - source",
         "dependencies": [
           "'package:flutter_test/flutter_test.dart';",
-          "'package:tokyo_ia_flutter/agents/agent_unrestricted.dart';",
-          "'package:tokyo_ia_flutter/models/agent_task.dart';",
-          "'package:tokyo_ia_flutter/utils/constants.dart';",
+          "'package:tokyo_ia/agents/agent_unrestricted.dart';",
+          "'package:tokyo_ia/models/agent_task.dart';",
+          "'package:tokyo_ia/utils/constants.dart';",
           "package:flutter_test/flutter_test.dart",
-          "package:tokyo_ia_flutter/agents/agent_unrestricted.dart",
-          "package:tokyo_ia_flutter/models/agent_task.dart",
-          "package:tokyo_ia_flutter/utils/constants.dart"
+          "package:tokyo_ia/agents/agent_unrestricted.dart",
+          "package:tokyo_ia/models/agent_task.dart",
+          "package:tokyo_ia/utils/constants.dart"
         ]
       }
     },
