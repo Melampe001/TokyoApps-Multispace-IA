@@ -1,0 +1,279 @@
+name: 🤖 PR Auto-Review Bot
+
+# Intelligent code review bot that provides constructive feedback
+# Reviews PRs against coding standards and best practices
+# References: .github/PULL_REQUEST_GUIDELINES.md
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+# Minimal permissions
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  auto-review:
+    name: Automated Code Review
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full history for proper diff analysis
+      
+      - name: Get PR files
+        id: pr-files
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const pr = context.payload.pull_request;
+            
+            // Get list of files changed in PR
+            const { data: files } = await github.rest.pulls.listFiles({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: pr.number,
+            });
+            
+            // Categorize files by language
+            const filesByLanguage = {
+              go: files.filter(f => f.filename.endsWith('.go')),
+              python: files.filter(f => f.filename.endsWith('.py')),
+              typescript: files.filter(f => f.filename.endsWith('.ts') || f.filename.endsWith('.tsx')),
+              javascript: files.filter(f => f.filename.endsWith('.js') || f.filename.endsWith('.jsx')),
+              yaml: files.filter(f => f.filename.endsWith('.yml') || f.filename.endsWith('.yaml')),
+              markdown: files.filter(f => f.filename.endsWith('.md')),
+            };
+            
+            // Store for next step
+            core.setOutput('files', JSON.stringify(files));
+            core.setOutput('filesByLanguage', JSON.stringify(filesByLanguage));
+            core.setOutput('totalFiles', files.length);
+            
+            return files;
+      
+      - name: Analyze code structure and style
+        id: analyze
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const pr = context.payload.pull_request;
+            const files = JSON.parse('${{ steps.pr-files.outputs.files }}');
+            const filesByLanguage = JSON.parse('${{ steps.pr-files.outputs.filesByLanguage }}');
+            
+            let issues = [];
+            let suggestions = [];
+            let compliments = [];
+            
+            // Check naming conventions
+            for (const file of files) {
+              const filename = file.filename.split('/').pop();
+              const ext = filename.split('.').pop();
+              
+              // Go file naming
+              if (ext === 'go') {
+                if (filename !== filename.toLowerCase()) {
+                  issues.push({
+                    file: file.filename,
+                    line: 1,
+                    message: `Go files should use lowercase with underscores: ${filename}`
+                  });
+                }
+              }
+              
+              // Python file naming
+              if (ext === 'py') {
+                if (filename.includes('-') || filename !== filename.toLowerCase()) {
+                  issues.push({
+                    file: file.filename,
+                    line: 1,
+                    message: `Python files should use lowercase_snake_case: ${filename}`
+                  });
+                }
+              }
+              
+              // Check for very large files
+              if (file.changes > 500) {
+                suggestions.push({
+                  file: file.filename,
+                  line: 1,
+                  message: `Large file (${file.changes} changes). Consider splitting into smaller modules.`
+                });
+              }
+            }
+            
+            // Check for common patterns
+            for (const file of files) {
+              // Skip deleted files
+              if (file.status === 'removed') continue;
+              
+              // Check if test files exist for new code files
+              if (file.status === 'added') {
+                if (file.filename.endsWith('.go') && !file.filename.includes('_test.go')) {
+                  const testFile = file.filename.replace('.go', '_test.go');
+                  const hasTest = files.some(f => f.filename === testFile);
+                  if (!hasTest) {
+                    suggestions.push({
+                      file: file.filename,
+                      line: 1,
+                      message: 'Consider adding unit tests in a corresponding *_test.go file'
+                    });
+                  }
+                }
+                
+                if (file.filename.endsWith('.py') && !file.filename.startsWith('test_')) {
+                  const testFile = file.filename.replace('.py', '').split('/').pop();
+                  const hasTest = files.some(f => f.filename.includes(`test_${testFile}`));
+                  if (!hasTest && !file.filename.includes('__init__')) {
+                    suggestions.push({
+                      file: file.filename,
+                      line: 1,
+                      message: 'Consider adding unit tests with pytest'
+                    });
+                  }
+                }
+              }
+            }
+            
+            // Check for documentation updates
+            const hasCodeChanges = filesByLanguage.go.length > 0 || 
+                                  filesByLanguage.python.length > 0 ||
+                                  filesByLanguage.typescript.length > 0 ||
+                                  filesByLanguage.javascript.length > 0;
+            
+            const hasDocChanges = filesByLanguage.markdown.length > 0;
+            
+            if (hasCodeChanges && !hasDocChanges && files.length > 10) {
+              suggestions.push({
+                file: 'Documentation',
+                line: 0,
+                message: 'Consider updating documentation to reflect code changes'
+              });
+            }
+            
+            // Give compliments for good practices
+            if (filesByLanguage.go.some(f => f.filename.includes('_test.go'))) {
+              compliments.push('✅ Great job including Go tests!');
+            }
+            if (filesByLanguage.python.some(f => f.filename.includes('test_'))) {
+              compliments.push('✅ Excellent Python test coverage!');
+            }
+            if (filesByLanguage.yaml.length > 0) {
+              compliments.push('✅ Nice CI/CD improvements!');
+            }
+            if (hasDocChanges) {
+              compliments.push('✅ Thank you for updating documentation!');
+            }
+            if (files.length > 0 && files.length < 10) {
+              compliments.push('✅ Great job keeping the PR focused and small!');
+            }
+            
+            // Store results
+            core.setOutput('issues', JSON.stringify(issues));
+            core.setOutput('suggestions', JSON.stringify(suggestions));
+            core.setOutput('compliments', JSON.stringify(compliments));
+            
+            return { issues, suggestions, compliments };
+      
+      - name: Post review comment
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const pr = context.payload.pull_request;
+            const issues = JSON.parse('${{ steps.analyze.outputs.issues }}');
+            const suggestions = JSON.parse('${{ steps.analyze.outputs.suggestions }}');
+            const compliments = JSON.parse('${{ steps.analyze.outputs.compliments }}');
+            const totalFiles = ${{ steps.pr-files.outputs.totalFiles }};
+            
+            // Build review comment
+            let body = `## 🤖 Automated Code Review\n\n`;
+            
+            // Add compliments first
+            if (compliments.length > 0) {
+              body += `### 👏 Great Work!\n\n`;
+              compliments.forEach(c => body += `${c}\n`);
+              body += `\n`;
+            }
+            
+            // Add issues
+            if (issues.length > 0) {
+              body += `### ⚠️ Issues Found (${issues.length})\n\n`;
+              body += `Please address these naming convention issues:\n\n`;
+              issues.forEach(issue => {
+                body += `- **${issue.file}**: ${issue.message}\n`;
+              });
+              body += `\n`;
+            }
+            
+            // Add suggestions
+            if (suggestions.length > 0) {
+              body += `### 💡 Suggestions (${suggestions.length})\n\n`;
+              suggestions.forEach(suggestion => {
+                body += `- **${suggestion.file}**: ${suggestion.message}\n`;
+              });
+              body += `\n`;
+            }
+            
+            // Summary
+            body += `### 📊 Review Summary\n\n`;
+            body += `- **Files Changed**: ${totalFiles}\n`;
+            body += `- **Issues**: ${issues.length}\n`;
+            body += `- **Suggestions**: ${suggestions.length}\n`;
+            body += `\n`;
+            
+            // Guidelines reference
+            body += `---\n\n`;
+            body += `📚 **Guidelines**: Please review our [Pull Request Guidelines](.github/PULL_REQUEST_GUIDELINES.md) for detailed standards.\n\n`;
+            
+            if (issues.length === 0 && suggestions.length <= 2) {
+              body += `🎉 **This PR looks great!** Ready for human review.\n`;
+            } else if (issues.length > 0) {
+              body += `🔧 **Action Required**: Please address the issues listed above.\n`;
+            } else {
+              body += `👍 **Good to go**: Suggestions are optional but encouraged.\n`;
+            }
+            
+            // Find existing review comment
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: pr.number,
+            });
+            
+            const botComment = comments.find(comment => 
+              comment.user.type === 'Bot' && 
+              comment.body.includes('🤖 Automated Code Review')
+            );
+            
+            if (botComment) {
+              // Update existing comment
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: body
+              });
+              console.log('Updated existing review comment');
+            } else {
+              // Create new comment
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: pr.number,
+                body: body
+              });
+              console.log('Created new review comment');
+            }
+            
+            // Set step summary
+            core.summary
+              .addHeading('Auto-Review Results')
+              .addRaw(`Issues: ${issues.length} | Suggestions: ${suggestions.length}`)
+              .write();
