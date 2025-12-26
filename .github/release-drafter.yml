@@ -1,0 +1,163 @@
+# Release Drafter Configuration for TokyoApps-Multispace-IA
+# This template is used to generate automated release notes
+
+# Template for release notes
+name-template: 'v$RESOLVED_VERSION'
+tag-template: 'v$RESOLVED_VERSION'
+
+# Release note body template
+template: |
+  ## 🎉 What's Changed in $RESOLVED_VERSION
+  
+  $CHANGES
+  
+  ### 📊 Statistics
+  
+  - **Contributors**: @$CONTRIBUTORS
+  - **Pull Requests**: $NUMBER_OF_PULL_REQUESTS
+  - **Commits**: $NUMBER_OF_COMMITS
+  
+  **Full Changelog**: https://github.com/$OWNER/$REPOSITORY/compare/$PREVIOUS_TAG...v$RESOLVED_VERSION
+
+# Categories for grouping changes
+categories:
+  - title: '🚀 New Features'
+    labels:
+      - 'enhancement'
+      - 'feature'
+      - 'feat'
+  
+  - title: '🐛 Bug Fixes'
+    labels:
+      - 'bug'
+      - 'fix'
+      - 'bugfix'
+  
+  - title: '🔒 Security'
+    labels:
+      - 'security'
+      - 'vulnerability'
+  
+  - title: '⚡ Performance Improvements'
+    labels:
+      - 'performance'
+      - 'perf'
+      - 'optimization'
+  
+  - title: '📚 Documentation'
+    labels:
+      - 'documentation'
+      - 'docs'
+  
+  - title: '🧪 Testing'
+    labels:
+      - 'testing'
+      - 'test'
+  
+  - title: '🔧 Maintenance'
+    labels:
+      - 'chore'
+      - 'maintenance'
+      - 'dependencies'
+      - 'refactor'
+  
+  - title: '🎨 UI/UX Improvements'
+    labels:
+      - 'ui'
+      - 'ux'
+      - 'design'
+      - 'frontend'
+  
+  - title: '⚙️ CI/CD'
+    labels:
+      - 'ci/cd'
+      - 'ci'
+      - 'cd'
+      - 'automation'
+
+# PRs excluded from release notes
+exclude-labels:
+  - 'skip-changelog'
+  - 'invalid'
+  - 'duplicate'
+  - 'wontfix'
+
+# PRs that shouldn't be included without labels
+exclude-contributors:
+  - 'dependabot'
+  - 'dependabot[bot]'
+
+# Change template for each PR
+change-template: '- $TITLE (#$NUMBER) @$AUTHOR'
+
+# No changes template
+no-changes-template: 'No changes in this release.'
+
+# Version resolver - auto-increment based on labels
+version-resolver:
+  major:
+    labels:
+      - 'breaking-change'
+      - 'major'
+  minor:
+    labels:
+      - 'enhancement'
+      - 'feature'
+      - 'feat'
+  patch:
+    labels:
+      - 'bug'
+      - 'fix'
+      - 'bugfix'
+      - 'security'
+      - 'performance'
+      - 'documentation'
+      - 'chore'
+  default: patch
+
+# Autolabeler for release drafter (additional to main labeler)
+autolabeler:
+  - label: 'documentation'
+    files:
+      - '*.md'
+      - 'docs/**/*'
+  
+  - label: 'bug'
+    branch:
+      - '/fix\/.+/'
+    title:
+      - '/fix/i'
+  
+  - label: 'enhancement'
+    branch:
+      - '/feature\/.+/'
+      - '/feat\/.+/'
+    title:
+      - '/feat/i'
+      - '/feature/i'
+  
+  - label: 'breaking-change'
+    title:
+      - '/breaking/i'
+    body:
+      - '/BREAKING CHANGE/i'
+
+# Replacers for cleaning up changelog
+replacers:
+  # Remove conventional commit prefixes from titles
+  - search: '/^(feat|fix|docs|style|refactor|perf|test|chore)(\(.+\))?:\s*/i'
+    replace: ''
+  
+  # Clean up issue references
+  - search: '/\s+\(#(\d+)\)/'
+    replace: ' (#$1)'
+
+# Sort pull requests
+sort-by: 'mergedAt'
+sort-direction: 'descending'
+
+# Prerelease detection
+prerelease: false
+
+# Include pre-releases in changelog
+include-pre-releases: false

@@ -1,0 +1,174 @@
+# Auto-labeler configuration for TokyoApps-Multispace-IA
+# This file defines rules for automatically applying labels to pull requests
+# based on which files are changed.
+
+# Backend changes
+backend:
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'internal/**/*'
+      - 'cmd/**/*'
+      - 'lib/**/*.go'
+      - 'config/**/*.go'
+      - 'admin/**/*'
+      - 'orchestrator/**/*'
+      - '**/*.go'
+
+# Frontend changes
+frontend:
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'web/**/*'
+      - 'app/**/*'
+      - 'flutter_app/**/*'
+      - '**/*.tsx'
+      - '**/*.jsx'
+      - '**/*.css'
+      - '**/*.html'
+
+# Dependency changes
+dependencies:
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'go.mod'
+      - 'go.sum'
+      - 'requirements.txt'
+      - 'pyproject.toml'
+      - 'pubspec.yaml'
+      - 'pubspec.lock'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'yarn.lock'
+      - 'Gemfile'
+      - 'Gemfile.lock'
+
+# Documentation changes
+documentation:
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'docs/**/*'
+      - '**/*.md'
+      - 'README*'
+      - 'CONTRIBUTING.md'
+      - 'SECURITY.md'
+      - 'LICENSE'
+
+# CI/CD changes
+ci/cd:
+  - changed-files:
+    - any-glob-to-any-file:
+      - '.github/workflows/**/*'
+      - '.github/actions/**/*'
+      - 'Dockerfile*'
+      - 'docker-compose*.yml'
+      - '.dockerignore'
+      - 'railway.toml'
+      - 'vercel.json'
+      - '.pre-commit-config.yaml'
+
+# Security-sensitive changes
+security:
+  - changed-files:
+    - any-glob-to-any-file:
+      - '**/*auth*'
+      - '**/*security*'
+      - '**/*secret*'
+      - '**/*password*'
+      - '**/*token*'
+      - '.github/workflows/security.yml'
+      - 'SECURITY.md'
+
+# Programming language-specific labels
+python:
+  - changed-files:
+    - any-glob-to-any-file:
+      - '**/*.py'
+      - 'requirements.txt'
+      - 'pyproject.toml'
+      - '.python-version'
+
+go:
+  - changed-files:
+    - any-glob-to-any-file:
+      - '**/*.go'
+      - 'go.mod'
+      - 'go.sum'
+
+dart:
+  - changed-files:
+    - any-glob-to-any-file:
+      - '**/*.dart'
+      - 'pubspec.yaml'
+      - 'pubspec.lock'
+
+javascript:
+  - changed-files:
+    - any-glob-to-any-file:
+      - '**/*.js'
+      - '**/*.jsx'
+      - 'package.json'
+      - 'package-lock.json'
+
+typescript:
+  - changed-files:
+    - any-glob-to-any-file:
+      - '**/*.ts'
+      - '**/*.tsx'
+      - 'tsconfig.json'
+
+ruby:
+  - changed-files:
+    - any-glob-to-any-file:
+      - '**/*.rb'
+      - 'Gemfile'
+      - 'Gemfile.lock'
+
+# Database changes
+database:
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'db/**/*'
+      - '**/*.sql'
+      - '**/migrations/**/*'
+
+# Testing changes
+testing:
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'testing/**/*'
+      - '**/*_test.go'
+      - '**/*_test.py'
+      - '**/*.test.ts'
+      - '**/*.test.js'
+      - '**/*.spec.ts'
+      - '**/*.spec.js'
+
+# Configuration changes
+configuration:
+  - changed-files:
+    - any-glob-to-any-file:
+      - '**/*.yml'
+      - '**/*.yaml'
+      - '**/*.json'
+      - '**/*.toml'
+      - '**/*.ini'
+      - '**/*.conf'
+      - '**/*.config.*'
+      - '.env.example'
+
+# SYNEMU module
+synemu:
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'SYNEMU/**/*'
+      - 'simulator/**/*'
+      - 'emulator/**/*'
+
+# Agent system changes
+agents:
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'agents/**/*'
+      - '.github/agents/**/*'
+      - 'orchestrator/**/*'
+      - 'prompts/**/*'

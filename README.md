@@ -554,6 +554,59 @@ All deployments require GitHub Secrets. See [docs/SECRETS_SETUP.md](docs/SECRETS
 **Google Play API (Optional):**
 - `GOOGLE_PLAY_JSON` - Service account credentials for automated publishing
 
+**Code Coverage & Security:**
+- `CODECOV_TOKEN` - CodeCov API token for coverage reporting
+
+## 🤖 Automated PR Bots
+
+TokyoApps-Multispace-IA includes comprehensive automation for pull requests:
+
+### Active Bots
+
+| Bot | Purpose | Trigger |
+|-----|---------|---------|
+| 🏷️ **Auto-Labeler** | Applies labels based on changed files | PR open/update |
+| 🤖 **Auto-Review** | Provides code review feedback | PR open/update |
+| 📊 **CodeCov** | Tracks test coverage | Push/PR |
+| 🔒 **CodeQL Security** | Advanced security scanning | Push/PR/Weekly |
+| 🚀 **Preview Deploy** | Creates preview deployments | PR with web changes |
+| ⏰ **Stale Bot** | Manages inactive issues/PRs | Daily |
+| 📝 **Release Drafter** | Generates release notes | PR merge |
+| 👥 **Auto-Assign** | Assigns reviewers | PR open |
+| 📈 **PR Metrics** | Posts PR complexity metrics | PR open/update |
+
+### Configuration
+
+All bots are pre-configured and active. For details:
+- **Overview**: [docs/automation/bots-overview.md](docs/automation/bots-overview.md)
+- **CodeCov Setup**: [docs/automation/codecov-setup.md](docs/automation/codecov-setup.md)
+- **Preview Deployments**: [docs/automation/preview-deployments.md](docs/automation/preview-deployments.md)
+- **PR Guidelines**: [.github/PULL_REQUEST_GUIDELINES.md](.github/PULL_REQUEST_GUIDELINES.md)
+
+### Required Secrets for Full Functionality
+
+Add these secrets in **Settings → Secrets and variables → Actions**:
+
+**Essential (for code coverage):**
+```
+CODECOV_TOKEN=<your-codecov-token>
+```
+
+**Optional (for preview deployments):**
+```
+VERCEL_TOKEN=<your-vercel-token>
+VERCEL_ORG_ID=<your-org-id>
+VERCEL_PROJECT_ID=<your-project-id>
+```
+
+**Alternative (if using Netlify):**
+```
+NETLIFY_AUTH_TOKEN=<your-netlify-token>
+NETLIFY_SITE_ID=<your-site-id>
+```
+
+See [docs/automation/codecov-setup.md](docs/automation/codecov-setup.md) and [docs/automation/preview-deployments.md](docs/automation/preview-deployments.md) for detailed setup instructions.
+
 ## 🎯 Use Cases
 
 ### 1. Code Review Pipeline

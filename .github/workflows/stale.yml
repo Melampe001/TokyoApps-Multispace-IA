@@ -1,0 +1,116 @@
+name: ⏰ Stale Issues and PRs
+
+# Manage inactive issues and pull requests
+# Marks items as stale after 60 days of inactivity
+# Closes them after 7 additional days if no activity
+
+on:
+  schedule:
+    # Run daily at 00:00 UTC
+    - cron: '0 0 * * *'
+  workflow_dispatch:  # Allow manual trigger
+
+# Minimal permissions
+permissions:
+  issues: write
+  pull-requests: write
+
+jobs:
+  stale:
+    name: Mark Stale Items
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Mark stale issues and PRs
+        uses: actions/stale@v9
+        with:
+          # GitHub token for authentication
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          
+          # Stale issue configuration
+          days-before-issue-stale: 60
+          days-before-issue-close: 7
+          stale-issue-label: 'stale'
+          stale-issue-message: |
+            👋 ¡Hola! Este issue ha estado inactivo por 60 días.
+            
+            Si aún es relevante, por favor comenta para mantenerlo activo.
+            Si no hay actividad en los próximos 7 días, se cerrará automáticamente.
+            
+            Gracias por tu contribución a TokyoApps-Multispace-IA! 🎌
+          close-issue-message: |
+            🔒 Este issue se ha cerrado automáticamente debido a inactividad.
+            
+            Si crees que debería reabrirse, por favor comenta y un mantenedor lo revisará.
+            
+            ¡Gracias! 🙏
+          
+          # Stale PR configuration
+          days-before-pr-stale: 60
+          days-before-pr-close: 7
+          stale-pr-label: 'stale'
+          stale-pr-message: |
+            👋 ¡Hola! Este pull request ha estado inactivo por 60 días.
+            
+            Si aún deseas que se mergee, por favor:
+            - Actualiza la rama con los últimos cambios de main
+            - Resuelve cualquier conflicto
+            - Responde a los comentarios pendientes
+            
+            Si no hay actividad en los próximos 7 días, se cerrará automáticamente.
+            
+            Gracias por tu contribución! 🎌
+          close-pr-message: |
+            🔒 Este PR se ha cerrado automáticamente debido a inactividad.
+            
+            Si deseas continuar con estos cambios, puedes:
+            1. Reabrir este PR y actualizarlo
+            2. Crear un nuevo PR con los cambios actualizados
+            
+            ¡Gracias por tu tiempo! 🙏
+          
+          # Labels that exempt from stale marking
+          exempt-issue-labels: 'pinned,security,epic,help-wanted,good-first-issue'
+          exempt-pr-labels: 'pinned,security,epic,work-in-progress'
+          
+          # Exempt draft PRs from being marked stale
+          exempt-draft-pr: true
+          
+          # Don't mark as stale if there are assignees
+          exempt-all-assignees: true
+          
+          # Label to apply when closing
+          close-issue-label: 'auto-closed'
+          close-pr-label: 'auto-closed'
+          
+          # Additional options
+          operations-per-run: 100  # Max operations per run
+          remove-stale-when-updated: true  # Remove stale label if updated
+          
+          # Specific exemptions
+          exempt-milestones: true  # Don't mark items in milestones as stale
+          
+          # Enable debug output
+          debug-only: false
+          
+          # Ascending order (oldest first)
+          ascending: true
+          
+          # Don't process issues/PRs created recently (within 2 days)
+          start-date: ''  # ISO 8601 date or empty for no filter
+          
+          # Delete branch after closing PR (disabled for safety)
+          delete-branch: false
+      
+      - name: Report stale statistics
+        if: always()
+        run: |
+          echo "### ⏰ Stale Bot Run Complete" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Processed issues and PRs for staleness." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Configuration:**" >> $GITHUB_STEP_SUMMARY
+          echo "- Days before stale: 60" >> $GITHUB_STEP_SUMMARY
+          echo "- Days before close: 7" >> $GITHUB_STEP_SUMMARY
+          echo "- Exempt labels: pinned, security, epic, help-wanted" >> $GITHUB_STEP_SUMMARY
+          echo "- Draft PRs: Exempt" >> $GITHUB_STEP_SUMMARY

@@ -1,0 +1,70 @@
+# Auto-assign reviewers configuration
+# Automatically assign reviewers to pull requests
+
+# Add reviewers to all PRs
+addReviewers: true
+
+# Add assignees to PRs
+addAssignees: false
+
+# Number of reviewers to add
+numberOfReviewers: 2
+
+# Reviewers pool - add team members here
+reviewers:
+  - Melampe001
+
+# Assign based on file patterns (if you have specialized reviewers)
+fileReviewers:
+  # Go backend
+  '**/*.go':
+    - Melampe001
+  
+  # Python
+  '**/*.py':
+    - Melampe001
+  
+  # Frontend
+  'web/**/*':
+    - Melampe001
+  
+  # Mobile
+  'app/**/*':
+    - Melampe001
+  'flutter_app/**/*':
+    - Melampe001
+  
+  # CI/CD and workflows
+  '.github/workflows/**/*':
+    - Melampe001
+  
+  # Documentation
+  'docs/**/*':
+    - Melampe001
+  '**/*.md':
+    - Melampe001
+
+# Skip keyword in PR title to prevent auto-assignment
+skipKeywords:
+  - 'wip'
+  - 'WIP'
+  - 'work in progress'
+  - '[WIP]'
+  - 'DO NOT REVIEW'
+
+# Use assignees as reviewers if no reviewers are specified
+useAssigneeAsReviewer: false
+
+# Use review groups
+useReviewGroups: false
+
+# Filter labels - only assign if PR has these labels (empty = all PRs)
+filterLabels: []
+
+# Exclude specific branches from auto-assignment
+# Use if you have automated PRs (e.g., from bots) you don't want reviewed
+excludedBranches:
+  - dependabot/**
+
+# Comment to post when reviewers are assigned (optional)
+# reviewMessage: "🤖 Reviewers have been automatically assigned based on the files changed."
