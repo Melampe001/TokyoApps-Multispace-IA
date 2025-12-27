@@ -1,0 +1,15 @@
+# Branch Cleanup Exclusion List
+# 
+# Ramas listadas aquí NO serán eliminadas por el sistema de limpieza automática
+# incluso si están mergeadas.
+#
+# Formato: Una rama por línea
+# Comentarios con # son ignorados
+# Líneas vacías son ignoradas
+
+# Ejemplo de ramas excluidas:
+# copilot/important-experiment
+# feature/long-term-development
+# experimental/machine-learning-research
+
+# Agregar ramas a excluir debajo de esta línea:

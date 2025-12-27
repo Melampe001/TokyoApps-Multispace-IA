@@ -1,4 +1,4 @@
-.PHONY: build fmt test clean elite generate scaffold orchestrator
+.PHONY: build fmt test clean elite generate scaffold orchestrator clean-branches clean-branches-force
 
 # Build the main application
 build:
@@ -60,3 +60,9 @@ ci: fmt-check lint test-go build-all
 # Clean build artifacts
 clean:
 	rm -rf bin/ output/
+
+clean-branches: ## Limpiar ramas mergeadas (dry-run)
+	@./scripts/cleanup-branches.sh --dry-run
+
+clean-branches-force: ## Limpiar ramas mergeadas (DESTRUCTIVO)
+	@./scripts/cleanup-branches.sh --force
