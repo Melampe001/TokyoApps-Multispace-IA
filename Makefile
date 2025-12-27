@@ -1,4 +1,4 @@
-.PHONY: build fmt test clean elite generate scaffold orchestrator
+.PHONY: build fmt test clean elite generate scaffold orchestrator build-all
 
 # Build the main application
 build:
@@ -8,10 +8,19 @@ build:
 orchestrator:
 	go build -o bin/orchestrator ./cmd/orchestrator/main.go
 
-# Format Go source code (aplica gofmt)
 # Build the elite framework CLI
 elite:
 	go build -o bin/elite ./cmd/elite/main.go
+
+# Build all applications
+build-all:
+	@mkdir -p bin
+	go build -o bin/tokyo-ia ./cmd/main.go
+	go build -o bin/elite ./cmd/elite/main.go
+	go build -o bin/orchestrator ./cmd/orchestrator/main.go
+	go build -o bin/registry-api ./cmd/registry-api/main.go
+	go build -o bin/ai-api ./cmd/ai-api/main.go
+	go build -o bin/security-agent ./cmd/security-agent/main.go
 
 # Generate a new project using the elite framework
 generate:
