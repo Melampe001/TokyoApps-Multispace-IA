@@ -1,0 +1,68 @@
+# Deployment Agent Configuration
+
+## Railway Configuration
+railway:
+  builder: "DOCKERFILE"
+  healthcheck:
+    path: "/health"
+    timeout: 100
+    interval: 30
+  restart_policy:
+    type: "ON_FAILURE"
+    max_retries: 10
+  replicas: 1
+
+## AWS Configuration
+aws:
+  region: "us-east-1"
+  ecs:
+    cluster: "tokyo-ia-cluster"
+    service: "tokyo-ia-service"
+  elb:
+    health_check_path: "/health"
+    health_check_interval: 30
+
+## Validation Rules
+validation:
+  required_checks:
+    - health_check_configured
+    - environment_variables_documented
+    - dockerfile_optimized
+    - rollback_policy_present
+    - security_best_practices
+  
+  security:
+    - non_root_user_required: true
+    - secrets_in_env_only: true
+    - minimal_base_image: true
+    - vulnerability_scan: true
+
+## Deployment Safety
+safety:
+  risk_levels:
+    low:
+      - documentation_changes
+      - minor_bug_fixes
+    medium:
+      - feature_additions
+      - dependency_updates
+    high:
+      - breaking_api_changes
+      - database_migrations
+      - infrastructure_changes
+  
+  deployment_strategies:
+    low_risk: "rolling"
+    medium_risk: "blue_green"
+    high_risk: "canary"
+
+## Monitoring
+monitoring:
+  post_deployment:
+    health_check_duration: 300  # seconds
+    log_monitoring_duration: 600  # seconds
+    metrics_to_watch:
+      - response_time
+      - error_rate
+      - memory_usage
+      - cpu_usage
