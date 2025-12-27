@@ -15,7 +15,6 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent / "lib"))
 
 from agents.integration_agent import IntegrationAgent
-from agents.workflows import execute_workflow
 
 
 def fetch_github_issues():
