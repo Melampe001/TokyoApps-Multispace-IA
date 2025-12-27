@@ -1,0 +1,76 @@
+{
+  "jira": {
+    "enabled": true,
+    "projects": ["TOKYO"],
+    "sync_interval_minutes": 15,
+    "label_mappings": {
+      "bug": "Bug",
+      "enhancement": "Story",
+      "feature": "Story",
+      "documentation": "Task",
+      "task": "Task",
+      "epic": "Epic"
+    },
+    "status_mappings": {
+      "open": "To Do",
+      "in_progress": "In Progress",
+      "closed": "Done",
+      "reopened": "To Do"
+    },
+    "priority_mappings": {
+      "p0": "Highest",
+      "p1": "High",
+      "p2": "Medium",
+      "p3": "Low",
+      "p4": "Lowest"
+    }
+  },
+  "google_sheets": {
+    "enabled": true,
+    "update_interval_hours": 2,
+    "metrics": ["issues", "prs", "velocity", "quality", "team"],
+    "tabs": {
+      "daily": "Daily",
+      "weekly": "Weekly",
+      "team": "Team",
+      "bots": "Bots",
+      "executive": "Executive"
+    },
+    "charts": {
+      "burndown": true,
+      "velocity": true,
+      "quality": true
+    }
+  },
+  "slack": {
+    "enabled": true,
+    "bot_name": "tokyo-bot",
+    "commands_enabled": true,
+    "notifications": {
+      "issue_opened": true,
+      "issue_closed": true,
+      "pr_opened": true,
+      "pr_merged": true,
+      "deployment": true,
+      "security_alert": true
+    },
+    "channels": {
+      "general": "#tokyo-general",
+      "dev": "#tokyo-dev",
+      "alerts": "#tokyo-alerts"
+    }
+  },
+  "aws": {
+    "enabled": false,
+    "data_lake": {
+      "bucket": "tokyo-ia-data-lake",
+      "region": "us-east-1",
+      "partitioning": "year/month/day"
+    },
+    "athena": {
+      "database": "tokyo_ia_billing",
+      "workgroup": "primary",
+      "output_location": "s3://tokyo-ia-athena-results/"
+    }
+  }
+}
