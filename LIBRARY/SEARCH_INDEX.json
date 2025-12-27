@@ -1,5 +1,5 @@
 {
-  "generated": "2025-12-26T03:26:27.828779",
+  "generated": "2025-12-27T03:24:41.206022",
   "total_files": 354,
   "files": [
     {
@@ -383,8 +383,8 @@
       "authorship": {
         "author": "Artur Orozco",
         "contributors": [
-          "Artur Orozco",
-          "copilot-swe-agent[bot]"
+          "copilot-swe-agent[bot]",
+          "Artur Orozco"
         ],
         "commits": 14
       },
@@ -731,8 +731,8 @@
         "name": ".env.example",
         "type": "other",
         "extension": ".example",
-        "size_bytes": 731,
-        "lines": 29
+        "size_bytes": 705,
+        "lines": 25
       },
       "classification": {
         "category": "other",
@@ -742,14 +742,15 @@
       },
       "dates": {
         "created": "2025-12-23T04:31:32Z",
-        "modified": "2025-12-23T04:31:32Z"
+        "modified": "2025-12-25T21:38:39-06:00"
       },
       "authorship": {
         "author": "copilot-swe-agent[bot]",
         "contributors": [
-          "copilot-swe-agent[bot]"
+          "copilot-swe-agent[bot]",
+          "Artur Orozco"
         ],
-        "commits": 1
+        "commits": 2
       },
       "content": {
         "description": ".env.example - other",
@@ -3440,7 +3441,7 @@
       },
       "dates": {
         "created": "2025-12-14T07:22:11Z",
-        "modified": "2025-12-25T03:37:21Z"
+        "modified": "2025-12-26T03:26:27Z"
       },
       "authorship": {
         "author": "copilot-swe-agent[bot]",
@@ -3448,7 +3449,7 @@
           "copilot-swe-agent[bot]",
           "github-actions[bot]"
         ],
-        "commits": 15
+        "commits": 16
       },
       "content": {
         "description": "SEARCH_INDEX.json - configuration",
@@ -3571,7 +3572,7 @@
       },
       "dates": {
         "created": "2025-12-14T07:22:11Z",
-        "modified": "2025-12-25T03:37:21Z"
+        "modified": "2025-12-26T03:26:27Z"
       },
       "authorship": {
         "author": "copilot-swe-agent[bot]",
@@ -3579,7 +3580,7 @@
           "copilot-swe-agent[bot]",
           "github-actions[bot]"
         ],
-        "commits": 15
+        "commits": 16
       },
       "content": {
         "description": "\ud83d\udcda Cat\u00e1logo Completo de la Biblioteca",
@@ -3603,7 +3604,7 @@
       },
       "dates": {
         "created": "2025-12-14T07:22:11Z",
-        "modified": "2025-12-25T03:37:21Z"
+        "modified": "2025-12-26T03:26:27Z"
       },
       "authorship": {
         "author": "copilot-swe-agent[bot]",
@@ -3611,7 +3612,7 @@
           "copilot-swe-agent[bot]",
           "github-actions[bot]"
         ],
-        "commits": 15
+        "commits": 16
       },
       "content": {
         "description": "\ud83d\udcc5 L\u00ednea de Tiempo de Creaciones",
