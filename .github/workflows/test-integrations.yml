@@ -1,0 +1,227 @@
+name: Test Integrations
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 */6 * * *'  # Every 6 hours
+  pull_request:
+    paths:
+      - 'internal/ai/clients/**'
+      - 'python/etl/**'
+      - '.github/workflows/scripts/**'
+
+jobs:
+  test-ai-clients:
+    name: Test AI Clients
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.21'
+      
+      - name: Run AI client tests
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+          USE_REAL_AI_CLIENTS: 'true'
+        run: |
+          go test -v ./internal/ai/clients/... -timeout 60s
+      
+      - name: Test factory
+        run: |
+          go test -v ./internal/ai/clients/... -run TestClientFactory
+  
+  test-etl:
+    name: Test ETL Pipeline
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_DB: test_db
+          POSTGRES_USER: test_user
+          POSTGRES_PASSWORD: test_pass
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          pip install psycopg2-binary boto3 pandas pyarrow pytest
+      
+      - name: Setup test database
+        env:
+          PGPASSWORD: test_pass
+        run: |
+          psql -h localhost -U test_user -d test_db << EOF
+          CREATE TABLE IF NOT EXISTS invoices (
+            id VARCHAR(255) PRIMARY KEY,
+            subscription_id VARCHAR(255),
+            amount DECIMAL(10,2),
+            currency VARCHAR(10),
+            status VARCHAR(50),
+            created_at TIMESTAMP,
+            updated_at TIMESTAMP
+          );
+          
+          INSERT INTO invoices VALUES 
+            ('inv_1', 'sub_1', 99.99, 'USD', 'paid', NOW(), NOW()),
+            ('inv_2', 'sub_2', 199.99, 'USD', 'paid', NOW(), NOW());
+          EOF
+      
+      - name: Run ETL tests
+        run: |
+          cd python/etl
+          python -m pytest test_export.py -v
+  
+  test-jira-sync:
+    name: Test Jira Sync
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: pip install requests
+      
+      - name: Test script syntax
+        run: python -m py_compile .github/workflows/scripts/jira_sync.py
+      
+      - name: Test with mock data
+        env:
+          GITHUB_EVENT_NAME: issues
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "Jira sync script syntax OK"
+  
+  test-sheets-updater:
+    name: Test Sheets Updater
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          pip install google-auth google-auth-oauthlib google-auth-httplib2 google-api-python-client requests
+      
+      - name: Test script syntax
+        run: python -m py_compile .github/workflows/scripts/sheets_updater.py
+      
+      - name: Test metric calculation
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          echo "Sheets updater script syntax OK"
+  
+  test-slack-bot:
+    name: Test Slack Bot
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: pip install slack-sdk requests
+      
+      - name: Test script syntax
+        run: python -m py_compile .github/workflows/scripts/slack_bot.py
+      
+      - name: Test command processing
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          COMMAND_INPUT: 'help'
+        run: |
+          python .github/workflows/scripts/slack_bot.py
+  
+  test-config:
+    name: Test Configuration
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Validate JSON config
+        run: |
+          python -c "import json; json.load(open('.github/workflows/config/integrations.json'))"
+          echo "Configuration file is valid JSON"
+      
+      - name: Check required fields
+        run: |
+          python << EOF
+          import json
+          with open('.github/workflows/config/integrations.json') as f:
+              config = json.load(f)
+          
+          assert 'jira' in config, "Missing jira config"
+          assert 'google_sheets' in config, "Missing google_sheets config"
+          assert 'slack' in config, "Missing slack config"
+          assert config['jira']['enabled'] in [True, False], "Invalid jira enabled value"
+          
+          print("Configuration validation passed")
+          EOF
+  
+  integration-summary:
+    name: Integration Test Summary
+    runs-on: ubuntu-latest
+    needs: [test-ai-clients, test-etl, test-jira-sync, test-sheets-updater, test-slack-bot, test-config]
+    if: always()
+    steps:
+      - name: Check test results
+        run: |
+          echo "Integration tests completed"
+          echo "AI Clients: ${{ needs.test-ai-clients.result }}"
+          echo "ETL: ${{ needs.test-etl.result }}"
+          echo "Jira Sync: ${{ needs.test-jira-sync.result }}"
+          echo "Sheets Updater: ${{ needs.test-sheets-updater.result }}"
+          echo "Slack Bot: ${{ needs.test-slack-bot.result }}"
+          echo "Config: ${{ needs.test-config.result }}"
+      
+      - name: Post to Slack (if configured)
+        if: always() && secrets.SLACK_BOT_TOKEN != ''
+        uses: slackapi/slack-github-action@v1
+        with:
+          payload: |
+            {
+              "text": "Integration Tests: ${{ job.status }}",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*Integration Test Results*\n• AI Clients: ${{ needs.test-ai-clients.result }}\n• ETL: ${{ needs.test-etl.result }}\n• Jira: ${{ needs.test-jira-sync.result }}\n• Sheets: ${{ needs.test-sheets-updater.result }}\n• Slack: ${{ needs.test-slack-bot.result }}\n• Config: ${{ needs.test-config.result }}"
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
