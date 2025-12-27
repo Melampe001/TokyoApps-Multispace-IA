@@ -7,7 +7,7 @@ This module defines workflows that coordinate multiple agents:
 - Feature Development Workflow: Plan → Architecture → Code → Documentation
 """
 
-from typing import Dict, Any, List
+from typing import Dict, Any
 from crewai import Task, Process
 from .crew_config import (
     create_code_review_agent,
@@ -59,7 +59,7 @@ def pr_review_workflow(pr_data: Dict[str, Any]) -> Dict[str, Any]:
             expected_output="Detailed code review with specific recommendations",
         ),
         Task(
-            description=f"""
+            description="""
             Based on the code review, generate comprehensive tests:
             1. Unit tests for all new functions
             2. Integration tests for new features
@@ -73,7 +73,7 @@ def pr_review_workflow(pr_data: Dict[str, Any]) -> Dict[str, Any]:
             expected_output="Test suite code with high coverage",
         ),
         Task(
-            description=f"""
+            description="""
             Validate deployment safety for this PR:
             1. Check for breaking changes
             2. Review configuration changes
@@ -145,7 +145,7 @@ def bug_fix_workflow(bug_report: Dict[str, Any]) -> Dict[str, Any]:
             expected_output="Bug analysis with root cause and fix recommendations",
         ),
         Task(
-            description=f"""
+            description="""
             Create tests that reproduce the bug:
             1. Test that fails with current code
             2. Edge cases related to the bug
@@ -217,7 +217,7 @@ def feature_development_workflow(feature_spec: Dict[str, Any]) -> Dict[str, Any]
             expected_output="Detailed architecture plan",
         ),
         Task(
-            description=f"""
+            description="""
             Create technical design document:
             1. Feature overview
             2. Architecture diagrams
@@ -229,7 +229,7 @@ def feature_development_workflow(feature_spec: Dict[str, Any]) -> Dict[str, Any]
             expected_output="Comprehensive technical design document",
         ),
         Task(
-            description=f"""
+            description="""
             Create test strategy:
             1. Test levels (unit, integration, e2e)
             2. Test scenarios
@@ -241,7 +241,7 @@ def feature_development_workflow(feature_spec: Dict[str, Any]) -> Dict[str, Any]
             expected_output="Complete test strategy document",
         ),
         Task(
-            description=f"""
+            description="""
             Validate operational requirements:
             1. Infrastructure needs
             2. Scalability considerations
@@ -298,7 +298,7 @@ def documentation_generation_workflow(codebase_path: str) -> Dict[str, Any]:
             expected_output="Codebase analysis report",
         ),
         Task(
-            description=f"""
+            description="""
             Generate documentation:
             1. README with overview
             2. Architecture documentation
