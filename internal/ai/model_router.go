@@ -305,3 +305,37 @@ func (b *BudgetTracker) GetBudgetPercent() float64 {
 	}
 	return (b.currentSpend / b.dailyLimit) * 100
 }
+
+// RouteWithAgent routes a request using the Python AI Router Agent for intelligent decision making.
+// This integrates with the Python agent system for enhanced routing logic.
+func (r *ModelRouter) RouteWithAgent(ctx context.Context, req *CompletionRequest) (*CompletionResponse, error) {
+	// Try to use Python agent for intelligent routing
+	agentDecision, err := r.callPythonRouterAgent(ctx, req)
+	if err != nil {
+		// Fallback to standard Go routing if agent fails
+		return r.Complete(ctx, req)
+	}
+
+	// Use the provider suggested by the agent
+	if agentDecision.SelectedProvider != "" {
+		r.mu.RLock()
+		client, ok := r.clients[agentDecision.SelectedProvider]
+		r.mu.RUnlock()
+
+		if ok {
+			return client.Complete(ctx, req)
+		}
+	}
+
+	// Fallback to standard routing
+	return r.Complete(ctx, req)
+}
+
+// callPythonRouterAgent calls the Python AI Router Agent for routing decisions.
+func (r *ModelRouter) callPythonRouterAgent(ctx context.Context, req *CompletionRequest) (*RoutingDecision, error) {
+	// This is a placeholder for Python agent integration
+	// In real implementation, this would execute Python code or call a service
+
+	// For now, return nil to trigger fallback to standard routing
+	return nil, fmt.Errorf("python agent integration not yet implemented")
+}

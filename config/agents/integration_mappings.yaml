@@ -1,0 +1,162 @@
+# Integration Mappings Configuration
+
+# Jira Integration
+jira:
+  field_mappings:
+    github_to_jira:
+      issue_title: "summary"
+      issue_body: "description"
+      labels: "labels"
+      assignee: "assignee"
+      milestone: "fixVersions"
+      state: "status"
+    
+    jira_to_github:
+      summary: "title"
+      description: "body"
+      status: "state"
+      assignee: "assignee"
+  
+  status_mappings:
+    open: "To Do"
+    in_progress: "In Progress"
+    closed: "Done"
+    reopened: "To Do"
+  
+  label_mappings:
+    bug: "Bug"
+    enhancement: "Enhancement"
+    feature: "New Feature"
+    security: "Security"
+
+# Slack Integration
+slack:
+  channels:
+    deployments: "#deployments"
+    incidents: "#incidents"
+    general: "#tokyo-ia"
+    alerts: "#alerts"
+  
+  notification_types:
+    deployment_success:
+      channel: "#deployments"
+      emoji: "🚀"
+      priority: "normal"
+    
+    deployment_failure:
+      channel: "#deployments"
+      emoji: "🔥"
+      priority: "high"
+      mentions: ["@oncall"]
+    
+    build_failure:
+      channel: "#alerts"
+      emoji: "⚠️"
+      priority: "medium"
+    
+    security_alert:
+      channel: "#incidents"
+      emoji: "🚨"
+      priority: "critical"
+      mentions: ["@security-team"]
+
+# Google Sheets Integration
+google_sheets:
+  spreadsheet_id: "your-spreadsheet-id"
+  
+  tabs:
+    daily:
+      name: "Daily Metrics"
+      columns:
+        - "Date"
+        - "Issues Opened"
+        - "Issues Closed"
+        - "PRs Opened"
+        - "PRs Merged"
+        - "Commits"
+        - "Deployments"
+      
+    weekly:
+      name: "Weekly Summary"
+      columns:
+        - "Week"
+        - "Total Issues"
+        - "Total PRs"
+        - "Velocity"
+        - "Quality Score"
+        - "Team Size"
+    
+    team:
+      name: "Team Metrics"
+      columns:
+        - "Developer"
+        - "Commits"
+        - "PRs Created"
+        - "PRs Reviewed"
+        - "Issues Closed"
+        - "Lines Added"
+        - "Lines Removed"
+    
+    bots:
+      name: "Bot Activity"
+      columns:
+        - "Bot Name"
+        - "Actions"
+        - "Success Rate"
+        - "Errors"
+        - "Last Active"
+    
+    executive:
+      name: "Executive Summary"
+      columns:
+        - "Metric"
+        - "Current Value"
+        - "Previous Value"
+        - "Change %"
+        - "Trend"
+        - "Status"
+  
+  formulas:
+    velocity: "=AVERAGE(E2:E10)"
+    success_rate: "=C2/(C2+D2)*100"
+    change_percent: "=(B2-C2)/C2*100"
+  
+  conditional_formatting:
+    quality_score:
+      red: "< 70"
+      yellow: "70-85"
+      green: "> 85"
+    
+    velocity:
+      red: "< 0.8"
+      yellow: "0.8-1.2"
+      green: "> 1.2"
+
+# Database Integration
+database:
+  postgresql:
+    export_tables:
+      - "issues"
+      - "pull_requests"
+      - "commits"
+      - "deployments"
+      - "metrics"
+    
+    s3_export:
+      bucket: "tokyo-ia-datalake"
+      format: "parquet"
+      compression: "snappy"
+      partition_by: "date"
+  
+  athena:
+    database: "tokyo_ia_analytics"
+    workgroup: "primary"
+    output_location: "s3://tokyo-ia-datalake/query-results/"
+
+# General Settings
+general:
+  sync_interval_minutes: 30
+  retry_attempts: 3
+  timeout_seconds: 60
+  enable_notifications: true
+  log_level: "INFO"
