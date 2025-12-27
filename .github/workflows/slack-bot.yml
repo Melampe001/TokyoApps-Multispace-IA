@@ -1,0 +1,34 @@
+name: Slack Bot
+
+on:
+  repository_dispatch:
+    types: [slack_command]
+  workflow_dispatch:
+    inputs:
+      command:
+        description: 'Slack command to process'
+        required: false
+
+jobs:
+  process:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          pip install slack-sdk requests
+      
+      - name: Process Command
+        run: python .github/workflows/scripts/slack_bot.py
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          SLACK_SIGNING_SECRET: ${{ secrets.SLACK_SIGNING_SECRET }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          COMMAND_INPUT: ${{ github.event.inputs.command }}
