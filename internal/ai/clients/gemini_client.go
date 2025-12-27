@@ -37,6 +37,7 @@ func NewRealGeminiClient(apiKey, modelName string) (*RealGeminiClient, error) {
 }
 
 // Complete implements the ModelClient interface with Gemini API calls.
+// NOTE: This is a stub implementation. The factory catches errors and falls back to mock.
 func (c *RealGeminiClient) Complete(ctx context.Context, req *ai.CompletionRequest) (*ai.CompletionResponse, error) {
 	// This is a simplified implementation
 	// A full implementation would use the Google AI SDK:
@@ -52,8 +53,8 @@ func (c *RealGeminiClient) Complete(ctx context.Context, req *ai.CompletionReque
 
 	// TODO: Implement actual Gemini API integration
 	// This requires: cloud.google.com/go/ai/generativelanguage/apiv1
-	// For now, return a structured error
-	return nil, fmt.Errorf("gemini client requires full SDK implementation - use mock client for now")
+	// The factory will catch this error and use mock client as fallback
+	return nil, fmt.Errorf("gemini client requires full SDK implementation - factory will use mock fallback")
 }
 
 // GetProvider returns the provider name.

@@ -35,6 +35,10 @@ type QueryResult struct {
 }
 
 // ExecuteQuery executes a SQL query and returns results.
+// NOTE: This is a stub implementation for the structure. To use in production:
+// 1. Add dependency: github.com/aws/aws-sdk-go-v2/service/athena
+// 2. Implement: StartQueryExecution, GetQueryExecution, GetQueryResults
+// See: https://docs.aws.amazon.com/sdk-for-go/api/service/athena/
 func (c *AthenaClient) ExecuteQuery(ctx context.Context, query string) (*QueryResult, error) {
 	// This is a stub implementation
 	// Full implementation would:

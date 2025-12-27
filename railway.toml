@@ -9,10 +9,6 @@ restartPolicyMaxRetries = 10
 healthcheckPath = "/health"
 healthcheckTimeout = 300
 
-[[deploy.envs]]
-name = "PORT"
-value = "8080"
-
-[[deploy.envs]]
-name = "GO_ENV"
-value = "production"
+# Note: PORT is automatically injected by Railway
+# Set GO_ENV and other variables via Railway dashboard:
+# Settings -> Environment Variables
