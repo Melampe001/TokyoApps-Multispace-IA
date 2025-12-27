@@ -14,7 +14,7 @@ Agent ID: akira-001
 
 import os
 import json
-from typing import Dict, List, Any, Optional
+from typing import Dict, Any, Optional
 from crewai import Agent, Task, Crew, LLM
 
 
@@ -248,7 +248,7 @@ class AkiraCodeReviewer:
 
 def main():
     """Example usage of Akira Code Reviewer."""
-    print(f"侍 Initializing Akira - Code Review Master...")
+    print("侍 Initializing Akira - Code Review Master...")
     
     # Example code to review
     example_code = '''

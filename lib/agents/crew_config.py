@@ -194,7 +194,7 @@ def create_pr_review_crew(pr_data: Dict[str, Any], tools: Dict[str, List[Any]]) 
     )
 
     test_task = Task(
-        description=f"""Based on the code review, generate test cases:
+        description="""Based on the code review, generate test cases:
         1. Unit tests for new functions/methods
         2. Integration tests for new features
         3. Edge cases and boundary conditions
@@ -206,7 +206,7 @@ def create_pr_review_crew(pr_data: Dict[str, Any], tools: Dict[str, List[Any]]) 
     )
 
     sre_task = Task(
-        description=f"""Validate deployment safety:
+        description="""Validate deployment safety:
         1. Check for breaking changes
         2. Validate configuration files
         3. Review resource requirements

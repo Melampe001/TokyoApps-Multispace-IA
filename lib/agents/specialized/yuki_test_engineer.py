@@ -318,7 +318,7 @@ class YukiTestEngineer:
 
 def main():
     """Example usage of Yuki Test Engineer."""
-    print(f"❄️ Initializing Yuki - Test Engineering Specialist...")
+    print("❄️ Initializing Yuki - Test Engineering Specialist...")
     
     # Example code to test
     example_code = '''

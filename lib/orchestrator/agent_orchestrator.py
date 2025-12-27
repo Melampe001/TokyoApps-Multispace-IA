@@ -18,7 +18,6 @@ Features:
 """
 
 import os
-import json
 import time
 import requests
 from typing import Dict, List, Any, Optional, Callable
@@ -26,11 +25,6 @@ from datetime import datetime
 from uuid import UUID, uuid4
 
 from lib.agents.specialized import (
-    AkiraCodeReviewer,
-    YukiTestEngineer,
-    HiroSRE,
-    SakuraDocumentation,
-    KenjiArchitect,
     AGENTS
 )
 
@@ -186,7 +180,6 @@ class AgentOrchestrator:
                 "error": f"Agent {agent_id} not initialized"
             }
         
-        agent = self.agents[agent_id]
         agent_info = AGENTS[agent_id]
         
         # Create task in registry
@@ -264,7 +257,7 @@ class AgentOrchestrator:
                         },
                         timeout=10
                     )
-                except:
+                except Exception:
                     pass
             
             print(f"❌ Failed after {duration_ms}ms: {error_msg}")
@@ -332,13 +325,13 @@ class AgentOrchestrator:
         # Update workflow status
         if failed_tasks == 0:
             workflow["status"] = WorkflowStatus.COMPLETED
-            print(f"\n✅ Workflow completed successfully!")
+            print("\n✅ Workflow completed successfully!")
         elif failed_tasks < len(tasks):
             workflow["status"] = WorkflowStatus.COMPLETED
             print(f"\n⚠️  Workflow completed with {failed_tasks} failed tasks")
         else:
             workflow["status"] = WorkflowStatus.FAILED
-            print(f"\n❌ Workflow failed - all tasks failed")
+            print("\n❌ Workflow failed - all tasks failed")
         
         print(f"{'='*70}\n")
         

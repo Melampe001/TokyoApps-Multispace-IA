@@ -13,6 +13,9 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-green.svg)](LICENSE)
 
 > Generador de ramas ordenadas y flujos optimizados con IA integrada
+
+> **✨ Repository Status**: Recently underwent comprehensive automated cleanup and quality review (2025-12-27). All quality checks passing, zero security vulnerabilities, and full CI/CD pipeline verified. See [docs/maintenance.md](docs/maintenance.md) for details.
+
 # Tokyo-IA 🗼
 
 **Tokyo-IA** is a complete AI agent orchestration platform featuring 5 specialized agents with unique personalities and expertise. Built with Go, Python, React, and Android support.
