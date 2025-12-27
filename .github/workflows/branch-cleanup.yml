@@ -1,0 +1,244 @@
+name: 🧹 Branch Cleanup
+
+# Limpieza automática de ramas mergeadas obsoletas
+# Se ejecuta semanalmente y puede ejecutarse manualmente
+
+on:
+  schedule:
+    # Domingos a las 00:00 UTC
+    - cron: '0 0 * * 0'
+  
+  workflow_dispatch:
+    inputs:
+      days:
+        description: 'Días desde merge para eliminar (default: 14)'
+        required: false
+        default: '14'
+        type: string
+      dry_run:
+        description: 'Dry run - solo listar sin eliminar'
+        required: false
+        default: false
+        type: boolean
+
+# Permisos mínimos necesarios
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  cleanup:
+    name: Limpieza de Ramas
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Necesario para obtener todo el historial
+      
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+      
+      - name: Fetch all branches
+        run: |
+          git fetch --all --prune
+          git branch -r
+      
+      - name: Run branch cleanup (dry-run check)
+        id: cleanup_dry
+        if: ${{ inputs.dry_run == true || inputs.dry_run == 'true' }}
+        run: |
+          echo "Running in DRY-RUN mode..."
+          ./scripts/cleanup-branches.sh --dry-run --days ${{ inputs.days || '14' }} > /tmp/cleanup-report.txt 2>&1 || true
+          cat /tmp/cleanup-report.txt
+      
+      - name: Run branch cleanup (actual)
+        id: cleanup_actual
+        if: ${{ inputs.dry_run != true && inputs.dry_run != 'true' }}
+        run: |
+          echo "Running actual cleanup..."
+          ./scripts/cleanup-branches.sh --force --days ${{ inputs.days || '14' }} > /tmp/cleanup-report.txt 2>&1 || true
+          cat /tmp/cleanup-report.txt
+      
+      - name: Parse cleanup results
+        id: parse_results
+        run: |
+          # Extract statistics from the report
+          if [ -f /tmp/cleanup-report.txt ]; then
+            # Count deleted branches
+            DELETED_COUNT=$(grep -c "Eliminada:" /tmp/cleanup-report.txt || echo "0")
+            
+            # Get list of deleted branches
+            DELETED_BRANCHES=$(grep "Eliminada:" /tmp/cleanup-report.txt | sed 's/.*Eliminada: //' || echo "Ninguna")
+            
+            # Count branches that would be deleted (dry-run)
+            if grep -q "Modo DRY-RUN" /tmp/cleanup-report.txt; then
+              CANDIDATE_COUNT=$(grep "Ramas candidatas para eliminación:" /tmp/cleanup-report.txt | grep -o '[0-9]*' || echo "0")
+              echo "deleted_count=$CANDIDATE_COUNT" >> $GITHUB_OUTPUT
+              echo "is_dry_run=true" >> $GITHUB_OUTPUT
+            else
+              echo "deleted_count=$DELETED_COUNT" >> $GITHUB_OUTPUT
+              echo "is_dry_run=false" >> $GITHUB_OUTPUT
+            fi
+            
+            # Save full report
+            {
+              echo 'report<<EOF'
+              cat /tmp/cleanup-report.txt
+              echo 'EOF'
+            } >> $GITHUB_OUTPUT
+          else
+            echo "deleted_count=0" >> $GITHUB_OUTPUT
+            echo "is_dry_run=false" >> $GITHUB_OUTPUT
+            echo "report=No se generó reporte" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Create cleanup report issue
+        if: ${{ steps.parse_results.outputs.deleted_count != '0' && steps.parse_results.outputs.is_dry_run == 'false' }}
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const reportContent = fs.readFileSync('/tmp/cleanup-report.txt', 'utf8');
+            
+            const date = new Date().toISOString().split('T')[0];
+            const deletedCount = '${{ steps.parse_results.outputs.deleted_count }}';
+            const days = '${{ inputs.days || '14' }}';
+            
+            // Parse deleted branches from report
+            const deletedBranches = [];
+            const lines = reportContent.split('\n');
+            for (const line of lines) {
+              if (line.includes('Eliminada:')) {
+                const branch = line.split('Eliminada:')[1].trim();
+                deletedBranches.push(branch);
+              } else if (line.includes('- ') && line.includes('(último commit:')) {
+                // From dry-run list
+                const match = line.match(/- (.+) \(último commit: (.+)\)/);
+                if (match) {
+                  deletedBranches.push(`${match[1]} (${match[2]})`);
+                }
+              }
+            }
+            
+            const issueBody = `## 🧹 Reporte de Limpieza Automática de Ramas
+            
+            **Fecha:** ${date}
+            **Ramas eliminadas:** ${deletedCount}
+            **Criterio:** Mergeadas hace más de ${days} días
+            
+            ### 📊 Resumen
+            
+            Se han eliminado **${deletedCount}** ramas que fueron mergeadas a \`Main\` hace más de ${days} días.
+            
+            ### 🗑️ Ramas Eliminadas
+            
+            ${deletedBranches.length > 0 ? deletedBranches.map(b => `- \`${b}\``).join('\n') : 'Ninguna'}
+            
+            ### 🔒 Ramas Protegidas (Mantenidas)
+            
+            Las siguientes ramas nunca se eliminan automáticamente:
+            - \`Main\` (rama principal)
+            - \`Prompt\` (rama de prompts)
+            - \`main\` (lowercase)
+            - \`develop\` (desarrollo)
+            - \`mela\` (rama especial)
+            - Todas las ramas con prefijos: \`feature/*\`, \`hotfix/*\`, \`release/*\`
+            
+            ### ℹ️ Información Adicional
+            
+            - **Workflow:** [Branch Cleanup](https://github.com/${{ github.repository }}/actions/workflows/branch-cleanup.yml)
+            - **Trigger:** ${context.eventName === 'schedule' ? 'Ejecución programada (semanal)' : 'Manual'}
+            - **Configuración:** Ver [\`.github/branch-cleanup-exclude.txt\`](https://github.com/${{ github.repository }}/blob/Main/.github/branch-cleanup-exclude.txt)
+            
+            ### 📖 Documentación
+            
+            Para más información sobre el sistema de limpieza de ramas:
+            - [Documentación completa](https://github.com/${{ github.repository }}/blob/Main/docs/BRANCH_CLEANUP.md)
+            - [Políticas de protección](https://github.com/${{ github.repository }}/blob/Main/docs/BRANCH_PROTECTION.md)
+            
+            ---
+            
+            <details>
+            <summary>📋 Reporte Completo</summary>
+            
+            \`\`\`
+            ${reportContent}
+            \`\`\`
+            
+            </details>
+            
+            ---
+            
+            _Este issue fue generado automáticamente por el workflow de limpieza de ramas._
+            `;
+            
+            // Create the issue
+            const issue = await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `🧹 Limpieza de Ramas - ${date} (${deletedCount} ramas eliminadas)`,
+              body: issueBody,
+              labels: ['automated', 'cleanup', 'maintenance']
+            });
+            
+            console.log(`Issue created: ${issue.data.html_url}`);
+      
+      - name: Close old cleanup issues
+        if: ${{ steps.parse_results.outputs.is_dry_run == 'false' }}
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // Find old cleanup issues (more than 30 days old)
+            const thirtyDaysAgo = new Date();
+            thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+            
+            const issues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              labels: 'automated,cleanup',
+              state: 'open',
+              per_page: 100
+            });
+            
+            for (const issue of issues.data) {
+              const issueDate = new Date(issue.created_at);
+              if (issueDate < thirtyDaysAgo) {
+                await github.rest.issues.update({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issue.number,
+                  state: 'closed'
+                });
+                console.log(`Closed old issue #${issue.number}: ${issue.title}`);
+              }
+            }
+      
+      - name: Add summary
+        if: always()
+        run: |
+          echo "## 🧹 Limpieza de Ramas - Resumen" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          if [ -f /tmp/cleanup-report.txt ]; then
+            echo "### 📊 Resultados" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "- **Ramas procesadas:** ${{ steps.parse_results.outputs.deleted_count }}" >> $GITHUB_STEP_SUMMARY
+            echo "- **Modo:** ${{ steps.parse_results.outputs.is_dry_run == 'true' && 'Dry-run (prueba)' || 'Eliminación real' }}" >> $GITHUB_STEP_SUMMARY
+            echo "- **Criterio:** Mergeadas hace más de ${{ inputs.days || '14' }} días" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "### 📋 Reporte Detallado" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            cat /tmp/cleanup-report.txt >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+          else
+            echo "No se generó reporte de limpieza" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "---" >> $GITHUB_STEP_SUMMARY
+          echo "_Ejecutado el $(date -u +'%Y-%m-%d %H:%M:%S UTC')_" >> $GITHUB_STEP_SUMMARY
