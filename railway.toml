@@ -3,11 +3,16 @@ builder = "DOCKERFILE"
 dockerfilePath = "Dockerfile"
 
 [deploy]
-startCommand = "registry-api"
-healthcheckPath = "/health"
-healthcheckTimeout = 100
+numReplicas = 1
 restartPolicyType = "ON_FAILURE"
 restartPolicyMaxRetries = 10
+healthcheckPath = "/health"
+healthcheckTimeout = 300
 
-# Automatically restart on deployment
-numReplicas = 1
+[[deploy.envs]]
+name = "PORT"
+value = "8080"
+
+[[deploy.envs]]
+name = "GO_ENV"
+value = "production"
