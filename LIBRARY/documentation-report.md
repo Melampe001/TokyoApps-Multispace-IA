@@ -4,8 +4,8 @@ Generated: $(date -u +"%Y-%m-%d %H:%M:%S UTC")
 
 ## Coverage Statistics
 
-- Total project files: 319
+- Total project files: 320
 - Documentation files: 150
 
 ## Recent Changes
-630afbc Create landing page for PR metrics dashboards
+0fd0340 Add manual Groq API test script for Hiro agent
