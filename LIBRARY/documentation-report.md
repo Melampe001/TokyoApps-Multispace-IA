@@ -8,4 +8,4 @@ Generated: $(date -u +"%Y-%m-%d %H:%M:%S UTC")
 - Documentation files: 150
 
 ## Recent Changes
-ca9e545 Update ruby/lib/tokyoia/core.rb
+630afbc Create landing page for PR metrics dashboards
