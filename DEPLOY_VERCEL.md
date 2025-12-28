@@ -200,6 +200,139 @@ curl -X POST https://your-project.vercel.app/api/agents \
   -d '{"agent_id":"akira-001","task_type":"code_review"}'
 ```
 
+## 🧪 Manual Testing Before Deployment
+
+Before deploying to production, it's recommended to test the configuration locally and in preview environments.
+
+### 1. Local Validation
+
+First, run the validation script to ensure all files are properly configured:
+
+```bash
+# Run validation script
+./scripts/validate-vercel-config.sh
+
+# Expected output: "✅ All Vercel configuration validations passed!"
+```
+
+The validation script checks:
+- ✅ `vercel.json` is valid JSON with required sections
+- ✅ All API endpoints exist (`index.py`, `health.py`, `agents.py`)
+- ✅ Python files have valid syntax
+- ✅ Dependencies are properly listed in `requirements.txt`
+- ✅ Documentation is complete
+
+### 2. Install Vercel CLI (Optional)
+
+For the most accurate local testing, install the Vercel CLI:
+
+```bash
+# Install Vercel CLI globally
+npm install -g vercel
+
+# Login to your Vercel account
+vercel login
+
+# Link to your project (first time only)
+vercel link
+```
+
+### 3. Test Local Development Environment
+
+Test the serverless functions locally using Vercel Dev:
+
+```bash
+# Start local development server
+vercel dev
+
+# Server will be available at http://localhost:3000
+```
+
+**Test the endpoints:**
+- Visit: `http://localhost:3000/` - Main page
+- Visit: `http://localhost:3000/api` - Main API endpoint
+- Visit: `http://localhost:3000/api/health` - Health check
+- Visit: `http://localhost:3000/api/agents` - List agents
+
+**Test with curl:**
+```bash
+# Health check
+curl http://localhost:3000/api/health
+
+# List agents
+curl http://localhost:3000/api/agents
+
+# Main endpoint
+curl http://localhost:3000/api
+```
+
+### 4. Deploy to Preview Environment
+
+Before deploying to production, test with a preview deployment:
+
+```bash
+# Deploy to preview (does not affect production)
+./scripts/deploy-vercel.sh preview
+
+# Or manually with Vercel CLI:
+vercel --prod=false
+```
+
+Vercel will provide a unique preview URL (e.g., `https://your-project-abc123.vercel.app`).
+
+### 5. Verify Preview Deployment
+
+After preview deployment, test all endpoints with the preview URL:
+
+```bash
+# Set your preview URL
+export PREVIEW_URL="https://your-project-abc123.vercel.app"
+
+# Test health endpoint
+curl $PREVIEW_URL/api/health
+
+# Test agents endpoint
+curl $PREVIEW_URL/api/agents
+
+# Test main endpoint
+curl $PREVIEW_URL/api
+
+# Test POST request
+curl -X POST $PREVIEW_URL/api/agents \
+  -H "Content-Type: application/json" \
+  -d '{"agent_id":"akira-001","task_type":"code_review","payload":{"test":"data"}}'
+```
+
+**Expected responses:**
+- Health endpoint: `{"status":"healthy",...}`
+- Agents endpoint: List of 5 agents (Akira, Yuki, Hiro, Sakura, Kenji)
+- Main endpoint: Service information and available endpoints
+- POST request: Task creation confirmation with task ID
+
+### 6. Verify Logs
+
+Check that functions are executing properly:
+
+```bash
+# View real-time logs
+vercel logs --follow
+
+# Or view logs for specific deployment
+vercel logs [deployment-url]
+```
+
+### 7. Production Deployment
+
+Once preview testing is successful, deploy to production:
+
+```bash
+# Deploy to production
+./scripts/deploy-vercel.sh production
+
+# Or manually:
+vercel --prod
+```
+
 ## ✅ Verificación Post-Despliegue
 
 ### 1. Verificar endpoints
