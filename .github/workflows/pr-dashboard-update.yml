@@ -20,6 +20,8 @@ jobs:
         id: metrics
         uses: actions/github-script@v7
         with:
+          # Note: Metrics are collected for potential future use
+          # Currently, only the timestamp is updated in the dashboard
           script: |
             const prs = await github.rest.pulls.list({
               owner: context.repo.owner,

@@ -14,10 +14,10 @@ BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 # Counters
-MERGED=0
+MERGED=0    # Reserved for future merge tracking functionality
 CLOSED=0
 READY=0
-ERRORS=0
+ERRORS=0    # Reserved for future error tracking functionality
 
 echo -e "${BLUE}╔══════════════════════════════════════════════════════════════╗${NC}"
 echo -e "${BLUE}║     Tokyo-IA PR Priority Cleanup & Automation Setup        ║${NC}"
