@@ -1,0 +1,394 @@
+name: 🤖 PR Bot Commands
+
+# Handle commands in PR comments for manual control
+# Reads configuration from .github/pr-automation-config.yml
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  handle-command:
+    name: Handle Bot Command
+    runs-on: ubuntu-latest
+    # Only run on PR comments
+    if: github.event.issue.pull_request != null
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Process bot command
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const yaml = require('js-yaml');
+            
+            console.log('🤖 Starting bot command processor...');
+            
+            // Load configuration
+            let config;
+            try {
+              const configFile = fs.readFileSync('.github/pr-automation-config.yml', 'utf8');
+              config = yaml.load(configFile);
+              console.log('✅ Configuration loaded successfully');
+            } catch (error) {
+              console.error('❌ Failed to load configuration:', error);
+              config = { bot: { comment_commands: [] } };
+            }
+            
+            const comment = context.payload.comment.body;
+            const commenter = context.payload.comment.user.login;
+            const prNumber = context.payload.issue.number;
+            
+            console.log(`Comment by @${commenter} on PR #${prNumber}`);
+            console.log(`Comment: ${comment}`);
+            
+            // Check if comment contains a command
+            const commandMatch = comment.match(/^\s*\/(\w+)(?:\s+(.+))?/);
+            if (!commandMatch) {
+              console.log('ℹ️  No command found in comment');
+              return;
+            }
+            
+            const command = commandMatch[1].toLowerCase();
+            const args = commandMatch[2]?.trim();
+            
+            console.log(`Command detected: /${command}${args ? ' ' + args : ''}`);
+            
+            // Get PR details
+            const { data: pr } = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: prNumber
+            });
+            
+            // ═══════════════════════════════════════════════════
+            // CHECK USER PERMISSIONS
+            // ═══════════════════════════════════════════════════
+            const { data: permissions } = await github.rest.repos.getCollaboratorPermissionLevel({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              username: commenter
+            });
+            
+            const userPermission = permissions.permission;
+            const hasWriteAccess = ['admin', 'write', 'maintain'].includes(userPermission);
+            
+            console.log(`User @${commenter} permission: ${userPermission}`);
+            
+            // Get available commands from config
+            const availableCommands = config.bot?.comment_commands || [
+              { command: '/merge', description: 'Mergea este PR inmediatamente', requires_permission: 'write', action: 'merge' },
+              { command: '/ready', description: 'Marca como listo para review', action: 'ready_for_review' },
+              { command: '/retest', description: 'Re-ejecuta los tests', action: 'rerun_checks' },
+              { command: '/priority <level>', description: 'Cambia la prioridad (P0-P3)', action: 'set_priority' },
+              { command: '/duplicate <pr_number>', description: 'Marca como duplicado de otro PR', action: 'mark_duplicate' }
+            ];
+            
+            // Find command config
+            const commandConfig = availableCommands.find(c => 
+              c.command.split(' ')[0].toLowerCase() === `/${command}`
+            );
+            
+            if (!commandConfig) {
+              console.log(`❌ Unknown command: /${command}`);
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                body: `❌ Unknown command: \`/${command}\`
+
+Available commands:
+${availableCommands.map(c => `- \`${c.command}\` - ${c.description}`).join('\n')}`
+              });
+              return;
+            }
+            
+            // Check permissions
+            if (commandConfig.requires_permission === 'write' && !hasWriteAccess) {
+              console.log(`❌ Insufficient permissions for /${command}`);
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                body: `❌ Sorry @${commenter}, you don't have permission to use \`/${command}\`.
+
+This command requires write access to the repository.`
+              });
+              return;
+            }
+            
+            // ═══════════════════════════════════════════════════
+            // EXECUTE COMMAND
+            // ═══════════════════════════════════════════════════
+            let responseMessage = '';
+            let success = false;
+            
+            try {
+              switch (commandConfig.action) {
+                // ────────────────────────────────────────────
+                case 'merge':
+                  console.log('🔀 Executing merge command...');
+                  
+                  // Check if PR can be merged
+                  if (pr.draft) {
+                    responseMessage = '❌ Cannot merge: PR is still a draft. Use `/ready` first.';
+                    break;
+                  }
+                  
+                  if (pr.mergeable === false) {
+                    responseMessage = '❌ Cannot merge: PR has merge conflicts.';
+                    break;
+                  }
+                  
+                  // Attempt to merge
+                  try {
+                    // Determine merge method
+                    const labels = pr.labels.map(l => l.name);
+                    let mergeMethod = 'merge';
+                    
+                    if (labels.includes('size/XS') || labels.includes('type/documentation')) {
+                      mergeMethod = 'squash';
+                    }
+                    
+                    await github.rest.pulls.merge({
+                      owner: context.repo.owner,
+                      repo: context.repo.repo,
+                      pull_number: prNumber,
+                      merge_method: mergeMethod,
+                      commit_title: `${pr.title} (#${prNumber})`
+                    });
+                    
+                    responseMessage = `✅ Successfully merged PR #${prNumber} using ${mergeMethod} method!`;
+                    success = true;
+                  } catch (error) {
+                    responseMessage = `❌ Failed to merge: ${error.message}`;
+                  }
+                  break;
+                
+                // ────────────────────────────────────────────
+                case 'ready_for_review':
+                  console.log('✅ Executing ready command...');
+                  
+                  if (!pr.draft) {
+                    responseMessage = 'ℹ️  This PR is already marked as ready for review.';
+                    break;
+                  }
+                  
+                  await github.rest.pulls.update({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    pull_number: prNumber,
+                    draft: false
+                  });
+                  
+                  responseMessage = '✅ This PR is now marked as ready for review!';
+                  success = true;
+                  break;
+                
+                // ────────────────────────────────────────────
+                case 'rerun_checks':
+                  console.log('🔄 Executing retest command...');
+                  
+                  // Get check runs
+                  const { data: checkRuns } = await github.rest.checks.listForRef({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    ref: pr.head.sha,
+                    per_page: 100
+                  });
+                  
+                  if (checkRuns.check_runs.length === 0) {
+                    responseMessage = 'ℹ️  No checks to rerun.';
+                    break;
+                  }
+                  
+                  // Re-request checks by creating a new check suite
+                  await github.rest.checks.rerequestRun({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    check_run_id: checkRuns.check_runs[0].id
+                  });
+                  
+                  responseMessage = `✅ Re-running ${checkRuns.check_runs.length} check(s)...`;
+                  success = true;
+                  break;
+                
+                // ────────────────────────────────────────────
+                case 'set_priority':
+                  console.log('🎯 Executing priority command...');
+                  
+                  if (!args) {
+                    responseMessage = '❌ Missing priority level. Usage: `/priority <P0|P1|P2|P3>`';
+                    break;
+                  }
+                  
+                  const priorityLevel = args.toUpperCase();
+                  if (!['P0', 'P1', 'P2', 'P3'].includes(priorityLevel)) {
+                    responseMessage = '❌ Invalid priority level. Use P0, P1, P2, or P3.';
+                    break;
+                  }
+                  
+                  // Remove existing priority labels
+                  const currentLabels = pr.labels.map(l => l.name);
+                  const priorityLabels = ['priority/P0', 'priority/P1', 'priority/P2', 'priority/P3'];
+                  
+                  for (const label of priorityLabels) {
+                    if (currentLabels.includes(label)) {
+                      try {
+                        await github.rest.issues.removeLabel({
+                          owner: context.repo.owner,
+                          repo: context.repo.repo,
+                          issue_number: prNumber,
+                          name: label
+                        });
+                      } catch (error) {
+                        // Label might not exist
+                      }
+                    }
+                  }
+                  
+                  // Add new priority label
+                  await github.rest.issues.addLabels({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    issue_number: prNumber,
+                    labels: [`priority/${priorityLevel}`]
+                  });
+                  
+                  const priorityEmoji = {
+                    'P0': '🔴',
+                    'P1': '🟠',
+                    'P2': '🟡',
+                    'P3': '🟢'
+                  }[priorityLevel];
+                  
+                  responseMessage = `${priorityEmoji} Priority changed to ${priorityLevel}`;
+                  success = true;
+                  break;
+                
+                // ────────────────────────────────────────────
+                case 'mark_duplicate':
+                  console.log('🔄 Executing duplicate command...');
+                  
+                  if (!args) {
+                    responseMessage = '❌ Missing PR number. Usage: `/duplicate #123` or `/duplicate 123`';
+                    break;
+                  }
+                  
+                  const duplicateNumber = parseInt(args.replace('#', ''));
+                  if (isNaN(duplicateNumber)) {
+                    responseMessage = '❌ Invalid PR number. Usage: `/duplicate #123` or `/duplicate 123`';
+                    break;
+                  }
+                  
+                  // Verify duplicate PR exists
+                  try {
+                    await github.rest.pulls.get({
+                      owner: context.repo.owner,
+                      repo: context.repo.repo,
+                      pull_number: duplicateNumber
+                    });
+                  } catch (error) {
+                    responseMessage = `❌ PR #${duplicateNumber} not found.`;
+                    break;
+                  }
+                  
+                  // Add duplicate label
+                  await github.rest.issues.addLabels({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    issue_number: prNumber,
+                    labels: ['duplicate']
+                  });
+                  
+                  responseMessage = `🔄 Marked as duplicate of #${duplicateNumber}
+
+Consider closing this PR if it's truly a duplicate.`;
+                  success = true;
+                  break;
+                
+                // ────────────────────────────────────────────
+                case 'assign':
+                  console.log('👤 Executing assign command...');
+                  
+                  if (!args) {
+                    responseMessage = '❌ Missing username. Usage: `/assign @username`';
+                    break;
+                  }
+                  
+                  const username = args.replace('@', '');
+                  
+                  try {
+                    await github.rest.pulls.requestReviewers({
+                      owner: context.repo.owner,
+                      repo: context.repo.repo,
+                      pull_number: prNumber,
+                      reviewers: [username]
+                    });
+                    
+                    responseMessage = `✅ Assigned @${username} as reviewer`;
+                    success = true;
+                  } catch (error) {
+                    responseMessage = `❌ Failed to assign @${username}: ${error.message}`;
+                  }
+                  break;
+                
+                // ────────────────────────────────────────────
+                default:
+                  responseMessage = `❌ Command action not implemented: ${commandConfig.action}`;
+              }
+            } catch (error) {
+              console.error(`❌ Error executing command:`, error);
+              responseMessage = `❌ Error executing command: ${error.message}`;
+            }
+            
+            // ═══════════════════════════════════════════════════
+            // POST RESPONSE
+            // ═══════════════════════════════════════════════════
+            if (responseMessage) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                body: responseMessage
+              });
+              
+              console.log(`Posted response: ${responseMessage}`);
+            }
+            
+            // ═══════════════════════════════════════════════════
+            // LOG COMMAND EXECUTION
+            // ═══════════════════════════════════════════════════
+            console.log(`\n━━━ Command Execution Summary ━━━`);
+            console.log(`Command: /${command}`);
+            console.log(`Arguments: ${args || 'none'}`);
+            console.log(`User: @${commenter}`);
+            console.log(`Permission: ${userPermission}`);
+            console.log(`Status: ${success ? '✅ Success' : '❌ Failed'}`);
+            
+            // ═══════════════════════════════════════════════════
+            // SUMMARY
+            // ═══════════════════════════════════════════════════
+            core.summary
+              .addHeading('🤖 Bot Command Execution', 2)
+              .addTable([
+                [{data: 'Field', header: true}, {data: 'Value', header: true}],
+                ['PR Number', `#${prNumber}`],
+                ['Command', `/${command}`],
+                ['Arguments', args || 'none'],
+                ['User', `@${commenter}`],
+                ['Permission', userPermission],
+                ['Status', success ? '✅ Success' : '❌ Failed']
+              ])
+              .write();
+            
+            console.log('\n✅ Command processing completed');

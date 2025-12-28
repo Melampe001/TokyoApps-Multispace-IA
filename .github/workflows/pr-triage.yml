@@ -1,0 +1,361 @@
+name: 📊 PR Triage
+
+# Automatically prioritize and assign reviewers to PRs
+# Reads configuration from .github/pr-automation-config.yml
+
+on:
+  pull_request:
+    types: [opened, reopened]
+    branches:
+      - Main
+      - main
+      - develop
+      - 'feature/**'
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  triage-pr:
+    name: Triage PR
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Run PR triage
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const yaml = require('js-yaml');
+            
+            console.log('📊 Starting PR triage...');
+            
+            // Load configuration
+            let config;
+            try {
+              const configFile = fs.readFileSync('.github/pr-automation-config.yml', 'utf8');
+              config = yaml.load(configFile);
+              console.log('✅ Configuration loaded successfully');
+            } catch (error) {
+              console.error('❌ Failed to load configuration:', error);
+              config = { triage: {} };
+            }
+            
+            const triageConfig = config.triage || {};
+            const prNumber = context.payload.pull_request.number;
+            const pr = context.payload.pull_request;
+            
+            console.log(`Processing PR #${prNumber}: ${pr.title}`);
+            
+            const labelsToAdd = [];
+            const reviewersToAssign = [];
+            
+            // ═══════════════════════════════════════════════════
+            // PRIORITY ASSIGNMENT
+            // ═══════════════════════════════════════════════════
+            console.log('\n━━━ Assigning Priority ━━━');
+            
+            const priorityConfig = triageConfig.priority || {};
+            let priorityLabel = null;
+            
+            // Check critical priority
+            if (priorityConfig.critical) {
+              const criticalRules = priorityConfig.critical;
+              const titleContains = criticalRules.find(r => r.title_contains)?.title_contains || [];
+              
+              if (titleContains.some(keyword => pr.title.toLowerCase().includes(keyword.toLowerCase()))) {
+                priorityLabel = criticalRules.find(r => r.label_to_add)?.label_to_add || 'priority/P0';
+                console.log(`🔴 Critical priority detected: ${priorityLabel}`);
+              }
+            }
+            
+            // Check high priority
+            if (!priorityLabel && priorityConfig.high) {
+              const highRules = priorityConfig.high;
+              const titleContains = highRules.find(r => r.title_contains)?.title_contains || [];
+              
+              if (titleContains.some(keyword => pr.title.toLowerCase().includes(keyword.toLowerCase()))) {
+                priorityLabel = highRules.find(r => r.label_to_add)?.label_to_add || 'priority/P1';
+                console.log(`🟠 High priority detected: ${priorityLabel}`);
+              } else {
+                // Check for dependency files
+                const filesChangedRules = highRules.find(r => r.files_changed)?.files_changed || [];
+                if (filesChangedRules.length > 0) {
+                  const { data: files } = await github.rest.pulls.listFiles({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    pull_number: prNumber,
+                    per_page: 100
+                  });
+                  
+                  const changedFiles = files.map(f => f.filename);
+                  if (filesChangedRules.some(file => changedFiles.includes(file))) {
+                    priorityLabel = highRules.find(r => r.label_to_add)?.label_to_add || 'priority/P1';
+                    console.log(`🟠 High priority detected (dependency files): ${priorityLabel}`);
+                  }
+                }
+              }
+            }
+            
+            // Check normal priority
+            if (!priorityLabel && priorityConfig.normal) {
+              const normalRules = priorityConfig.normal;
+              const titleContains = normalRules.find(r => r.title_contains)?.title_contains || [];
+              
+              if (titleContains.some(keyword => pr.title.toLowerCase().includes(keyword.toLowerCase()))) {
+                priorityLabel = normalRules.find(r => r.label_to_add)?.label_to_add || 'priority/P2';
+                console.log(`🟡 Normal priority detected: ${priorityLabel}`);
+              }
+            }
+            
+            // Check low priority
+            if (!priorityLabel && priorityConfig.low) {
+              const lowRules = priorityConfig.low;
+              const titleContains = lowRules.find(r => r.title_contains)?.title_contains || [];
+              
+              if (titleContains.some(keyword => pr.title.toLowerCase().includes(keyword.toLowerCase()))) {
+                priorityLabel = lowRules.find(r => r.label_to_add)?.label_to_add || 'priority/P3';
+                console.log(`🟢 Low priority detected: ${priorityLabel}`);
+              }
+            }
+            
+            // Default to P2 if no priority detected
+            if (!priorityLabel) {
+              priorityLabel = 'priority/P2';
+              console.log(`⚪ Default priority: ${priorityLabel}`);
+            }
+            
+            labelsToAdd.push(priorityLabel);
+            
+            // ═══════════════════════════════════════════════════
+            // AUTO-ASSIGN REVIEWERS
+            // ═══════════════════════════════════════════════════
+            console.log('\n━━━ Assigning Reviewers ━━━');
+            
+            const autoAssignConfig = triageConfig.auto_assign || { enabled: true };
+            
+            if (autoAssignConfig.enabled) {
+              // Get changed files
+              const { data: files } = await github.rest.pulls.listFiles({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: prNumber,
+                per_page: 100
+              });
+              
+              const changedFiles = files.map(f => f.filename);
+              console.log(`Files changed: ${changedFiles.length}`);
+              
+              const byArea = autoAssignConfig.by_area || [
+                { paths: ['**/*.go', 'go.mod'], reviewers: ['Melampe001'] },
+                { paths: ['agents/**', '.github/agents/**'], reviewers: ['Melampe001'] },
+                { paths: ['.github/workflows/**'], reviewers: ['Melampe001'] }
+              ];
+              
+              const matchPath = (filename, patterns) => {
+                return patterns.some(pattern => {
+                  const regex = new RegExp('^' + pattern.replace(/\*\*/g, '.*').replace(/\*/g, '[^/]*') + '$');
+                  return regex.test(filename);
+                });
+              };
+              
+              const assignedReviewers = new Set();
+              
+              for (const area of byArea) {
+                const matchedFiles = changedFiles.filter(file => matchPath(file, area.paths));
+                
+                if (matchedFiles.length > 0) {
+                  console.log(`Matched area: ${area.paths.join(', ')}`);
+                  console.log(`  Files: ${matchedFiles.length}`);
+                  
+                  for (const reviewer of area.reviewers) {
+                    // Don't assign PR author as reviewer
+                    if (reviewer !== pr.user.login) {
+                      assignedReviewers.add(reviewer);
+                      console.log(`  → Assigning: ${reviewer}`);
+                    }
+                  }
+                }
+              }
+              
+              reviewersToAssign.push(...assignedReviewers);
+            }
+            
+            // ═══════════════════════════════════════════════════
+            // GET PR STATS FOR WELCOME MESSAGE
+            // ═══════════════════════════════════════════════════
+            const { data: files } = await github.rest.pulls.listFiles({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: prNumber,
+              per_page: 100
+            });
+            
+            const totalChanges = files.reduce((sum, f) => sum + f.additions + f.deletions, 0);
+            const currentLabels = pr.labels.map(l => l.name);
+            
+            // Determine size label
+            let sizeLabel = 'size/M';
+            if (totalChanges <= 10) sizeLabel = 'size/XS';
+            else if (totalChanges <= 100) sizeLabel = 'size/S';
+            else if (totalChanges <= 500) sizeLabel = 'size/M';
+            else if (totalChanges <= 1000) sizeLabel = 'size/L';
+            else if (totalChanges <= 5000) sizeLabel = 'size/XL';
+            else sizeLabel = 'size/XXL';
+            
+            // Determine type labels
+            const typeLabels = [];
+            if (files.some(f => f.filename.endsWith('.md') || f.filename.startsWith('docs/'))) {
+              typeLabels.push('📄 documentation');
+            }
+            if (files.some(f => f.filename.includes('_test.') || f.filename.startsWith('tests/'))) {
+              typeLabels.push('🧪 tests');
+            }
+            if (files.some(f => f.filename.startsWith('.github/workflows/'))) {
+              typeLabels.push('⚙️ ci-cd');
+            }
+            if (files.some(f => f.filename.startsWith('agents/'))) {
+              typeLabels.push('🤖 agents');
+            }
+            
+            const typeLabelsStr = typeLabels.length > 0 ? typeLabels.join(', ') : 'code changes';
+            
+            // Check test status
+            let testStatus = '⏳ pending';
+            try {
+              const { data: checkRuns } = await github.rest.checks.listForRef({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: pr.head.sha,
+                per_page: 100
+              });
+              
+              if (checkRuns.check_runs.length > 0) {
+                const allPassed = checkRuns.check_runs.every(check => 
+                  check.conclusion === 'success' || check.conclusion === 'skipped'
+                );
+                const someFailed = checkRuns.check_runs.some(check => 
+                  check.conclusion === 'failure'
+                );
+                
+                if (allPassed) testStatus = '✅ passing';
+                else if (someFailed) testStatus = '❌ failing';
+                else testStatus = '⏳ running';
+              }
+            } catch (error) {
+              console.log('Could not fetch test status:', error.message);
+            }
+            
+            // Estimate review time based on size and complexity
+            let estimatedReviewTime = '15-30 minutes';
+            if (sizeLabel === 'size/XS') estimatedReviewTime = '5-10 minutes';
+            else if (sizeLabel === 'size/S') estimatedReviewTime = '10-20 minutes';
+            else if (sizeLabel === 'size/M') estimatedReviewTime = '20-30 minutes';
+            else if (sizeLabel === 'size/L') estimatedReviewTime = '30-60 minutes';
+            else if (sizeLabel === 'size/XL') estimatedReviewTime = '1-2 hours';
+            else if (sizeLabel === 'size/XXL') estimatedReviewTime = '2+ hours';
+            
+            // ═══════════════════════════════════════════════════
+            // POST WELCOME COMMENT
+            // ═══════════════════════════════════════════════════
+            const welcomeTemplate = config.bot?.auto_comments?.welcome_message || `👋 ¡Gracias por el PR @{{author}}!
+
+Este PR ha sido analizado automáticamente:
+- **Tamaño**: {{size_label}}
+- **Tipo**: {{type_labels}}
+- **Tests**: {{test_status}}
+
+El bot te avisará cuando esté listo para merge.`;
+            
+            const welcomeComment = welcomeTemplate
+              .replace('{{author}}', pr.user.login)
+              .replace('{{size_label}}', sizeLabel)
+              .replace('{{type_labels}}', typeLabelsStr)
+              .replace('{{test_status}}', testStatus);
+            
+            const fullWelcomeMessage = `${welcomeComment}
+
+## 📋 PR Summary
+
+| Metric | Value |
+|--------|-------|
+| **Size** | ${sizeLabel.replace('size/', '')} (${totalChanges} lines) |
+| **Priority** | ${priorityLabel.replace('priority/', '')} |
+| **Files Changed** | ${files.length} |
+| **Test Status** | ${testStatus} |
+| **Estimated Review Time** | ${estimatedReviewTime} |
+${reviewersToAssign.length > 0 ? `| **Reviewers** | ${reviewersToAssign.map(r => '@' + r).join(', ')} |` : ''}
+
+---
+_This PR has been automatically triaged. Use bot commands like \`/priority P1\` or \`/merge\` to control it._`;
+            
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              body: fullWelcomeMessage
+            });
+            
+            console.log('💬 Posted welcome comment');
+            
+            // ═══════════════════════════════════════════════════
+            // APPLY LABELS
+            // ═══════════════════════════════════════════════════
+            if (labelsToAdd.length > 0) {
+              const uniqueLabels = [...new Set(labelsToAdd)].filter(l => !currentLabels.includes(l));
+              
+              if (uniqueLabels.length > 0) {
+                try {
+                  await github.rest.issues.addLabels({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    issue_number: prNumber,
+                    labels: uniqueLabels
+                  });
+                  console.log(`✅ Added labels: ${uniqueLabels.join(', ')}`);
+                } catch (error) {
+                  console.error('❌ Failed to add labels:', error.message);
+                }
+              }
+            }
+            
+            // ═══════════════════════════════════════════════════
+            // ASSIGN REVIEWERS
+            // ═══════════════════════════════════════════════════
+            if (reviewersToAssign.length > 0) {
+              try {
+                await github.rest.pulls.requestReviewers({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  pull_number: prNumber,
+                  reviewers: reviewersToAssign
+                });
+                console.log(`✅ Assigned reviewers: ${reviewersToAssign.join(', ')}`);
+              } catch (error) {
+                console.error('❌ Failed to assign reviewers:', error.message);
+              }
+            }
+            
+            // ═══════════════════════════════════════════════════
+            // SUMMARY
+            // ═══════════════════════════════════════════════════
+            core.summary
+              .addHeading('📊 PR Triage Complete', 2)
+              .addTable([
+                [{data: 'Metric', header: true}, {data: 'Value', header: true}],
+                ['PR Number', `#${prNumber}`],
+                ['Priority', priorityLabel],
+                ['Size', `${sizeLabel} (${totalChanges} lines)`],
+                ['Type', typeLabelsStr],
+                ['Test Status', testStatus],
+                ['Reviewers Assigned', reviewersToAssign.length > 0 ? reviewersToAssign.join(', ') : 'None'],
+                ['Estimated Review Time', estimatedReviewTime]
+              ])
+              .write();
+            
+            console.log('\n✅ PR triage completed successfully');

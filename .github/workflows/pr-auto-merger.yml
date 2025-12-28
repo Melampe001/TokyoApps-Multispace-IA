@@ -1,0 +1,368 @@
+name: ✅ PR Auto-Merger
+
+# Automatically merge safe PRs that meet all requirements
+# Reads configuration from .github/pr-automation-config.yml
+
+on:
+  pull_request:
+    types: [opened, synchronize, labeled]
+    branches:
+      - Main
+      - main
+      - develop
+  check_suite:
+    types: [completed]
+  pull_request_review:
+    types: [submitted]
+  schedule:
+    - cron: '*/30 * * * *'  # Every 30 minutes
+  workflow_dispatch:  # Manual trigger
+
+permissions:
+  contents: write
+  pull-requests: write
+  checks: read
+
+jobs:
+  auto-merge:
+    name: Auto-Merge PR
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Process auto-merge
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const yaml = require('js-yaml');
+            
+            console.log('✅ Starting PR auto-merger...');
+            
+            // Load configuration
+            let config;
+            try {
+              const configFile = fs.readFileSync('.github/pr-automation-config.yml', 'utf8');
+              config = yaml.load(configFile);
+              console.log('✅ Configuration loaded successfully');
+            } catch (error) {
+              console.error('❌ Failed to load configuration:', error);
+              config = { auto_merge: { enabled: false } };
+            }
+            
+            if (!config.auto_merge?.enabled) {
+              console.log('ℹ️  Auto-merge is disabled in configuration');
+              return;
+            }
+            
+            // Get all open PRs
+            const { data: pullRequests } = await github.rest.pulls.list({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              per_page: 100
+            });
+            
+            console.log(`Found ${pullRequests.length} open PRs`);
+            
+            let processedCount = 0;
+            let mergedCount = 0;
+            let readyCount = 0;
+            
+            for (const pr of pullRequests) {
+              const prNumber = pr.number;
+              console.log(`\n═══════════════════════════════════════`);
+              console.log(`Processing PR #${prNumber}: ${pr.title}`);
+              
+              // Skip draft PRs
+              if (pr.draft) {
+                console.log('⏭️  Skipping: PR is draft');
+                continue;
+              }
+              
+              processedCount++;
+              
+              // ═══════════════════════════════════════════════════
+              // CHECK FAST-TRACK CONDITIONS
+              // ═══════════════════════════════════════════════════
+              let isFastTrack = false;
+              let fastTrackReason = '';
+              let mergeMethod = 'merge';
+              
+              // Get PR files
+              const { data: files } = await github.rest.pulls.listFiles({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: prNumber,
+                per_page: 100
+              });
+              
+              const changedFiles = files.map(f => f.filename);
+              const totalChanges = files.reduce((sum, f) => sum + f.additions + f.deletions, 0);
+              const labels = pr.labels.map(l => l.name);
+              
+              console.log(`Files: ${changedFiles.length}, Changes: ${totalChanges} lines`);
+              console.log(`Labels: ${labels.join(', ')}`);
+              
+              // Check fast-track rules
+              const fastTrackRules = config.auto_merge?.fast_track || [];
+              
+              for (const rule of fastTrackRules) {
+                let matches = true;
+                const conditions = rule.conditions || [];
+                
+                for (const condition of conditions) {
+                  // Check only_paths
+                  if (condition.only_paths) {
+                    const matchPath = (filename, patterns) => {
+                      return patterns.some(pattern => {
+                        const regex = new RegExp('^' + pattern.replace(/\*\*/g, '.*').replace(/\*/g, '[^/]*') + '$');
+                        return regex.test(filename);
+                      });
+                    };
+                    
+                    const allMatch = changedFiles.every(file => matchPath(file, condition.only_paths));
+                    if (!allMatch) {
+                      matches = false;
+                      break;
+                    }
+                  }
+                  
+                  // Check max_lines
+                  if (condition.max_lines && totalChanges > condition.max_lines) {
+                    matches = false;
+                    break;
+                  }
+                  
+                  // Check title_contains
+                  if (condition.title_contains) {
+                    const titleMatch = condition.title_contains.some(keyword => 
+                      pr.title.toLowerCase().includes(keyword.toLowerCase())
+                    );
+                    if (!titleMatch) {
+                      matches = false;
+                      break;
+                    }
+                  }
+                  
+                  // Check author
+                  if (condition.author && pr.user.login !== condition.author) {
+                    matches = false;
+                    break;
+                  }
+                  
+                  // Check labels
+                  if (condition.labels) {
+                    const hasAllLabels = condition.labels.every(label => labels.includes(label));
+                    if (!hasAllLabels) {
+                      matches = false;
+                      break;
+                    }
+                  }
+                }
+                
+                if (matches) {
+                  isFastTrack = true;
+                  fastTrackReason = rule.name;
+                  mergeMethod = rule.merge_method || 'merge';
+                  console.log(`🚀 Fast-track match: ${fastTrackReason}`);
+                  break;
+                }
+              }
+              
+              // ═══════════════════════════════════════════════════
+              // CHECK STATUS CHECKS
+              // ═══════════════════════════════════════════════════
+              let statusChecksPassed = true;
+              
+              try {
+                const { data: checkRuns } = await github.rest.checks.listForRef({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  ref: pr.head.sha,
+                  per_page: 100
+                });
+                
+                const requiredChecks = checkRuns.check_runs.filter(check => 
+                  check.name !== 'Auto-Merge PR'
+                );
+                
+                if (requiredChecks.length > 0) {
+                  const allPassed = requiredChecks.every(check => 
+                    check.conclusion === 'success' || check.conclusion === 'skipped'
+                  );
+                  statusChecksPassed = allPassed;
+                  console.log(`Status checks: ${statusChecksPassed ? '✅ Passed' : '❌ Failed'}`);
+                } else {
+                  console.log('ℹ️  No status checks required');
+                }
+              } catch (error) {
+                console.log('⚠️  Could not fetch status checks:', error.message);
+              }
+              
+              // ═══════════════════════════════════════════════════
+              // CHECK REVIEWS
+              // ═══════════════════════════════════════════════════
+              const { data: reviews } = await github.rest.pulls.listReviews({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: prNumber
+              });
+              
+              const approvedReviews = reviews.filter(r => r.state === 'APPROVED').length;
+              const changesRequested = reviews.some(r => r.state === 'CHANGES_REQUESTED');
+              
+              // Determine required approvals
+              let requiredApprovals = 1;
+              if (isFastTrack) {
+                const fastTrackRule = fastTrackRules.find(r => r.name === fastTrackReason);
+                const conditions = fastTrackRule?.conditions || [];
+                const reviewCondition = conditions.find(c => c.reviews_approved !== undefined);
+                requiredApprovals = reviewCondition?.reviews_approved || 0;
+              }
+              
+              const hasEnoughApprovals = approvedReviews >= requiredApprovals;
+              
+              console.log(`Reviews: ${approvedReviews} approved (need ${requiredApprovals}), Changes requested: ${changesRequested}`);
+              
+              // ═══════════════════════════════════════════════════
+              // CHECK MERGE CONFLICTS
+              // ═══════════════════════════════════════════════════
+              const { data: prDetails } = await github.rest.pulls.get({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: prNumber
+              });
+              
+              const mergeable = prDetails.mergeable !== false;
+              const mergeableState = prDetails.mergeable_state;
+              
+              console.log(`Mergeable: ${mergeable}, State: ${mergeableState}`);
+              
+              // ═══════════════════════════════════════════════════
+              // CHECK MERGE TIME WINDOW
+              // ═══════════════════════════════════════════════════
+              const createdAt = new Date(pr.created_at);
+              const now = new Date();
+              const hoursSinceCreated = (now - createdAt) / (1000 * 60 * 60);
+              
+              // For fast-track, no waiting time. For normal PRs, wait 1 hour
+              const minWaitTime = isFastTrack ? 0 : 1;
+              const canMergeByTime = hoursSinceCreated >= minWaitTime;
+              
+              console.log(`Age: ${hoursSinceCreated.toFixed(1)} hours (min: ${minWaitTime}h)`);
+              
+              // ═══════════════════════════════════════════════════
+              // DETERMINE IF CAN MERGE
+              // ═══════════════════════════════════════════════════
+              const canMerge = statusChecksPassed && 
+                               hasEnoughApprovals && 
+                               !changesRequested && 
+                               mergeable && 
+                               canMergeByTime;
+              
+              // ═══════════════════════════════════════════════════
+              // POST READY COMMENT IF APPLICABLE
+              // ═══════════════════════════════════════════════════
+              if (canMerge && !canMergeByTime) {
+                // Check if we already commented
+                const { data: comments } = await github.rest.issues.listComments({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: prNumber
+                });
+                
+                const hasReadyComment = comments.some(c => 
+                  c.body.includes('Este PR está listo para merge')
+                );
+                
+                if (!hasReadyComment) {
+                  const timeRemaining = Math.ceil((minWaitTime - hoursSinceCreated) * 60);
+                  
+                  await github.rest.issues.createComment({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    issue_number: prNumber,
+                    body: `## ✅ PR Listo para Merge
+
+- ✅ Todos los checks pasaron
+- ✅ Reviews aprobados (${approvedReviews}/${requiredApprovals})
+- ✅ Sin conflictos
+${isFastTrack ? `- 🚀 Fast-track: ${fastTrackReason}` : ''}
+
+Este PR se mergeará automáticamente en aproximadamente ${timeRemaining} minutos.
+Usa \`/merge\` para mergear inmediatamente.`
+                  });
+                  
+                  console.log(`💬 Posted ready comment`);
+                  readyCount++;
+                }
+              }
+              
+              // ═══════════════════════════════════════════════════
+              // MERGE IF READY
+              // ═══════════════════════════════════════════════════
+              if (canMerge) {
+                try {
+                  // Determine merge method
+                  if (!isFastTrack) {
+                    // Check merge method by label
+                    const methodRules = config.auto_merge?.merge_methods?.by_label || [];
+                    for (const rule of methodRules) {
+                      if (labels.includes(rule.label)) {
+                        mergeMethod = rule.method;
+                        break;
+                      }
+                    }
+                    if (mergeMethod === 'merge') {
+                      mergeMethod = config.auto_merge?.merge_methods?.default || 'merge';
+                    }
+                  }
+                  
+                  console.log(`🔀 Attempting merge with method: ${mergeMethod}`);
+                  
+                  await github.rest.pulls.merge({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    pull_number: prNumber,
+                    merge_method: mergeMethod,
+                    commit_title: isFastTrack ? `${pr.title} (fast-track: ${fastTrackReason})` : undefined
+                  });
+                  
+                  console.log(`✅ Successfully merged PR #${prNumber}`);
+                  mergedCount++;
+                  
+                } catch (error) {
+                  console.error(`❌ Failed to merge PR #${prNumber}:`, error.message);
+                }
+              } else {
+                const reasons = [];
+                if (!statusChecksPassed) reasons.push('status checks not passed');
+                if (!hasEnoughApprovals) reasons.push(`needs ${requiredApprovals - approvedReviews} more approvals`);
+                if (changesRequested) reasons.push('changes requested');
+                if (!mergeable) reasons.push('has merge conflicts');
+                if (!canMergeByTime) reasons.push(`waiting ${Math.ceil((minWaitTime - hoursSinceCreated) * 60)} more minutes`);
+                
+                console.log(`⏸️  Cannot merge: ${reasons.join(', ')}`);
+              }
+            }
+            
+            // ═══════════════════════════════════════════════════
+            // SUMMARY
+            // ═══════════════════════════════════════════════════
+            core.summary
+              .addHeading('✅ PR Auto-Merger Summary', 2)
+              .addTable([
+                [{data: 'Metric', header: true}, {data: 'Count', header: true}],
+                ['Open PRs', pullRequests.length.toString()],
+                ['Processed (non-draft)', processedCount.toString()],
+                ['Ready for merge', readyCount.toString()],
+                ['Successfully merged', mergedCount.toString()]
+              ])
+              .write();
+            
+            console.log('\n✅ Auto-merge process completed');
+            console.log(`   Processed: ${processedCount}, Ready: ${readyCount}, Merged: ${mergedCount}`);
