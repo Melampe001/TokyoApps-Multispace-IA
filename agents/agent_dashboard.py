@@ -246,17 +246,6 @@ def main():
     print("Initializing dashboard...")
     print()
     
-    # Check if rich is available
-    try:
-        from rich.console import Console
-    except ImportError:
-        print("❌ Error: 'rich' library not installed")
-        print()
-        print("Install with:")
-        print("  pip install rich")
-        print()
-        return 1
-    
     # Initialize and run dashboard
     dashboard = AgentDashboard()
     
