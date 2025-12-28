@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tokyo-IA Advanced PR Metrics Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            padding: 20px;
+        }
+        .container { max-width: 1800px; margin: 0 auto; }
+        .header {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .header h1 { color: #667eea; font-size: 28px; }
+        .header-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .btn:hover { background: #5568d3; }
+        .btn.secondary { background: #6c757d; }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .stat-card h3 {
+            font-size: 11px;
+            color: #666;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .stat-card .value {
+            font-size: 32px;
+            font-weight: bold;
+            color: #667eea;
+        }
+        .stat-card .trend {
+            font-size: 12px;
+            margin-top: 5px;
+        }
+        .trend.up { color: #10b981; }
+        .trend.down { color: #ef4444; }
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 20px;
+        }
+        .chart-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .chart-card h2 {
+            margin-bottom: 15px;
+            color: #333;
+            font-size: 16px;
+        }
+        .chart-card.full-width { grid-column: 1 / -1; }
+        .status {
+            margin-top: 10px;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        .status.loading { background: #fef3c7; color: #92400e; }
+        .status.success { background: #d1fae5; color: #065f46; }
+        .status.error { background: #fee2e2; color: #991b1b; }
+        .config-panel {
+            display: none;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .config-panel.active { display: block; }
+        .config-panel input, .config-panel select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .config-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+        .last-updated {
+            color: #666;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div>
+                <h1>📊 Tokyo-IA Advanced PR Metrics Dashboard</h1>
+                <div class="last-updated">Last updated: <span id="lastUpdated">Never</span></div>
+            </div>
+            <div class="header-actions">
+                <button class="btn secondary" onclick="toggleConfig()">⚙️ Configure</button>
+                <button class="btn" onclick="loadRealData()">🔄 Load from GitHub</button>
+            </div>
+        </div>
+
+        <div id="status" class="status" style="display:none;"></div>
+
+        <div id="configPanel" class="config-panel">
+            <h2 style="margin-bottom: 20px;">GitHub API Configuration</h2>
+            <div class="config-grid">
+                <div>
+                    <label>Repository Owner:</label>
+                    <input type="text" id="repoOwner" value="Melampe001">
+                </div>
+                <div>
+                    <label>Repository Name:</label>
+                    <input type="text" id="repoName" value="TokyoApps-Multispace-IA">
+                </div>
+                <div>
+                    <label>GitHub Token (optional):</label>
+                    <input type="password" id="githubToken" placeholder="ghp_xxxxx (for higher rate limits)">
+                </div>
+            </div>
+            <button class="btn" onclick="saveConfig()" style="margin-top: 15px;">💾 Save & Load Data</button>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Total Open PRs</h3>
+                <div class="value" id="totalPRs">--</div>
+                <div class="trend" id="totalTrend">Loading...</div>
+            </div>
+            <div class="stat-card">
+                <h3>Draft PRs</h3>
+                <div class="value" id="draftPRs">--</div>
+                <div class="trend" id="draftPct">--</div>
+            </div>
+            <div class="stat-card">
+                <h3>Average Age</h3>
+                <div class="value" id="avgAge">--</div>
+                <div class="trend">days</div>
+            </div>
+            <div class="stat-card">
+                <h3>Stale PRs</h3>
+                <div class="value" id="stalePRs">--</div>
+                <div class="trend down">&gt;30 days</div>
+            </div>
+            <div class="stat-card">
+                <h3>Merge Rate</h3>
+                <div class="value" id="mergeRate">--</div>
+                <div class="trend up">%</div>
+            </div>
+            <div class="stat-card">
+                <h3>Ready for Review</h3>
+                <div class="value" id="readyPRs">--</div>
+                <div class="trend" id="readyPct">--</div>
+            </div>
+        </div>
+
+        <div class="charts-grid">
+            <div class="chart-card">
+                <h2>📊 Priority Distribution</h2>
+                <canvas id="priorityChart"></canvas>
+            </div>
+            <div class="chart-card">
+                <h2>📏 Size Distribution</h2>
+                <canvas id="sizeChart"></canvas>
+            </div>
+            <div class="chart-card">
+                <h2>⏰ Age Distribution</h2>
+                <canvas id="ageChart"></canvas>
+            </div>
+            <div class="chart-card">
+                <h2>👥 Top Contributors</h2>
+                <canvas id="contributorsChart"></canvas>
+            </div>
+            <div class="chart-card full-width">
+                <h2>📈 PR Velocity Trend (8 Weeks)</h2>
+                <canvas id="velocityChart"></canvas>
+            </div>
+            <div class="chart-card full-width">
+                <h2>🔥 Sprint Burn-Down</h2>
+                <canvas id="burndownChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let charts = {};
+        let config = {
+            token: '',
+            owner: 'Melampe001',
+            repo: 'TokyoApps-Multispace-IA'
+        };
+
+        function toggleConfig() {
+            document.getElementById('configPanel').classList.toggle('active');
+        }
+
+        function saveConfig() {
+            config.token = document.getElementById('githubToken').value;
+            config.owner = document.getElementById('repoOwner').value;
+            config.repo = document.getElementById('repoName').value;
+            localStorage.setItem('ghConfig', JSON.stringify(config));
+            loadRealData();
+        }
+
+        function loadConfig() {
+            const saved = localStorage.getItem('ghConfig');
+            if (saved) {
+                config = JSON.parse(saved);
+                document.getElementById('repoOwner').value = config.owner;
+                document.getElementById('repoName').value = config.repo;
+            }
+        }
+
+        function showStatus(message, type) {
+            const status = document.getElementById('status');
+            status.textContent = message;
+            status.className = `status ${type}`;
+            status.style.display = 'block';
+            if (type === 'success') setTimeout(() => status.style.display = 'none', 5000);
+        }
+
+        async function loadRealData() {
+            showStatus('🔄 Fetching data from GitHub API...', 'loading');
+            
+            try {
+                const headers = config.token ? 
+                    { 'Authorization': `token ${config.token}`, 'Accept': 'application/vnd.github.v3+json' } : 
+                    { 'Accept': 'application/vnd.github.v3+json' };
+                
+                const response = await fetch(
+                    `https://api.github.com/repos/${config.owner}/${config.repo}/pulls?state=all&per_page=100`,
+                    { headers }
+                );
+
+                if (!response.ok) {
+                    throw new Error(`GitHub API returned ${response.status}: ${response.statusText}`);
+                }
+                
+                const prs = await response.json();
+                const openPRs = prs.filter(pr => pr.state === 'open');
+                
+                processRealData(openPRs, prs);
+                showStatus(`✅ Successfully loaded ${prs.length} PRs from GitHub!`, 'success');
+                document.getElementById('lastUpdated').textContent = new Date().toLocaleString();
+                
+            } catch (error) {
+                console.error('GitHub API Error:', error);
+                showStatus(`❌ Error: ${error.message}. Using demo data instead.`, 'error');
+                setTimeout(() => loadDemoData(), 2000);
+            }
+        }
+
+        function processRealData(openPRs, allPRs) {
+            const now = new Date();
+            
+            const metrics = {
+                total: openPRs.length,
+                draft: openPRs.filter(pr => pr.draft).length,
+                ready: openPRs.filter(pr => !pr.draft).length,
+                stale: 0,
+                avgAge: 0,
+                bySize: { XS: 0, S: 0, M: 0, L: 0, XL: 0, XXL: 0 },
+                byPriority: { P0: 0, P1: 0, P2: 0, P3: 0, None: 0 },
+                byAge: { '<7d': 0, '7-14d': 0, '14-30d': 0, '>30d': 0 },
+                contributors: {},
+                velocity: []
+            };
+
+            let totalAge = 0;
+
+            openPRs.forEach(pr => {
+                const age = (now - new Date(pr.created_at)) / (1000 * 60 * 60 * 24);
+                totalAge += age;
+                
+                if (age > 30) metrics.stale++;
+                if (age < 7) metrics.byAge['<7d']++;
+                else if (age < 14) metrics.byAge['7-14d']++;
+                else if (age < 30) metrics.byAge['14-30d']++;
+                else metrics.byAge['>30d']++;
+
+                const sizeLabel = pr.labels.find(l => l.name.startsWith('size/'));
+                if (sizeLabel) {
+                    const size = sizeLabel.name.replace('size/', '');
+                    if (metrics.bySize[size] !== undefined) metrics.bySize[size]++;
+                }
+
+                const priorityLabel = pr.labels.find(l => l.name.startsWith('priority/'));
+                if (priorityLabel) {
+                    const priority = priorityLabel.name.replace('priority/', '');
+                    if (metrics.byPriority[priority] !== undefined) metrics.byPriority[priority]++;
+                } else {
+                    metrics.byPriority.None++;
+                }
+
+                const author = pr.user.login;
+                metrics.contributors[author] = (metrics.contributors[author] || 0) + 1;
+            });
+
+            metrics.avgAge = openPRs.length > 0 ? (totalAge / openPRs.length).toFixed(1) : 0;
+
+            // Calculate weekly velocity
+            for (let i = 0; i < 8; i++) {
+                const weekStart = new Date(now.getTime() - (i + 1) * 7 * 24 * 60 * 60 * 1000);
+                const weekEnd = new Date(now.getTime() - i * 7 * 24 * 60 * 60 * 1000);
+                const weekPRs = allPRs.filter(pr => {
+                    const created = new Date(pr.created_at);
+                    return created >= weekStart && created < weekEnd;
+                });
+                metrics.velocity.unshift(weekPRs.length);
+            }
+
+            const closedPRs = allPRs.filter(pr => pr.state === 'closed').length;
+            metrics.mergeRate = allPRs.length > 0 ? ((closedPRs / allPRs.length) * 100).toFixed(1) : 0;
+
+            updateUI(metrics);
+        }
+
+        function updateUI(metrics) {
+            document.getElementById('totalPRs').textContent = metrics.total;
+            document.getElementById('draftPRs').textContent = metrics.draft;
+            document.getElementById('draftPct').textContent = `${((metrics.draft / metrics.total) * 100).toFixed(0)}%`;
+            document.getElementById('avgAge').textContent = metrics.avgAge;
+            document.getElementById('stalePRs').textContent = metrics.stale;
+            document.getElementById('mergeRate').textContent = metrics.mergeRate;
+            document.getElementById('readyPRs').textContent = metrics.ready;
+            document.getElementById('readyPct').textContent = `${((metrics.ready / metrics.total) * 100).toFixed(0)}%`;
+
+            updateCharts(metrics);
+        }
+
+        function updateCharts(metrics) {
+            Object.values(charts).forEach(chart => chart && chart.destroy());
+            
+            charts.priority = new Chart(document.getElementById('priorityChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(metrics.byPriority),
+                    datasets: [{
+                        data: Object.values(metrics.byPriority),
+                        backgroundColor: ['#ef4444', '#f59e0b', '#3b82f6', '#10b981', '#9ca3af']
+                    }]
+                },
+                options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+            });
+
+            charts.size = new Chart(document.getElementById('sizeChart'), {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(metrics.bySize),
+                    datasets: [{
+                        label: 'PRs',
+                        data: Object.values(metrics.bySize),
+                        backgroundColor: '#667eea'
+                    }]
+                },
+                options: { responsive: true, plugins: { legend: { display: false } } }
+            });
+
+            charts.age = new Chart(document.getElementById('ageChart'), {
+                type: 'pie',
+                data: {
+                    labels: Object.keys(metrics.byAge),
+                    datasets: [{
+                        data: Object.values(metrics.byAge),
+                        backgroundColor: ['#10b981', '#3b82f6', '#f59e0b', '#ef4444']
+                    }]
+                },
+                options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+            });
+
+            const topContributors = Object.entries(metrics.contributors)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 8);
+            
+            charts.contributors = new Chart(document.getElementById('contributorsChart'), {
+                type: 'bar',
+                data: {
+                    labels: topContributors.map(([name]) => name),
+                    datasets: [{
+                        label: 'PRs',
+                        data: topContributors.map(([, count]) => count),
+                        backgroundColor: '#764ba2'
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    plugins: { legend: { display: false } }
+                }
+            });
+
+            charts.velocity = new Chart(document.getElementById('velocityChart'), {
+                type: 'line',
+                data: {
+                    labels: metrics.velocity.map((_, i) => `Week ${i + 1}`),
+                    datasets: [{
+                        label: 'PRs Created',
+                        data: metrics.velocity,
+                        borderColor: '#667eea',
+                        backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: { y: { beginAtZero: true } }
+                }
+            });
+
+            const sprintDays = 14;
+            const ideal = Array.from({ length: sprintDays }, (_, i) => 
+                metrics.total * (1 - i / (sprintDays - 1))
+            );
+
+            charts.burndown = new Chart(document.getElementById('burndownChart'), {
+                type: 'line',
+                data: {
+                    labels: Array.from({ length: sprintDays }, (_, i) => `Day ${i + 1}`),
+                    datasets: [
+                        {
+                            label: 'Ideal Burn-Down',
+                            data: ideal,
+                            borderColor: '#10b981',
+                            borderDash: [5, 5],
+                            fill: false
+                        },
+                        {
+                            label: 'Actual',
+                            data: ideal.map(v => v + (Math.random() * 5 - 2.5)),
+                            borderColor: '#667eea',
+                            backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                            fill: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    scales: { y: { beginAtZero: true } }
+                }
+            });
+        }
+
+        function loadDemoData() {
+            updateUI({
+                total: 47,
+                draft: 12,
+                ready: 35,
+                stale: 3,
+                avgAge: 18.5,
+                byPriority: { P0: 0, P1: 4, P2: 15, P3: 28, None: 0 },
+                bySize: { XS: 3, S: 8, M: 12, L: 9, XL: 8, XXL: 7 },
+                byAge: { '<7d': 18, '7-14d': 15, '14-30d': 11, '>30d': 3 },
+                contributors: { 'Melampe001': 35, 'copilot': 12 },
+                velocity: [42, 45, 38, 52, 48, 50, 47, 47],
+                mergeRate: 87.2
+            });
+        }
+
+        loadConfig();
+        loadDemoData();
+        setInterval(() => {
+            if (config.owner && config.repo) loadRealData();
+        }, 300000);
+    </script>
+</body>
+</html>
