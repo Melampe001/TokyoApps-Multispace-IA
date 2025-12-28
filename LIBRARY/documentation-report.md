@@ -4,8 +4,8 @@ Generated: $(date -u +"%Y-%m-%d %H:%M:%S UTC")
 
 ## Coverage Statistics
 
-- Total project files: 322
+- Total project files: 323
 - Documentation files: 150
 
 ## Recent Changes
-6d347de Add manual Google AI test script for Sakura agent
+06c8ac7 Add test_free_apis.py for Tokyo-IA free tier API validation
