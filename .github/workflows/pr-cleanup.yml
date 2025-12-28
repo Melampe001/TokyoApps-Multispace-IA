@@ -1,0 +1,466 @@
+name: 🧹 PR Cleanup
+
+# Automatically clean up stale and duplicate PRs
+# Reads configuration from .github/pr-automation-config.yml
+
+on:
+  schedule:
+    - cron: '0 2 * * *'  # 2 AM daily
+  workflow_dispatch:  # Manual trigger
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  cleanup-prs:
+    name: Cleanup PRs
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Run PR cleanup
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const yaml = require('js-yaml');
+            
+            console.log('🧹 Starting PR cleanup...');
+            
+            // Load configuration
+            let config;
+            try {
+              const configFile = fs.readFileSync('.github/pr-automation-config.yml', 'utf8');
+              config = yaml.load(configFile);
+              console.log('✅ Configuration loaded successfully');
+            } catch (error) {
+              console.error('❌ Failed to load configuration:', error);
+              config = { cleanup: {} };
+            }
+            
+            const cleanupConfig = config.cleanup || {};
+            const staleConfig = cleanupConfig.stale_pr || { enabled: true, days_inactive: 30, draft_days: 45 };
+            const duplicateConfig = cleanupConfig.conflicting_pr || { enabled: true };
+            
+            // Get all open PRs
+            const { data: pullRequests } = await github.rest.pulls.list({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              per_page: 100,
+              sort: 'updated',
+              direction: 'asc'
+            });
+            
+            console.log(`Found ${pullRequests.length} open PRs`);
+            
+            const now = new Date();
+            const stats = {
+              staleMarked: 0,
+              staleClosed: 0,
+              duplicatesFound: 0,
+              conflictsFound: 0,
+              candidatesForCleanup: []
+            };
+            
+            // ═══════════════════════════════════════════════════
+            // PROCESS STALE PRS
+            // ═══════════════════════════════════════════════════
+            if (staleConfig.enabled) {
+              console.log('\n━━━ Processing Stale PRs ━━━');
+              
+              const excludeLabels = staleConfig.exclude_labels || ['wip', 'blocked', 'on-hold'];
+              const daysInactive = staleConfig.days_inactive || 30;
+              const draftDays = staleConfig.draft_days || 45;
+              const closeAfter = staleConfig.actions?.find(a => a.close_after)?.close_after || 7;
+              
+              for (const pr of pullRequests) {
+                const prNumber = pr.number;
+                const labels = pr.labels.map(l => l.name);
+                
+                // Skip excluded labels
+                if (excludeLabels.some(label => labels.includes(label))) {
+                  continue;
+                }
+                
+                const updatedAt = new Date(pr.updated_at);
+                const daysSinceUpdate = (now - updatedAt) / (1000 * 60 * 60 * 24);
+                const isDraft = pr.draft;
+                const threshold = isDraft ? draftDays : daysInactive;
+                
+                const isStale = labels.includes('stale');
+                
+                // Check if should be marked as stale
+                if (!isStale && daysSinceUpdate >= threshold) {
+                  console.log(`📌 Marking PR #${prNumber} as stale (${Math.floor(daysSinceUpdate)} days inactive)`);
+                  
+                  // Add stale label
+                  await github.rest.issues.addLabels({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    issue_number: prNumber,
+                    labels: ['stale']
+                  });
+                  
+                  // Post comment
+                  const commentTemplate = staleConfig.actions?.find(a => a.comment)?.comment || 
+                    'Este PR lleva {{days}} días inactivo. ¿Sigue siendo necesario?';
+                  const comment = commentTemplate.replace('{{days}}', Math.floor(daysSinceUpdate));
+                  
+                  await github.rest.issues.createComment({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    issue_number: prNumber,
+                    body: `## ⏰ PR Inactivo
+
+${comment}
+
+Si este PR ya no es necesario, considera cerrarlo para mantener el repositorio limpio.
+Si todavía es relevante, responde a este comentario o actualiza el PR para quitar la etiqueta \`stale\`.
+
+Este PR se cerrará automáticamente en ${closeAfter} días si no hay actividad.`
+                  });
+                  
+                  stats.staleMarked++;
+                  stats.candidatesForCleanup.push({
+                    number: prNumber,
+                    title: pr.title,
+                    reason: 'Marked as stale',
+                    daysSinceUpdate: Math.floor(daysSinceUpdate)
+                  });
+                }
+                
+                // Check if should be closed (already stale for closeAfter days)
+                if (isStale && daysSinceUpdate >= threshold + closeAfter) {
+                  console.log(`🚮 Closing stale PR #${prNumber} (${Math.floor(daysSinceUpdate)} days total)`);
+                  
+                  // Post closure comment
+                  await github.rest.issues.createComment({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    issue_number: prNumber,
+                    body: `## 🚮 Cerrando PR por Inactividad
+
+Este PR ha estado inactivo por ${Math.floor(daysSinceUpdate)} días y se cierra automáticamente.
+
+Si necesitas reabrir este PR, contáctanos o crea uno nuevo.`
+                  });
+                  
+                  // Close the PR
+                  await github.rest.pulls.update({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    pull_number: prNumber,
+                    state: 'closed'
+                  });
+                  
+                  stats.staleClosed++;
+                }
+              }
+            }
+            
+            // ═══════════════════════════════════════════════════
+            // DETECT DUPLICATE PRS
+            // ═══════════════════════════════════════════════════
+            if (duplicateConfig.enabled) {
+              console.log('\n━━━ Detecting Duplicate PRs ━━━');
+              
+              const titleSimilarityThreshold = config.duplicate_detection?.patterns?.find(p => p.title_similarity)?.title_similarity || 0.8;
+              const fileOverlapThreshold = config.duplicate_detection?.patterns?.find(p => p.file_overlap)?.file_overlap || 0.7;
+              
+              // Calculate similarity between two strings
+              const calculateSimilarity = (str1, str2) => {
+                const longer = str1.length > str2.length ? str1 : str2;
+                const shorter = str1.length > str2.length ? str2 : str1;
+                
+                if (longer.length === 0) return 1.0;
+                
+                const editDistance = (s1, s2) => {
+                  s1 = s1.toLowerCase();
+                  s2 = s2.toLowerCase();
+                  
+                  const costs = [];
+                  for (let i = 0; i <= s1.length; i++) {
+                    let lastValue = i;
+                    for (let j = 0; j <= s2.length; j++) {
+                      if (i === 0) {
+                        costs[j] = j;
+                      } else if (j > 0) {
+                        let newValue = costs[j - 1];
+                        if (s1.charAt(i - 1) !== s2.charAt(j - 1)) {
+                          newValue = Math.min(Math.min(newValue, lastValue), costs[j]) + 1;
+                        }
+                        costs[j - 1] = lastValue;
+                        lastValue = newValue;
+                      }
+                    }
+                    if (i > 0) costs[s2.length] = lastValue;
+                  }
+                  return costs[s2.length];
+                };
+                
+                return (longer.length - editDistance(longer, shorter)) / longer.length;
+              };
+              
+              // Compare PRs
+              for (let i = 0; i < pullRequests.length; i++) {
+                for (let j = i + 1; j < pullRequests.length; j++) {
+                  const pr1 = pullRequests[i];
+                  const pr2 = pullRequests[j];
+                  
+                  // Check title similarity
+                  const titleSimilarity = calculateSimilarity(pr1.title, pr2.title);
+                  
+                  if (titleSimilarity >= titleSimilarityThreshold) {
+                    // Get files for both PRs
+                    const [files1Response, files2Response] = await Promise.all([
+                      github.rest.pulls.listFiles({
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
+                        pull_number: pr1.number,
+                        per_page: 100
+                      }),
+                      github.rest.pulls.listFiles({
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
+                        pull_number: pr2.number,
+                        per_page: 100
+                      })
+                    ]);
+                    
+                    const files1 = new Set(files1Response.data.map(f => f.filename));
+                    const files2 = new Set(files2Response.data.map(f => f.filename));
+                    
+                    // Calculate file overlap
+                    const commonFiles = [...files1].filter(f => files2.has(f));
+                    const totalFiles = new Set([...files1, ...files2]).size;
+                    const fileOverlap = totalFiles > 0 ? commonFiles.length / totalFiles : 0;
+                    
+                    if (fileOverlap >= fileOverlapThreshold) {
+                      console.log(`🔍 Found duplicate: PR #${pr1.number} and #${pr2.number}`);
+                      console.log(`   Title similarity: ${(titleSimilarity * 100).toFixed(1)}%`);
+                      console.log(`   File overlap: ${(fileOverlap * 100).toFixed(1)}%`);
+                      
+                      // Check if already commented
+                      const { data: comments } = await github.rest.issues.listComments({
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
+                        issue_number: pr2.number
+                      });
+                      
+                      const hasDuplicateComment = comments.some(c => 
+                        c.body.includes('posible duplicado')
+                      );
+                      
+                      if (!hasDuplicateComment && config.duplicate_detection?.actions?.find(a => a.comment)) {
+                        // Add duplicate label
+                        if (config.duplicate_detection?.actions?.find(a => a.label)) {
+                          await github.rest.issues.addLabels({
+                            owner: context.repo.owner,
+                            repo: context.repo.repo,
+                            issue_number: pr2.number,
+                            labels: ['duplicate']
+                          });
+                        }
+                        
+                        // Post comment
+                        await github.rest.issues.createComment({
+                          owner: context.repo.owner,
+                          repo: context.repo.repo,
+                          issue_number: pr2.number,
+                          body: `## 🔄 Posible Duplicado
+
+Este PR parece ser un posible duplicado de #${pr1.number}.
+
+**Similitud:**
+- Título: ${(titleSimilarity * 100).toFixed(1)}%
+- Archivos: ${(fileOverlap * 100).toFixed(1)}%
+
+Por favor revisa si estos PRs deben ser consolidados o si este puede ser cerrado.`
+                        });
+                        
+                        stats.duplicatesFound++;
+                        stats.candidatesForCleanup.push({
+                          number: pr2.number,
+                          title: pr2.title,
+                          reason: `Duplicate of #${pr1.number}`,
+                          similarity: (titleSimilarity * 100).toFixed(1)
+                        });
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            
+            // ═══════════════════════════════════════════════════
+            // DETECT MERGE CONFLICTS
+            // ═══════════════════════════════════════════════════
+            console.log('\n━━━ Detecting Merge Conflicts ━━━');
+            
+            for (const pr of pullRequests) {
+              const { data: prDetails } = await github.rest.pulls.get({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: pr.number
+              });
+              
+              if (prDetails.mergeable === false) {
+                const labels = pr.labels.map(l => l.name);
+                
+                if (!labels.includes('merge-conflict')) {
+                  console.log(`⚠️  PR #${pr.number} has merge conflicts`);
+                  
+                  // Add label
+                  await github.rest.issues.addLabels({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    issue_number: pr.number,
+                    labels: ['merge-conflict']
+                  });
+                  
+                  // Check if already commented
+                  const { data: comments } = await github.rest.issues.listComments({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    issue_number: pr.number
+                  });
+                  
+                  const hasConflictComment = comments.some(c => 
+                    c.body.includes('conflictos de merge')
+                  );
+                  
+                  if (!hasConflictComment) {
+                    await github.rest.issues.createComment({
+                      owner: context.repo.owner,
+                      repo: context.repo.repo,
+                      issue_number: pr.number,
+                      body: `## ⚠️ Conflictos de Merge
+
+Este PR tiene conflictos de merge que deben resolverse antes de poder ser mergeado.
+
+**Pasos para resolver:**
+1. Sincroniza tu branch con la base: \`git pull origin ${prDetails.base.ref}\`
+2. Resuelve los conflictos manualmente
+3. Haz commit de los cambios
+4. Push a tu branch
+
+Una vez resueltos los conflictos, esta etiqueta se eliminará automáticamente.`
+                    });
+                  }
+                  
+                  stats.conflictsFound++;
+                  stats.candidatesForCleanup.push({
+                    number: pr.number,
+                    title: pr.title,
+                    reason: 'Has merge conflicts',
+                    type: 'conflict'
+                  });
+                }
+              } else if (prDetails.mergeable === true) {
+                // Remove conflict label if present
+                const labels = pr.labels.map(l => l.name);
+                if (labels.includes('merge-conflict')) {
+                  try {
+                    await github.rest.issues.removeLabel({
+                      owner: context.repo.owner,
+                      repo: context.repo.repo,
+                      issue_number: pr.number,
+                      name: 'merge-conflict'
+                    });
+                    console.log(`✅ Removed conflict label from PR #${pr.number}`);
+                  } catch (error) {
+                    // Label might not exist
+                  }
+                }
+              }
+            }
+            
+            // ═══════════════════════════════════════════════════
+            // CREATE CLEANUP REPORT
+            // ═══════════════════════════════════════════════════
+            if (stats.candidatesForCleanup.length > 0) {
+              console.log('\n━━━ Creating Cleanup Report ━━━');
+              
+              let reportBody = `# 🧹 PR Cleanup Report
+
+Generated: ${now.toISOString()}
+
+## Summary
+- Stale PRs marked: ${stats.staleMarked}
+- Stale PRs closed: ${stats.staleClosed}
+- Duplicates found: ${stats.duplicatesFound}
+- Conflicts found: ${stats.conflictsFound}
+
+## Candidates for Cleanup
+
+`;
+              
+              for (const candidate of stats.candidatesForCleanup) {
+                reportBody += `### PR #${candidate.number}: ${candidate.title}\n`;
+                reportBody += `**Reason:** ${candidate.reason}\n`;
+                if (candidate.daysSinceUpdate) {
+                  reportBody += `**Days inactive:** ${candidate.daysSinceUpdate}\n`;
+                }
+                if (candidate.similarity) {
+                  reportBody += `**Similarity:** ${candidate.similarity}%\n`;
+                }
+                reportBody += `**Link:** [View PR](https://github.com/${context.repo.owner}/${context.repo.repo}/pull/${candidate.number})\n\n`;
+              }
+              
+              reportBody += `\n---\n_This report was generated automatically by the PR Cleanup workflow._`;
+              
+              // Create or update issue
+              const { data: issues } = await github.rest.issues.listForRepo({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                labels: 'cleanup-report',
+                state: 'open'
+              });
+              
+              if (issues.length > 0) {
+                // Update existing issue
+                await github.rest.issues.update({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issues[0].number,
+                  body: reportBody
+                });
+                console.log(`📝 Updated cleanup report issue #${issues[0].number}`);
+              } else {
+                // Create new issue
+                const { data: newIssue } = await github.rest.issues.create({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  title: `🧹 PR Cleanup Report - ${now.toISOString().split('T')[0]}`,
+                  body: reportBody,
+                  labels: ['cleanup-report', 'automated']
+                });
+                console.log(`📝 Created cleanup report issue #${newIssue.number}`);
+              }
+            }
+            
+            // ═══════════════════════════════════════════════════
+            // SUMMARY
+            // ═══════════════════════════════════════════════════
+            core.summary
+              .addHeading('🧹 PR Cleanup Summary', 2)
+              .addTable([
+                [{data: 'Metric', header: true}, {data: 'Count', header: true}],
+                ['Open PRs', pullRequests.length.toString()],
+                ['Stale PRs Marked', stats.staleMarked.toString()],
+                ['Stale PRs Closed', stats.staleClosed.toString()],
+                ['Duplicates Found', stats.duplicatesFound.toString()],
+                ['Conflicts Found', stats.conflictsFound.toString()],
+                ['Cleanup Candidates', stats.candidatesForCleanup.length.toString()]
+              ])
+              .write();
+            
+            console.log('\n✅ PR cleanup completed');
+            console.log(`   Stale marked: ${stats.staleMarked}, Closed: ${stats.staleClosed}`);
+            console.log(`   Duplicates: ${stats.duplicatesFound}, Conflicts: ${stats.conflictsFound}`);
