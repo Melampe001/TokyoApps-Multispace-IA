@@ -1,6 +1,6 @@
 # General
 
-Total: 217 archivos
+Total: 239 archivos
 
 - [.env.example](.env.example) - .env.example - other
 - [.env.example](flutter_app/.env.example) - .env.example - other
@@ -22,6 +22,7 @@ Total: 217 archivos
 - [Cuerpo](Cuerpo) - Cuerpo - other
 - [DEPENDENCY_AGENT_SUMMARY.md](DEPENDENCY_AGENT_SUMMARY.md) - Dependency Agent Implementation Summary
 - [DEPENDENCY_POLICY.md](docs/DEPENDENCY_POLICY.md) - Dependency Policy
+- [Direccion fina](.github/instructions/Direccion fina) - Direccion fina - other
 - [ELARA_COMMAND_CENTER.md](.github/ELARA_COMMAND_CENTER.md) - 👑 Elara Command Center
 - [ELARA_DASHBOARD.md](.github/ELARA_DASHBOARD.md) - 📊 Elara Operations Dashboard
 - [ELITE_FRAMEWORK_EXAMPLES.md](docs/ELITE_FRAMEWORK_EXAMPLES.md) - Elite Framework - Project Generation Examples
@@ -38,6 +39,8 @@ Total: 217 archivos
 - [Makefile.md](LIBRARY/by-technology/Makefile.md) - MAKEFILE
 - [ORCHESTRATION.md](docs/agents/ORCHESTRATION.md) - Tokyo-IA Agent Orchestration System
 - [ORQUESTACION_SUPREMA_MULTI-AGENTE.md](SYNEMU/docs/ORQUESTACION_SUPREMA_MULTI-AGENTE.md) - ⚡ Orquestación Suprema Multi-Agente: Cobertura Total de Calidad, Seguridad y Compliance
+- [P1_IMPLEMENTATION.md](docs/agents/P1_IMPLEMENTATION.md) - P1 Implementation with Agents
+- [P1_IMPLEMENTATION_SUMMARY.md](P1_IMPLEMENTATION_SUMMARY.md) - P1 Implementation with Agents - Summary
 - [PLAY_STORE_CHECKLIST.md](docs/PLAY_STORE_CHECKLIST.md) - Google Play Store Checklist - Tokyo IA
 - [PRIVACY_POLICY.md](docs/PRIVACY_POLICY.md) - Política de Privacidad - Tokyo IA
 - [PROJECT_STATISTICS.md](flutter_app/PROJECT_STATISTICS.md) - Tokyo-IA Flutter - Project Statistics
@@ -51,6 +54,7 @@ Total: 217 archivos
 - [Sincero](Sincero) - Sincero - other
 - [TAREAS.md](TAREAS.md) - ¿Qué tengo que hacer? - Guía de Tareas para Tokyo IA
 - [TIMELINE.md](LIBRARY/TIMELINE.md) - 📅 Línea de Tiempo de Creaciones
+- [__init__.py](python/etl/__init__.py) - __init__.py - script
 - [__init__.py](lib/agents/__init__.py) - Tokyo-IA Agent Framework
 
 This package provides multi-agent AI capabilities using CrewAI.
@@ -78,7 +82,12 @@ This package provides multi-agent AI capabilities using CrewAI.
 - [analyze_dart_code.py](.github/workflows/bots/scripts/analyze_dart_code.py) - !/usr/bin/env python3
 - [analyze_go_code.py](.github/workflows/bots/scripts/analyze_go_code.py) - !/usr/bin/env python3
 - [analyzer.go](lib/generator/analyzer.go) - analyzer.go - source
+- [anthropic_client.go](internal/ai/clients/anthropic_client.go) - anthropic_client.go - source
 - [architect.go](internal/orchestrator/agents/architect.go) - architect.go - source
+- [athena.tf](infrastructure/athena.tf) - athena.tf - other
+- [athena_client.go](lib/analytics/athena_client.go) - athena_client.go - source
+- [auto-assign.yml](.github/workflows/auto-assign.yml) - 👥 Auto-Assign Reviewers
+- [auto-labeler.yml](.github/workflows/auto-labeler.yml) - 🏷️ Auto Label PR
 - [autodev_executor.sh](agents/autodev_executor.sh) - !/bin/bash
 - [backend-quality-rules.json](.github/workflows/bots/backend-quality-rules.json) - backend-quality-rules.json - configuration
 - [basic_agent.py](examples/python/basic_agent.py) - !/usr/bin/env python3
@@ -104,11 +113,17 @@ This package provides multi-agent AI capabilities using CrewAI.
 - [dependency.go](internal/orchestrator/agents/dependency.go) - dependency.go - source
 - [elite-framework-examples.md](docs/elite-framework-examples.md) - Elite Framework Examples
 - [example.md](LIBRARY/by-technology/example.md) - EXAMPLE
+- [export_to_s3.py](python/etl/export_to_s3.py) - !/usr/bin/env python3
+- [export_with_agents.py](python/etl/export_with_agents.py) - ETL Pipeline using Executor Agents for validation.
+
+This module provides ETL functionality that inte
+- [factory.go](internal/ai/clients/factory.go) - factory.go - source
 - [factory.go](internal/orchestrator/factory.go) - factory.go - source
 - [feature_request.md](.github/ISSUE_TEMPLATE/feature_request.md) - ---
 - [file-count.md](LIBRARY/stats/file-count.md) - File Count Statistics
 - [firebase_service.dart](flutter_app/lib/services/firebase_service.dart) - firebase_service.dart - source
 - [flutter-agents.yml](.github/workflows/flutter-agents.yml) - Flutter Agents CI/CD
+- [gemini_client.go](internal/ai/clients/gemini_client.go) - gemini_client.go - source
 - [general.md](LIBRARY/by-purpose/general.md) - General
 - [generate_agent_report.py](scripts/generate_agent_report.py) - !/usr/bin/env python3
 - [generate_report.py](.github/workflows/bots/scripts/generate_report.py) - !/usr/bin/env python3
@@ -132,6 +147,7 @@ This package provides multi-agent AI capabilities using CrewAI.
 - [js.md](LIBRARY/by-technology/js.md) - JS
 - [json.md](LIBRARY/by-technology/json.md) - JSON
 - [jsx.md](LIBRARY/by-technology/jsx.md) - JSX
+- [k8s-preflight.sh](scripts/k8s-preflight.sh) - !/bin/bash
 - [kenji_architect.py](lib/agents/specialized/kenji_architect.py) - !/usr/bin/env python3
 - [kt.md](LIBRARY/by-technology/kt.md) - KT
 - [library-indexer.yml](.github/workflows/library-indexer.yml) - Library Indexer
@@ -147,6 +163,7 @@ This package provides multi-agent AI capabilities using CrewAI.
 - [main.go](cmd/registry-api/main.go) - main.go - source
 - [main.go](cmd/elite/main.go) - main.go - source
 - [main.jsx](web/src/main.jsx) - main.jsx - source
+- [maintenance.md](docs/maintenance.md) - Repository Maintenance Log
 - [manifest.yaml](templates/manifest.yaml) - "Progressive Web App"
 - [manifest_auditor.go](internal/security/manifest_auditor.go) - manifest_auditor.go - source
 - [md.md](LIBRARY/by-technology/md.md) - MD
@@ -156,10 +173,12 @@ This package provides multi-agent AI capabilities using CrewAI.
 - [models.go](internal/registry/models.go) - models.go - source
 - [monetization.go](internal/orchestrator/agents/monetization.go) - monetization.go - source
 - [my-agent.agent.md](.github/agents/my-agent.agent.md) - ---
+- [openai_client.go](internal/ai/clients/openai_client.go) - openai_client.go - source
 - [optimization.go](internal/orchestrator/agents/optimization.go) - optimization.go - source
 - [orchestration_demo.py](examples/orchestration_demo.py) - !/usr/bin/env python3
 - [orchestrator.go](internal/orchestrator/orchestrator.go) - orchestrator.go - source
 - [other.md](LIBRARY/by-category/other.md) - Other
+- [p1_implementation_with_agents.sh](scripts/p1_implementation_with_agents.sh) - !/bin/bash
 - [package-lock.json](web/package-lock.json) - package-lock.json - configuration
 - [package.json](web/package.json) - package.json - configuration
 - [parser.go](lib/generator/parser.go) - parser.go - source
@@ -177,6 +196,7 @@ This package provides multi-agent AI capabilities using CrewAI.
 - [rb.md](LIBRARY/by-technology/rb.md) - RB
 - [requirements.txt](requirements.txt) - Tokyo-IA Python Dependencies
 - [restore_validator.go](internal/monetization/restore_validator.go) - restore_validator.go - source
+- [routing_rules.json](config/agents/routing_rules.json) - routing_rules.json - configuration
 - [run_emulator.sh](emulator/run_emulator.sh) - !/bin/bash
 - [run_flow.sh](orchestrator/run_flow.sh) - !/bin/bash
 - [scaffolder.go](lib/generator/scaffolder.go) - scaffolder.go - source
@@ -184,9 +204,12 @@ This package provides multi-agent AI capabilities using CrewAI.
 - [schema.sql](db/schema.sql) - schema.sql - other
 - [script.md](LIBRARY/by-category/script.md) - Script
 - [sh.md](LIBRARY/by-technology/sh.md) - SH
+- [sheets-update.yml](.github/workflows/sheets-update.yml) - Update Dashboard
+- [sheets_updater.py](.github/workflows/scripts/sheets_updater.py) - !/usr/bin/env python3
 - [simulate_design.sh](simulator/simulate_design.sh) - !/bin/bash
 - [source.md](LIBRARY/by-category/source.md) - Source
 - [sql.md](LIBRARY/by-technology/sql.md) - SQL
+- [stale.yml](.github/workflows/stale.yml) - ⏰ Stale Issues and PRs
 - [styles.xml](flutter_app/android/app/src/main/res/values/styles.xml) - styles.xml - other
 - [sum.md](LIBRARY/by-technology/sum.md) - SUM
 - [synemu_agent2d_flare.py](SYNEMU/agents_bots/synemu_agent2d_flare.py) - !/usr/bin/env python3
@@ -213,6 +236,7 @@ This package provides multi-agent AI capabilities using CrewAI.
 - [types.go](lib/generator/types.go) - types.go - source
 - [unlock_validator.go](internal/monetization/unlock_validator.go) - unlock_validator.go - source
 - [ux_executor.sh](agents/ux_executor.sh) - !/bin/bash
+- [validate-env.sh](infrastructure/k8s/validate-env.sh) - !/bin/bash
 - [validator.go](internal/orchestrator/agents/validator.go) - validator.go - source
 - [vercel.json](vercel.json) - vercel.json - configuration
 - [version.rb](ruby/lib/billing-platform/version.rb) - frozen_string_literal: true

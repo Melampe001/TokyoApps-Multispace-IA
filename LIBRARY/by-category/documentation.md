@@ -1,12 +1,18 @@
 # Documentation
 
-Total: 142 archivos
+Total: 157 archivos
 
 ## [AGENTS_README.md](AGENTS_README.md)
 🤖 Tokyo-IA Agent Pipeline System
 
 ## [ARCHITECTURE.md](docs/ARCHITECTURE.md)
 🏗️ Tokyo-IA Architecture Documentation
+
+## [ATHENA_GUIDE.md](docs/analytics/ATHENA_GUIDE.md)
+AWS Athena Query Guide
+
+## [AWS_SETUP.md](docs/deployment/AWS_SETUP.md)
+AWS Setup Guide
 
 ## [BRANCH_PROTECTION.md](docs/BRANCH_PROTECTION.md)
 Branch Protection Rules
@@ -50,6 +56,9 @@ Elite Framework - Project Generation Examples
 ## [FILE_TEMPLATE.md](.github/templates/FILE_TEMPLATE.md)
 [Nombre del Archivo]
 
+## [GOOGLE_SHEETS_SETUP.md](docs/integrations/GOOGLE_SHEETS_SETUP.md)
+Google Sheets Dashboard Setup Guide
+
 ## [GUIDE.md](LIBRARY/GUIDE.md)
 Digital Library System - Complete Guide
 
@@ -68,6 +77,12 @@ Elite Framework - Implementation Summary
 ## [IMPLEMENTATION_SUMMARY_AI.md](docs/IMPLEMENTATION_SUMMARY_AI.md)
 Multi-Model AI Integration - Implementation Summary
 
+## [IMPLEMENTATION_SUMMARY_BOTS.md](IMPLEMENTATION_SUMMARY_BOTS.md)
+Implementation Summary: Automated PR Bots
+
+## [JIRA_SETUP.md](docs/integrations/JIRA_SETUP.md)
+Jira Integration Setup Guide
+
 ## [JS-Supremo.md](prompts/JS-Supremo.md)
 JS-Supremo.md – Premium JavaScript Expert Prompt
 
@@ -80,6 +95,12 @@ Tokyo-IA Agent Orchestration System
 ## [ORQUESTACION_SUPREMA_MULTI-AGENTE.md](SYNEMU/docs/ORQUESTACION_SUPREMA_MULTI-AGENTE.md)
 ⚡ Orquestación Suprema Multi-Agente: Cobertura Total de Calidad, Seguridad y Compliance
 
+## [P1_IMPLEMENTATION.md](docs/agents/P1_IMPLEMENTATION.md)
+P1 Implementation with Agents
+
+## [P1_IMPLEMENTATION_SUMMARY.md](P1_IMPLEMENTATION_SUMMARY.md)
+P1 Implementation with Agents - Summary
+
 ## [PLAY_STORE_CHECKLIST.md](docs/PLAY_STORE_CHECKLIST.md)
 Google Play Store Checklist - Tokyo IA
 
@@ -89,11 +110,17 @@ Política de Privacidad - Tokyo IA
 ## [PROJECT_STATISTICS.md](flutter_app/PROJECT_STATISTICS.md)
 Tokyo-IA Flutter - Project Statistics
 
+## [PULL_REQUEST_GUIDELINES.md](.github/PULL_REQUEST_GUIDELINES.md)
+Pull Request Guidelines
+
 ## [QUICKSTART.md](examples/QUICKSTART.md)
 Elite Framework - Quick Start Guide
 
 ## [QUICKSTART.md](docs/QUICKSTART.md)
 🚀 Quick Setup Guide
+
+## [RAILWAY.md](docs/deployment/RAILWAY.md)
+Railway Deployment Guide
 
 ## [README-python.md](README-python.md)
 Tokyo-IA Python Setup Guide
@@ -176,6 +203,9 @@ GitHub Secrets Setup Guide
 ## [SECURITY.md](SECURITY.md)
 Security Policy
 
+## [SLACK_BOT_SETUP.md](docs/integrations/SLACK_BOT_SETUP.md)
+Slack Bot Setup Guide
+
 ## [STORE_LISTING.md](docs/STORE_LISTING.md)
 Store Listing - Tokyo IA
 
@@ -215,6 +245,9 @@ Multi-Model AI Integration Architecture
 ## [automation.md](LIBRARY/by-purpose/automation.md)
 Automation
 
+## [bots-overview.md](docs/automation/bots-overview.md)
+Automation Bots Overview
+
 ## [brand_guidelines.md](recursos_identidad/brand_guidelines.md)
 TokyoApps® Brand Resources
 
@@ -223,6 +256,9 @@ TokyoApps® Brand Resources
 
 ## [build.md](LIBRARY/by-category/build.md)
 Build
+
+## [codecov-setup.md](docs/automation/codecov-setup.md)
+CodeCov Setup Guide
 
 ## [communication.md](docs/elara/communication.md)
 💬 Communication Protocols
@@ -281,6 +317,9 @@ GRADLE
 ## [html.md](LIBRARY/by-technology/html.md)
 HTML
 
+## [imperial-cleaner.md](docs/automation/imperial-cleaner.md)
+Imperial Cleaner Documentation
+
 ## [imperial-standards.md](docs/elara/imperial-standards.md)
 🏛️ Imperial Premium Elite Standards
 
@@ -302,6 +341,9 @@ JSX
 ## [kt.md](LIBRARY/by-technology/kt.md)
 KT
 
+## [maintenance.md](docs/maintenance.md)
+Repository Maintenance Log
+
 ## [md.md](LIBRARY/by-technology/md.md)
 MD
 
@@ -322,6 +364,9 @@ Other
 
 ## [persona.md](docs/elara/persona.md)
 👑 Elara - Complete Identity and Personality
+
+## [preview-deployments.md](docs/automation/preview-deployments.md)
+Preview Deployments Guide
 
 ## [pro.md](LIBRARY/by-technology/pro.md)
 PRO

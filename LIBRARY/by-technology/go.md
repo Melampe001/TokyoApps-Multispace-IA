@@ -1,6 +1,6 @@
 # GO
 
-Total: 52 archivos
+Total: 58 archivos
 
 - [agent.go](internal/monetization/agent.go)
 - [agent.go](internal/orchestrator/agent.go)
@@ -9,20 +9,25 @@ Total: 52 archivos
 - [ai_config.go](internal/config/ai_config.go)
 - [analyzer.go](lib/generator/analyzer.go)
 - [analyzer_test.go](lib/generator/analyzer_test.go)
+- [anthropic_client.go](internal/ai/clients/anthropic_client.go)
 - [architect.go](internal/orchestrator/agents/architect.go)
+- [athena_client.go](lib/analytics/athena_client.go)
 - [billing_validator.go](internal/monetization/billing_validator.go)
 - [build.go](internal/orchestrator/agents/build.go)
 - [cache.go](internal/ai/cache.go)
 - [dependency.go](internal/orchestrator/agents/dependency.go)
 - [deployer.go](lib/generator/deployer.go)
 - [documenter.go](lib/generator/documenter.go)
+- [factory.go](internal/ai/clients/factory.go)
 - [factory.go](internal/orchestrator/factory.go)
 - [factory_test.go](internal/orchestrator/factory_test.go)
+- [gemini_client.go](internal/ai/clients/gemini_client.go)
 - [generator.go](lib/generator/generator.go)
 - [hello.go](admin/hello.go)
 - [hello.go](internal/hello.go)
 - [hello.go](lib/hello.go)
 - [hello.go](config/hello.go)
+- [integration_test.go](internal/ai/clients/integration_test.go)
 - [main.go](cmd/main.go)
 - [main.go](cmd/security-agent/main.go)
 - [main.go](cmd/ai-api/main.go)
@@ -38,6 +43,7 @@ Total: 52 archivos
 - [models.go](internal/registry/models.go)
 - [monetization.go](internal/orchestrator/agents/monetization.go)
 - [monetization_test.go](internal/monetization/monetization_test.go)
+- [openai_client.go](internal/ai/clients/openai_client.go)
 - [optimization.go](internal/orchestrator/agents/optimization.go)
 - [orchestrator.go](internal/orchestrator/orchestrator.go)
 - [orchestrator_test.go](internal/orchestrator/orchestrator_test.go)
