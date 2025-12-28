@@ -1,0 +1,115 @@
+{
+  "routing_rules": {
+    "code_review": {
+      "primary_provider": "anthropic",
+      "primary_model": "claude-opus-4.1",
+      "fallback_chain": ["openai", "gemini"],
+      "reasoning": "Claude excels at code analysis and security reviews",
+      "cost_per_1k_tokens": 0.015,
+      "quality_score": 9.5
+    },
+    "test_generation": {
+      "primary_provider": "openai",
+      "primary_model": "o3",
+      "fallback_chain": ["anthropic", "gemini"],
+      "reasoning": "OpenAI o3 generates comprehensive test suites with excellent coverage",
+      "cost_per_1k_tokens": 0.01,
+      "quality_score": 9.2
+    },
+    "documentation": {
+      "primary_provider": "gemini",
+      "primary_model": "gemini-3.0-ultra",
+      "fallback_chain": ["anthropic", "openai"],
+      "reasoning": "Gemini produces clear, well-structured documentation",
+      "cost_per_1k_tokens": 0.0005,
+      "quality_score": 9.0
+    },
+    "reasoning": {
+      "primary_provider": "anthropic",
+      "primary_model": "claude-sonnet-4.5",
+      "fallback_chain": ["openai", "gemini"],
+      "reasoning": "Claude provides deep logical reasoning capabilities",
+      "cost_per_1k_tokens": 0.012,
+      "quality_score": 9.3
+    },
+    "code_generation": {
+      "primary_provider": "anthropic",
+      "primary_model": "claude-opus-4.1",
+      "fallback_chain": ["openai", "llama"],
+      "reasoning": "Claude generates high-quality, secure code",
+      "cost_per_1k_tokens": 0.015,
+      "quality_score": 9.4
+    },
+    "multimodal": {
+      "primary_provider": "gemini",
+      "primary_model": "gemini-3.0-ultra",
+      "fallback_chain": ["grok"],
+      "reasoning": "Gemini handles images and multimodal content best",
+      "cost_per_1k_tokens": 0.0005,
+      "quality_score": 9.1
+    },
+    "fast": {
+      "primary_provider": "groq",
+      "primary_model": "llama-3-70b",
+      "fallback_chain": ["llama", "openai"],
+      "reasoning": "Groq provides fastest inference for simple tasks",
+      "cost_per_1k_tokens": 0.0002,
+      "quality_score": 7.5
+    },
+    "creative": {
+      "primary_provider": "openai",
+      "primary_model": "gpt-4",
+      "fallback_chain": ["anthropic", "gemini"],
+      "reasoning": "GPT-4 excels at creative and open-ended tasks",
+      "cost_per_1k_tokens": 0.01,
+      "quality_score": 9.0
+    }
+  },
+  
+  "provider_configs": {
+    "openai": {
+      "api_base": "https://api.openai.com/v1",
+      "models": ["gpt-4-turbo", "gpt-4", "o3"],
+      "rate_limit": 10000,
+      "timeout": 30
+    },
+    "anthropic": {
+      "api_base": "https://api.anthropic.com/v1",
+      "models": ["claude-opus-4.1", "claude-sonnet-4.5"],
+      "rate_limit": 5000,
+      "timeout": 30
+    },
+    "gemini": {
+      "api_base": "https://generativelanguage.googleapis.com/v1",
+      "models": ["gemini-3.0-ultra", "gemini-pro"],
+      "rate_limit": 15000,
+      "timeout": 30
+    },
+    "groq": {
+      "api_base": "https://api.groq.com/v1",
+      "models": ["llama-3-70b", "mixtral-8x7b"],
+      "rate_limit": 50000,
+      "timeout": 10
+    },
+    "llama": {
+      "api_base": "http://localhost:11434/v1",
+      "models": ["llama-4-405b"],
+      "rate_limit": 1000,
+      "timeout": 60
+    }
+  },
+  
+  "budget_controls": {
+    "daily_limit_usd": 100.0,
+    "alert_threshold_percent": 80.0,
+    "cost_optimization": true,
+    "prefer_cheaper_for_simple_tasks": true
+  },
+  
+  "quality_settings": {
+    "min_quality_score": 7.0,
+    "prefer_quality_over_cost": true,
+    "enable_fallback": true,
+    "max_fallback_attempts": 3
+  }
+}

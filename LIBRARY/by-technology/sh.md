@@ -1,6 +1,6 @@
 # SH
 
-Total: 14 archivos
+Total: 18 archivos
 
 - [autodev_executor.sh](agents/autodev_executor.sh)
 - [brand_executor.sh](agents/brand_executor.sh)
@@ -11,8 +11,12 @@ Total: 14 archivos
 - [create_and_merge_pr.sh](scripts/create_and_merge_pr.sh)
 - [demo-ai-integration.sh](scripts/demo-ai-integration.sh)
 - [deploy.sh](scripts/deploy.sh)
+- [deploy_with_agents.sh](scripts/deploy_with_agents.sh)
+- [k8s-preflight.sh](scripts/k8s-preflight.sh)
+- [p1_implementation_with_agents.sh](scripts/p1_implementation_with_agents.sh)
 - [pipeline.sh](pipeline.sh)
 - [run_emulator.sh](emulator/run_emulator.sh)
 - [run_flow.sh](orchestrator/run_flow.sh)
 - [simulate_design.sh](simulator/simulate_design.sh)
 - [ux_executor.sh](agents/ux_executor.sh)
+- [validate-env.sh](infrastructure/k8s/validate-env.sh)

@@ -1,42 +1,48 @@
 # 📚 Catálogo Completo de la Biblioteca
-Última actualización: 2025-12-27 03:24:41
-Total de archivos: 354
+Última actualización: 2025-12-28 03:49:30
+Total de archivos: 421
 
 ---
 ## 📊 Estadísticas Generales
-- **Build**: 5 archivos
-- **Configuration**: 9 archivos
-- **Documentation**: 142 archivos
-- **Other**: 28 archivos
+- **Build**: 7 archivos
+- **Configuration**: 11 archivos
+- **Documentation**: 157 archivos
+- **Other**: 32 archivos
 - **Schema**: 1 archivos
-- **Script**: 51 archivos
-- **Source**: 88 archivos
-- **Workflow**: 30 archivos
+- **Script**: 69 archivos
+- **Source**: 94 archivos
+- **Workflow**: 50 archivos
 
 ---
 ## 🗂️ Por Categoría
 
-### Build (5 archivos)
+### Build (7 archivos)
 - **[Dockerfile](Dockerfile)** - Dockerfile - build
+- **[Dockerfile](orchestrator/Dockerfile)** - Dockerfile - build
+- **[Dockerfile](agents/Dockerfile)** - Dockerfile - build
 - **[Makefile](Makefile)** - Makefile - build
 - **[build.gradle](flutter_app/android/build.gradle)** - build.gradle - build
 - **[build.gradle](flutter_app/android/app/build.gradle)** - build.gradle - build
 - **[settings.gradle](flutter_app/android/settings.gradle)** - settings.gradle - build
 
-### Configuration (9 archivos)
+### Configuration (11 archivos)
 - **[SEARCH_INDEX.json](LIBRARY/SEARCH_INDEX.json)** - SEARCH_INDEX.json - configuration
 - **[backend-quality-rules.json](.github/workflows/bots/backend-quality-rules.json)** - backend-quality-rules.json - configuration
 - **[frontend-ux-guidelines.json](.github/workflows/bots/frontend-ux-guidelines.json)** - frontend-ux-guidelines.json - configuration
 - **[gradle-wrapper.properties](flutter_app/android/gradle/wrapper/gradle-wrapper.properties)** - gradle-wrapper.properties - configuration
+- **[integrations.json](.github/workflows/config/integrations.json)** - integrations.json - configuration
 - **[package-lock.json](web/package-lock.json)** - package-lock.json - configuration
 - **[package.json](web/package.json)** - package.json - configuration
 - **[pyproject.toml](pyproject.toml)** - pyproject.toml - configuration
 - **[railway.toml](railway.toml)** - railway.toml - configuration
+- **[routing_rules.json](config/agents/routing_rules.json)** - routing_rules.json - configuration
 - **[vercel.json](vercel.json)** - vercel.json - configuration
 
-### Documentation (142 archivos)
+### Documentation (157 archivos)
 - **[AGENTS_README.md](AGENTS_README.md)** - 🤖 Tokyo-IA Agent Pipeline System
 - **[ARCHITECTURE.md](docs/ARCHITECTURE.md)** - 🏗️ Tokyo-IA Architecture Documentation
+- **[ATHENA_GUIDE.md](docs/analytics/ATHENA_GUIDE.md)** - AWS Athena Query Guide
+- **[AWS_SETUP.md](docs/deployment/AWS_SETUP.md)** - AWS Setup Guide
 - **[BRANCH_PROTECTION.md](docs/BRANCH_PROTECTION.md)** - Branch Protection Rules
 - **[BUILD_AGENT_REPORT.md](flutter_app/BUILD_AGENT_REPORT.md)** - BUILD_AGENT Implementation Report
 - **[CATALOG.md](LIBRARY/CATALOG.md)** - 📚 Catálogo Completo de la Biblioteca
@@ -51,13 +57,13 @@ Total de archivos: 354
 - **[ELITE_FRAMEWORK_EXAMPLES.md](docs/ELITE_FRAMEWORK_EXAMPLES.md)** - Elite Framework - Project Generation Examples
 - **[ENTERPRISE_BEST_PRACTICES.md](SYNEMU/docs/ENTERPRISE_BEST_PRACTICES.md)** - 🚀 SYNEMU Enterprise Best Practices & Emerging Technologies Framework
 - **[FILE_TEMPLATE.md](.github/templates/FILE_TEMPLATE.md)** - [Nombre del Archivo]
+- **[GOOGLE_SHEETS_SETUP.md](docs/integrations/GOOGLE_SHEETS_SETUP.md)** - Google Sheets Dashboard Setup Guide
 - **[GUIDE.md](LIBRARY/GUIDE.md)** - Digital Library System - Complete Guide
-- **[GitHub-Pro.md](prompts/GitHub-Pro.md)** - GitHub-Pro.md – Step-by-Step Guide for GitHub Pro (2025)
-- **[IMPLEMENTATION_SUMMARY.md](IMPLEMENTATION_SUMMARY.md)** - Tokyo-IA Agent Orchestration System - Implementation Summary
-- **[IMPLEMENTATION_SUMMARY.md](flutter_app/IMPLEMENTATION_SUMMARY.md)** - Tokyo-IA Flutter Implementation Summary
 
-### Other (28 archivos)
+### Other (32 archivos)
 - **[.dockerignore](.dockerignore)** - .dockerignore - other
+- **[.dockerignore](orchestrator/.dockerignore)** - .dockerignore - other
+- **[.dockerignore](agents/.dockerignore)** - .dockerignore - other
 - **[.env.example](.env.example)** - .env.example - other
 - **[.env.example](flutter_app/.env.example)** - .env.example - other
 - **[.flake8](.flake8)** - .flake8 - other
@@ -69,19 +75,18 @@ Total de archivos: 354
 - **[AndroidManifest.xml](flutter_app/android/app/src/main/AndroidManifest.xml)** - AndroidManifest.xml - other
 - **[App.css](web/src/App.css)** - App.css - other
 - **[Cuerpo](Cuerpo)** - Cuerpo - other
+- **[Direccion fina](.github/instructions/Direccion fina)** - Direccion fina - other
 - **[Fllutter](Fllutter)** - Fllutter - other
 - **[IA suprema](prompts/IA suprema)** - IA suprema - other
 - **[Imitar](Imitar)** - Imitar - other
 - **[Real](Real)** - Real - other
 - **[Setup](Setup)** - Setup - other
-- **[Sin limite](Sin limite)** - Sin limite - other
-- **[Sincero](Sincero)** - Sincero - other
-- **[dashboard.html](LIBRARY/dashboard.html)** - dashboard.html - other
 
 ### Schema (1 archivos)
 - **[hello.proto](proto/hello.proto)** - hello.proto - schema
 
-### Script (51 archivos)
+### Script (69 archivos)
+- **[__init__.py](python/etl/__init__.py)** - __init__.py - script
 - **[__init__.py](lib/orchestrator/__init__.py)** - Tokyo-IA Orchestrator
 
 Multi-agent workflow orchestration system.
@@ -94,6 +99,9 @@ Five elite AI agents with unique personalities and expertise:
 - Akira (
 - **[__init__.py](SYNEMU/agents_bots/__init__.py)** - !/usr/bin/env python3
 - **[agent_orchestrator.py](lib/orchestrator/agent_orchestrator.py)** - !/usr/bin/env python3
+- **[ai_router_agent.py](lib/agents/ai_router_agent.py)** - AI Router Agent - Intelligent routing between AI providers.
+
+This agent selects the optimal AI provi
 - **[akira_code_reviewer.py](lib/agents/specialized/akira_code_reviewer.py)** - !/usr/bin/env python3
 - **[analyze_dart_code.py](.github/workflows/bots/scripts/analyze_dart_code.py)** - !/usr/bin/env python3
 - **[analyze_go_code.py](.github/workflows/bots/scripts/analyze_go_code.py)** - !/usr/bin/env python3
@@ -109,10 +117,8 @@ Five elite AI agents with unique personalities and expertise:
 - **[crew_config.py](lib/agents/crew_config.py)** - CrewAI Configuration for Tokyo-IA Multi-Agent System
 
 This module defines specialized AI agents for 
-- **[demo-ai-integration.sh](scripts/demo-ai-integration.sh)** - !/bin/bash
-- **[deploy.sh](scripts/deploy.sh)** - !/bin/bash
 
-### Source (88 archivos)
+### Source (94 archivos)
 - **[AgentDashboard.tsx](admin/src/components/AgentDashboard.tsx)** - AgentDashboard.tsx - source
 - **[AgentRepository.kt](app/src/main/java/com/tokyoia/app/data/repository/AgentRepository.kt)** - AgentRepository.kt - source
 - **[AgentsScreen.kt](app/src/main/java/com/tokyoia/app/ui/agents/AgentsScreen.kt)** - AgentsScreen.kt - source
@@ -134,13 +140,18 @@ This module defines specialized AI agents for
 - **[agent_log.dart](flutter_app/lib/models/agent_log.dart)** - agent_log.dart - source
 - **[agent_orchestrator.dart](flutter_app/lib/services/agent_orchestrator.dart)** - agent_orchestrator.dart - source
 
-### Workflow (30 archivos)
+### Workflow (50 archivos)
+- **[.codecov.yml](.codecov.yml)** - .codecov.yml - workflow
 - **[.golangci.yml](.golangci.yml)** - .golangci.yml - workflow
 - **[.pre-commit-config.yaml](.pre-commit-config.yaml)** - .pre-commit-config.yaml - workflow
 - **[agent-pipeline.yml](.github/workflows/agent-pipeline.yml)** - Agent Pipeline
+- **[agents-deployment.yaml](infrastructure/k8s/agents-deployment.yaml)** - tokyo-ia-agents
 - **[ai_models.yaml](config/ai_models.yaml)** - o3
 - **[analysis_options.yaml](flutter_app/analysis_options.yaml)** - analysis_options.yaml - workflow
+- **[auto-assign.yml](.github/workflows/auto-assign.yml)** - 👥 Auto-Assign Reviewers
 - **[auto-documenter.yml](.github/workflows/auto-documenter.yml)** - Auto Documenter
+- **[auto-labeler.yml](.github/workflows/auto-labeler.yml)** - 🏷️ Auto Label PR
+- **[auto_assign.yml](.github/auto_assign.yml)** - auto_assign.yml - workflow
 - **[blocker-detector.yml](.github/workflows/blocker-detector.yml)** - Blocker Detector
 - **[bot-backend-performance.yml](.github/workflows/bot-backend-performance.yml)** - Bot #2 - Backend Performance Monitor
 - **[bot-backend-quality.yml](.github/workflows/bot-backend-quality.yml)** - Bot #1 - Backend Code Quality Guardian
@@ -149,53 +160,48 @@ This module defines specialized AI agents for
 - **[bot-frontend-ux.yml](.github/workflows/bot-frontend-ux.yml)** - Bot #3 - Frontend UI/UX Compliance Bot
 - **[cd.yml](.github/workflows/cd.yml)** - 🚀 CD Pipeline - Railway
 - **[ci.yml](.github/workflows/ci.yml)** - 🧪 CI Pipeline
-- **[dependabot.yml](.github/dependabot.yml)** - dependabot.yml - workflow
-- **[dependency-agent.yml](.github/workflows/dependency-agent.yml)** - Dependency Agent - pubspec.yaml Validator
-- **[deploy-vercel.yml](.github/workflows/deploy-vercel.yml)** - Deploy Web to Vercel
-- **[docker-compose.yml](docker-compose.yml)** - tokyoia-db
-- **[flutter-agents.yml](.github/workflows/flutter-agents.yml)** - Flutter Agents CI/CD
-- **[flutter-build-agent.yml](.github/workflows/flutter-build-agent.yml)** - Flutter Build Agent
+- **[codeql-analysis.yml](.github/workflows/codeql-analysis.yml)** - 🔒 CodeQL Advanced Security Analysis
 
 ---
 ## 🎯 Por Propósito
 
-### Automation (20 archivos)
+### Automation (32 archivos)
+- [.codecov.yml](.codecov.yml)
 - [.golangci.yml](.golangci.yml)
 - [.pre-commit-config.yaml](.pre-commit-config.yaml)
 - [Agentes y bots](Agentes y bots)
+- [IMPLEMENTATION_SUMMARY_BOTS.md](IMPLEMENTATION_SUMMARY_BOTS.md)
 - [README.md](.github/workflows/README.md)
 - [README.md](.github/workflows/bots/README.md)
 - [README.md](templates/bot/README.md)
+- [SLACK_BOT_SETUP.md](docs/integrations/SLACK_BOT_SETUP.md)
 - [WorkflowMonitor.tsx](admin/src/components/WorkflowMonitor.tsx)
-- [__init__.py](lib/orchestrator/__init__.py)
-- [analysis_options.yaml](flutter_app/analysis_options.yaml)
-- [automation.md](LIBRARY/by-purpose/automation.md)
 
-### Deployment (15 archivos)
+### Deployment (20 archivos)
 - [BUILD_AGENT_REPORT.md](flutter_app/BUILD_AGENT_REPORT.md)
 - [Makefile](Makefile)
 - [agent_deploy.dart](flutter_app/lib/agents/agent_deploy.dart)
+- [agents-deployment.yaml](infrastructure/k8s/agents-deployment.yaml)
 - [build.go](internal/orchestrator/agents/build.go)
 - [build.gradle](flutter_app/android/build.gradle)
 - [build.gradle](flutter_app/android/app/build.gradle)
 - [build.md](LIBRARY/by-category/build.md)
 - [build_agent.sh](flutter_app/build_agent.sh)
 - [deploy-vercel.yml](.github/workflows/deploy-vercel.yml)
-- [deploy.sh](scripts/deploy.sh)
 
-### Documentation (48 archivos)
+### Documentation (60 archivos)
 - [.dockerignore](.dockerignore)
+- [.dockerignore](orchestrator/.dockerignore)
+- [.dockerignore](agents/.dockerignore)
 - [AGENTS_README.md](AGENTS_README.md)
 - [ARCHITECTURE.md](docs/ARCHITECTURE.md)
+- [ATHENA_GUIDE.md](docs/analytics/ATHENA_GUIDE.md)
+- [AWS_SETUP.md](docs/deployment/AWS_SETUP.md)
 - [CICD.md](docs/CICD.md)
 - [CI_CD.md](docs/CI_CD.md)
 - [Dockerfile](Dockerfile)
-- [Dockerfile.md](LIBRARY/by-technology/Dockerfile.md)
-- [GUIDE.md](LIBRARY/GUIDE.md)
-- [GitHub-Pro.md](prompts/GitHub-Pro.md)
-- [QUICKSTART.md](examples/QUICKSTART.md)
 
-### General (217 archivos)
+### General (239 archivos)
 - [.env.example](.env.example)
 - [.env.example](flutter_app/.env.example)
 - [.flake8](.flake8)
@@ -207,29 +213,33 @@ This module defines specialized AI agents for
 - [AgentRepository.kt](app/src/main/java/com/tokyoia/app/data/repository/AgentRepository.kt)
 - [AgentsScreen.kt](app/src/main/java/com/tokyoia/app/ui/agents/AgentsScreen.kt)
 
-### Integration (8 archivos)
+### Integration (17 archivos)
 - [IMPLEMENTATION_SUMMARY_AI.md](docs/IMPLEMENTATION_SUMMARY_AI.md)
+- [JIRA_SETUP.md](docs/integrations/JIRA_SETUP.md)
 - [README.md](templates/api/README.md)
 - [ai-api-reference.md](docs/api/ai-api-reference.md)
 - [ai-models-integration-architecture.md](docs/architecture/ai-models-integration-architecture.md)
 - [api_service.dart](flutter_app/lib/services/api_service.dart)
 - [demo-ai-integration.sh](scripts/demo-ai-integration.sh)
 - [integration.md](LIBRARY/by-purpose/integration.md)
-- [synemu_integrations.py](SYNEMU/agents_bots/synemu_integrations.py)
+- [integration_agent.py](lib/agents/integration_agent.py)
+- [integration_test.go](internal/ai/clients/integration_test.go)
 
-### Monitoring (2 archivos)
+### Monitoring (3 archivos)
 - [metrics.go](internal/ai/metrics.go)
 - [monitoring.md](LIBRARY/by-purpose/monitoring.md)
+- [pr-metrics.yml](.github/workflows/pr-metrics.yml)
 
-### Security (6 archivos)
+### Security (7 archivos)
 - [SECRETS.md](docs/SECRETS.md)
 - [SECURITY.md](SECURITY.md)
+- [codeql-analysis.yml](.github/workflows/codeql-analysis.yml)
 - [security-agent.md](docs/security-agent.md)
 - [security.go](internal/orchestrator/agents/security.go)
 - [security.md](LIBRARY/by-purpose/security.md)
 - [security.yml](.github/workflows/security.yml)
 
-### Testing (38 archivos)
+### Testing (43 archivos)
 - [__init__.py](lib/agents/specialized/__init__.py)
 - [agent_code_master_test.dart](flutter_app/test/agents/agent_code_master_test.dart)
 - [agent_deploy_test.dart](flutter_app/test/agents/agent_deploy_test.dart)

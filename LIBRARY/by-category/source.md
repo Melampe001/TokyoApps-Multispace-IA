@@ -1,6 +1,6 @@
 # Source
 
-Total: 88 archivos
+Total: 94 archivos
 
 ## [AgentDashboard.tsx](admin/src/components/AgentDashboard.tsx)
 AgentDashboard.tsx - source
@@ -107,11 +107,17 @@ analyzer.go - source
 ## [analyzer_test.go](lib/generator/analyzer_test.go)
 analyzer_test.go - source
 
+## [anthropic_client.go](internal/ai/clients/anthropic_client.go)
+anthropic_client.go - source
+
 ## [api_service.dart](flutter_app/lib/services/api_service.dart)
 api_service.dart - source
 
 ## [architect.go](internal/orchestrator/agents/architect.go)
 architect.go - source
+
+## [athena_client.go](lib/analytics/athena_client.go)
+athena_client.go - source
 
 ## [billing_validator.go](internal/monetization/billing_validator.go)
 billing_validator.go - source
@@ -137,6 +143,9 @@ deployer.go - source
 ## [documenter.go](lib/generator/documenter.go)
 Architecture
 
+## [factory.go](internal/ai/clients/factory.go)
+factory.go - source
+
 ## [factory.go](internal/orchestrator/factory.go)
 factory.go - source
 
@@ -145,6 +154,9 @@ factory_test.go - source
 
 ## [firebase_service.dart](flutter_app/lib/services/firebase_service.dart)
 firebase_service.dart - source
+
+## [gemini_client.go](internal/ai/clients/gemini_client.go)
+gemini_client.go - source
 
 ## [generator.go](lib/generator/generator.go)
 generator.go - source
@@ -163,6 +175,9 @@ hello.go - source
 
 ## [home_screen.dart](flutter_app/lib/screens/home_screen.dart)
 home_screen.dart - source
+
+## [integration_test.go](internal/ai/clients/integration_test.go)
+integration_test.go - source
 
 ## [logger.dart](flutter_app/lib/utils/logger.dart)
 logger.dart - source
@@ -217,6 +232,9 @@ monetization.go - source
 
 ## [monetization_test.go](internal/monetization/monetization_test.go)
 monetization_test.go - source
+
+## [openai_client.go](internal/ai/clients/openai_client.go)
+openai_client.go - source
 
 ## [optimization.go](internal/orchestrator/agents/optimization.go)
 optimization.go - source

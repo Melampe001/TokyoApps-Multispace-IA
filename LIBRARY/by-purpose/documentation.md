@@ -1,18 +1,27 @@
 # Documentation
 
-Total: 48 archivos
+Total: 60 archivos
 
 - [.dockerignore](.dockerignore) - .dockerignore - other
+- [.dockerignore](orchestrator/.dockerignore) - .dockerignore - other
+- [.dockerignore](agents/.dockerignore) - .dockerignore - other
 - [AGENTS_README.md](AGENTS_README.md) - 🤖 Tokyo-IA Agent Pipeline System
 - [ARCHITECTURE.md](docs/ARCHITECTURE.md) - 🏗️ Tokyo-IA Architecture Documentation
+- [ATHENA_GUIDE.md](docs/analytics/ATHENA_GUIDE.md) - AWS Athena Query Guide
+- [AWS_SETUP.md](docs/deployment/AWS_SETUP.md) - AWS Setup Guide
 - [CICD.md](docs/CICD.md) - 🚀 CI/CD Pipeline Documentation
 - [CI_CD.md](docs/CI_CD.md) - CI/CD Documentation
 - [Dockerfile](Dockerfile) - Dockerfile - build
+- [Dockerfile](orchestrator/Dockerfile) - Dockerfile - build
+- [Dockerfile](agents/Dockerfile) - Dockerfile - build
 - [Dockerfile.md](LIBRARY/by-technology/Dockerfile.md) - DOCKERFILE
+- [GOOGLE_SHEETS_SETUP.md](docs/integrations/GOOGLE_SHEETS_SETUP.md) - Google Sheets Dashboard Setup Guide
 - [GUIDE.md](LIBRARY/GUIDE.md) - Digital Library System - Complete Guide
 - [GitHub-Pro.md](prompts/GitHub-Pro.md) - GitHub-Pro.md – Step-by-Step Guide for GitHub Pro (2025)
+- [PULL_REQUEST_GUIDELINES.md](.github/PULL_REQUEST_GUIDELINES.md) - Pull Request Guidelines
 - [QUICKSTART.md](examples/QUICKSTART.md) - Elite Framework - Quick Start Guide
 - [QUICKSTART.md](docs/QUICKSTART.md) - 🚀 Quick Setup Guide
+- [RAILWAY.md](docs/deployment/RAILWAY.md) - Railway Deployment Guide
 - [README-python.md](README-python.md) - Tokyo-IA Python Setup Guide
 - [README.md](README.md) - 🏛️ Tokyo-IA - Imperial Premium Elite Edition
 - [README.md](db/README.md) - Tokyo-IA Database
@@ -38,6 +47,7 @@ Total: 48 archivos
 - [ai-model-router-guide.md](docs/guides/ai-model-router-guide.md) - AI Model Router Guide
 - [auto-documenter.yml](.github/workflows/auto-documenter.yml) - Auto Documenter
 - [brand_guidelines.md](recursos_identidad/brand_guidelines.md) - TokyoApps® Brand Resources
+- [codecov-setup.md](docs/automation/codecov-setup.md) - CodeCov Setup Guide
 - [docker-compose.yml](docker-compose.yml) - tokyoia-db
 - [documentation.md](.github/ISSUE_TEMPLATE/documentation.md) - ---
 - [documentation.md](LIBRARY/by-category/documentation.md) - Documentation
@@ -46,6 +56,8 @@ Total: 48 archivos
 - [elite-framework.md](docs/elite-framework.md) - Elite Framework Documentation
 - [frontend-ux-guidelines.json](.github/workflows/bots/frontend-ux-guidelines.json) - frontend-ux-guidelines.json - configuration
 - [generate-keystore.yml](.github/workflows/generate-keystore.yml) - Generate Keystore Documentation
+- [imperial-cleaner.md](docs/automation/imperial-cleaner.md) - Imperial Cleaner Documentation
+- [preview-deployments.md](docs/automation/preview-deployments.md) - Preview Deployments Guide
 - [sakura_documentation.py](lib/agents/specialized/sakura_documentation.py) - !/usr/bin/env python3
 - [synemu_docu_libra.py](SYNEMU/agents_bots/synemu_docu_libra.py) - !/usr/bin/env python3
 - [synemu_installation_guide.md](instructivos/synemu_installation_guide.md) - SYNEMU Installation Guide

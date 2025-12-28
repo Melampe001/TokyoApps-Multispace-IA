@@ -15,7 +15,7 @@ Agent ID: kenji-005
 
 import os
 import json
-from typing import Dict, List, Any, Optional
+from typing import Dict, Any, Optional
 from crewai import Agent, Task, Crew, LLM
 
 
@@ -400,7 +400,7 @@ class KenjiArchitect:
 
 def main():
     """Example usage of Kenji Architect."""
-    print(f"🏗️ Initializing Kenji - Architecture Visionary...")
+    print("🏗️ Initializing Kenji - Architecture Visionary...")
     
     # Example system requirements
     requirements = {
