@@ -9,6 +9,7 @@ const AdminPanel = () => {
 
   // Get API base URL from environment variables
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080'
+  const API_TIMEOUT = Number(import.meta.env.VITE_API_TIMEOUT) || 10000
 
   // Fetch agents on component mount
   useEffect(() => {
@@ -17,7 +18,7 @@ const AdminPanel = () => {
         setLoading(true)
         // Example API call - adjust endpoint as needed
         const response = await axios.get(`${API_BASE_URL}/api/agents`, {
-          timeout: import.meta.env.VITE_API_TIMEOUT || 10000
+          timeout: API_TIMEOUT
         })
         setAgents(response.data)
         setError(null)
@@ -38,18 +39,27 @@ const AdminPanel = () => {
     }
 
     fetchAgents()
-  }, [API_BASE_URL])
+  }, [API_BASE_URL, API_TIMEOUT])
 
   const handleStatusToggle = async (agentId) => {
     try {
-      await axios.patch(`${API_BASE_URL}/api/agents/${agentId}/status`)
-      // Refetch agents after update
-      const response = await axios.get(`${API_BASE_URL}/api/agents`, {
-        timeout: import.meta.env.VITE_API_TIMEOUT || 10000
+      await axios.patch(`${API_BASE_URL}/api/agents/${agentId}/status`, {}, {
+        timeout: API_TIMEOUT
       })
-      setAgents(response.data)
+      // Refetch agents after update
+      try {
+        const response = await axios.get(`${API_BASE_URL}/api/agents`, {
+          timeout: API_TIMEOUT
+        })
+        setAgents(response.data)
+        setError(null)
+      } catch (fetchErr) {
+        console.error('Error refetching agents:', fetchErr)
+        setError('Agent updated but failed to refresh list. Please reload the page.')
+      }
     } catch (err) {
       console.error('Error updating agent status:', err)
+      setError('Failed to update agent status. Please try again.')
     }
   }
 
