@@ -198,13 +198,15 @@ get_merge_date() {
   local base_branch=$2
   
   # Find the actual merge commit date
-  # First try to find merge commits that mention this branch
+  # Try to find the merge commit that brought this branch into base_branch
   local merge_timestamp
-  merge_timestamp=$(git log --merges --format=%ct --grep="$branch" "origin/$base_branch" -1 2>/dev/null)
   
-  # If no merge commit found via grep, try finding merge commits with this branch
-  if [[ -z "$merge_timestamp" || "$merge_timestamp" == "0" ]]; then
-    # Get the last commit date on this branch as fallback
+  # Look for merge commits in base_branch that include commits from this branch
+  # This is more reliable than grep which can have false positives
+  merge_timestamp=$(git log --merges --first-parent --format=%ct "origin/$base_branch" --ancestry-path "origin/$branch" -1 2>/dev/null)
+  
+  # If no merge commit found, fall back to the last commit date on this branch
+  if [[ -z "$merge_timestamp" ]]; then
     merge_timestamp=$(git log -1 --format=%ct "origin/$branch" 2>/dev/null)
   fi
   
