@@ -344,7 +344,7 @@ class SakuraDocumentation:
 
 def main():
     """Example usage of Sakura Documentation Artist."""
-    print(f"🌸 Initializing Sakura - Documentation Artist...")
+    print("🌸 Initializing Sakura - Documentation Artist...")
     
     # Example API spec
     api_spec = {

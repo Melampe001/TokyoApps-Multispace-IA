@@ -1,8 +1,14 @@
 # Other
 
-Total: 28 archivos
+Total: 32 archivos
 
 ## [.dockerignore](.dockerignore)
+.dockerignore - other
+
+## [.dockerignore](orchestrator/.dockerignore)
+.dockerignore - other
+
+## [.dockerignore](agents/.dockerignore)
 .dockerignore - other
 
 ## [.env.example](.env.example)
@@ -38,6 +44,9 @@ App.css - other
 ## [Cuerpo](Cuerpo)
 Cuerpo - other
 
+## [Direccion fina](.github/instructions/Direccion fina)
+Direccion fina - other
+
 ## [Fllutter](Fllutter)
 Fllutter - other
 
@@ -58,6 +67,9 @@ Sin limite - other
 
 ## [Sincero](Sincero)
 Sincero - other
+
+## [athena.tf](infrastructure/athena.tf)
+athena.tf - other
 
 ## [dashboard.html](LIBRARY/dashboard.html)
 dashboard.html - other

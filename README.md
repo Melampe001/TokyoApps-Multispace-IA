@@ -13,6 +13,9 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-green.svg)](LICENSE)
 
 > Generador de ramas ordenadas y flujos optimizados con IA integrada
+
+> **✨ Repository Status**: Recently underwent comprehensive automated cleanup and quality review (2025-12-27). All quality checks passing, zero security vulnerabilities, and full CI/CD pipeline verified. See [docs/maintenance.md](docs/maintenance.md) for details.
+
 # Tokyo-IA 🗼
 
 **Tokyo-IA** is a complete AI agent orchestration platform featuring 5 specialized agents with unique personalities and expertise. Built with Go, Python, React, and Android support.
@@ -535,6 +538,47 @@ npm run dev
 
 **Live Demo:**
 🌐 Web Dashboard: `https://tokyo-ia-web.vercel.app` (update after deployment)
+
+### 🚀 Vercel Deployment with Serverless API
+
+TokyoApps-Multispace-IA is fully configured for Vercel deployment with Python serverless functions.
+
+**Quick Deploy:**
+```bash
+# Using Vercel CLI
+vercel
+
+# Or using our deployment script
+./scripts/deploy-vercel.sh preview
+./scripts/deploy-vercel.sh production
+```
+
+**Available API Endpoints:**
+- `GET /api/index` - Service information and metadata
+- `GET /api/health` - Health check endpoint
+- `GET /api/agents` - List AI agents (Akira, Yuki, Hiro, Sakura, Kenji)
+- `POST /api/agents` - Start agent task
+
+**Configuration:**
+- ✅ Serverless functions configured for Python 3.11
+- ✅ 1024MB memory allocation for AI operations
+- ✅ 10s max duration for serverless functions
+- ✅ CORS headers configured for API access
+- ✅ Automatic preview deployments for PRs
+
+**Documentation:**
+📖 Complete deployment guide: [DEPLOY_VERCEL.md](DEPLOY_VERCEL.md)
+- 3 deployment options (GitHub, CLI, Script)
+- Environment variables setup
+- Local development with `vercel dev`
+- Troubleshooting and monitoring
+- CI/CD automation
+
+**Test Locally:**
+```bash
+vercel dev
+# Visit http://localhost:3000
+```
 
 ### Secrets Configuration
 

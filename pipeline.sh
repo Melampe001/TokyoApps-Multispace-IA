@@ -33,6 +33,34 @@ echo ""
 PIPELINE_START=$(date +%s)
 
 # ============================================================================
+# PHASE 0: Kubernetes Preflight Validation (Optional)
+# ============================================================================
+
+if [ "${ENABLE_K8S_PREFLIGHT:-false}" = "true" ]; then
+    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    echo "PHASE 0: Kubernetes Preflight Validation"
+    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    echo ""
+    
+    if [ -f "$SCRIPT_DIR/scripts/k8s-preflight.sh" ]; then
+        if bash "$SCRIPT_DIR/scripts/k8s-preflight.sh"; then
+            echo ""
+            echo "✅ Kubernetes preflight validation passed!"
+        else
+            echo ""
+            echo "❌ Kubernetes preflight validation failed!"
+            echo "Please resolve the issues above before proceeding."
+            exit 1
+        fi
+    else
+        echo "❌ Error: scripts/k8s-preflight.sh not found"
+        exit 1
+    fi
+    
+    echo ""
+fi
+
+# ============================================================================
 # PHASE 1: Execute Orchestrator (Run All Agents)
 # ============================================================================
 
@@ -118,6 +146,9 @@ echo "  1. Review generated code in output/ directory"
 echo "  2. Check validation report: simulator/output/emulator_report.txt"
 echo "  3. Review design model: simulator/output/design_model.json"
 echo "  4. Integrate platform code into your projects"
+if [ "${ENABLE_K8S_PREFLIGHT:-false}" = "true" ]; then
+    echo "  5. Deploy to Kubernetes: kubectl apply -f your-manifests/"
+fi
 echo ""
 echo "📚 For more information, see AGENTS_README.md"
 echo ""

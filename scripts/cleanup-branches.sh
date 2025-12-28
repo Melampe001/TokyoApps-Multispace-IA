@@ -78,6 +78,14 @@ while [[ $# -gt 0 ]]; do
       shift
       ;;
     --days)
+      if [[ $# -lt 2 ]]; then
+        echo -e "${RED}✗${NC} --days requires a value"
+        usage
+      fi
+      if ! [[ "$2" =~ ^[0-9]+$ ]]; then
+        echo -e "${RED}✗${NC} --days must be a non-negative integer"
+        usage
+      fi
       DAYS_THRESHOLD="$2"
       shift 2
       ;;
@@ -152,8 +160,24 @@ is_protected_branch() {
   
   # Check patterns
   for pattern in "${PROTECTED_PATTERNS[@]}" "${ADDITIONAL_EXCLUDES[@]}"; do
-    # Convert glob pattern to regex
-    pattern_regex="${pattern//\*/.*}"
+    # Convert glob pattern to regex, escaping special characters first
+    local pattern_regex="$pattern"
+    # Escape regex metacharacters
+    pattern_regex="${pattern_regex//\\/\\\\}"  # backslash
+    pattern_regex="${pattern_regex//./\\.}"    # dot
+    pattern_regex="${pattern_regex//^/\\^}"    # caret
+    pattern_regex="${pattern_regex//$/\\$}"    # dollar
+    pattern_regex="${pattern_regex//+/\\+}"    # plus
+    pattern_regex="${pattern_regex//\?/\\?}"   # question
+    pattern_regex="${pattern_regex//\(/\\(}"   # open paren
+    pattern_regex="${pattern_regex//\)/\\)}"   # close paren
+    pattern_regex="${pattern_regex//\{/\\{}"   # open brace
+    pattern_regex="${pattern_regex//\}/\\}}"   # close brace
+    pattern_regex="${pattern_regex//\[/\\[}"   # open bracket
+    pattern_regex="${pattern_regex//\]/\\]}"   # close bracket
+    pattern_regex="${pattern_regex//|/\\|}"    # pipe
+    # Finally convert glob * to regex .*
+    pattern_regex="${pattern_regex//\*/.*}"
     if [[ "$branch" =~ ^${pattern_regex}$ ]]; then
       return 0
     fi
@@ -162,6 +186,8 @@ is_protected_branch() {
   # Check exclude file
   if [[ -f "$EXCLUDE_FILE" ]]; then
     while IFS= read -r line; do
+      # Trim whitespace
+      line="$(echo "$line" | xargs)"
       # Skip comments and empty lines
       [[ "$line" =~ ^#.*$ ]] && continue
       [[ -z "$line" ]] && continue
@@ -180,8 +206,17 @@ get_merge_date() {
   local branch=$1
   local base_branch=$2
   
-  # Get the last commit date on this branch
-  git log -1 --format=%ct "$branch" 2>/dev/null || echo "0"
+  # Try to find the merge commit in base branch history
+  local merge_timestamp
+  merge_timestamp=$(git log --merges --first-parent --format=%ct "$base_branch" \
+    --grep="Merge.*$branch" 2>/dev/null | head -n1 || true)
+  
+  # Fallback: use last commit date if no merge commit found
+  if [[ -z "$merge_timestamp" ]]; then
+    merge_timestamp=$(git log -1 --format=%ct "$branch" 2>/dev/null || echo "0")
+  fi
+  
+  echo "$merge_timestamp"
 }
 
 # Check if branch is old enough
@@ -297,6 +332,12 @@ cleanup_branches() {
   
   # Confirm deletion
   if [[ $FORCE == false ]]; then
+    # Check if running in interactive terminal
+    if [[ ! -t 0 ]]; then
+      log_error "Non-interactive environment detected. Use --force to proceed."
+      return 1
+    fi
+    
     echo -e "${RED}⚠ ADVERTENCIA: Esta operación eliminará ${#branches_to_delete[@]} ramas remotas${NC}"
     echo -n "¿Continuar? (yes/no): "
     read -r confirmation

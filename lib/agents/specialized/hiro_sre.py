@@ -323,7 +323,7 @@ class HiroSRE:
 
 def main():
     """Example usage of Hiro SRE."""
-    print(f"🛡️ Initializing Hiro - SRE & DevOps Guardian...")
+    print("🛡️ Initializing Hiro - SRE & DevOps Guardian...")
     
     # Example Kubernetes deployment
     app_spec = {

@@ -1,8 +1,14 @@
 # Build
 
-Total: 5 archivos
+Total: 7 archivos
 
 ## [Dockerfile](Dockerfile)
+Dockerfile - build
+
+## [Dockerfile](orchestrator/Dockerfile)
+Dockerfile - build
+
+## [Dockerfile](agents/Dockerfile)
 Dockerfile - build
 
 ## [Makefile](Makefile)

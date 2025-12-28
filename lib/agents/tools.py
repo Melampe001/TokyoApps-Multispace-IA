@@ -12,7 +12,7 @@ This module provides specialized tools for agents to interact with:
 import os
 import subprocess
 import json
-from typing import Dict, Any, List, Optional
+from typing import Dict, Any
 from crewai.tools import tool
 
 
@@ -214,7 +214,7 @@ def code_quality_tool(file_path: str, language: str = "auto") -> Dict[str, Any]:
             content = f.read()
 
         lines = content.split("\n")
-        code_lines = [l for l in lines if l.strip() and not l.strip().startswith("#")]
+        code_lines = [line for line in lines if line.strip() and not line.strip().startswith("#")]
 
         return {
             "file": file_path,

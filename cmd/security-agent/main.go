@@ -76,7 +76,7 @@ func main() {
 }
 
 func printBanner() {
-	fmt.Println(`
+	fmt.Print(`
   ╔════════════════════════════════════════════════════════╗
   ║                                                        ║
   ║       🔒 TOKYO-IA SECURITY AGENT 🔒                   ║
@@ -89,7 +89,7 @@ func printBanner() {
 }
 
 func printHelp() {
-	fmt.Println(`Tokyo-IA Security Agent - Android Manifest Auditor
+	fmt.Print(`Tokyo-IA Security Agent - Android Manifest Auditor
 
 ROLE: SECURITY_AGENT
 
