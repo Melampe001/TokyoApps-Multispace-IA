@@ -33,8 +33,10 @@ The dashboard is automatically updated daily via the **PR Dashboard Update** wor
 The automated workflow:
 1. Collects current PR metrics from GitHub API
 2. Calculates key statistics (total PRs, stale PRs, etc.)
-3. Updates the dashboard with fresh data
+3. Updates the dashboard timestamp to reflect the last update
 4. Commits changes automatically via `github-actions[bot]`
+
+**Note**: The workflow updates only the timestamp in the dashboard header to preserve all existing comprehensive metrics, charts, and analysis. To update the full dashboard content, manual edits or additional automation tools should be used.
 
 ### Manual Trigger
 
