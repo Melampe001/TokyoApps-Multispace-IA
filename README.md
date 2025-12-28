@@ -108,6 +108,7 @@ pie title Lenguajes
 - 🌿 **Optimized Branch Management**: Intelligent branch creation and workflow
 - 📁 **Automated File Generation**: GitHub file creation with templates
 - 🤖 **AI-Powered**: ML-based repository optimization
+- 🔄 **PR Automation**: Complete PR lifecycle automation with 5 specialized workflows
 - 🔒 **Enterprise Security**: CodeQL scanning, dependency review
 - 📊 **Web Dashboard**: Real-time monitoring interface
 - 🎭 **SYNEMU Suite**: Complete simulation, emulation, QA, and automation platform (NEW!)
@@ -311,6 +312,11 @@ tokyoia/
   - Workflow descriptions and setup
   - Railway deployment guide
   - Troubleshooting and rollback procedures
+- **[🤖 PR Automation System](docs/PR_AUTOMATION.md)** - Complete Pull Request automation ⭐ NEW!
+  - 5 automated workflows for PR management
+  - Auto-labeling, triage, merge, and cleanup
+  - Bot commands for manual control
+  - [Quick Reference Guide](docs/PR_AUTOMATION_QUICK_GUIDE.md)
 - **[🔐 Secrets Configuration](docs/SECRETS.md)** - GitHub Actions secrets setup
   - Required and optional secrets
   - How to obtain tokens
