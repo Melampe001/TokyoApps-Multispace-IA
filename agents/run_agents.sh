@@ -42,9 +42,6 @@ echo "Step 1: Validating Environment"
 echo "────────────────────────────────────────────────────────────────────"
 
 # Check Python version
-PYTHON_VERSION=$(python3 --version 2>&1 | grep -oP '\d+\.\d+')
-REQUIRED_VERSION="3.11"
-
 if python3 -c "import sys; exit(0 if sys.version_info >= (3, 11) else 1)"; then
     echo -e "${GREEN}✓${NC} Python version: $(python3 --version)"
 else
