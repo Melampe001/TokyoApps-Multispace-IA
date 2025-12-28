@@ -110,24 +110,19 @@ class handler(BaseHTTPRequestHandler):
         # Create task response
         response_data = {
             "status": "success",
-            "message": "Agent task created successfully",
+            "message": "Task created successfully",
             "timestamp": datetime.utcnow().isoformat() + "Z",
             "task": {
-                "task_id": f"task-{datetime.utcnow().timestamp()}",
-                "agent_id": data["agent_id"],
-                "task_type": data["task_type"],
+                "id": f"task-{datetime.utcnow().timestamp()}",
+                "agent_id": data.get("agent_id"),
+                "task_type": data.get("task_type"),
+                "payload": data.get("payload", {}),
                 "status": "queued",
-                "created_at": datetime.utcnow().isoformat() + "Z",
-                "note": "This is a demo endpoint. Full agent execution requires API keys and configuration."
-            },
-            "next_steps": [
-                "Configure environment variables (ANTHROPIC_API_KEY, OPENAI_API_KEY, etc.)",
-                "Deploy full agent orchestration backend",
-                "Monitor task status via Registry API"
-            ]
+                "note": "Full task execution requires API keys configuration in Vercel environment variables"
+            }
         }
 
-        self.send_response(202)  # 202 Accepted
+        self.send_response(201)
         self.send_header("Content-Type", "application/json")
         self.end_headers()
         self.wfile.write(json.dumps(response_data, indent=2).encode())

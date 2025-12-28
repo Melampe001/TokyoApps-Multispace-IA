@@ -1,73 +1,115 @@
-# Dependencies
-node_modules/
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-.Python
-env/
-venv/
-ENV/
-pip-log.txt
-pip-delete-this-directory.txt
+# Development files
+.git/
+.github/
+.vscode/
+.idea/
 
-# Environment and secrets
+# Documentation
+docs/
+*.md
+!README.md
+!DEPLOY_VERCEL.md
+
+# Test files
+testing/
+tests/
+*_test.go
+*_test.py
+**/__tests__/
+
+# Build artifacts
+*.pyc
+__pycache__/
+*.egg-info/
+.pytest_cache/
+node_modules/
+dist/
+.next/
+out/
+
+# Config files for local development
 .env
 .env.local
 .env.*.local
-*.key
-*.pem
+docker-compose.yml
+Dockerfile
+.dockerignore
 
-# Build artifacts
-bin/
-output/
-dist/
-build/
-*.exe
-*.so
-*.dylib
+# Language-specific files not needed
+go.mod
+go.sum
+Makefile
+*.go
+ruby/
+proto/
 
-# Logs and databases
-*.log
-logs/
-*.db
-*.sqlite
+# Flutter/Dart (mobile app)
+flutter_app/
+pubspec.yaml
 
-# Testing
-testing/
-.pytest_cache/
-.coverage
-htmlcov/
-.tox/
+# Infrastructure
+infrastructure/
+db/
 
-# Documentation and examples
-docs/
+# Scripts
+scripts/
+pipeline.sh
+
+# Examples and templates
 examples/
+templates/
+plantillas/
 manuales/
 instructivos/
 hojas_membretadas/
-plantillas/
 recursos_identidad/
 reportes_graficos/
 
-# Development
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
-.DS_Store
+# Other
+.codecov.yml
+.pre-commit-config.yaml
+.flake8
+.golangci.yml
+.python-version
+railway.toml
 
-# Go specific
-go.sum
-*.test
-vendor/
-
-# Agentes y bots (local development)
+# Development directories
 Agentes y bots/
+admin/
+agents/
+app/
+cmd/
+config/
+emulator/
+internal/
+lib/
+orchestrator/
+python/
+simulator/
+SYNEMU/
 
-# Keep essential files
-!README.md
-!vercel.json
-!api/
-!web/
+# Additional documentation files
+AGENTS_README.md
+CONTRIBUTING.md
+DEPENDENCY_AGENT_SUMMARY.md
+IMPLEMENTATION_SUMMARY.md
+IMPLEMENTATION_SUMMARY_BOTS.md
+P1_IMPLEMENTATION_SUMMARY.md
+README-python.md
+SECURITY.md
+SYNEMU_IMPLEMENTATION_SUMMARY.md
+SYNEMU_REVIEW_CHECKLIST.md
+TAREAS.md
+
+# Folders not needed
+Cuerpo/
+Fllutter/
+Imitar/
+LIBRARY/
+Real/
+Setup/
+Sin limite/
+Sincero/
+assets/
+hojas_membretadas/
+prompts/
