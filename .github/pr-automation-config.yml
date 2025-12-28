@@ -1,0 +1,303 @@
+# ═══════════════════════════════════════════════════════════
+# 🤖 PR AUTOMATION CONFIGURATION
+# ═══════════════════════════════════════════════════════════
+# Configuración central para automatización de Pull Requests
+
+version: "1.0"
+
+# ──────────────────────────────────────────────────────────
+# 🏷️ AUTO-LABELING RULES
+# ──────────────────────────────────────────────────────────
+auto_labels:
+  # Por tamaño
+  size:
+    - label: "size/XS"
+      min_lines: 0
+      max_lines: 10
+    - label: "size/S"
+      min_lines: 11
+      max_lines: 100
+    - label: "size/M"
+      min_lines: 101
+      max_lines: 500
+    - label: "size/L"
+      min_lines: 501
+      max_lines: 1000
+    - label: "size/XL"
+      min_lines: 1001
+      max_lines: 5000
+    - label: "size/XXL"
+      min_lines: 5001
+      max_lines: 999999
+
+  # Por tipo de cambio
+  type:
+    - label: "type/documentation"
+      paths:
+        - "**/*.md"
+        - "docs/**"
+    - label: "type/tests"
+      paths:
+        - "**/*_test.go"
+        - "**/*_test.py"
+        - "tests/**"
+    - label: "type/ci-cd"
+      paths:
+        - ".github/workflows/**"
+        - ".github/actions/**"
+    - label: "type/agents"
+      paths:
+        - "agents/**"
+        - ".github/agents/**"
+    - label: "type/infrastructure"
+      paths:
+        - "infrastructure/**"
+        - "terraform/**"
+        - "k8s/**"
+
+  # Por lenguaje
+  language:
+    - label: "lang/go"
+      paths: ["**/*.go"]
+    - label: "lang/python"
+      paths: ["**/*.py"]
+    - label: "lang/javascript"
+      paths: ["**/*.js", "**/*.ts"]
+    - label: "lang/kotlin"
+      paths: ["**/*.kt"]
+    - label: "lang/shell"
+      paths: ["**/*.sh"]
+
+# ──────────────────────────────────────────────────────────
+# ✅ AUTO-MERGE RULES
+# ──────────────────────────────────────────────────────────
+auto_merge:
+  enabled: true
+  
+  # Requisitos generales
+  requirements:
+    - status_checks_passed: true
+    - reviews_approved: 1
+    - no_changes_requested: true
+    - not_draft: true
+    - branch_up_to_date: true
+  
+  # Fast-track para PRs seguros
+  fast_track:
+    - name: "Documentation only"
+      conditions:
+        - only_paths: ["**/*.md", "docs/**"]
+        - max_lines: 500
+        - reviews_approved: 0  # No necesita review
+      merge_method: "squash"
+    
+    - name: "Linter fixes"
+      conditions:
+        - title_contains: ["lint", "format", "fmt"]
+        - max_lines: 100
+        - status_checks_passed: true
+      merge_method: "squash"
+    
+    - name: "Dependency updates"
+      conditions:
+        - author: "dependabot[bot]"
+        - status_checks_passed: true
+      merge_method: "squash"
+    
+    - name: "Copilot agent fixes"
+      conditions:
+        - author: "copilot"
+        - labels: ["type/documentation", "size/S"]
+        - status_checks_passed: true
+      merge_method: "squash"
+
+  # Merge methods por tipo
+  merge_methods:
+    default: "merge"
+    by_label:
+      - label: "size/XS"
+        method: "squash"
+      - label: "type/documentation"
+        method: "squash"
+      - label: "hotfix"
+        method: "squash"
+
+# ──────────────────────────────────────────────────────────
+# 🔍 DUPLICATE DETECTION
+# ──────────────────────────────────────────────────────────
+duplicate_detection:
+  enabled: true
+  
+  # Patrones de duplicados
+  patterns:
+    - title_similarity: 0.8  # 80% similar
+    - file_overlap: 0.7      # 70% archivos comunes
+  
+  # Acciones automáticas
+  actions:
+    - comment: true
+    - label: "duplicate"
+    - notify_author: true
+    - suggest_close: true
+
+# ──────────────────────────────────────────────────────────
+# 🧹 CLEANUP RULES
+# ──────────────────────────────────────────────────────────
+cleanup:
+  stale_pr:
+    enabled: true
+    days_inactive: 30
+    draft_days: 45  # Más tiempo para drafts
+    
+    # Excepciones
+    exclude_labels:
+      - "wip"
+      - "blocked"
+      - "on-hold"
+    
+    # Acciones
+    actions:
+      - comment: "Este PR lleva {{days}} días inactivo. ¿Sigue siendo necesario?"
+      - label: "stale"
+      - close_after: 7  # Cerrar después de 7 días de marcar como stale
+
+  conflicting_pr:
+    enabled: true
+    auto_close_duplicates: false  # Solo notificar, no cerrar
+    
+# ──────────────────────────────────────────────────────────
+# 📊 TRIAGE RULES
+# ──────────────────────────────────────────────────────────
+triage:
+  # Priorización automática
+  priority:
+    critical:
+      - title_contains: ["hotfix", "security", "critical"]
+      - labels: ["priority/critical"]
+      - label_to_add: "priority/P0"
+    
+    high:
+      - title_contains: ["bug", "fix"]
+      - labels: ["type/bug"]
+      - files_changed: ["go.mod", "package.json", "requirements.txt"]
+      - label_to_add: "priority/P1"
+    
+    normal:
+      - title_contains: ["feat", "feature"]
+      - label_to_add: "priority/P2"
+    
+    low:
+      - title_contains: ["docs", "documentation", "readme"]
+      - label_to_add: "priority/P3"
+
+  # Asignación automática
+  auto_assign:
+    enabled: true
+    algorithm: "round-robin"  # o "load-balanced"
+    
+    # Asignación por área
+    by_area:
+      - paths: ["**/*.go", "go.mod"]
+        reviewers: ["Melampe001"]
+      - paths: ["agents/**", ".github/agents/**"]
+        reviewers: ["Melampe001"]
+      - paths: [".github/workflows/**"]
+        reviewers: ["Melampe001"]
+
+# ──────────────────────────────────────────────────────────
+# 🤖 BOT CONFIGURATION
+# ──────────────────────────────────────────────────────────
+bot:
+  comment_commands:
+    - command: "/merge"
+      description: "Mergea este PR inmediatamente"
+      requires_permission: "write"
+      action: "merge"
+    
+    - command: "/ready"
+      description: "Marca como listo para review"
+      action: "ready_for_review"
+    
+    - command: "/retest"
+      description: "Re-ejecuta los tests"
+      action: "rerun_checks"
+    
+    - command: "/priority <level>"
+      description: "Cambia la prioridad (P0-P3)"
+      action: "set_priority"
+    
+    - command: "/duplicate <pr_number>"
+      description: "Marca como duplicado de otro PR"
+      action: "mark_duplicate"
+
+  auto_comments:
+    welcome_message: |
+      👋 ¡Gracias por el PR @{{author}}!
+      
+      Este PR ha sido analizado automáticamente:
+      - **Tamaño**: {{size_label}}
+      - **Tipo**: {{type_labels}}
+      - **Tests**: {{test_status}}
+      
+      El bot te avisará cuando esté listo para merge.
+    
+    merge_ready: |
+      ✅ **Este PR está listo para merge**
+      
+      - ✅ Todos los checks pasaron
+      - ✅ Reviews aprobados
+      - ✅ Sin conflictos
+      
+      Usa `/merge` para mergear ahora, o se mergeará automáticamente en 1 hora.
+
+# ──────────────────────────────────────────────────────────
+# 📈 ANALYTICS & REPORTING
+# ──────────────────────────────────────────────────────────
+analytics:
+  enabled: true
+  
+  # Reportes automáticos
+  reports:
+    - name: "Daily PR Summary"
+      schedule: "0 9 * * *"  # 9 AM diario
+      include:
+        - pr_count
+        - merge_rate
+        - average_time_to_merge
+        - stale_prs
+        - blocked_prs
+    
+    - name: "Weekly PR Health"
+      schedule: "0 9 * * 1"  # Lunes 9 AM
+      include:
+        - pr_count_by_author
+        - pr_count_by_label
+        - bottlenecks
+        - recommendations
+
+# ──────────────────────────────────────────────────────────
+# 🔐 SECURITY
+# ──────────────────────────────────────────────────────────
+security:
+  # Verificación de cambios sensibles
+  sensitive_files:
+    - "**/*.key"
+    - "**/*.pem"
+    - "**/*.env"
+    - "**/secrets/**"
+  
+  # Acción al detectar archivos sensibles
+  on_sensitive_change:
+    - label: "security-review-required"
+    - block_auto_merge: true
+    - notify_team: "security"
+    - comment: "⚠️ Este PR modifica archivos sensibles. Review de seguridad requerido."
+
+# ──────────────────────────────────────────────────────────
+# 🎯 GOALS & METRICS
+# ──────────────────────────────────────────────────────────
+goals:
+  target_merge_time: 48  # horas
+  target_open_prs: 15
+  max_stale_days: 30
+  min_test_coverage: 80  # porcentaje
