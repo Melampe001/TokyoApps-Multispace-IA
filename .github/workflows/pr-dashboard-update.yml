@@ -1,0 +1,57 @@
+name: 📊 Update PR Metrics Dashboard
+
+on:
+  schedule:
+    - cron: '0 9 * * *'  # Daily at 9 AM UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: read
+
+jobs:
+  update-dashboard:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Collect metrics
+        id: metrics
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prs = await github.rest.pulls.list({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              per_page: 100
+            });
+
+            const metrics = {
+              total: prs.data.length,
+              stale: prs.data.filter(pr => {
+                const age = (new Date() - new Date(pr.created_at)) / (1000 * 60 * 60 * 24);
+                return age > 30;
+              }).length
+            };
+
+            core.setOutput('total', metrics.total);
+            core.setOutput('stale', metrics.stale);
+
+      - name: Update dashboard
+        run: |
+          echo "# 📊 PR Metrics" > .github/dashboards/PR_METRICS_DASHBOARD.md
+          echo "" >> .github/dashboards/PR_METRICS_DASHBOARD.md
+          echo "**Last Updated:** $(date -u +"%Y-%m-%d %H:%M UTC")" >> .github/dashboards/PR_METRICS_DASHBOARD.md
+          echo "" >> .github/dashboards/PR_METRICS_DASHBOARD.md
+          echo "- Total PRs: ${{ steps.metrics.outputs.total }}" >> .github/dashboards/PR_METRICS_DASHBOARD.md
+          echo "- Stale PRs: ${{ steps.metrics.outputs.stale }}" >> .github/dashboards/PR_METRICS_DASHBOARD.md
+
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .github/dashboards/PR_METRICS_DASHBOARD.md
+          git diff --quiet && git diff --staged --quiet || git commit -m "📊 Update dashboard"
+          git push
