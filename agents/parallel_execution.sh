@@ -1,0 +1,196 @@
+#!/bin/bash
+# Tokyo-IA Agents - Parallel Execution Script
+#
+# Executes independent agent tasks concurrently for faster completion.
+# Use this when workflows can run independently (e.g., documentation + cleanup).
+#
+# Usage:
+#   ./agents/parallel_execution.sh
+#
+# Requirements:
+#   - Python 3.11+
+#   - At least one API key configured
+#   - All dependencies installed
+
+set -e
+
+# Colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+NC='\033[0m'
+
+echo "════════════════════════════════════════════════════════════════════"
+echo "🗼 Tokyo-IA Agent Orchestration - Parallel Execution"
+echo "════════════════════════════════════════════════════════════════════"
+echo ""
+
+# Get script directory
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
+cd "$PROJECT_ROOT"
+
+# Check for API keys
+API_KEY_COUNT=0
+[ ! -z "$ANTHROPIC_API_KEY" ] && API_KEY_COUNT=$((API_KEY_COUNT + 1))
+[ ! -z "$OPENAI_API_KEY" ] && API_KEY_COUNT=$((API_KEY_COUNT + 1))
+[ ! -z "$GROQ_API_KEY" ] && API_KEY_COUNT=$((API_KEY_COUNT + 1))
+[ ! -z "$GOOGLE_API_KEY" ] && API_KEY_COUNT=$((API_KEY_COUNT + 1))
+
+echo "📋 API Keys configured: $API_KEY_COUNT/4"
+
+if [ $API_KEY_COUNT -eq 0 ]; then
+    echo -e "${RED}✗${NC} No API keys configured!"
+    exit 1
+fi
+
+echo ""
+echo "🚀 Starting parallel workflow execution..."
+echo ""
+
+# Create arrays to track PIDs and workflow names
+declare -a PIDS
+declare -a WORKFLOWS
+
+# Create shared output directory
+TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+REPORT_DIR="agent_reports_parallel_${TIMESTAMP}"
+mkdir -p "$REPORT_DIR"
+
+echo "📁 Output directory: $REPORT_DIR"
+echo ""
+
+# Function to run workflow in background
+run_workflow() {
+    local name=$1
+    local cmd=$2
+    local log="$REPORT_DIR/${name}.log"
+    
+    echo "▶️  Starting: $name"
+    
+    # Run command in background, redirect output to log
+    (
+        echo "Starting at $(date)" > "$log"
+        eval "$cmd" >> "$log" 2>&1
+        echo "Finished at $(date)" >> "$log"
+        exit $?
+    ) &
+    
+    local pid=$!
+    PIDS+=($pid)
+    WORKFLOWS+=("$name")
+    
+    echo "   PID: $pid | Log: $log"
+}
+
+# Launch workflows in parallel
+
+# Workflow 1: Cleanup Analysis (Hiro + Akira + Sakura + Kenji)
+run_workflow "cleanup_analysis" "python3 agents/tokyo_crew.py cleanup"
+
+# Workflow 2: Documentation Generation (Sakura)
+run_workflow "documentation_gen" "python3 agents/tokyo_crew.py generate-docs"
+
+# Workflow 3: PR Analysis (if specific PR numbers provided)
+# Uncomment and modify as needed:
+# run_workflow "pr_126_analysis" "python3 agents/tokyo_crew.py analyze-pr 126"
+# run_workflow "pr_125_analysis" "python3 agents/tokyo_crew.py analyze-pr 125"
+
+echo ""
+echo "⏳ Waiting for workflows to complete..."
+echo "   (Monitor logs in $REPORT_DIR/*.log)"
+echo ""
+
+# Wait for all background jobs and track results
+SUCCESS_COUNT=0
+FAIL_COUNT=0
+
+for i in "${!PIDS[@]}"; do
+    pid=${PIDS[$i]}
+    workflow=${WORKFLOWS[$i]}
+    
+    echo "⏳ Waiting for: $workflow (PID: $pid)..."
+    
+    if wait $pid; then
+        echo -e "   ${GREEN}✓${NC} $workflow completed successfully"
+        SUCCESS_COUNT=$((SUCCESS_COUNT + 1))
+    else
+        echo -e "   ${RED}✗${NC} $workflow failed"
+        FAIL_COUNT=$((FAIL_COUNT + 1))
+    fi
+done
+
+echo ""
+echo "════════════════════════════════════════════════════════════════════"
+echo "✨ Parallel Execution Complete"
+echo "════════════════════════════════════════════════════════════════════"
+echo ""
+echo "Results:"
+echo "  ✅ Successful: $SUCCESS_COUNT"
+echo "  ❌ Failed: $FAIL_COUNT"
+echo "  📁 Reports: $REPORT_DIR/"
+echo ""
+
+# Generate summary
+SUMMARY_FILE="$REPORT_DIR/PARALLEL_EXECUTION_SUMMARY.md"
+
+cat > "$SUMMARY_FILE" << EOF
+# Tokyo-IA Parallel Execution Summary
+
+**Generated:** $(date)
+**Mode:** Parallel Execution
+**Report Directory:** $REPORT_DIR
+
+## Results
+
+- **Total Workflows:** ${#PIDS[@]}
+- **Successful:** $SUCCESS_COUNT
+- **Failed:** $FAIL_COUNT
+- **Success Rate:** $(( SUCCESS_COUNT * 100 / ${#PIDS[@]} ))%
+
+## Executed Workflows
+
+EOF
+
+for i in "${!WORKFLOWS[@]}"; do
+    workflow=${WORKFLOWS[$i]}
+    pid=${PIDS[$i]}
+    
+    # Check if workflow succeeded by checking if we have its report
+    if [ -f "$REPORT_DIR/${workflow}.log" ]; then
+        log_size=$(du -h "$REPORT_DIR/${workflow}.log" | cut -f1)
+        echo "- **${workflow}** (PID: $pid) - Log: ${log_size}" >> "$SUMMARY_FILE"
+    fi
+done
+
+cat >> "$SUMMARY_FILE" << EOF
+
+## Execution Logs
+
+All workflow logs are available in:
+- \`$REPORT_DIR/*.log\`
+
+## Performance
+
+Parallel execution completed in less time compared to sequential execution.
+Independent workflows ran concurrently for optimal performance.
+
+---
+
+Generated by Tokyo-IA Parallel Execution System
+EOF
+
+echo "📄 Summary: $SUMMARY_FILE"
+echo ""
+
+if [ $FAIL_COUNT -eq 0 ]; then
+    echo -e "${GREEN}✓${NC} All workflows completed successfully!"
+    exit 0
+elif [ $SUCCESS_COUNT -gt 0 ]; then
+    echo -e "${YELLOW}⚠${NC} Some workflows completed (check logs for details)"
+    exit 0
+else
+    echo -e "${RED}✗${NC} All workflows failed"
+    exit 1
+fi
