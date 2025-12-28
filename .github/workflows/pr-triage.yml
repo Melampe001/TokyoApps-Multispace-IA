@@ -263,14 +263,13 @@ jobs:
             // ═══════════════════════════════════════════════════
             // POST WELCOME COMMENT
             // ═══════════════════════════════════════════════════
-            const welcomeTemplate = config.bot?.auto_comments?.welcome_message || `👋 ¡Gracias por el PR @{{author}}!
-
-Este PR ha sido analizado automáticamente:
-- **Tamaño**: {{size_label}}
-- **Tipo**: {{type_labels}}
-- **Tests**: {{test_status}}
-
-El bot te avisará cuando esté listo para merge.`;
+            const welcomeTemplate = config.bot?.auto_comments?.welcome_message || 
+              '👋 ¡Gracias por el PR @{{author}}!\n\n' +
+              'Este PR ha sido analizado automáticamente:\n' +
+              '- **Tamaño**: {{size_label}}\n' +
+              '- **Tipo**: {{type_labels}}\n' +
+              '- **Tests**: {{test_status}}\n\n' +
+              'El bot te avisará cuando esté listo para merge.';
             
             const welcomeComment = welcomeTemplate
               .replace('{{author}}', pr.user.login)
@@ -278,21 +277,22 @@ El bot te avisará cuando esté listo para merge.`;
               .replace('{{type_labels}}', typeLabelsStr)
               .replace('{{test_status}}', testStatus);
             
-            const fullWelcomeMessage = `${welcomeComment}
-
-## 📋 PR Summary
-
-| Metric | Value |
-|--------|-------|
-| **Size** | ${sizeLabel.replace('size/', '')} (${totalChanges} lines) |
-| **Priority** | ${priorityLabel.replace('priority/', '')} |
-| **Files Changed** | ${files.length} |
-| **Test Status** | ${testStatus} |
-| **Estimated Review Time** | ${estimatedReviewTime} |
-${reviewersToAssign.length > 0 ? `| **Reviewers** | ${reviewersToAssign.map(r => '@' + r).join(', ')} |` : ''}
-
----
-_This PR has been automatically triaged. Use bot commands like \`/priority P1\` or \`/merge\` to control it._`;
+            const reviewersLine = reviewersToAssign.length > 0 
+              ? `| **Reviewers** | ${reviewersToAssign.map(r => '@' + r).join(', ')} |\n` 
+              : '';
+            
+            const fullWelcomeMessage = welcomeComment + '\n\n' +
+              '## 📋 PR Summary\n\n' +
+              '| Metric | Value |\n' +
+              '|--------|-------|\n' +
+              '| **Size** | ' + sizeLabel.replace('size/', '') + ' (' + totalChanges + ' lines) |\n' +
+              '| **Priority** | ' + priorityLabel.replace('priority/', '') + ' |\n' +
+              '| **Files Changed** | ' + files.length + ' |\n' +
+              '| **Test Status** | ' + testStatus + ' |\n' +
+              '| **Estimated Review Time** | ' + estimatedReviewTime + ' |\n' +
+              reviewersLine +
+              '\n---\n' +
+              '_This PR has been automatically triaged. Use bot commands like `/priority P1` or `/merge` to control it._';
             
             await github.rest.issues.createComment({
               owner: context.repo.owner,

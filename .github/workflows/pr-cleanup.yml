@@ -116,14 +116,11 @@ jobs:
                     owner: context.repo.owner,
                     repo: context.repo.repo,
                     issue_number: prNumber,
-                    body: `## ⏰ PR Inactivo
-
-${comment}
-
-Si este PR ya no es necesario, considera cerrarlo para mantener el repositorio limpio.
-Si todavía es relevante, responde a este comentario o actualiza el PR para quitar la etiqueta \`stale\`.
-
-Este PR se cerrará automáticamente en ${closeAfter} días si no hay actividad.`
+                    body: '## ⏰ PR Inactivo\n\n' +
+                      comment + '\n\n' +
+                      'Si este PR ya no es necesario, considera cerrarlo para mantener el repositorio limpio.\n' +
+                      'Si todavía es relevante, responde a este comentario o actualiza el PR para quitar la etiqueta `stale`.\n\n' +
+                      'Este PR se cerrará automáticamente en ' + closeAfter + ' días si no hay actividad.'
                   });
                   
                   stats.staleMarked++;
@@ -144,11 +141,9 @@ Este PR se cerrará automáticamente en ${closeAfter} días si no hay actividad.
                     owner: context.repo.owner,
                     repo: context.repo.repo,
                     issue_number: prNumber,
-                    body: `## 🚮 Cerrando PR por Inactividad
-
-Este PR ha estado inactivo por ${Math.floor(daysSinceUpdate)} días y se cierra automáticamente.
-
-Si necesitas reabrir este PR, contáctanos o crea uno nuevo.`
+                    body: '## 🚮 Cerrando PR por Inactividad\n\n' +
+                      'Este PR ha estado inactivo por ' + Math.floor(daysSinceUpdate) + ' días y se cierra automáticamente.\n\n' +
+                      'Si necesitas reabrir este PR, contáctanos o crea uno nuevo.'
                   });
                   
                   // Close the PR
@@ -273,15 +268,12 @@ Si necesitas reabrir este PR, contáctanos o crea uno nuevo.`
                           owner: context.repo.owner,
                           repo: context.repo.repo,
                           issue_number: pr2.number,
-                          body: `## 🔄 Posible Duplicado
-
-Este PR parece ser un posible duplicado de #${pr1.number}.
-
-**Similitud:**
-- Título: ${(titleSimilarity * 100).toFixed(1)}%
-- Archivos: ${(fileOverlap * 100).toFixed(1)}%
-
-Por favor revisa si estos PRs deben ser consolidados o si este puede ser cerrado.`
+                          body: '## 🔄 Posible Duplicado\n\n' +
+                            'Este PR parece ser un posible duplicado de #' + pr1.number + '.\n\n' +
+                            '**Similitud:**\n' +
+                            '- Título: ' + (titleSimilarity * 100).toFixed(1) + '%\n' +
+                            '- Archivos: ' + (fileOverlap * 100).toFixed(1) + '%\n\n' +
+                            'Por favor revisa si estos PRs deben ser consolidados o si este puede ser cerrado.'
                         });
                         
                         stats.duplicatesFound++;
@@ -340,17 +332,14 @@ Por favor revisa si estos PRs deben ser consolidados o si este puede ser cerrado
                       owner: context.repo.owner,
                       repo: context.repo.repo,
                       issue_number: pr.number,
-                      body: `## ⚠️ Conflictos de Merge
-
-Este PR tiene conflictos de merge que deben resolverse antes de poder ser mergeado.
-
-**Pasos para resolver:**
-1. Sincroniza tu branch con la base: \`git pull origin ${prDetails.base.ref}\`
-2. Resuelve los conflictos manualmente
-3. Haz commit de los cambios
-4. Push a tu branch
-
-Una vez resueltos los conflictos, esta etiqueta se eliminará automáticamente.`
+                      body: '## ⚠️ Conflictos de Merge\n\n' +
+                        'Este PR tiene conflictos de merge que deben resolverse antes de poder ser mergeado.\n\n' +
+                        '**Pasos para resolver:**\n' +
+                        '1. Sincroniza tu branch con la base: `git pull origin ' + prDetails.base.ref + '`\n' +
+                        '2. Resuelve los conflictos manualmente\n' +
+                        '3. Haz commit de los cambios\n' +
+                        '4. Push a tu branch\n\n' +
+                        'Una vez resueltos los conflictos, esta etiqueta se eliminará automáticamente.'
                     });
                   }
                   
@@ -387,33 +376,28 @@ Una vez resueltos los conflictos, esta etiqueta se eliminará automáticamente.`
             if (stats.candidatesForCleanup.length > 0) {
               console.log('\n━━━ Creating Cleanup Report ━━━');
               
-              let reportBody = `# 🧹 PR Cleanup Report
-
-Generated: ${now.toISOString()}
-
-## Summary
-- Stale PRs marked: ${stats.staleMarked}
-- Stale PRs closed: ${stats.staleClosed}
-- Duplicates found: ${stats.duplicatesFound}
-- Conflicts found: ${stats.conflictsFound}
-
-## Candidates for Cleanup
-
-`;
+              let reportBody = '# 🧹 PR Cleanup Report\n\n' +
+                'Generated: ' + now.toISOString() + '\n\n' +
+                '## Summary\n' +
+                '- Stale PRs marked: ' + stats.staleMarked + '\n' +
+                '- Stale PRs closed: ' + stats.staleClosed + '\n' +
+                '- Duplicates found: ' + stats.duplicatesFound + '\n' +
+                '- Conflicts found: ' + stats.conflictsFound + '\n\n' +
+                '## Candidates for Cleanup\n\n';
               
               for (const candidate of stats.candidatesForCleanup) {
-                reportBody += `### PR #${candidate.number}: ${candidate.title}\n`;
-                reportBody += `**Reason:** ${candidate.reason}\n`;
+                reportBody += '### PR #' + candidate.number + ': ' + candidate.title + '\n';
+                reportBody += '**Reason:** ' + candidate.reason + '\n';
                 if (candidate.daysSinceUpdate) {
-                  reportBody += `**Days inactive:** ${candidate.daysSinceUpdate}\n`;
+                  reportBody += '**Days inactive:** ' + candidate.daysSinceUpdate + '\n';
                 }
                 if (candidate.similarity) {
-                  reportBody += `**Similarity:** ${candidate.similarity}%\n`;
+                  reportBody += '**Similarity:** ' + candidate.similarity + '%\n';
                 }
-                reportBody += `**Link:** [View PR](https://github.com/${context.repo.owner}/${context.repo.repo}/pull/${candidate.number})\n\n`;
+                reportBody += '**Link:** [View PR](https://github.com/' + context.repo.owner + '/' + context.repo.repo + '/pull/' + candidate.number + ')\n\n';
               }
               
-              reportBody += `\n---\n_This report was generated automatically by the PR Cleanup workflow._`;
+              reportBody += '\n---\n_This report was generated automatically by the PR Cleanup workflow._';
               
               // Create or update issue
               const { data: issues } = await github.rest.issues.listForRepo({

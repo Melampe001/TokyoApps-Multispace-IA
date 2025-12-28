@@ -195,22 +195,18 @@ jobs:
             // XXL WARNING COMMENT
             // ═══════════════════════════════════════════════════
             if (sizeLabel === 'size/XXL') {
-              const warningComment = `## ⚠️ PR Size Warning
-
-This PR is **XXL** (${totalChanges} lines changed). Consider splitting it into smaller PRs for easier review.
-
-**Benefits of smaller PRs:**
-- ✅ Faster review cycles
-- ✅ Easier to identify issues
-- ✅ Lower risk of merge conflicts
-- ✅ Better for incremental testing
-
-**Suggested approach:**
-1. Identify logical components or features
-2. Create separate PRs for each component
-3. Link them together with references
-
-If this PR cannot be split, please add a comment explaining why.`;
+              const warningComment = '## ⚠️ PR Size Warning\n\n' +
+                'This PR is **XXL** (' + totalChanges + ' lines changed). Consider splitting it into smaller PRs for easier review.\n\n' +
+                '**Benefits of smaller PRs:**\n' +
+                '- ✅ Faster review cycles\n' +
+                '- ✅ Easier to identify issues\n' +
+                '- ✅ Lower risk of merge conflicts\n' +
+                '- ✅ Better for incremental testing\n\n' +
+                '**Suggested approach:**\n' +
+                '1. Identify logical components or features\n' +
+                '2. Create separate PRs for each component\n' +
+                '3. Link them together with references\n\n' +
+                'If this PR cannot be split, please add a comment explaining why.';
 
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
