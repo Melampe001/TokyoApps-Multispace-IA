@@ -539,6 +539,47 @@ npm run dev
 **Live Demo:**
 🌐 Web Dashboard: `https://tokyo-ia-web.vercel.app` (update after deployment)
 
+### 🚀 Vercel Deployment with Serverless API
+
+TokyoApps-Multispace-IA is fully configured for Vercel deployment with Python serverless functions.
+
+**Quick Deploy:**
+```bash
+# Using Vercel CLI
+vercel
+
+# Or using our deployment script
+./scripts/deploy-vercel.sh preview
+./scripts/deploy-vercel.sh production
+```
+
+**Available API Endpoints:**
+- `GET /api/index` - Service information and metadata
+- `GET /api/health` - Health check endpoint
+- `GET /api/agents` - List AI agents (Akira, Yuki, Hiro, Sakura, Kenji)
+- `POST /api/agents` - Start agent task
+
+**Configuration:**
+- ✅ Serverless functions configured for Python 3.11
+- ✅ 1024MB memory allocation for AI operations
+- ✅ 10s max duration for serverless functions
+- ✅ CORS headers configured for API access
+- ✅ Automatic preview deployments for PRs
+
+**Documentation:**
+📖 Complete deployment guide: [DEPLOY_VERCEL.md](DEPLOY_VERCEL.md)
+- 3 deployment options (GitHub, CLI, Script)
+- Environment variables setup
+- Local development with `vercel dev`
+- Troubleshooting and monitoring
+- CI/CD automation
+
+**Test Locally:**
+```bash
+vercel dev
+# Visit http://localhost:3000
+```
+
 ### Secrets Configuration
 
 All deployments require GitHub Secrets. See [docs/SECRETS_SETUP.md](docs/SECRETS_SETUP.md) for complete guide:

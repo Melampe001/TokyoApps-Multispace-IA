@@ -1,0 +1,73 @@
+# Dependencies
+node_modules/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+ENV/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Environment and secrets
+.env
+.env.local
+.env.*.local
+*.key
+*.pem
+
+# Build artifacts
+bin/
+output/
+dist/
+build/
+*.exe
+*.so
+*.dylib
+
+# Logs and databases
+*.log
+logs/
+*.db
+*.sqlite
+
+# Testing
+testing/
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# Documentation and examples
+docs/
+examples/
+manuales/
+instructivos/
+hojas_membretadas/
+plantillas/
+recursos_identidad/
+reportes_graficos/
+
+# Development
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Go specific
+go.sum
+*.test
+vendor/
+
+# Agentes y bots (local development)
+Agentes y bots/
+
+# Keep essential files
+!README.md
+!vercel.json
+!api/
+!web/
