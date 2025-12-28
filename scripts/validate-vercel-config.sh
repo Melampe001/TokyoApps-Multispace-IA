@@ -51,13 +51,11 @@ else
     if python3 -c "import json; json.load(open('vercel.json'))" 2>/dev/null; then
         log_success "vercel.json has valid JSON syntax"
         
-        # Check required fields
-        if grep -q '"builds"' vercel.json && \
-           grep -q '"routes"' vercel.json && \
-           grep -q '"functions"' vercel.json; then
+        # Check required fields using proper JSON parsing
+        if python3 -c "import json; data = json.load(open('vercel.json')); exit(0 if all(k in data for k in ['builds', 'routes', 'functions']) else 1)" 2>/dev/null; then
             log_success "vercel.json has required sections (builds, routes, functions)"
         else
-            log_error "vercel.json missing required sections"
+            log_error "vercel.json missing required sections (builds, routes, functions)"
         fi
     else
         log_error "vercel.json has JSON syntax errors"
@@ -109,7 +107,7 @@ if [ -f "api/requirements.txt" ]; then
     log_success "api/requirements.txt exists"
     
     # Check for required packages
-    REQUIRED_DEPS=("crewai" "groq" "openai" "anthropic")
+    REQUIRED_DEPS=("crewai" "groq" "openai" "anthropic" "google-generativeai")
     for dep in "${REQUIRED_DEPS[@]}"; do
         if grep -q "$dep" api/requirements.txt; then
             log_success "Dependency '$dep' listed in requirements.txt"
