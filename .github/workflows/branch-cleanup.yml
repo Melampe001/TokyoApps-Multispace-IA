@@ -47,20 +47,34 @@ jobs:
           git fetch --all --prune
           git branch -r
       
+      - name: Set dry_run default for scheduled runs
+        id: set_defaults
+        run: |
+          # For scheduled runs, default to dry_run=true for safety
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            echo "dry_run=true" >> $GITHUB_OUTPUT
+            echo "days=14" >> $GITHUB_OUTPUT
+          else
+            echo "dry_run=${{ inputs.dry_run || 'false' }}" >> $GITHUB_OUTPUT
+            echo "days=${{ inputs.days || '14' }}" >> $GITHUB_OUTPUT
+          fi
+
       - name: Run branch cleanup (dry-run check)
         id: cleanup_dry
-        if: ${{ inputs.dry_run == true || inputs.dry_run == 'true' }}
+        if: ${{ steps.set_defaults.outputs.dry_run == 'true' }}
         run: |
           echo "Running in DRY-RUN mode..."
-          ./scripts/cleanup-branches.sh --dry-run --days ${{ inputs.days || '14' }} > /tmp/cleanup-report.txt 2>&1 || true
+          chmod +x scripts/cleanup-branches.sh
+          ./scripts/cleanup-branches.sh --dry-run --days ${{ steps.set_defaults.outputs.days }} > /tmp/cleanup-report.txt 2>&1 || true
           cat /tmp/cleanup-report.txt
       
       - name: Run branch cleanup (actual)
         id: cleanup_actual
-        if: ${{ inputs.dry_run != true && inputs.dry_run != 'true' }}
+        if: ${{ steps.set_defaults.outputs.dry_run != 'true' }}
         run: |
           echo "Running actual cleanup..."
-          ./scripts/cleanup-branches.sh --force --days ${{ inputs.days || '14' }} > /tmp/cleanup-report.txt 2>&1 || true
+          chmod +x scripts/cleanup-branches.sh
+          ./scripts/cleanup-branches.sh --force --days ${{ steps.set_defaults.outputs.days }} > /tmp/cleanup-report.txt 2>&1 || true
           cat /tmp/cleanup-report.txt
       
       - name: Parse cleanup results
@@ -70,13 +84,10 @@ jobs:
           if [ -f /tmp/cleanup-report.txt ]; then
             # Count deleted branches
             DELETED_COUNT=$(grep -c "Eliminada:" /tmp/cleanup-report.txt || echo "0")
-            
-            # Get list of deleted branches
-            DELETED_BRANCHES=$(grep "Eliminada:" /tmp/cleanup-report.txt | sed 's/.*Eliminada: //' || echo "Ninguna")
-            
+
             # Count branches that would be deleted (dry-run)
             if grep -q "Modo DRY-RUN" /tmp/cleanup-report.txt; then
-              CANDIDATE_COUNT=$(grep "Ramas candidatas para eliminación:" /tmp/cleanup-report.txt | grep -o '[0-9]*' || echo "0")
+              CANDIDATE_COUNT=$(grep "Ramas candidatas para eliminación:" /tmp/cleanup-report.txt | sed -n 's/.*eliminación: [^0-9]*\([0-9]\+\).*/\1/p' || echo "0")
               echo "deleted_count=$CANDIDATE_COUNT" >> $GITHUB_OUTPUT
               echo "is_dry_run=true" >> $GITHUB_OUTPUT
             else

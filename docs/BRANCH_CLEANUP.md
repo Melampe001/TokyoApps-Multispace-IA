@@ -352,31 +352,48 @@ git branch -r --merged Main | grep copilot
 
 ### ¿Puedo recuperar una rama eliminada?
 
-**Sí**, durante ~90 días:
+**Sí, pero con limitaciones**:
 
+**Para ramas eliminadas localmente:**
 ```bash
-# Ver historial de ramas eliminadas
+# Ver historial local con reflog (funciona para ramas locales)
 git reflog
 
 # Encontrar el SHA del último commit de la rama
-git reflog show origin/nombre-rama
-
-# Recrear la rama
+# Recrear la rama local
 git checkout -b nombre-rama <SHA>
 git push origin nombre-rama
 ```
 
-**Nota**: Después de ~90 días, los commits huérfanos son eliminados por el garbage collector de Git.
+**Para ramas remotas eliminadas:**
+Como el script elimina ramas remotas de GitHub, `git reflog` local no ayudará si no tenías la rama localmente. Sin embargo:
+
+1. **Si la rama fue mergeada**: Los commits están en `Main`, así que no se pierde código
+2. **Recuperación desde GitHub**: Contacta a GitHub Support dentro de 90 días para restauración
+3. **Si alguien tenía copia local**: Esa persona puede re-pushear la rama
+
+```bash
+# Si alguien tiene la rama localmente, puede restaurarla:
+git push origin nombre-rama
+
+# O si tienes el SHA del último commit (de issues, PRs, etc.):
+git checkout -b nombre-rama <SHA>
+git push origin nombre-rama
+```
+
+**Nota**: El reflog local solo rastrea operaciones locales, no eliminaciones remotas. Después de ~90 días, los commits huérfanos pueden ser eliminados por el garbage collector de Git en GitHub.
 
 ### ¿El script elimina ramas locales?
 
-**No por defecto**. El script solo elimina ramas remotas (`origin/*`). Para eliminar locales también:
+**No**. El script **solo elimina ramas remotas** del repositorio en GitHub (`origin/*`). Las ramas locales en tu computadora no son afectadas.
+
+Si también deseas limpiar las ramas locales que ya fueron eliminadas del remoto:
 
 ```bash
-# Primero ejecuta el script remoto
+# Primero ejecuta el script que elimina ramas remotas
 ./scripts/cleanup-branches.sh --force
 
-# Luego limpia locales
+# Luego limpia las ramas locales que ya no existen en el remoto
 git fetch --prune
 git branch -vv | grep ': gone]' | awk '{print $1}' | xargs git branch -d
 ```
