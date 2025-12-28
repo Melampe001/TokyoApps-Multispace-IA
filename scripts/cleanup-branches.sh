@@ -78,6 +78,10 @@ while [[ $# -gt 0 ]]; do
       shift
       ;;
     --days)
+      if ! [[ "$2" =~ ^[0-9]+$ ]]; then
+        echo -e "${RED}Error: --days debe ser un número entero positivo${NC}"
+        exit 1
+      fi
       DAYS_THRESHOLD="$2"
       shift 2
       ;;
@@ -152,8 +156,21 @@ is_protected_branch() {
   
   # Check patterns
   for pattern in "${PROTECTED_PATTERNS[@]}" "${ADDITIONAL_EXCLUDES[@]}"; do
-    # Convert glob pattern to regex
-    pattern_regex="${pattern//\*/.*}"
+    # Convert glob pattern to regex - escape special regex chars first
+    pattern_regex="$pattern"
+    # Escape special regex characters
+    pattern_regex="${pattern_regex//./\\.}"
+    pattern_regex="${pattern_regex//^/\\^}"
+    pattern_regex="${pattern_regex//$/\\$}"
+    pattern_regex="${pattern_regex//[/\\[}"
+    pattern_regex="${pattern_regex//]/\\]}"
+    pattern_regex="${pattern_regex//(/\\(}"
+    pattern_regex="${pattern_regex//)/\\)}"
+    pattern_regex="${pattern_regex//|/\\|}"
+    pattern_regex="${pattern_regex//+/\\+}"
+    pattern_regex="${pattern_regex//\?/\\?}"
+    # Now convert glob * to regex .*
+    pattern_regex="${pattern_regex//\*/.*}"
     if [[ "$branch" =~ ^${pattern_regex}$ ]]; then
       return 0
     fi
@@ -162,9 +179,9 @@ is_protected_branch() {
   # Check exclude file
   if [[ -f "$EXCLUDE_FILE" ]]; then
     while IFS= read -r line; do
-      # Skip comments and empty lines
+      # Skip comments and empty lines (including whitespace-only lines)
       [[ "$line" =~ ^#.*$ ]] && continue
-      [[ -z "$line" ]] && continue
+      [[ -z "${line// }" ]] && continue
       
       if [[ "$branch" == "$line" ]]; then
         return 0
@@ -180,8 +197,18 @@ get_merge_date() {
   local branch=$1
   local base_branch=$2
   
-  # Get the last commit date on this branch
-  git log -1 --format=%ct "$branch" 2>/dev/null || echo "0"
+  # Find the actual merge commit date
+  # First try to find merge commits that mention this branch
+  local merge_timestamp
+  merge_timestamp=$(git log --merges --format=%ct --grep="$branch" "origin/$base_branch" -1 2>/dev/null)
+  
+  # If no merge commit found via grep, try finding merge commits with this branch
+  if [[ -z "$merge_timestamp" || "$merge_timestamp" == "0" ]]; then
+    # Get the last commit date on this branch as fallback
+    merge_timestamp=$(git log -1 --format=%ct "origin/$branch" 2>/dev/null)
+  fi
+  
+  echo "${merge_timestamp:-0}"
 }
 
 # Check if branch is old enough
@@ -297,6 +324,13 @@ cleanup_branches() {
   
   # Confirm deletion
   if [[ $FORCE == false ]]; then
+    # Check if running in non-interactive environment (CI, cron, etc)
+    if [[ ! -t 0 ]] || [[ -z "${TERM:-}" ]] || [[ "${CI:-false}" == "true" ]]; then
+      log_error "Modo interactivo requerido para confirmación, pero se detectó entorno no interactivo"
+      log_info "Usa --force para eliminar sin confirmación o --dry-run para solo listar"
+      return 1
+    fi
+    
     echo -e "${RED}⚠ ADVERTENCIA: Esta operación eliminará ${#branches_to_delete[@]} ramas remotas${NC}"
     echo -n "¿Continuar? (yes/no): "
     read -r confirmation
