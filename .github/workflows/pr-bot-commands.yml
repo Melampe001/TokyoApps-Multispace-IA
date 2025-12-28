@@ -104,10 +104,9 @@ jobs:
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: prNumber,
-                body: `❌ Unknown command: \`/${command}\`
-
-Available commands:
-${availableCommands.map(c => `- \`${c.command}\` - ${c.description}`).join('\n')}`
+                body: '❌ Unknown command: `/' + command + '`\n\n' +
+                  'Available commands:\n' +
+                  availableCommands.map(c => '- `' + c.command + '` - ' + c.description).join('\n')
               });
               return;
             }
@@ -119,9 +118,8 @@ ${availableCommands.map(c => `- \`${c.command}\` - ${c.description}`).join('\n')
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: prNumber,
-                body: `❌ Sorry @${commenter}, you don't have permission to use \`/${command}\`.
-
-This command requires write access to the repository.`
+                body: '❌ Sorry @' + commenter + ', you don\'t have permission to use `/' + command + '`.\n\n' +
+                  'This command requires write access to the repository.'
               });
               return;
             }
@@ -310,9 +308,8 @@ This command requires write access to the repository.`
                     labels: ['duplicate']
                   });
                   
-                  responseMessage = `🔄 Marked as duplicate of #${duplicateNumber}
-
-Consider closing this PR if it's truly a duplicate.`;
+                  responseMessage = '🔄 Marked as duplicate of #' + duplicateNumber + '\n\n' +
+                    'Consider closing this PR if it\'s truly a duplicate.';
                   success = true;
                   break;
                 

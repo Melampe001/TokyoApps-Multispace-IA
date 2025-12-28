@@ -282,19 +282,19 @@ jobs:
                 if (!hasReadyComment) {
                   const timeRemaining = Math.ceil((minWaitTime - hoursSinceCreated) * 60);
                   
+                  const fastTrackLine = isFastTrack ? '- 🚀 Fast-track: ' + fastTrackReason + '\n' : '';
+                  
                   await github.rest.issues.createComment({
                     owner: context.repo.owner,
                     repo: context.repo.repo,
                     issue_number: prNumber,
-                    body: `## ✅ PR Listo para Merge
-
-- ✅ Todos los checks pasaron
-- ✅ Reviews aprobados (${approvedReviews}/${requiredApprovals})
-- ✅ Sin conflictos
-${isFastTrack ? `- 🚀 Fast-track: ${fastTrackReason}` : ''}
-
-Este PR se mergeará automáticamente en aproximadamente ${timeRemaining} minutos.
-Usa \`/merge\` para mergear inmediatamente.`
+                    body: '## ✅ PR Listo para Merge\n\n' +
+                      '- ✅ Todos los checks pasaron\n' +
+                      '- ✅ Reviews aprobados (' + approvedReviews + '/' + requiredApprovals + ')\n' +
+                      '- ✅ Sin conflictos\n' +
+                      fastTrackLine + '\n' +
+                      'Este PR se mergeará automáticamente en aproximadamente ' + timeRemaining + ' minutos.\n' +
+                      'Usa `/merge` para mergear inmediatamente.'
                   });
                   
                   console.log(`💬 Posted ready comment`);
