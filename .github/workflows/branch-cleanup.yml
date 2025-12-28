@@ -49,17 +49,19 @@ jobs:
       
       - name: Run branch cleanup (dry-run check)
         id: cleanup_dry
-        if: ${{ inputs.dry_run == true || inputs.dry_run == 'true' }}
+        if: ${{ inputs.dry_run == true || inputs.dry_run == 'true' || github.event_name == 'schedule' }}
         run: |
           echo "Running in DRY-RUN mode..."
+          chmod +x scripts/cleanup-branches.sh
           ./scripts/cleanup-branches.sh --dry-run --days ${{ inputs.days || '14' }} > /tmp/cleanup-report.txt 2>&1 || true
           cat /tmp/cleanup-report.txt
       
       - name: Run branch cleanup (actual)
         id: cleanup_actual
-        if: ${{ inputs.dry_run != true && inputs.dry_run != 'true' }}
+        if: ${{ inputs.dry_run != true && inputs.dry_run != 'true' && github.event_name != 'schedule' }}
         run: |
           echo "Running actual cleanup..."
+          chmod +x scripts/cleanup-branches.sh
           ./scripts/cleanup-branches.sh --force --days ${{ inputs.days || '14' }} > /tmp/cleanup-report.txt 2>&1 || true
           cat /tmp/cleanup-report.txt
       
@@ -71,12 +73,10 @@ jobs:
             # Count deleted branches
             DELETED_COUNT=$(grep -c "Eliminada:" /tmp/cleanup-report.txt || echo "0")
             
-            # Get list of deleted branches
-            DELETED_BRANCHES=$(grep "Eliminada:" /tmp/cleanup-report.txt | sed 's/.*Eliminada: //' || echo "Ninguna")
-            
             # Count branches that would be deleted (dry-run)
             if grep -q "Modo DRY-RUN" /tmp/cleanup-report.txt; then
-              CANDIDATE_COUNT=$(grep "Ramas candidatas para eliminación:" /tmp/cleanup-report.txt | grep -o '[0-9]*' || echo "0")
+              CANDIDATE_COUNT=$(sed -n 's/.*Ramas candidatas para eliminación:[[:space:]]*\([0-9]*\).*/\1/p' /tmp/cleanup-report.txt | head -n1)
+              if [ -z "$CANDIDATE_COUNT" ]; then CANDIDATE_COUNT="0"; fi
               echo "deleted_count=$CANDIDATE_COUNT" >> $GITHUB_OUTPUT
               echo "is_dry_run=true" >> $GITHUB_OUTPUT
             else

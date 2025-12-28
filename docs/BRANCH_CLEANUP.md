@@ -352,33 +352,50 @@ git branch -r --merged Main | grep copilot
 
 ### ¿Puedo recuperar una rama eliminada?
 
-**Sí**, durante ~90 días:
+**Sí**, SI tienes una copia local o alguien más tiene la rama. **No** si solo existía en remoto y nadie la tiene localmente.
 
+**Opción 1: Si tienes la rama localmente**
 ```bash
-# Ver historial de ramas eliminadas
+# La rama local aún existe, solo repúblicala
+git push origin nombre-rama
+```
+
+**Opción 2: Si existe en reflog local (últimos ~90 días)**
+```bash
+# Ver reflog local
 git reflog
 
-# Encontrar el SHA del último commit de la rama
-git reflog show origin/nombre-rama
+# Encontrar el SHA del último commit
+git reflog | grep nombre-rama
 
-# Recrear la rama
+# Recrear desde SHA
 git checkout -b nombre-rama <SHA>
 git push origin nombre-rama
 ```
 
-**Nota**: Después de ~90 días, los commits huérfanos son eliminados por el garbage collector de Git.
+**Opción 3: Si alguien más tiene la rama**
+```bash
+# Pedir a un compañero que la republique
+# O buscar en forks del repositorio
+```
+
+**Nota importante:** Una vez eliminada del remoto, solo se puede recuperar si existe una copia local en alguna máquina. El reflog solo registra operaciones locales, no remotas.
 
 ### ¿El script elimina ramas locales?
 
-**No por defecto**. El script solo elimina ramas remotas (`origin/*`). Para eliminar locales también:
+**No.** El script `./scripts/cleanup-branches.sh` solo elimina ramas remotas (`origin/*`) y nunca borra ramas locales.
+
+Si además quieres limpiar ramas locales que ya no existen en el remoto, puedes hacerlo manualmente con:
 
 ```bash
-# Primero ejecuta el script remoto
+# Primero ejecuta el script que limpia ramas remotas
 ./scripts/cleanup-branches.sh --force
 
-# Luego limpia locales
+# Luego limpia referencias locales obsoletas
 git fetch --prune
-git branch -vv | grep ': gone]' | awk '{print $1}' | xargs git branch -d
+
+# Opcionalmente, elimina ramas locales que ya no tienen remoto
+git branch -vv | grep ': gone]' | awk '{print $1}' | xargs -r git branch -D
 ```
 
 ### ¿Puedo modificar las ramas protegidas sin editar el código?
