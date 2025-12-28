@@ -40,6 +40,89 @@
 | 🌸 **Sakura** | sakura-004 | Documentation | Gemini 3.0 Ultra | Technical Writing, Diagrams |
 | 🏗️ **Kenji** | kenji-005 | Architecture | OpenAI o3 | System Design, Patterns |
 
+### 侍 Akira - Code Review Master
+
+**Model:** Claude Opus 4.1 (Anthropic)  
+**Provider:** `ANTHROPIC_API_KEY`
+
+Akira is the vigilant guardian of code quality, specializing in:
+- **Security Analysis:** Detects SQL injection, XSS, CSRF, and other vulnerabilities
+- **Performance Optimization:** Identifies bottlenecks, memory leaks, and inefficient algorithms
+- **Architecture Review:** Ensures clean architecture, SOLID principles, and design patterns
+- **Best Practices:** Enforces coding standards, naming conventions, and documentation
+
+**Personality:** Disciplined, precise, thorough. Like a samurai code auditor, Akira misses nothing.
+
+### ❄️ Yuki - Test Engineering Specialist
+
+**Model:** OpenAI o3  
+**Provider:** `OPENAI_API_KEY`
+
+Yuki ensures your code is bulletproof through comprehensive testing:
+- **Unit Testing:** Creates isolated tests for individual functions and methods
+- **Integration Testing:** Validates component interactions and API contracts
+- **E2E Testing:** Simulates user workflows and UI interactions
+- **Test Coverage:** Achieves >80% code coverage with meaningful tests
+
+**Personality:** Meticulous, patient, detail-oriented. Yuki believes untested code is broken code.
+
+### 🛡️ Hiro - SRE & DevOps Guardian
+
+**Model:** Llama 4 405B (Groq)  
+**Provider:** `GROQ_API_KEY`
+
+Hiro is your infrastructure and operations expert:
+- **Kubernetes:** Pod orchestration, service mesh, ingress configuration
+- **CI/CD Pipelines:** GitHub Actions, automated deployments, rollback strategies
+- **Monitoring:** Prometheus, Grafana, alerting, log aggregation
+- **Infrastructure as Code:** Terraform, Docker, cloud provisioning
+
+**Personality:** Reliable, pragmatic, always prepared. Hiro keeps your systems running 24/7.
+
+### 🌸 Sakura - Documentation Artist
+
+**Model:** Gemini 3.0 Ultra (Google)  
+**Provider:** `GOOGLE_API_KEY` or `GEMINI_API_KEY`
+
+Sakura transforms complex systems into clear documentation:
+- **Technical Writing:** API docs, user guides, architecture decision records
+- **Diagrams & Visuals:** Mermaid charts, sequence diagrams, architecture visualizations
+- **README Creation:** Comprehensive project documentation with examples
+- **Code Comments:** Inline documentation that explains the "why" not just the "what"
+
+**Personality:** Creative, empathetic, articulate. Sakura makes documentation beautiful and accessible.
+
+### 🏗️ Kenji - Architecture Visionary
+
+**Model:** OpenAI o3  
+**Provider:** `OPENAI_API_KEY`
+
+Kenji designs systems that scale and evolve:
+- **System Design:** Microservices, event-driven architecture, distributed systems
+- **Design Patterns:** Factory, Strategy, Observer, CQRS, Event Sourcing
+- **Scalability:** Load balancing, caching strategies, database sharding
+- **Technology Selection:** Framework evaluation, tech stack recommendations
+
+**Personality:** Strategic, forward-thinking, big-picture oriented. Kenji builds for tomorrow, not just today.
+
+### Agent Workflows
+
+The agents work together in coordinated workflows:
+
+```python
+# Full Code Review Workflow
+akira_review = akira.review_code(code)      # Security & quality
+yuki_tests = yuki.generate_tests(code)      # Test coverage
+hiro_deploy = hiro.create_ci_pipeline()     # CI/CD setup
+sakura_docs = sakura.document(code)         # Documentation
+kenji_arch = kenji.evaluate_design(code)    # Architecture review
+```
+
+**Available Workflows:**
+- `full_code_review_workflow` - Complete review cycle with all agents
+- `new_feature_workflow` - Design → Code → Test → Deploy → Document
+- `production_deployment_workflow` - Pre-deployment checks and monitoring setup
+
 ## 🎭 SYNEMU Suite (NEW!)
 
 **SYNEMU Suite** is a premium, fully automated platform module for **SIM**ulation, **E**mulation, **M**ulti-agent orchestration, and **U**nified automation workflows.
@@ -176,6 +259,117 @@ def authenticate_user(username, password):
 result = full_code_review_workflow(orchestrator, code, "python")
 print(result)
 ```
+
+## 🚀 Vercel Production Deployment
+
+Tokyo-IA is production-ready for Vercel deployment with serverless Python functions and static web hosting.
+
+### Quick Deploy to Vercel
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FMelampe001%2FTokyoApps-Multispace-IA)
+
+### Manual Deployment Steps
+
+#### 1. Prerequisites
+- Vercel account ([Sign up](https://vercel.com))
+- Repository connected to GitHub
+- API keys for AI agents (optional but recommended)
+
+#### 2. Environment Variables
+
+Configure in Vercel Dashboard → Settings → Environment Variables:
+
+**Required for Full Agent Functionality:**
+```bash
+ANTHROPIC_API_KEY=sk-ant-...     # Akira (Claude Opus 4.1)
+OPENAI_API_KEY=sk-...            # Yuki & Kenji (OpenAI o3)
+GROQ_API_KEY=gsk_...             # Hiro (Llama 4 405B)
+GOOGLE_API_KEY=...               # Sakura (Gemini 3.0 Ultra)
+GITHUB_TOKEN=ghp_...             # GitHub integration
+FIREBASE_PROJECT_ID=...          # Mobile app integration
+```
+
+**Optional Integrations:**
+```bash
+DATABASE_URL=postgresql://...    # PostgreSQL (if needed)
+JIRA_API_TOKEN=...              # Jira integration
+SLACK_BOT_TOKEN=...             # Slack notifications
+```
+
+#### 3. Deploy via GitHub Integration
+
+1. Go to [vercel.com/new](https://vercel.com/new)
+2. Import your repository
+3. Configure:
+   - **Framework Preset:** Other
+   - **Root Directory:** `./`
+   - **Build Command:** (auto-detected from `vercel.json`)
+   - **Output Directory:** `web/dist`
+4. Add environment variables
+5. Click **Deploy**
+
+#### 4. Deploy via Vercel CLI
+
+```bash
+# Install Vercel CLI
+npm install -g vercel
+
+# Deploy to production
+cd TokyoApps-Multispace-IA
+vercel --prod
+
+# Or deploy to preview
+vercel
+```
+
+### API Endpoints
+
+Once deployed, your API will be available at:
+
+- **Main Service:** `https://your-project.vercel.app/api/index`
+- **Health Check:** `https://your-project.vercel.app/api/health`
+- **Agents Info:** `https://your-project.vercel.app/api/agents`
+
+### Testing Your Deployment
+
+```bash
+# Test health endpoint
+curl https://your-project.vercel.app/api/health
+
+# Expected response:
+{
+  "status": "healthy",
+  "service": "TokyoApps-Multispace-IA",
+  "version": "1.0.0",
+  "checks": {
+    "api": "operational",
+    "agents": "available"
+  }
+}
+
+# Test agents endpoint
+curl https://your-project.vercel.app/api/agents
+
+# List all 5 AI agents with their status
+```
+
+### Automatic Deployments
+
+- **Production:** Every push to `main` branch
+- **Preview:** Every pull request gets a unique preview URL
+- **Rollback:** Instant rollback to previous deployment in Vercel Dashboard
+
+### Performance Optimization
+
+The deployment includes:
+- ✅ **30s max duration** for serverless functions
+- ✅ **1GB memory** allocation per function
+- ✅ **Security headers** (X-Frame-Options, CSP, etc.)
+- ✅ **CORS enabled** for cross-origin requests
+- ✅ **Gzip compression** for static assets
+- ✅ **Edge caching** for improved performance
+
+For complete deployment documentation, see [DEPLOY_VERCEL.md](DEPLOY_VERCEL.md).
 
 ## 🏗️ Architecture
 
@@ -406,20 +600,59 @@ make ci
 
 ### Environment Variables
 
+Create a `.env` file from `.env.example`:
+
+```bash
+cp .env.example .env
+```
+
+**Core Configuration:**
 ```bash
 # Database
 export DATABASE_URL="postgresql://user:password@localhost:5432/tokyoia"
 
-# Registry API
+# Application
 export PORT="8080"
 export REGISTRY_API_URL="http://localhost:8080"
+export GO_ENV="development"
+export NODE_ENV="development"
 
-# LLM API Keys
-export ANTHROPIC_API_KEY="sk-ant-..."    # For Akira
-export OPENAI_API_KEY="sk-..."           # For Yuki & Kenji
-export GROQ_API_KEY="gsk_..."            # For Hiro
-export GOOGLE_API_KEY="..."              # For Sakura
+# AI Configuration
+export USE_REAL_AI_CLIENTS="false"  # Set to true for production
 ```
+
+**LLM API Keys (Required for AI Agents):**
+```bash
+# Get your keys from provider dashboards:
+export ANTHROPIC_API_KEY="sk-ant-..."    # Akira (Claude Opus 4.1)
+export OPENAI_API_KEY="sk-..."           # Yuki & Kenji (OpenAI o3)
+export GROQ_API_KEY="gsk_..."            # Hiro (Llama 4 405B)
+export GOOGLE_API_KEY="..."              # Sakura (Gemini 3.0 Ultra)
+export GEMINI_API_KEY="..."              # Alternative for Sakura
+```
+
+**Integrations (Optional):**
+```bash
+# GitHub
+export GITHUB_TOKEN="ghp_..."            # GitHub API access
+
+# Firebase
+export FIREBASE_PROJECT_ID="your-project-id"
+
+# Jira
+export JIRA_BASE_URL="https://your-org.atlassian.net"
+export JIRA_API_TOKEN="your-token"
+
+# Slack
+export SLACK_BOT_TOKEN="xoxb-..."
+export SLACK_SIGNING_SECRET="..."
+
+# AWS Data Lake
+export AWS_ACCESS_KEY_ID="..."
+export AWS_SECRET_ACCESS_KEY="..."
+```
+
+See [.env.example](.env.example) for complete configuration options.
 
 ## 🚀 CI/CD Pipeline
 
