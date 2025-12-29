@@ -42,6 +42,9 @@ python agents/test_free_apis.py
 
 # Test all APIs
 python agents/test_all_apis.py
+
+# Run unit tests
+pytest agents/test_tokyo_crew.py -v
 ```
 
 ## 📋 Usage
@@ -250,6 +253,19 @@ python agents/test_free_apis.py
 python agents/test_all_apis.py
 ```
 
+### Run Unit Tests
+
+```bash
+# Run all unit tests
+pytest agents/test_tokyo_crew.py -v
+
+# Run specific test class
+pytest agents/test_tokyo_crew.py::TestTokyoCrewInitialization -v
+
+# Run with coverage
+pytest agents/test_tokyo_crew.py --cov=agents --cov-report=html
+```
+
 ### Test Individual Workflows
 
 ```bash
@@ -263,6 +279,63 @@ python agents/tokyo_crew.py generate-docs
 python agents/tokyo_crew.py analyze-pr 1
 ```
 
+### Generate HTML Reports
+
+```bash
+# Generate HTML report from agent output
+python agents/generate_html_report.py agent_reports_20250129_123456/
+
+# Custom output location
+python agents/generate_html_report.py agent_reports_20250129_123456/ --output my_report.html
+
+# Open in browser
+python agents/generate_html_report.py agent_reports_20250129_123456/
+# Then open: file:///path/to/agent_reports_20250129_123456/report.html
+```
+
+## 🤖 CI/CD Integration
+
+### GitHub Actions Workflow
+
+The repository includes a GitHub Actions workflow (`.github/workflows/tokyo-ia-pr-analysis.yml`) that automatically runs agent analysis on pull requests.
+
+**Features:**
+- ✅ Automatic PR analysis with Tokyo-IA agents
+- ✅ FREE tier support (works with Groq + Google APIs)
+- ✅ HTML report generation
+- ✅ Artifact upload for reports
+- ✅ PR comment with analysis summary
+
+**Setup:**
+1. Add API keys as GitHub repository secrets:
+   - `GROQ_API_KEY` (FREE - required)
+   - `GOOGLE_API_KEY` (FREE - required)
+   - `ANTHROPIC_API_KEY` (optional - premium)
+   - `OPENAI_API_KEY` (optional - premium)
+
+2. The workflow runs automatically on PR creation/update
+
+3. View results in:
+   - PR comments (summary)
+   - Workflow artifacts (full reports)
+   - Actions tab (execution logs)
+
+**Example Output:**
+```
+🗼 Tokyo-IA Agent Analysis Results
+
+PR: #126
+Commit: `abc1234`
+
+📊 Analysis Summary
+- Agents Executed: 2
+- Successful: 2/2
+
+🤖 Agent Results
+✅ hiro: Infrastructure analysis complete...
+✅ sakura: Documentation review complete...
+```
+
 ## 🛠️ Development
 
 ### Project Structure
@@ -272,10 +345,15 @@ agents/
 ├── tokyo_crew.py              # Main orchestration system
 ├── test_all_apis.py          # Test all 4 LLM providers
 ├── test_free_apis.py         # Test FREE tier only
+├── test_tokyo_crew.py        # Unit tests
+├── generate_html_report.py   # HTML report generator
 ├── run_agents.sh             # Sequential execution script
 ├── parallel_execution.sh     # Parallel execution (advanced)
 ├── agent_dashboard.py        # Real-time monitoring UI
 └── README.md                 # This file
+
+.github/workflows/
+└── tokyo-ia-pr-analysis.yml  # CI/CD automation
 ```
 
 ### Adding Custom Workflows

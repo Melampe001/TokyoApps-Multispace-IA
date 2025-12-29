@@ -1,0 +1,151 @@
+name: Tokyo-IA Agents - PR Analysis
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches:
+      - main
+      - develop
+
+jobs:
+  agent-analysis:
+    name: AI Agent PR Analysis
+    runs-on: ubuntu-latest
+    
+    # Only run if FREE tier API keys are available
+    if: |
+      github.event.pull_request.draft == false &&
+      (vars.GROQ_API_KEY != '' || vars.GOOGLE_API_KEY != '')
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      
+      - name: Test FREE tier APIs
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+        run: |
+          echo "Testing FREE tier API connectivity..."
+          python agents/test_free_apis.py || echo "::warning::Some FREE tier APIs are not configured"
+      
+      - name: Run Agent Dashboard (Status Check)
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          echo "Checking agent status..."
+          timeout 5 python agents/tokyo_crew.py list-agents || true
+      
+      - name: Analyze PR with Tokyo-IA Agents
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          AGENT_VERBOSE: false
+        run: |
+          PR_NUMBER=${{ github.event.pull_request.number }}
+          echo "Analyzing PR #$PR_NUMBER with Tokyo-IA agents..."
+          
+          # Run PR analysis
+          python agents/tokyo_crew.py analyze-pr $PR_NUMBER || {
+            echo "::warning::Agent analysis completed with warnings. Check logs for details."
+            exit 0
+          }
+      
+      - name: Generate HTML Report
+        if: always()
+        run: |
+          # Find the most recent report directory
+          REPORT_DIR=$(ls -td agent_reports_* 2>/dev/null | head -1 || echo "")
+          
+          if [ -n "$REPORT_DIR" ] && [ -d "$REPORT_DIR" ]; then
+            echo "Generating HTML report from $REPORT_DIR..."
+            python agents/generate_html_report.py "$REPORT_DIR"
+            echo "report_dir=$REPORT_DIR" >> $GITHUB_OUTPUT
+          else
+            echo "::warning::No report directory found"
+          fi
+        id: report
+      
+      - name: Upload Agent Reports
+        if: always() && steps.report.outputs.report_dir != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent-reports-pr-${{ github.event.pull_request.number }}
+          path: |
+            ${{ steps.report.outputs.report_dir }}/*.json
+            ${{ steps.report.outputs.report_dir }}/*.md
+            ${{ steps.report.outputs.report_dir }}/*.html
+          retention-days: 30
+      
+      - name: Comment on PR with Results Summary
+        if: always() && steps.report.outputs.report_dir != ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const reportDir = '${{ steps.report.outputs.report_dir }}';
+            
+            // Read analysis results
+            let summary = '## 🗼 Tokyo-IA Agent Analysis Results\n\n';
+            summary += `**PR:** #${{ github.event.pull_request.number }}\n`;
+            summary += `**Commit:** \`${context.sha.substring(0, 7)}\`\n\n`;
+            
+            try {
+              const analysisFile = `${reportDir}/pr_${{ github.event.pull_request.number }}_analysis.json`;
+              if (fs.existsSync(analysisFile)) {
+                const data = JSON.parse(fs.readFileSync(analysisFile, 'utf8'));
+                
+                if (data.agent_results) {
+                  const agents = Object.keys(data.agent_results).length;
+                  const successful = Object.values(data.agent_results)
+                    .filter(r => !String(r).startsWith('Error:')).length;
+                  
+                  summary += `### 📊 Analysis Summary\n\n`;
+                  summary += `- **Agents Executed:** ${agents}\n`;
+                  summary += `- **Successful:** ${successful}/${agents}\n\n`;
+                  
+                  summary += `### 🤖 Agent Results\n\n`;
+                  for (const [agent, result] of Object.entries(data.agent_results)) {
+                    const icon = String(result).startsWith('Error:') ? '❌' : '✅';
+                    const preview = String(result).substring(0, 200);
+                    summary += `${icon} **${agent}**: ${preview}...\n\n`;
+                  }
+                }
+              }
+              
+              summary += `\n📁 [View full reports in artifacts](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})\n`;
+              
+            } catch (error) {
+              summary += `\n⚠️ Unable to parse analysis results: ${error.message}\n`;
+            }
+            
+            // Post comment
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: ${{ github.event.pull_request.number }},
+              body: summary
+            });
+      
+      - name: Agent Analysis Complete
+        if: always()
+        run: |
+          echo "::notice::Tokyo-IA agent analysis complete. Check artifacts for full reports."
