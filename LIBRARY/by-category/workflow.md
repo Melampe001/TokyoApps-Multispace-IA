@@ -1,6 +1,6 @@
 # Workflow
 
-Total: 50 archivos
+Total: 51 archivos
 
 ## [.codecov.yml](.codecov.yml)
 .codecov.yml - workflow
@@ -109,6 +109,9 @@ tokyo-ia-orchestrator
 
 ## [pr-auto-review.yml](.github/workflows/pr-auto-review.yml)
 🤖 PR Auto-Review Bot
+
+## [pr-automation-config.yml](.github/pr-automation-config.yml)
+pr-automation-config.yml - workflow
 
 ## [pr-metrics.yml](.github/workflows/pr-metrics.yml)
 📈 PR Metrics Comment

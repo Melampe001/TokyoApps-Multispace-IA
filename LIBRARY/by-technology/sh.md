@@ -1,6 +1,6 @@
 # SH
 
-Total: 18 archivos
+Total: 19 archivos
 
 - [autodev_executor.sh](agents/autodev_executor.sh)
 - [brand_executor.sh](agents/brand_executor.sh)
@@ -10,6 +10,7 @@ Total: 18 archivos
 - [compress_assets.sh](.github/workflows/bots/scripts/compress_assets.sh)
 - [create_and_merge_pr.sh](scripts/create_and_merge_pr.sh)
 - [demo-ai-integration.sh](scripts/demo-ai-integration.sh)
+- [deploy-vercel.sh](scripts/deploy-vercel.sh)
 - [deploy.sh](scripts/deploy.sh)
 - [deploy_with_agents.sh](scripts/deploy_with_agents.sh)
 - [k8s-preflight.sh](scripts/k8s-preflight.sh)

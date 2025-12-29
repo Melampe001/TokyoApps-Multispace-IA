@@ -1,6 +1,6 @@
 # Script
 
-Total: 69 archivos
+Total: 74 archivos
 
 ## [__init__.py](python/etl/__init__.py)
 __init__.py - script
@@ -28,6 +28,10 @@ Five elite AI agents with unique personalities and expertise:
 
 ## [agent_orchestrator.py](lib/orchestrator/agent_orchestrator.py)
 !/usr/bin/env python3
+
+## [agents.py](api/agents.py)
+AI Agents endpoint for TokyoApps-Multispace-IA on Vercel.
+Provides information about available agents and handles agent task requests.
 
 ## [ai_router_agent.py](lib/agents/ai_router_agent.py)
 AI Router Agent - Intelligent routing between AI providers.
@@ -83,6 +87,9 @@ This module defines specialized AI agents for different tasks:
 ## [demo-ai-integration.sh](scripts/demo-ai-integration.sh)
 !/bin/bash
 
+## [deploy-vercel.sh](scripts/deploy-vercel.sh)
+!/bin/bash
+
 ## [deploy.sh](scripts/deploy.sh)
 !/bin/bash
 
@@ -110,8 +117,16 @@ agents for data validation and transformation logic.
 ## [generate_report.py](.github/workflows/bots/scripts/generate_report.py)
 !/usr/bin/env python3
 
+## [health.py](api/health.py)
+Health check endpoint for TokyoApps-Multispace-IA on Vercel.
+Returns service health status and system information.
+
 ## [hiro_sre.py](lib/agents/specialized/hiro_sre.py)
 !/usr/bin/env python3
+
+## [index.py](api/index.py)
+Main API endpoint for TokyoApps-Multispace-IA on Vercel.
+Handles HTTP GET and POST requests for service information.
 
 ## [integration_agent.py](lib/agents/integration_agent.py)
 Integration Agent - Handles external integrations with mock fallback.
@@ -182,6 +197,9 @@ Uses Documentation Agent for report generation when available.
 !/usr/bin/env python3
 
 ## [synemu_integrations.py](SYNEMU/agents_bots/synemu_integrations.py)
+!/usr/bin/env python3
+
+## [synemu_observability.py](SYNEMU/agents_bots/synemu_observability.py)
 !/usr/bin/env python3
 
 ## [synemu_orchestrator.py](SYNEMU/agents_bots/synemu_orchestrator.py)

@@ -1,6 +1,6 @@
 # Integration
 
-Total: 17 archivos
+Total: 18 archivos
 
 - [IMPLEMENTATION_SUMMARY_AI.md](docs/IMPLEMENTATION_SUMMARY_AI.md) - Multi-Model AI Integration - Implementation Summary
 - [JIRA_SETUP.md](docs/integrations/JIRA_SETUP.md) - Jira Integration Setup Guide
@@ -9,6 +9,8 @@ Total: 17 archivos
 - [ai-models-integration-architecture.md](docs/architecture/ai-models-integration-architecture.md) - Multi-Model AI Integration Architecture
 - [api_service.dart](flutter_app/lib/services/api_service.dart) - api_service.dart - source
 - [demo-ai-integration.sh](scripts/demo-ai-integration.sh) - !/bin/bash
+- [index.py](api/index.py) - Main API endpoint for TokyoApps-Multispace-IA on Vercel.
+Handles HTTP GET and POST requests for serv
 - [integration.md](LIBRARY/by-purpose/integration.md) - Integration
 - [integration_agent.py](lib/agents/integration_agent.py) - Integration Agent - Handles external integrations with mock fallback.
 

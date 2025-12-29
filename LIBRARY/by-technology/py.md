@@ -1,6 +1,6 @@
 # PY
 
-Total: 49 archivos
+Total: 53 archivos
 
 - [__init__.py](python/etl/__init__.py)
 - [__init__.py](lib/orchestrator/__init__.py)
@@ -8,6 +8,7 @@ Total: 49 archivos
 - [__init__.py](lib/agents/specialized/__init__.py)
 - [__init__.py](SYNEMU/agents_bots/__init__.py)
 - [agent_orchestrator.py](lib/orchestrator/agent_orchestrator.py)
+- [agents.py](api/agents.py)
 - [ai_router_agent.py](lib/agents/ai_router_agent.py)
 - [akira_code_reviewer.py](lib/agents/specialized/akira_code_reviewer.py)
 - [analyze_dart_code.py](.github/workflows/bots/scripts/analyze_dart_code.py)
@@ -20,7 +21,9 @@ Total: 49 archivos
 - [export_with_agents.py](python/etl/export_with_agents.py)
 - [generate_agent_report.py](scripts/generate_agent_report.py)
 - [generate_report.py](.github/workflows/bots/scripts/generate_report.py)
+- [health.py](api/health.py)
 - [hiro_sre.py](lib/agents/specialized/hiro_sre.py)
+- [index.py](api/index.py)
 - [integration_agent.py](lib/agents/integration_agent.py)
 - [jira_sync.py](.github/workflows/scripts/jira_sync.py)
 - [jira_sync_with_agents.py](.github/workflows/scripts/jira_sync_with_agents.py)
@@ -38,6 +41,7 @@ Total: 49 archivos
 - [synemu_compliance_validator.py](SYNEMU/agents_bots/synemu_compliance_validator.py)
 - [synemu_docu_libra.py](SYNEMU/agents_bots/synemu_docu_libra.py)
 - [synemu_integrations.py](SYNEMU/agents_bots/synemu_integrations.py)
+- [synemu_observability.py](SYNEMU/agents_bots/synemu_observability.py)
 - [synemu_orchestrator.py](SYNEMU/agents_bots/synemu_orchestrator.py)
 - [synemu_qa_owl.py](SYNEMU/agents_bots/synemu_qa_owl.py)
 - [synemu_supreme_orchestrator.py](SYNEMU/agents_bots/synemu_supreme_orchestrator.py)

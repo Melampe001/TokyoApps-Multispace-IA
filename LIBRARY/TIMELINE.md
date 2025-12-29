@@ -1,6 +1,24 @@
 # 📅 Línea de Tiempo de Creaciones
-Última actualización: 2025-12-28 03:49:30
+Última actualización: 2025-12-29 03:50:53
 
+
+## 2025-12-28
+- **DEPLOY_VERCEL.md** - 🚀 Despliegue en Vercel - TokyoApps-Multispace-IA
+- **.vercelignore** - .vercelignore - other
+- **requirements.txt** - Vercel Serverless Functions - Python Dependencies
+- **agents.py** - AI Agents endpoint for TokyoApps-Multispace-IA on Vercel.
+Provides information a
+- **health.py** - Health check endpoint for TokyoApps-Multispace-IA on Vercel.
+Returns service hea
+- **index.py** - Main API endpoint for TokyoApps-Multispace-IA on Vercel.
+Handles HTTP GET and PO
+- **deploy-vercel.sh** - !/bin/bash
+- **synemu_observability.py** - !/usr/bin/env python3
+- **tf.md** - TF
+- **pr-dashboard-advanced.html** - pr-dashboard-advanced.html - other
+- **PR_METRICS_DASHBOARD.md** - 📊 PR Metrics Dashboard - TokyoApps Multispace IA
+- **pr-dashboard.html** - pr-dashboard.html - other
+- **pr-automation-config.yml** - pr-automation-config.yml - workflow
 
 ## 2025-12-27
 - **k8s-preflight.sh** - !/bin/bash
@@ -48,18 +66,3 @@ Uses Docu
 - **JIRA_SETUP.md** - Jira Integration Setup Guide
 - **openai_client.go** - openai_client.go - source
 - **gemini_client.go** - gemini_client.go - source
-- **anthropic_client.go** - anthropic_client.go - source
-- **integration_test.go** - integration_test.go - source
-- **factory.go** - factory.go - source
-- **RAILWAY.md** - Railway Deployment Guide
-- **Dockerfile** - Dockerfile - build
-- **.dockerignore** - .dockerignore - other
-- **orchestrator-deployment.yaml** - tokyo-ia-orchestrator
-- **Dockerfile** - Dockerfile - build
-- **.dockerignore** - .dockerignore - other
-- **agents-deployment.yaml** - tokyo-ia-agents
-- **Direccion fina** - Direccion fina - other
-- **maintenance.md** - Repository Maintenance Log
-
-## 2025-12-26
-- **IMPLEMENTATION_SUMMARY_BOTS.md** - Implementation Summary: Automated PR Bots

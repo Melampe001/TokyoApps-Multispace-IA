@@ -1,6 +1,6 @@
 # YML
 
-Total: 40 archivos
+Total: 41 archivos
 
 - [.codecov.yml](.codecov.yml)
 - [.golangci.yml](.golangci.yml)
@@ -30,6 +30,7 @@ Total: 40 archivos
 - [library-indexer.yml](.github/workflows/library-indexer.yml)
 - [library-report.yml](.github/workflows/library-report.yml)
 - [pr-auto-review.yml](.github/workflows/pr-auto-review.yml)
+- [pr-automation-config.yml](.github/pr-automation-config.yml)
 - [pr-metrics.yml](.github/workflows/pr-metrics.yml)
 - [pre-release-tests.yml](.github/workflows/pre-release-tests.yml)
 - [preview-deploy.yml](.github/workflows/preview-deploy.yml)

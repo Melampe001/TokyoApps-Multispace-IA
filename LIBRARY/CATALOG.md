@@ -1,17 +1,17 @@
 # 📚 Catálogo Completo de la Biblioteca
-Última actualización: 2025-12-28 03:49:30
-Total de archivos: 421
+Última actualización: 2025-12-29 03:50:53
+Total de archivos: 434
 
 ---
 ## 📊 Estadísticas Generales
 - **Build**: 7 archivos
 - **Configuration**: 11 archivos
-- **Documentation**: 157 archivos
-- **Other**: 32 archivos
+- **Documentation**: 161 archivos
+- **Other**: 35 archivos
 - **Schema**: 1 archivos
-- **Script**: 69 archivos
+- **Script**: 74 archivos
 - **Source**: 94 archivos
-- **Workflow**: 50 archivos
+- **Workflow**: 51 archivos
 
 ---
 ## 🗂️ Por Categoría
@@ -38,7 +38,7 @@ Total de archivos: 421
 - **[routing_rules.json](config/agents/routing_rules.json)** - routing_rules.json - configuration
 - **[vercel.json](vercel.json)** - vercel.json - configuration
 
-### Documentation (157 archivos)
+### Documentation (161 archivos)
 - **[AGENTS_README.md](AGENTS_README.md)** - 🤖 Tokyo-IA Agent Pipeline System
 - **[ARCHITECTURE.md](docs/ARCHITECTURE.md)** - 🏗️ Tokyo-IA Architecture Documentation
 - **[ATHENA_GUIDE.md](docs/analytics/ATHENA_GUIDE.md)** - AWS Athena Query Guide
@@ -51,6 +51,7 @@ Total de archivos: 421
 - **[CONTRIBUTING.md](CONTRIBUTING.md)** - Contributing to Tokyo-IA
 - **[DEPENDENCY_AGENT_SUMMARY.md](DEPENDENCY_AGENT_SUMMARY.md)** - Dependency Agent Implementation Summary
 - **[DEPENDENCY_POLICY.md](docs/DEPENDENCY_POLICY.md)** - Dependency Policy
+- **[DEPLOY_VERCEL.md](DEPLOY_VERCEL.md)** - 🚀 Despliegue en Vercel - TokyoApps-Multispace-IA
 - **[Dockerfile.md](LIBRARY/by-technology/Dockerfile.md)** - DOCKERFILE
 - **[ELARA_COMMAND_CENTER.md](.github/ELARA_COMMAND_CENTER.md)** - 👑 Elara Command Center
 - **[ELARA_DASHBOARD.md](.github/ELARA_DASHBOARD.md)** - 📊 Elara Operations Dashboard
@@ -58,9 +59,8 @@ Total de archivos: 421
 - **[ENTERPRISE_BEST_PRACTICES.md](SYNEMU/docs/ENTERPRISE_BEST_PRACTICES.md)** - 🚀 SYNEMU Enterprise Best Practices & Emerging Technologies Framework
 - **[FILE_TEMPLATE.md](.github/templates/FILE_TEMPLATE.md)** - [Nombre del Archivo]
 - **[GOOGLE_SHEETS_SETUP.md](docs/integrations/GOOGLE_SHEETS_SETUP.md)** - Google Sheets Dashboard Setup Guide
-- **[GUIDE.md](LIBRARY/GUIDE.md)** - Digital Library System - Complete Guide
 
-### Other (32 archivos)
+### Other (35 archivos)
 - **[.dockerignore](.dockerignore)** - .dockerignore - other
 - **[.dockerignore](orchestrator/.dockerignore)** - .dockerignore - other
 - **[.dockerignore](agents/.dockerignore)** - .dockerignore - other
@@ -71,6 +71,7 @@ Total de archivos: 421
 - **[.gitignore](flutter_app/.gitignore)** - .gitignore - other
 - **[.gitkeep](agents/.gitkeep)** - .gitkeep - other
 - **[.python-version](.python-version)** - .python-version - other
+- **[.vercelignore](.vercelignore)** - .vercelignore - other
 - **[Agentes y bots](Agentes y bots)** - Agentes y bots - other
 - **[AndroidManifest.xml](flutter_app/android/app/src/main/AndroidManifest.xml)** - AndroidManifest.xml - other
 - **[App.css](web/src/App.css)** - App.css - other
@@ -80,12 +81,11 @@ Total de archivos: 421
 - **[IA suprema](prompts/IA suprema)** - IA suprema - other
 - **[Imitar](Imitar)** - Imitar - other
 - **[Real](Real)** - Real - other
-- **[Setup](Setup)** - Setup - other
 
 ### Schema (1 archivos)
 - **[hello.proto](proto/hello.proto)** - hello.proto - schema
 
-### Script (69 archivos)
+### Script (74 archivos)
 - **[__init__.py](python/etl/__init__.py)** - __init__.py - script
 - **[__init__.py](lib/orchestrator/__init__.py)** - Tokyo-IA Orchestrator
 
@@ -99,6 +99,8 @@ Five elite AI agents with unique personalities and expertise:
 - Akira (
 - **[__init__.py](SYNEMU/agents_bots/__init__.py)** - !/usr/bin/env python3
 - **[agent_orchestrator.py](lib/orchestrator/agent_orchestrator.py)** - !/usr/bin/env python3
+- **[agents.py](api/agents.py)** - AI Agents endpoint for TokyoApps-Multispace-IA on Vercel.
+Provides information about available agent
 - **[ai_router_agent.py](lib/agents/ai_router_agent.py)** - AI Router Agent - Intelligent routing between AI providers.
 
 This agent selects the optimal AI provi
@@ -114,9 +116,6 @@ This agent selects the optimal AI provi
 - **[check_dependencies.py](.github/workflows/bots/scripts/check_dependencies.py)** - !/usr/bin/env python3
 - **[compress_assets.sh](.github/workflows/bots/scripts/compress_assets.sh)** - !/bin/bash
 - **[create_and_merge_pr.sh](scripts/create_and_merge_pr.sh)** - !/usr/bin/env bash
-- **[crew_config.py](lib/agents/crew_config.py)** - CrewAI Configuration for Tokyo-IA Multi-Agent System
-
-This module defines specialized AI agents for 
 
 ### Source (94 archivos)
 - **[AgentDashboard.tsx](admin/src/components/AgentDashboard.tsx)** - AgentDashboard.tsx - source
@@ -140,7 +139,7 @@ This module defines specialized AI agents for
 - **[agent_log.dart](flutter_app/lib/models/agent_log.dart)** - agent_log.dart - source
 - **[agent_orchestrator.dart](flutter_app/lib/services/agent_orchestrator.dart)** - agent_orchestrator.dart - source
 
-### Workflow (50 archivos)
+### Workflow (51 archivos)
 - **[.codecov.yml](.codecov.yml)** - .codecov.yml - workflow
 - **[.golangci.yml](.golangci.yml)** - .golangci.yml - workflow
 - **[.pre-commit-config.yaml](.pre-commit-config.yaml)** - .pre-commit-config.yaml - workflow
@@ -165,7 +164,7 @@ This module defines specialized AI agents for
 ---
 ## 🎯 Por Propósito
 
-### Automation (32 archivos)
+### Automation (33 archivos)
 - [.codecov.yml](.codecov.yml)
 - [.golangci.yml](.golangci.yml)
 - [.pre-commit-config.yaml](.pre-commit-config.yaml)
@@ -177,8 +176,9 @@ This module defines specialized AI agents for
 - [SLACK_BOT_SETUP.md](docs/integrations/SLACK_BOT_SETUP.md)
 - [WorkflowMonitor.tsx](admin/src/components/WorkflowMonitor.tsx)
 
-### Deployment (20 archivos)
+### Deployment (22 archivos)
 - [BUILD_AGENT_REPORT.md](flutter_app/BUILD_AGENT_REPORT.md)
+- [DEPLOY_VERCEL.md](DEPLOY_VERCEL.md)
 - [Makefile](Makefile)
 - [agent_deploy.dart](flutter_app/lib/agents/agent_deploy.dart)
 - [agents-deployment.yaml](infrastructure/k8s/agents-deployment.yaml)
@@ -187,7 +187,6 @@ This module defines specialized AI agents for
 - [build.gradle](flutter_app/android/app/build.gradle)
 - [build.md](LIBRARY/by-category/build.md)
 - [build_agent.sh](flutter_app/build_agent.sh)
-- [deploy-vercel.yml](.github/workflows/deploy-vercel.yml)
 
 ### Documentation (60 archivos)
 - [.dockerignore](.dockerignore)
@@ -201,7 +200,7 @@ This module defines specialized AI agents for
 - [CI_CD.md](docs/CI_CD.md)
 - [Dockerfile](Dockerfile)
 
-### General (239 archivos)
+### General (247 archivos)
 - [.env.example](.env.example)
 - [.env.example](flutter_app/.env.example)
 - [.flake8](.flake8)
@@ -209,11 +208,11 @@ This module defines specialized AI agents for
 - [.gitignore](flutter_app/.gitignore)
 - [.gitkeep](agents/.gitkeep)
 - [.python-version](.python-version)
+- [.vercelignore](.vercelignore)
 - [AgentDashboard.tsx](admin/src/components/AgentDashboard.tsx)
 - [AgentRepository.kt](app/src/main/java/com/tokyoia/app/data/repository/AgentRepository.kt)
-- [AgentsScreen.kt](app/src/main/java/com/tokyoia/app/ui/agents/AgentsScreen.kt)
 
-### Integration (17 archivos)
+### Integration (18 archivos)
 - [IMPLEMENTATION_SUMMARY_AI.md](docs/IMPLEMENTATION_SUMMARY_AI.md)
 - [JIRA_SETUP.md](docs/integrations/JIRA_SETUP.md)
 - [README.md](templates/api/README.md)
@@ -221,11 +220,12 @@ This module defines specialized AI agents for
 - [ai-models-integration-architecture.md](docs/architecture/ai-models-integration-architecture.md)
 - [api_service.dart](flutter_app/lib/services/api_service.dart)
 - [demo-ai-integration.sh](scripts/demo-ai-integration.sh)
+- [index.py](api/index.py)
 - [integration.md](LIBRARY/by-purpose/integration.md)
 - [integration_agent.py](lib/agents/integration_agent.py)
-- [integration_test.go](internal/ai/clients/integration_test.go)
 
-### Monitoring (3 archivos)
+### Monitoring (4 archivos)
+- [PR_METRICS_DASHBOARD.md](.github/dashboards/PR_METRICS_DASHBOARD.md)
 - [metrics.go](internal/ai/metrics.go)
 - [monitoring.md](LIBRARY/by-purpose/monitoring.md)
 - [pr-metrics.yml](.github/workflows/pr-metrics.yml)
