@@ -1,12 +1,13 @@
 # PY
 
-Total: 53 archivos
+Total: 59 archivos
 
 - [__init__.py](python/etl/__init__.py)
 - [__init__.py](lib/orchestrator/__init__.py)
 - [__init__.py](lib/agents/__init__.py)
 - [__init__.py](lib/agents/specialized/__init__.py)
 - [__init__.py](SYNEMU/agents_bots/__init__.py)
+- [agent_dashboard.py](agents/agent_dashboard.py)
 - [agent_orchestrator.py](lib/orchestrator/agent_orchestrator.py)
 - [agents.py](api/agents.py)
 - [ai_router_agent.py](lib/agents/ai_router_agent.py)
@@ -20,6 +21,7 @@ Total: 53 archivos
 - [export_to_s3.py](python/etl/export_to_s3.py)
 - [export_with_agents.py](python/etl/export_with_agents.py)
 - [generate_agent_report.py](scripts/generate_agent_report.py)
+- [generate_html_report.py](agents/generate_html_report.py)
 - [generate_report.py](.github/workflows/bots/scripts/generate_report.py)
 - [health.py](api/health.py)
 - [hiro_sre.py](lib/agents/specialized/hiro_sre.py)
@@ -46,11 +48,15 @@ Total: 53 archivos
 - [synemu_qa_owl.py](SYNEMU/agents_bots/synemu_qa_owl.py)
 - [synemu_supreme_orchestrator.py](SYNEMU/agents_bots/synemu_supreme_orchestrator.py)
 - [test_ai_router_agent.py](lib/agents/test_ai_router_agent.py)
+- [test_all_apis.py](agents/test_all_apis.py)
 - [test_crew.py](lib/agents/test_crew.py)
 - [test_dependency_checker.py](testing/dependency_agent/test_dependency_checker.py)
 - [test_deployment_agent.py](lib/agents/test_deployment_agent.py)
 - [test_export.py](python/etl/test_export.py)
+- [test_free_apis.py](agents/test_free_apis.py)
 - [test_integration_agent.py](lib/agents/test_integration_agent.py)
+- [test_tokyo_crew.py](agents/test_tokyo_crew.py)
+- [tokyo_crew.py](agents/tokyo_crew.py)
 - [tools.py](lib/agents/tools.py)
 - [workflows.py](lib/orchestrator/workflows.py)
 - [workflows.py](lib/agents/workflows.py)

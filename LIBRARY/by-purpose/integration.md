@@ -1,6 +1,6 @@
 # Integration
 
-Total: 18 archivos
+Total: 20 archivos
 
 - [IMPLEMENTATION_SUMMARY_AI.md](docs/IMPLEMENTATION_SUMMARY_AI.md) - Multi-Model AI Integration - Implementation Summary
 - [JIRA_SETUP.md](docs/integrations/JIRA_SETUP.md) - Jira Integration Setup Guide
@@ -22,4 +22,6 @@ Uses Documentation Agent for
 - [jira_sync_with_agents.py](.github/workflows/scripts/jira_sync_with_agents.py) - !/usr/bin/env python3
 - [synemu_integrations.py](SYNEMU/agents_bots/synemu_integrations.py) - !/usr/bin/env python3
 - [test-integrations.yml](.github/workflows/test-integrations.yml) - Test Integrations
+- [test_all_apis.py](agents/test_all_apis.py) - !/usr/bin/env python3
+- [test_free_apis.py](agents/test_free_apis.py) - !/usr/bin/env python3
 - [test_integration_agent.py](lib/agents/test_integration_agent.py) - Tests for Integration Agent.

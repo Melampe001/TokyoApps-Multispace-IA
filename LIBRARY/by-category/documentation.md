@@ -1,6 +1,6 @@
 # Documentation
 
-Total: 161 archivos
+Total: 162 archivos
 
 ## [AGENTS_README.md](AGENTS_README.md)
 🤖 Tokyo-IA Agent Pipeline System
@@ -175,6 +175,9 @@ Tokyo-IA Documentation
 
 ## [README.md](docs/elara/README.md)
 👑 Elara Knowledge Base
+
+## [README.md](agents/README.md)
+Tokyo-IA Agent Orchestration System
 
 ## [README.md](SYNEMU/README.md)
 SYNEMU Suite

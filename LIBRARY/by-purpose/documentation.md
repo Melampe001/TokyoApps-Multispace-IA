@@ -1,6 +1,6 @@
 # Documentation
 
-Total: 60 archivos
+Total: 61 archivos
 
 - [.dockerignore](.dockerignore) - .dockerignore - other
 - [.dockerignore](orchestrator/.dockerignore) - .dockerignore - other
@@ -36,6 +36,7 @@ Total: 60 archivos
 - [README.md](assets/play-store/icon/README.md) - App Icon Generation - Tokyo IA
 - [README.md](docs/README.md) - Tokyo-IA Documentation
 - [README.md](docs/elara/README.md) - 👑 Elara Knowledge Base
+- [README.md](agents/README.md) - Tokyo-IA Agent Orchestration System
 - [README.md](SYNEMU/README.md) - SYNEMU Suite
 - [README.md](SYNEMU/recursos/README.md) - SYNEMU Additional Resources
 - [README.md](SYNEMU/docs/README.md) - SYNEMU Suite Documentation

@@ -1,13 +1,13 @@
 # File Count Statistics
 
-Total files: 434
+Total files: 444
 
 ## By Category
 - build: 7
 - configuration: 11
-- documentation: 161
+- documentation: 162
 - other: 35
 - schema: 1
-- script: 74
+- script: 82
 - source: 94
-- workflow: 51
+- workflow: 52

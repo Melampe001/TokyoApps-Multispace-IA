@@ -1,6 +1,6 @@
 # MD
 
-Total: 156 archivos
+Total: 157 archivos
 
 - [AGENTS_README.md](AGENTS_README.md)
 - [ARCHITECTURE.md](docs/ARCHITECTURE.md)
@@ -60,6 +60,7 @@ Total: 156 archivos
 - [README.md](assets/play-store/icon/README.md)
 - [README.md](docs/README.md)
 - [README.md](docs/elara/README.md)
+- [README.md](agents/README.md)
 - [README.md](SYNEMU/README.md)
 - [README.md](SYNEMU/recursos/README.md)
 - [README.md](SYNEMU/docs/README.md)

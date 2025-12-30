@@ -1,17 +1,17 @@
 # 📚 Catálogo Completo de la Biblioteca
-Última actualización: 2025-12-29 03:50:53
-Total de archivos: 434
+Última actualización: 2025-12-30 03:39:05
+Total de archivos: 444
 
 ---
 ## 📊 Estadísticas Generales
 - **Build**: 7 archivos
 - **Configuration**: 11 archivos
-- **Documentation**: 161 archivos
+- **Documentation**: 162 archivos
 - **Other**: 35 archivos
 - **Schema**: 1 archivos
-- **Script**: 74 archivos
+- **Script**: 82 archivos
 - **Source**: 94 archivos
-- **Workflow**: 51 archivos
+- **Workflow**: 52 archivos
 
 ---
 ## 🗂️ Por Categoría
@@ -38,7 +38,7 @@ Total de archivos: 434
 - **[routing_rules.json](config/agents/routing_rules.json)** - routing_rules.json - configuration
 - **[vercel.json](vercel.json)** - vercel.json - configuration
 
-### Documentation (161 archivos)
+### Documentation (162 archivos)
 - **[AGENTS_README.md](AGENTS_README.md)** - 🤖 Tokyo-IA Agent Pipeline System
 - **[ARCHITECTURE.md](docs/ARCHITECTURE.md)** - 🏗️ Tokyo-IA Architecture Documentation
 - **[ATHENA_GUIDE.md](docs/analytics/ATHENA_GUIDE.md)** - AWS Athena Query Guide
@@ -85,7 +85,7 @@ Total de archivos: 434
 ### Schema (1 archivos)
 - **[hello.proto](proto/hello.proto)** - hello.proto - schema
 
-### Script (74 archivos)
+### Script (82 archivos)
 - **[__init__.py](python/etl/__init__.py)** - __init__.py - script
 - **[__init__.py](lib/orchestrator/__init__.py)** - Tokyo-IA Orchestrator
 
@@ -98,6 +98,7 @@ This package provides multi-agent AI capabilities using CrewAI.
 Five elite AI agents with unique personalities and expertise:
 - Akira (
 - **[__init__.py](SYNEMU/agents_bots/__init__.py)** - !/usr/bin/env python3
+- **[agent_dashboard.py](agents/agent_dashboard.py)** - !/usr/bin/env python3
 - **[agent_orchestrator.py](lib/orchestrator/agent_orchestrator.py)** - !/usr/bin/env python3
 - **[agents.py](api/agents.py)** - AI Agents endpoint for TokyoApps-Multispace-IA on Vercel.
 Provides information about available agent
@@ -115,7 +116,6 @@ This agent selects the optimal AI provi
 - **[build_agent_mock.sh](flutter_app/build_agent_mock.sh)** - !/bin/bash
 - **[check_dependencies.py](.github/workflows/bots/scripts/check_dependencies.py)** - !/usr/bin/env python3
 - **[compress_assets.sh](.github/workflows/bots/scripts/compress_assets.sh)** - !/bin/bash
-- **[create_and_merge_pr.sh](scripts/create_and_merge_pr.sh)** - !/usr/bin/env bash
 
 ### Source (94 archivos)
 - **[AgentDashboard.tsx](admin/src/components/AgentDashboard.tsx)** - AgentDashboard.tsx - source
@@ -139,7 +139,7 @@ This agent selects the optimal AI provi
 - **[agent_log.dart](flutter_app/lib/models/agent_log.dart)** - agent_log.dart - source
 - **[agent_orchestrator.dart](flutter_app/lib/services/agent_orchestrator.dart)** - agent_orchestrator.dart - source
 
-### Workflow (51 archivos)
+### Workflow (52 archivos)
 - **[.codecov.yml](.codecov.yml)** - .codecov.yml - workflow
 - **[.golangci.yml](.golangci.yml)** - .golangci.yml - workflow
 - **[.pre-commit-config.yaml](.pre-commit-config.yaml)** - .pre-commit-config.yaml - workflow
@@ -188,7 +188,7 @@ This agent selects the optimal AI provi
 - [build.md](LIBRARY/by-category/build.md)
 - [build_agent.sh](flutter_app/build_agent.sh)
 
-### Documentation (60 archivos)
+### Documentation (61 archivos)
 - [.dockerignore](.dockerignore)
 - [.dockerignore](orchestrator/.dockerignore)
 - [.dockerignore](agents/.dockerignore)
@@ -200,7 +200,7 @@ This agent selects the optimal AI provi
 - [CI_CD.md](docs/CI_CD.md)
 - [Dockerfile](Dockerfile)
 
-### General (247 archivos)
+### General (253 archivos)
 - [.env.example](.env.example)
 - [.env.example](flutter_app/.env.example)
 - [.flake8](.flake8)
@@ -212,7 +212,7 @@ This agent selects the optimal AI provi
 - [AgentDashboard.tsx](admin/src/components/AgentDashboard.tsx)
 - [AgentRepository.kt](app/src/main/java/com/tokyoia/app/data/repository/AgentRepository.kt)
 
-### Integration (18 archivos)
+### Integration (20 archivos)
 - [IMPLEMENTATION_SUMMARY_AI.md](docs/IMPLEMENTATION_SUMMARY_AI.md)
 - [JIRA_SETUP.md](docs/integrations/JIRA_SETUP.md)
 - [README.md](templates/api/README.md)
@@ -239,7 +239,7 @@ This agent selects the optimal AI provi
 - [security.md](LIBRARY/by-purpose/security.md)
 - [security.yml](.github/workflows/security.yml)
 
-### Testing (43 archivos)
+### Testing (44 archivos)
 - [__init__.py](lib/agents/specialized/__init__.py)
 - [agent_code_master_test.dart](flutter_app/test/agents/agent_code_master_test.dart)
 - [agent_deploy_test.dart](flutter_app/test/agents/agent_deploy_test.dart)

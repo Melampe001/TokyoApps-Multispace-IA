@@ -1,8 +1,20 @@
 # 📅 Línea de Tiempo de Creaciones
-Última actualización: 2025-12-29 03:50:53
+Última actualización: 2025-12-30 03:39:05
 
+
+## 2025-12-29
+- **tokyo-ia-pr-analysis.yml** - Tokyo-IA Agents - PR Analysis
+- **test_tokyo_crew.py** - !/usr/bin/env python3
+- **generate_html_report.py** - !/usr/bin/env python3
 
 ## 2025-12-28
+- **agent_dashboard.py** - !/usr/bin/env python3
+- **tokyo_crew.py** - !/usr/bin/env python3
+- **run_agents.sh** - !/bin/bash
+- **README.md** - Tokyo-IA Agent Orchestration System
+- **test_free_apis.py** - !/usr/bin/env python3
+- **parallel_execution.sh** - !/bin/bash
+- **test_all_apis.py** - !/usr/bin/env python3
 - **DEPLOY_VERCEL.md** - 🚀 Despliegue en Vercel - TokyoApps-Multispace-IA
 - **.vercelignore** - .vercelignore - other
 - **requirements.txt** - Vercel Serverless Functions - Python Dependencies
@@ -56,13 +68,3 @@ Uses Docu
 - **deployment.yaml** - deployment.yaml - workflow
 - **integration_mappings.yaml** - integration_mappings.yaml - workflow
 - **routing_rules.json** - routing_rules.json - configuration
-- **sheets-update.yml** - Update Dashboard
-- **jira-sync.yml** - Jira Sync
-- **slack-bot.yml** - Slack Bot
-- **sheets_updater.py** - !/usr/bin/env python3
-- **slack_bot.py** - !/usr/bin/env python3
-- **jira_sync.py** - !/usr/bin/env python3
-- **integrations.json** - integrations.json - configuration
-- **JIRA_SETUP.md** - Jira Integration Setup Guide
-- **openai_client.go** - openai_client.go - source
-- **gemini_client.go** - gemini_client.go - source

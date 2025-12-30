@@ -1,6 +1,6 @@
 # Workflow
 
-Total: 51 archivos
+Total: 52 archivos
 
 ## [.codecov.yml](.codecov.yml)
 .codecov.yml - workflow
@@ -151,6 +151,9 @@ Slack Bot
 
 ## [test-integrations.yml](.github/workflows/test-integrations.yml)
 Test Integrations
+
+## [tokyo-ia-pr-analysis.yml](.github/workflows/tokyo-ia-pr-analysis.yml)
+Tokyo-IA Agents - PR Analysis
 
 ## [weekly-report.yml](.github/workflows/weekly-report.yml)
 Weekly Report

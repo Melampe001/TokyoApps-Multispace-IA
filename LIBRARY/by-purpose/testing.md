@@ -1,6 +1,6 @@
 # Testing
 
-Total: 43 archivos
+Total: 44 archivos
 
 - [__init__.py](lib/agents/specialized/__init__.py) - Tokyo-IA Specialized Agents
 
@@ -51,6 +51,7 @@ This agent extends the SRE Agent with dep
 - [test_dependency_checker.py](testing/dependency_agent/test_dependency_checker.py) - !/usr/bin/env python3
 - [test_deployment_agent.py](lib/agents/test_deployment_agent.py) - Tests for Deployment Agent.
 - [test_export.py](python/etl/test_export.py) - !/usr/bin/env python3
+- [test_tokyo_crew.py](agents/test_tokyo_crew.py) - !/usr/bin/env python3
 - [testing.md](LIBRARY/by-purpose/testing.md) - Testing
 - [tools.py](lib/agents/tools.py) - Custom tools for Tokyo-IA agents.
 

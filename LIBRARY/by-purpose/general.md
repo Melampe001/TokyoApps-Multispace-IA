@@ -1,6 +1,6 @@
 # General
 
-Total: 247 archivos
+Total: 253 archivos
 
 - [.env.example](.env.example) - .env.example - other
 - [.env.example](flutter_app/.env.example) - .env.example - other
@@ -65,6 +65,7 @@ This package provides multi-agent AI capabilities using CrewAI.
 - [agent.go](internal/orchestrator/agent.go) - agent.go - source
 - [agent_base.dart](flutter_app/lib/agents/agent_base.dart) - agent_base.dart - source
 - [agent_code_master.dart](flutter_app/lib/agents/agent_code_master.dart) - agent_code_master.dart - source
+- [agent_dashboard.py](agents/agent_dashboard.py) - !/usr/bin/env python3
 - [agent_gen_ai.dart](flutter_app/lib/agents/agent_gen_ai.dart) - agent_gen_ai.dart - source
 - [agent_knowledge.dart](flutter_app/lib/agents/agent_knowledge.dart) - agent_knowledge.dart - source
 - [agent_log.dart](flutter_app/lib/models/agent_log.dart) - agent_log.dart - source
@@ -129,6 +130,7 @@ This module provides ETL functionality that inte
 - [gemini_client.go](internal/ai/clients/gemini_client.go) - gemini_client.go - source
 - [general.md](LIBRARY/by-purpose/general.md) - General
 - [generate_agent_report.py](scripts/generate_agent_report.py) - !/usr/bin/env python3
+- [generate_html_report.py](agents/generate_html_report.py) - !/usr/bin/env python3
 - [generate_report.py](.github/workflows/bots/scripts/generate_report.py) - !/usr/bin/env python3
 - [generator.go](lib/generator/generator.go) - generator.go - source
 - [go.md](LIBRARY/by-technology/go.md) - GO
@@ -186,6 +188,7 @@ Returns service health status and syste
 - [p1_implementation_with_agents.sh](scripts/p1_implementation_with_agents.sh) - !/bin/bash
 - [package-lock.json](web/package-lock.json) - package-lock.json - configuration
 - [package.json](web/package.json) - package.json - configuration
+- [parallel_execution.sh](agents/parallel_execution.sh) - !/bin/bash
 - [parser.go](lib/generator/parser.go) - parser.go - source
 - [persona.md](docs/elara/persona.md) - 👑 Elara - Complete Identity and Personality
 - [pipeline.sh](pipeline.sh) - !/bin/bash
@@ -205,6 +208,7 @@ Returns service health status and syste
 - [requirements.txt](api/requirements.txt) - Vercel Serverless Functions - Python Dependencies
 - [restore_validator.go](internal/monetization/restore_validator.go) - restore_validator.go - source
 - [routing_rules.json](config/agents/routing_rules.json) - routing_rules.json - configuration
+- [run_agents.sh](agents/run_agents.sh) - !/bin/bash
 - [run_emulator.sh](emulator/run_emulator.sh) - !/bin/bash
 - [run_flow.sh](orchestrator/run_flow.sh) - !/bin/bash
 - [scaffolder.go](lib/generator/scaffolder.go) - scaffolder.go - source
@@ -236,6 +240,8 @@ Returns service health status and syste
 - [tf.md](LIBRARY/by-technology/tf.md) - TF
 - [tokraggcorp_letterhead.md](hojas_membretadas/tokraggcorp_letterhead.md) - TokRaggcorp® Official Letterhead
 - [tokraggcorp_logo_primary.placeholder.txt](recursos_identidad/tokraggcorp_logo_primary.placeholder.txt) - TokRaggcorp® Logo Placeholder
+- [tokyo-ia-pr-analysis.yml](.github/workflows/tokyo-ia-pr-analysis.yml) - Tokyo-IA Agents - PR Analysis
+- [tokyo_crew.py](agents/tokyo_crew.py) - !/usr/bin/env python3
 - [tokyoapps_letterhead.md](hojas_membretadas/tokyoapps_letterhead.md) - TokyoApps® Official Letterhead
 - [tokyoapps_logo_primary.placeholder.txt](recursos_identidad/tokyoapps_logo_primary.placeholder.txt) - TokyoApps® Logo Placeholder
 - [toml.md](LIBRARY/by-technology/toml.md) - TOML

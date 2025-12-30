@@ -1,6 +1,6 @@
 # YML
 
-Total: 41 archivos
+Total: 42 archivos
 
 - [.codecov.yml](.codecov.yml)
 - [.golangci.yml](.golangci.yml)
@@ -42,4 +42,5 @@ Total: 41 archivos
 - [slack-bot.yml](.github/workflows/slack-bot.yml)
 - [stale.yml](.github/workflows/stale.yml)
 - [test-integrations.yml](.github/workflows/test-integrations.yml)
+- [tokyo-ia-pr-analysis.yml](.github/workflows/tokyo-ia-pr-analysis.yml)
 - [weekly-report.yml](.github/workflows/weekly-report.yml)
