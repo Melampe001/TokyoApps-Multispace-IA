@@ -1,5 +1,5 @@
 {
-  "generated": "2025-12-31T03:38:04.146248",
+  "generated": "2026-01-01T03:52:05.011566",
   "total_files": 444,
   "files": [
     {
@@ -511,8 +511,8 @@
       "authorship": {
         "author": "Artur Orozco",
         "contributors": [
-          "Artur Orozco",
-          "copilot-swe-agent[bot]"
+          "copilot-swe-agent[bot]",
+          "Artur Orozco"
         ],
         "commits": 17
       },
@@ -909,8 +909,8 @@
       "authorship": {
         "author": "copilot-swe-agent[bot]",
         "contributors": [
-          "Artur Orozco",
-          "copilot-swe-agent[bot]"
+          "copilot-swe-agent[bot]",
+          "Artur Orozco"
         ],
         "commits": 4
       },
@@ -4934,7 +4934,7 @@
         "name": "SEARCH_INDEX.json",
         "type": "configuration",
         "extension": ".json",
-        "size_bytes": 367002,
+        "size_bytes": 367003,
         "lines": 15062
       },
       "classification": {
@@ -4947,15 +4947,15 @@
       },
       "dates": {
         "created": "2025-12-14T07:22:11Z",
-        "modified": "2025-12-30T03:39:05Z"
+        "modified": "2025-12-31T03:38:04Z"
       },
       "authorship": {
         "author": "copilot-swe-agent[bot]",
         "contributors": [
-          "copilot-swe-agent[bot]",
-          "github-actions[bot]"
+          "github-actions[bot]",
+          "copilot-swe-agent[bot]"
         ],
-        "commits": 20
+        "commits": 21
       },
       "content": {
         "description": "SEARCH_INDEX.json - configuration",
@@ -5049,8 +5049,8 @@
       "authorship": {
         "author": "copilot-swe-agent[bot]",
         "contributors": [
-          "copilot-swe-agent[bot]",
-          "github-actions[bot]"
+          "github-actions[bot]",
+          "copilot-swe-agent[bot]"
         ],
         "commits": 2
       },
@@ -5078,15 +5078,15 @@
       },
       "dates": {
         "created": "2025-12-14T07:22:11Z",
-        "modified": "2025-12-30T03:39:05Z"
+        "modified": "2025-12-31T03:38:04Z"
       },
       "authorship": {
         "author": "copilot-swe-agent[bot]",
         "contributors": [
-          "copilot-swe-agent[bot]",
-          "github-actions[bot]"
+          "github-actions[bot]",
+          "copilot-swe-agent[bot]"
         ],
-        "commits": 20
+        "commits": 21
       },
       "content": {
         "description": "\ud83d\udcda Cat\u00e1logo Completo de la Biblioteca",
@@ -5110,15 +5110,15 @@
       },
       "dates": {
         "created": "2025-12-14T07:22:11Z",
-        "modified": "2025-12-30T03:39:05Z"
+        "modified": "2025-12-31T03:38:04Z"
       },
       "authorship": {
         "author": "copilot-swe-agent[bot]",
         "contributors": [
-          "copilot-swe-agent[bot]",
-          "github-actions[bot]"
+          "github-actions[bot]",
+          "copilot-swe-agent[bot]"
         ],
-        "commits": 20
+        "commits": 21
       },
       "content": {
         "description": "\ud83d\udcc5 L\u00ednea de Tiempo de Creaciones",
@@ -5428,8 +5428,8 @@
       "authorship": {
         "author": "copilot-swe-agent[bot]",
         "contributors": [
-          "copilot-swe-agent[bot]",
-          "github-actions[bot]"
+          "github-actions[bot]",
+          "copilot-swe-agent[bot]"
         ],
         "commits": 12
       },
@@ -5460,8 +5460,8 @@
       "authorship": {
         "author": "copilot-swe-agent[bot]",
         "contributors": [
-          "copilot-swe-agent[bot]",
-          "github-actions[bot]"
+          "github-actions[bot]",
+          "copilot-swe-agent[bot]"
         ],
         "commits": 4
       },
@@ -5525,8 +5525,8 @@
       "authorship": {
         "author": "copilot-swe-agent[bot]",
         "contributors": [
-          "copilot-swe-agent[bot]",
-          "github-actions[bot]"
+          "github-actions[bot]",
+          "copilot-swe-agent[bot]"
         ],
         "commits": 7
       },
@@ -5559,8 +5559,8 @@
       "authorship": {
         "author": "copilot-swe-agent[bot]",
         "contributors": [
-          "copilot-swe-agent[bot]",
-          "github-actions[bot]"
+          "github-actions[bot]",
+          "copilot-swe-agent[bot]"
         ],
         "commits": 6
       },
@@ -5967,8 +5967,8 @@
       "authorship": {
         "author": "copilot-swe-agent[bot]",
         "contributors": [
-          "copilot-swe-agent[bot]",
-          "github-actions[bot]"
+          "github-actions[bot]",
+          "copilot-swe-agent[bot]"
         ],
         "commits": 4
       },
@@ -6030,8 +6030,8 @@
       "authorship": {
         "author": "copilot-swe-agent[bot]",
         "contributors": [
-          "copilot-swe-agent[bot]",
-          "github-actions[bot]"
+          "github-actions[bot]",
+          "copilot-swe-agent[bot]"
         ],
         "commits": 8
       },
@@ -6093,8 +6093,8 @@
       "authorship": {
         "author": "copilot-swe-agent[bot]",
         "contributors": [
-          "copilot-swe-agent[bot]",
-          "github-actions[bot]"
+          "github-actions[bot]",
+          "copilot-swe-agent[bot]"
         ],
         "commits": 12
       },
@@ -6125,8 +6125,8 @@
       "authorship": {
         "author": "copilot-swe-agent[bot]",
         "contributors": [
-          "copilot-swe-agent[bot]",
-          "github-actions[bot]"
+          "github-actions[bot]",
+          "copilot-swe-agent[bot]"
         ],
         "commits": 8
       },
@@ -6157,8 +6157,8 @@
       "authorship": {
         "author": "copilot-swe-agent[bot]",
         "contributors": [
-          "copilot-swe-agent[bot]",
-          "github-actions[bot]"
+          "github-actions[bot]",
+          "copilot-swe-agent[bot]"
         ],
         "commits": 5
       },
@@ -6189,8 +6189,8 @@
       "authorship": {
         "author": "copilot-swe-agent[bot]",
         "contributors": [
-          "copilot-swe-agent[bot]",
-          "github-actions[bot]"
+          "github-actions[bot]",
+          "copilot-swe-agent[bot]"
         ],
         "commits": 6
       },
@@ -6221,8 +6221,8 @@
       "authorship": {
         "author": "copilot-swe-agent[bot]",
         "contributors": [
-          "copilot-swe-agent[bot]",
-          "github-actions[bot]"
+          "github-actions[bot]",
+          "copilot-swe-agent[bot]"
         ],
         "commits": 7
       },
@@ -6286,8 +6286,8 @@
       "authorship": {
         "author": "copilot-swe-agent[bot]",
         "contributors": [
-          "copilot-swe-agent[bot]",
-          "github-actions[bot]"
+          "github-actions[bot]",
+          "copilot-swe-agent[bot]"
         ],
         "commits": 8
       },
@@ -6318,8 +6318,8 @@
       "authorship": {
         "author": "copilot-swe-agent[bot]",
         "contributors": [
-          "copilot-swe-agent[bot]",
-          "github-actions[bot]"
+          "github-actions[bot]",
+          "copilot-swe-agent[bot]"
         ],
         "commits": 4
       },
@@ -6350,8 +6350,8 @@
       "authorship": {
         "author": "copilot-swe-agent[bot]",
         "contributors": [
-          "copilot-swe-agent[bot]",
-          "github-actions[bot]"
+          "github-actions[bot]",
+          "copilot-swe-agent[bot]"
         ],
         "commits": 12
       },
@@ -6382,8 +6382,8 @@
       "authorship": {
         "author": "copilot-swe-agent[bot]",
         "contributors": [
-          "copilot-swe-agent[bot]",
-          "github-actions[bot]"
+          "github-actions[bot]",
+          "copilot-swe-agent[bot]"
         ],
         "commits": 6
       },
@@ -6414,8 +6414,8 @@
       "authorship": {
         "author": "copilot-swe-agent[bot]",
         "contributors": [
-          "copilot-swe-agent[bot]",
-          "github-actions[bot]"
+          "github-actions[bot]",
+          "copilot-swe-agent[bot]"
         ],
         "commits": 8
       },
@@ -6446,8 +6446,8 @@
       "authorship": {
         "author": "copilot-swe-agent[bot]",
         "contributors": [
-          "copilot-swe-agent[bot]",
-          "github-actions[bot]"
+          "github-actions[bot]",
+          "copilot-swe-agent[bot]"
         ],
         "commits": 11
       },
@@ -6509,8 +6509,8 @@
       "authorship": {
         "author": "copilot-swe-agent[bot]",
         "contributors": [
-          "copilot-swe-agent[bot]",
-          "github-actions[bot]"
+          "github-actions[bot]",
+          "copilot-swe-agent[bot]"
         ],
         "commits": 9
       },
@@ -6572,8 +6572,8 @@
       "authorship": {
         "author": "copilot-swe-agent[bot]",
         "contributors": [
-          "copilot-swe-agent[bot]",
-          "github-actions[bot]"
+          "github-actions[bot]",
+          "copilot-swe-agent[bot]"
         ],
         "commits": 5
       },
@@ -6604,8 +6604,8 @@
       "authorship": {
         "author": "copilot-swe-agent[bot]",
         "contributors": [
-          "copilot-swe-agent[bot]",
-          "github-actions[bot]"
+          "github-actions[bot]",
+          "copilot-swe-agent[bot]"
         ],
         "commits": 10
       },
