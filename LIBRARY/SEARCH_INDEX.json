@@ -1,6 +1,6 @@
 {
-  "generated": "2026-01-01T03:52:05.011566",
-  "total_files": 444,
+  "generated": "2026-01-02T03:42:05.258413",
+  "total_files": 454,
   "files": [
     {
       "file": {
@@ -495,8 +495,8 @@
         "name": "README.md",
         "type": "documentation",
         "extension": ".md",
-        "size_bytes": 30602,
-        "lines": 864
+        "size_bytes": 30980,
+        "lines": 870
       },
       "classification": {
         "category": "documentation",
@@ -506,15 +506,15 @@
       },
       "dates": {
         "created": "2025-11-24T02:05:59-06:00",
-        "modified": "2025-12-28T08:45:22Z"
+        "modified": "2025-12-28T08:21:37Z"
       },
       "authorship": {
         "author": "Artur Orozco",
         "contributors": [
-          "copilot-swe-agent[bot]",
-          "Artur Orozco"
+          "Artur Orozco",
+          "copilot-swe-agent[bot]"
         ],
-        "commits": 17
+        "commits": 18
       },
       "content": {
         "description": "\ud83c\udfdb\ufe0f Tokyo-IA - Imperial Premium Elite Edition",
@@ -909,8 +909,8 @@
       "authorship": {
         "author": "copilot-swe-agent[bot]",
         "contributors": [
-          "copilot-swe-agent[bot]",
-          "Artur Orozco"
+          "Artur Orozco",
+          "copilot-swe-agent[bot]"
         ],
         "commits": 4
       },
@@ -978,6 +978,37 @@
       },
       "content": {
         "description": "Agentes y bots - other",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "IMPLEMENTATION_SUMMARY_PR_AUTOMATION.md",
+        "name": "IMPLEMENTATION_SUMMARY_PR_AUTOMATION.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 11547,
+        "lines": 417
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "general",
+        "purpose": "automation",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-28T08:26:11Z",
+        "modified": "2025-12-28T08:26:11Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "\ud83e\udd16 PR Automation System - Implementation Summary",
         "dependencies": []
       }
     },
@@ -3113,8 +3144,8 @@
       "authorship": {
         "author": "copilot-swe-agent[bot]",
         "contributors": [
-          "dependabot[bot]",
-          "copilot-swe-agent[bot]"
+          "copilot-swe-agent[bot]",
+          "dependabot[bot]"
         ],
         "commits": 3
       },
@@ -3219,6 +3250,39 @@
       },
       "content": {
         "description": "\ud83d\udcc8 PR Metrics Comment",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": ".github/workflows/pr-bot-commands.yml",
+        "name": "pr-bot-commands.yml",
+        "type": "workflow",
+        "extension": ".yml",
+        "size_bytes": 18146,
+        "lines": 391
+      },
+      "classification": {
+        "category": "workflow",
+        "area": "ci-cd",
+        "purpose": "automation",
+        "tags": [
+          "yaml"
+        ]
+      },
+      "dates": {
+        "created": "2025-12-28T08:14:44Z",
+        "modified": "2025-12-28T08:18:54Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 2
+      },
+      "content": {
+        "description": "\ud83e\udd16 PR Bot Commands",
         "dependencies": []
       }
     },
@@ -3346,8 +3410,8 @@
       "authorship": {
         "author": "copilot-swe-agent[bot]",
         "contributors": [
-          "dependabot[bot]",
-          "copilot-swe-agent[bot]"
+          "copilot-swe-agent[bot]",
+          "dependabot[bot]"
         ],
         "commits": 5
       },
@@ -3479,8 +3543,8 @@
       "authorship": {
         "author": "copilot-swe-agent[bot]",
         "contributors": [
-          "dependabot[bot]",
-          "copilot-swe-agent[bot]"
+          "copilot-swe-agent[bot]",
+          "dependabot[bot]"
         ],
         "commits": 4
       },
@@ -3519,6 +3583,39 @@
       },
       "content": {
         "description": "\ud83d\udce6 Release",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": ".github/workflows/pr-auto-labeler.yml",
+        "name": "pr-auto-labeler.yml",
+        "type": "workflow",
+        "extension": ".yml",
+        "size_bytes": 10962,
+        "lines": 236
+      },
+      "classification": {
+        "category": "workflow",
+        "area": "ci-cd",
+        "purpose": "general",
+        "tags": [
+          "yaml"
+        ]
+      },
+      "dates": {
+        "created": "2025-12-28T08:14:44Z",
+        "modified": "2025-12-28T08:18:54Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 2
+      },
+      "content": {
+        "description": "\ud83c\udff7\ufe0f PR Auto-Labeler",
         "dependencies": []
       }
     },
@@ -3579,8 +3676,8 @@
       "authorship": {
         "author": "copilot-swe-agent[bot]",
         "contributors": [
-          "dependabot[bot]",
-          "copilot-swe-agent[bot]"
+          "copilot-swe-agent[bot]",
+          "dependabot[bot]"
         ],
         "commits": 4
       },
@@ -3712,8 +3809,8 @@
       "authorship": {
         "author": "copilot-swe-agent[bot]",
         "contributors": [
-          "dependabot[bot]",
-          "copilot-swe-agent[bot]"
+          "copilot-swe-agent[bot]",
+          "dependabot[bot]"
         ],
         "commits": 4
       },
@@ -3812,8 +3909,8 @@
       "authorship": {
         "author": "copilot-swe-agent[bot]",
         "contributors": [
-          "dependabot[bot]",
-          "copilot-swe-agent[bot]"
+          "copilot-swe-agent[bot]",
+          "dependabot[bot]"
         ],
         "commits": 5
       },
@@ -3846,8 +3943,8 @@
       "authorship": {
         "author": "copilot-swe-agent[bot]",
         "contributors": [
-          "dependabot[bot]",
-          "copilot-swe-agent[bot]"
+          "copilot-swe-agent[bot]",
+          "dependabot[bot]"
         ],
         "commits": 6
       },
@@ -3886,6 +3983,39 @@
       },
       "content": {
         "description": "Flutter Agents CI/CD",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": ".github/workflows/pr-cleanup.yml",
+        "name": "pr-cleanup.yml",
+        "type": "workflow",
+        "extension": ".yml",
+        "size_bytes": 21888,
+        "lines": 450
+      },
+      "classification": {
+        "category": "workflow",
+        "area": "ci-cd",
+        "purpose": "general",
+        "tags": [
+          "yaml"
+        ]
+      },
+      "dates": {
+        "created": "2025-12-28T08:14:44Z",
+        "modified": "2025-12-28T08:18:54Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 2
+      },
+      "content": {
+        "description": "\ud83e\uddf9 PR Cleanup",
         "dependencies": []
       }
     },
@@ -3980,8 +4110,8 @@
       "authorship": {
         "author": "copilot-swe-agent[bot]",
         "contributors": [
-          "dependabot[bot]",
-          "copilot-swe-agent[bot]"
+          "copilot-swe-agent[bot]",
+          "dependabot[bot]"
         ],
         "commits": 6
       },
@@ -4047,8 +4177,8 @@
       "authorship": {
         "author": "copilot-swe-agent[bot]",
         "contributors": [
-          "dependabot[bot]",
-          "copilot-swe-agent[bot]"
+          "copilot-swe-agent[bot]",
+          "dependabot[bot]"
         ],
         "commits": 5
       },
@@ -4092,6 +4222,72 @@
     },
     {
       "file": {
+        "path": ".github/workflows/pr-triage.yml",
+        "name": "pr-triage.yml",
+        "type": "workflow",
+        "extension": ".yml",
+        "size_bytes": 17516,
+        "lines": 361
+      },
+      "classification": {
+        "category": "workflow",
+        "area": "ci-cd",
+        "purpose": "general",
+        "tags": [
+          "yaml"
+        ]
+      },
+      "dates": {
+        "created": "2025-12-28T08:14:44Z",
+        "modified": "2025-12-28T08:18:54Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 2
+      },
+      "content": {
+        "description": "\ud83d\udcca PR Triage",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": ".github/workflows/pr-auto-merger.yml",
+        "name": "pr-auto-merger.yml",
+        "type": "workflow",
+        "extension": ".yml",
+        "size_bytes": 17551,
+        "lines": 368
+      },
+      "classification": {
+        "category": "workflow",
+        "area": "ci-cd",
+        "purpose": "general",
+        "tags": [
+          "yaml"
+        ]
+      },
+      "dates": {
+        "created": "2025-12-28T08:14:44Z",
+        "modified": "2025-12-28T08:18:54Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 2
+      },
+      "content": {
+        "description": "\u2705 PR Auto-Merger",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
         "path": ".github/workflows/bot-coordinator.yml",
         "name": "bot-coordinator.yml",
         "type": "workflow",
@@ -4114,8 +4310,8 @@
       "authorship": {
         "author": "copilot-swe-agent[bot]",
         "contributors": [
-          "dependabot[bot]",
-          "copilot-swe-agent[bot]"
+          "copilot-swe-agent[bot]",
+          "dependabot[bot]"
         ],
         "commits": 6
       },
@@ -4947,7 +5143,7 @@
       },
       "dates": {
         "created": "2025-12-14T07:22:11Z",
-        "modified": "2025-12-31T03:38:04Z"
+        "modified": "2026-01-01T03:52:05Z"
       },
       "authorship": {
         "author": "copilot-swe-agent[bot]",
@@ -4955,7 +5151,7 @@
           "github-actions[bot]",
           "copilot-swe-agent[bot]"
         ],
-        "commits": 21
+        "commits": 22
       },
       "content": {
         "description": "SEARCH_INDEX.json - configuration",
@@ -5078,7 +5274,7 @@
       },
       "dates": {
         "created": "2025-12-14T07:22:11Z",
-        "modified": "2025-12-31T03:38:04Z"
+        "modified": "2026-01-01T03:52:05Z"
       },
       "authorship": {
         "author": "copilot-swe-agent[bot]",
@@ -5086,7 +5282,7 @@
           "github-actions[bot]",
           "copilot-swe-agent[bot]"
         ],
-        "commits": 21
+        "commits": 22
       },
       "content": {
         "description": "\ud83d\udcda Cat\u00e1logo Completo de la Biblioteca",
@@ -5110,7 +5306,7 @@
       },
       "dates": {
         "created": "2025-12-14T07:22:11Z",
-        "modified": "2025-12-31T03:38:04Z"
+        "modified": "2026-01-01T03:52:05Z"
       },
       "authorship": {
         "author": "copilot-swe-agent[bot]",
@@ -5118,7 +5314,7 @@
           "github-actions[bot]",
           "copilot-swe-agent[bot]"
         ],
-        "commits": 21
+        "commits": 22
       },
       "content": {
         "description": "\ud83d\udcc5 L\u00ednea de Tiempo de Creaciones",
@@ -11416,6 +11612,37 @@
     },
     {
       "file": {
+        "path": "docs/PR_AUTOMATION_FLOWS.md",
+        "name": "PR_AUTOMATION_FLOWS.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 18109,
+        "lines": 442
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "documentation",
+        "purpose": "automation",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-28T08:24:18Z",
+        "modified": "2025-12-28T08:24:18Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "\ud83d\udd04 PR Automation System - Flow Diagrams",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
         "path": "docs/SECRETS.md",
         "name": "SECRETS.md",
         "type": "documentation",
@@ -11537,6 +11764,37 @@
       },
       "content": {
         "description": "Dependency Policy",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "docs/PR_AUTOMATION.md",
+        "name": "PR_AUTOMATION.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 14043,
+        "lines": 535
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "documentation",
+        "purpose": "automation",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-28T08:21:37Z",
+        "modified": "2025-12-28T08:21:37Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "\ud83e\udd16 Sistema de Automatizaci\u00f3n de Pull Requests",
         "dependencies": []
       }
     },
@@ -11792,6 +12050,37 @@
     },
     {
       "file": {
+        "path": "docs/PR_AUTOMATION_QUICK_GUIDE.md",
+        "name": "PR_AUTOMATION_QUICK_GUIDE.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 5627,
+        "lines": 212
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "documentation",
+        "purpose": "automation",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-28T08:21:37Z",
+        "modified": "2025-12-28T08:21:37Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "\ud83d\ude80 Gu\u00eda R\u00e1pida - Automatizaci\u00f3n de PRs",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
         "path": "docs/BRANCH_PROTECTION.md",
         "name": "BRANCH_PROTECTION.md",
         "type": "documentation",
@@ -11913,6 +12202,37 @@
       },
       "content": {
         "description": "CI/CD Documentation",
+        "dependencies": []
+      }
+    },
+    {
+      "file": {
+        "path": "docs/PR_AUTOMATION_VALIDATION.md",
+        "name": "PR_AUTOMATION_VALIDATION.md",
+        "type": "documentation",
+        "extension": ".md",
+        "size_bytes": 10199,
+        "lines": 301
+      },
+      "classification": {
+        "category": "documentation",
+        "area": "documentation",
+        "purpose": "automation",
+        "tags": []
+      },
+      "dates": {
+        "created": "2025-12-28T08:22:53Z",
+        "modified": "2025-12-28T08:22:53Z"
+      },
+      "authorship": {
+        "author": "copilot-swe-agent[bot]",
+        "contributors": [
+          "copilot-swe-agent[bot]"
+        ],
+        "commits": 1
+      },
+      "content": {
+        "description": "\u2705 PR Automation Implementation - Validation Summary",
         "dependencies": []
       }
     },

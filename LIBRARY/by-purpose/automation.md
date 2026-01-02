@@ -1,12 +1,17 @@
 # Automation
 
-Total: 33 archivos
+Total: 39 archivos
 
 - [.codecov.yml](.codecov.yml) - .codecov.yml - workflow
 - [.golangci.yml](.golangci.yml) - .golangci.yml - workflow
 - [.pre-commit-config.yaml](.pre-commit-config.yaml) - .pre-commit-config.yaml - workflow
 - [Agentes y bots](Agentes y bots) - Agentes y bots - other
 - [IMPLEMENTATION_SUMMARY_BOTS.md](IMPLEMENTATION_SUMMARY_BOTS.md) - Implementation Summary: Automated PR Bots
+- [IMPLEMENTATION_SUMMARY_PR_AUTOMATION.md](IMPLEMENTATION_SUMMARY_PR_AUTOMATION.md) - 🤖 PR Automation System - Implementation Summary
+- [PR_AUTOMATION.md](docs/PR_AUTOMATION.md) - 🤖 Sistema de Automatización de Pull Requests
+- [PR_AUTOMATION_FLOWS.md](docs/PR_AUTOMATION_FLOWS.md) - 🔄 PR Automation System - Flow Diagrams
+- [PR_AUTOMATION_QUICK_GUIDE.md](docs/PR_AUTOMATION_QUICK_GUIDE.md) - 🚀 Guía Rápida - Automatización de PRs
+- [PR_AUTOMATION_VALIDATION.md](docs/PR_AUTOMATION_VALIDATION.md) - ✅ PR Automation Implementation - Validation Summary
 - [README.md](.github/workflows/README.md) - GitHub Workflows Documentation
 - [README.md](.github/workflows/bots/README.md) - 🤖 Tokyo-IA Automated Bots Documentation
 - [README.md](templates/bot/README.md) - Bot Template
@@ -30,6 +35,7 @@ Multi-agent workflow orchestration system.
 - [labeler.yml](.github/labeler.yml) - labeler.yml - workflow
 - [pr-auto-review.yml](.github/workflows/pr-auto-review.yml) - 🤖 PR Auto-Review Bot
 - [pr-automation-config.yml](.github/pr-automation-config.yml) - pr-automation-config.yml - workflow
+- [pr-bot-commands.yml](.github/workflows/pr-bot-commands.yml) - 🤖 PR Bot Commands
 - [release-drafter.yml](.github/release-drafter.yml) - release-drafter.yml - workflow
 - [shell-automation.md](docs/elara/agents/shell-automation.md) - 🔧 Shell Agent - Automation Specialist
 - [slack-bot.yml](.github/workflows/slack-bot.yml) - Slack Bot

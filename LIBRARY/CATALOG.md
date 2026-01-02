@@ -1,17 +1,17 @@
 # 📚 Catálogo Completo de la Biblioteca
-Última actualización: 2026-01-01 03:52:05
-Total de archivos: 444
+Última actualización: 2026-01-02 03:42:05
+Total de archivos: 454
 
 ---
 ## 📊 Estadísticas Generales
 - **Build**: 7 archivos
 - **Configuration**: 11 archivos
-- **Documentation**: 162 archivos
+- **Documentation**: 167 archivos
 - **Other**: 35 archivos
 - **Schema**: 1 archivos
 - **Script**: 82 archivos
 - **Source**: 94 archivos
-- **Workflow**: 52 archivos
+- **Workflow**: 57 archivos
 
 ---
 ## 🗂️ Por Categoría
@@ -38,7 +38,7 @@ Total de archivos: 444
 - **[routing_rules.json](config/agents/routing_rules.json)** - routing_rules.json - configuration
 - **[vercel.json](vercel.json)** - vercel.json - configuration
 
-### Documentation (162 archivos)
+### Documentation (167 archivos)
 - **[AGENTS_README.md](AGENTS_README.md)** - 🤖 Tokyo-IA Agent Pipeline System
 - **[ARCHITECTURE.md](docs/ARCHITECTURE.md)** - 🏗️ Tokyo-IA Architecture Documentation
 - **[ATHENA_GUIDE.md](docs/analytics/ATHENA_GUIDE.md)** - AWS Athena Query Guide
@@ -139,7 +139,7 @@ This agent selects the optimal AI provi
 - **[agent_log.dart](flutter_app/lib/models/agent_log.dart)** - agent_log.dart - source
 - **[agent_orchestrator.dart](flutter_app/lib/services/agent_orchestrator.dart)** - agent_orchestrator.dart - source
 
-### Workflow (52 archivos)
+### Workflow (57 archivos)
 - **[.codecov.yml](.codecov.yml)** - .codecov.yml - workflow
 - **[.golangci.yml](.golangci.yml)** - .golangci.yml - workflow
 - **[.pre-commit-config.yaml](.pre-commit-config.yaml)** - .pre-commit-config.yaml - workflow
@@ -164,17 +164,17 @@ This agent selects the optimal AI provi
 ---
 ## 🎯 Por Propósito
 
-### Automation (33 archivos)
+### Automation (39 archivos)
 - [.codecov.yml](.codecov.yml)
 - [.golangci.yml](.golangci.yml)
 - [.pre-commit-config.yaml](.pre-commit-config.yaml)
 - [Agentes y bots](Agentes y bots)
 - [IMPLEMENTATION_SUMMARY_BOTS.md](IMPLEMENTATION_SUMMARY_BOTS.md)
-- [README.md](.github/workflows/README.md)
-- [README.md](.github/workflows/bots/README.md)
-- [README.md](templates/bot/README.md)
-- [SLACK_BOT_SETUP.md](docs/integrations/SLACK_BOT_SETUP.md)
-- [WorkflowMonitor.tsx](admin/src/components/WorkflowMonitor.tsx)
+- [IMPLEMENTATION_SUMMARY_PR_AUTOMATION.md](IMPLEMENTATION_SUMMARY_PR_AUTOMATION.md)
+- [PR_AUTOMATION.md](docs/PR_AUTOMATION.md)
+- [PR_AUTOMATION_FLOWS.md](docs/PR_AUTOMATION_FLOWS.md)
+- [PR_AUTOMATION_QUICK_GUIDE.md](docs/PR_AUTOMATION_QUICK_GUIDE.md)
+- [PR_AUTOMATION_VALIDATION.md](docs/PR_AUTOMATION_VALIDATION.md)
 
 ### Deployment (22 archivos)
 - [BUILD_AGENT_REPORT.md](flutter_app/BUILD_AGENT_REPORT.md)
@@ -200,7 +200,7 @@ This agent selects the optimal AI provi
 - [CI_CD.md](docs/CI_CD.md)
 - [Dockerfile](Dockerfile)
 
-### General (253 archivos)
+### General (257 archivos)
 - [.env.example](.env.example)
 - [.env.example](flutter_app/.env.example)
 - [.flake8](.flake8)

@@ -1,6 +1,6 @@
 # Workflow
 
-Total: 52 archivos
+Total: 57 archivos
 
 ## [.codecov.yml](.codecov.yml)
 .codecov.yml - workflow
@@ -107,14 +107,29 @@ Library Report
 ## [orchestrator-deployment.yaml](infrastructure/k8s/orchestrator-deployment.yaml)
 tokyo-ia-orchestrator
 
+## [pr-auto-labeler.yml](.github/workflows/pr-auto-labeler.yml)
+🏷️ PR Auto-Labeler
+
+## [pr-auto-merger.yml](.github/workflows/pr-auto-merger.yml)
+✅ PR Auto-Merger
+
 ## [pr-auto-review.yml](.github/workflows/pr-auto-review.yml)
 🤖 PR Auto-Review Bot
 
 ## [pr-automation-config.yml](.github/pr-automation-config.yml)
 pr-automation-config.yml - workflow
 
+## [pr-bot-commands.yml](.github/workflows/pr-bot-commands.yml)
+🤖 PR Bot Commands
+
+## [pr-cleanup.yml](.github/workflows/pr-cleanup.yml)
+🧹 PR Cleanup
+
 ## [pr-metrics.yml](.github/workflows/pr-metrics.yml)
 📈 PR Metrics Comment
+
+## [pr-triage.yml](.github/workflows/pr-triage.yml)
+📊 PR Triage
 
 ## [pre-release-tests.yml](.github/workflows/pre-release-tests.yml)
 Pre-Release Tests

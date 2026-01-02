@@ -1,6 +1,6 @@
 # Documentation
 
-Total: 162 archivos
+Total: 167 archivos
 
 ## [AGENTS_README.md](AGENTS_README.md)
 🤖 Tokyo-IA Agent Pipeline System
@@ -83,6 +83,9 @@ Multi-Model AI Integration - Implementation Summary
 ## [IMPLEMENTATION_SUMMARY_BOTS.md](IMPLEMENTATION_SUMMARY_BOTS.md)
 Implementation Summary: Automated PR Bots
 
+## [IMPLEMENTATION_SUMMARY_PR_AUTOMATION.md](IMPLEMENTATION_SUMMARY_PR_AUTOMATION.md)
+🤖 PR Automation System - Implementation Summary
+
 ## [JIRA_SETUP.md](docs/integrations/JIRA_SETUP.md)
 Jira Integration Setup Guide
 
@@ -112,6 +115,18 @@ Política de Privacidad - Tokyo IA
 
 ## [PROJECT_STATISTICS.md](flutter_app/PROJECT_STATISTICS.md)
 Tokyo-IA Flutter - Project Statistics
+
+## [PR_AUTOMATION.md](docs/PR_AUTOMATION.md)
+🤖 Sistema de Automatización de Pull Requests
+
+## [PR_AUTOMATION_FLOWS.md](docs/PR_AUTOMATION_FLOWS.md)
+🔄 PR Automation System - Flow Diagrams
+
+## [PR_AUTOMATION_QUICK_GUIDE.md](docs/PR_AUTOMATION_QUICK_GUIDE.md)
+🚀 Guía Rápida - Automatización de PRs
+
+## [PR_AUTOMATION_VALIDATION.md](docs/PR_AUTOMATION_VALIDATION.md)
+✅ PR Automation Implementation - Validation Summary
 
 ## [PR_METRICS_DASHBOARD.md](.github/dashboards/PR_METRICS_DASHBOARD.md)
 📊 PR Metrics Dashboard - TokyoApps Multispace IA

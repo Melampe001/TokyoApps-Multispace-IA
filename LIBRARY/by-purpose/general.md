@@ -1,6 +1,6 @@
 # General
 
-Total: 253 archivos
+Total: 257 archivos
 
 - [.env.example](.env.example) - .env.example - other
 - [.env.example](flutter_app/.env.example) - .env.example - other
@@ -192,8 +192,12 @@ Returns service health status and syste
 - [parser.go](lib/generator/parser.go) - parser.go - source
 - [persona.md](docs/elara/persona.md) - 👑 Elara - Complete Identity and Personality
 - [pipeline.sh](pipeline.sh) - !/bin/bash
+- [pr-auto-labeler.yml](.github/workflows/pr-auto-labeler.yml) - 🏷️ PR Auto-Labeler
+- [pr-auto-merger.yml](.github/workflows/pr-auto-merger.yml) - ✅ PR Auto-Merger
+- [pr-cleanup.yml](.github/workflows/pr-cleanup.yml) - 🧹 PR Cleanup
 - [pr-dashboard-advanced.html](.github/dashboards/pr-dashboard-advanced.html) - pr-dashboard-advanced.html - other
 - [pr-dashboard.html](.github/dashboards/pr-dashboard.html) - pr-dashboard.html - other
+- [pr-triage.yml](.github/workflows/pr-triage.yml) - 📊 PR Triage
 - [pre-commit](.githooks/pre-commit) - pre-commit - other
 - [pro.md](LIBRARY/by-technology/pro.md) - PRO
 - [proguard-rules.pro](flutter_app/android/app/proguard-rules.pro) - proguard-rules.pro - other
