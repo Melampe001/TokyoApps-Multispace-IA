@@ -1,6 +1,6 @@
 # General
 
-Total: 239 archivos
+Total: 253 archivos
 
 - [.env.example](.env.example) - .env.example - other
 - [.env.example](flutter_app/.env.example) - .env.example - other
@@ -9,6 +9,7 @@ Total: 239 archivos
 - [.gitignore](flutter_app/.gitignore) - .gitignore - other
 - [.gitkeep](agents/.gitkeep) - .gitkeep - other
 - [.python-version](.python-version) - .python-version - other
+- [.vercelignore](.vercelignore) - .vercelignore - other
 - [AgentDashboard.tsx](admin/src/components/AgentDashboard.tsx) - AgentDashboard.tsx - source
 - [AgentRepository.kt](app/src/main/java/com/tokyoia/app/data/repository/AgentRepository.kt) - AgentRepository.kt - source
 - [AgentsScreen.kt](app/src/main/java/com/tokyoia/app/ui/agents/AgentsScreen.kt) - AgentsScreen.kt - source
@@ -64,6 +65,7 @@ This package provides multi-agent AI capabilities using CrewAI.
 - [agent.go](internal/orchestrator/agent.go) - agent.go - source
 - [agent_base.dart](flutter_app/lib/agents/agent_base.dart) - agent_base.dart - source
 - [agent_code_master.dart](flutter_app/lib/agents/agent_code_master.dart) - agent_code_master.dart - source
+- [agent_dashboard.py](agents/agent_dashboard.py) - !/usr/bin/env python3
 - [agent_gen_ai.dart](flutter_app/lib/agents/agent_gen_ai.dart) - agent_gen_ai.dart - source
 - [agent_knowledge.dart](flutter_app/lib/agents/agent_knowledge.dart) - agent_knowledge.dart - source
 - [agent_log.dart](flutter_app/lib/models/agent_log.dart) - agent_log.dart - source
@@ -75,6 +77,8 @@ This package provides multi-agent AI capabilities using CrewAI.
 - [agent_sentiment.dart](flutter_app/lib/agents/agent_sentiment.dart) - agent_sentiment.dart - source
 - [agent_task.dart](flutter_app/lib/models/agent_task.dart) - agent_task.dart - source
 - [agent_unrestricted.dart](flutter_app/lib/agents/agent_unrestricted.dart) - agent_unrestricted.dart - source
+- [agents.py](api/agents.py) - AI Agents endpoint for TokyoApps-Multispace-IA on Vercel.
+Provides information about available agent
 - [agents_dashboard_screen.dart](flutter_app/lib/screens/agents_dashboard_screen.dart) - agents_dashboard_screen.dart - source
 - [ai_config.go](internal/config/ai_config.go) - ai_config.go - source
 - [ai_models.yaml](config/ai_models.yaml) - o3
@@ -126,6 +130,7 @@ This module provides ETL functionality that inte
 - [gemini_client.go](internal/ai/clients/gemini_client.go) - gemini_client.go - source
 - [general.md](LIBRARY/by-purpose/general.md) - General
 - [generate_agent_report.py](scripts/generate_agent_report.py) - !/usr/bin/env python3
+- [generate_html_report.py](agents/generate_html_report.py) - !/usr/bin/env python3
 - [generate_report.py](.github/workflows/bots/scripts/generate_report.py) - !/usr/bin/env python3
 - [generator.go](lib/generator/generator.go) - generator.go - source
 - [go.md](LIBRARY/by-technology/go.md) - GO
@@ -133,6 +138,8 @@ This module provides ETL functionality that inte
 - [go.sum](go.sum) - go.sum - other
 - [gradle-wrapper.properties](flutter_app/android/gradle/wrapper/gradle-wrapper.properties) - gradle-wrapper.properties - configuration
 - [gradle.md](LIBRARY/by-technology/gradle.md) - GRADLE
+- [health.py](api/health.py) - Health check endpoint for TokyoApps-Multispace-IA on Vercel.
+Returns service health status and syste
 - [hello.go](admin/hello.go) - hello.go - source
 - [hello.go](internal/hello.go) - hello.go - source
 - [hello.go](lib/hello.go) - hello.go - source
@@ -181,9 +188,12 @@ This module provides ETL functionality that inte
 - [p1_implementation_with_agents.sh](scripts/p1_implementation_with_agents.sh) - !/bin/bash
 - [package-lock.json](web/package-lock.json) - package-lock.json - configuration
 - [package.json](web/package.json) - package.json - configuration
+- [parallel_execution.sh](agents/parallel_execution.sh) - !/bin/bash
 - [parser.go](lib/generator/parser.go) - parser.go - source
 - [persona.md](docs/elara/persona.md) - 👑 Elara - Complete Identity and Personality
 - [pipeline.sh](pipeline.sh) - !/bin/bash
+- [pr-dashboard-advanced.html](.github/dashboards/pr-dashboard-advanced.html) - pr-dashboard-advanced.html - other
+- [pr-dashboard.html](.github/dashboards/pr-dashboard.html) - pr-dashboard.html - other
 - [pre-commit](.githooks/pre-commit) - pre-commit - other
 - [pro.md](LIBRARY/by-technology/pro.md) - PRO
 - [proguard-rules.pro](flutter_app/android/app/proguard-rules.pro) - proguard-rules.pro - other
@@ -195,8 +205,10 @@ This module provides ETL functionality that inte
 - [railway.toml](railway.toml) - railway.toml - configuration
 - [rb.md](LIBRARY/by-technology/rb.md) - RB
 - [requirements.txt](requirements.txt) - Tokyo-IA Python Dependencies
+- [requirements.txt](api/requirements.txt) - Vercel Serverless Functions - Python Dependencies
 - [restore_validator.go](internal/monetization/restore_validator.go) - restore_validator.go - source
 - [routing_rules.json](config/agents/routing_rules.json) - routing_rules.json - configuration
+- [run_agents.sh](agents/run_agents.sh) - !/bin/bash
 - [run_emulator.sh](emulator/run_emulator.sh) - !/bin/bash
 - [run_flow.sh](orchestrator/run_flow.sh) - !/bin/bash
 - [scaffolder.go](lib/generator/scaffolder.go) - scaffolder.go - source
@@ -218,14 +230,18 @@ This module provides ETL functionality that inte
 - [synemu_asset_atlas.py](SYNEMU/agents_bots/synemu_asset_atlas.py) - !/usr/bin/env python3
 - [synemu_compliance_validator.py](SYNEMU/agents_bots/synemu_compliance_validator.py) - !/usr/bin/env python3
 - [synemu_logo.placeholder.txt](recursos_identidad/synemu_logo.placeholder.txt) - SYNEMU Suite Logo Placeholder
+- [synemu_observability.py](SYNEMU/agents_bots/synemu_observability.py) - !/usr/bin/env python3
 - [synemu_orchestrator.py](SYNEMU/agents_bots/synemu_orchestrator.py) - !/usr/bin/env python3
 - [synemu_project_template.md](plantillas/synemu_project_template.md) - SYNEMU Suite Project Template
 - [synemu_qa_owl.py](SYNEMU/agents_bots/synemu_qa_owl.py) - !/usr/bin/env python3
 - [synemu_supreme_orchestrator.py](SYNEMU/agents_bots/synemu_supreme_orchestrator.py) - !/usr/bin/env python3
 - [synemu_user_manual.md](manuales/synemu_user_manual.md) - SYNEMU Suite User Manual
 - [templater.go](lib/generator/templater.go) - {{.ProjectName}}
+- [tf.md](LIBRARY/by-technology/tf.md) - TF
 - [tokraggcorp_letterhead.md](hojas_membretadas/tokraggcorp_letterhead.md) - TokRaggcorp® Official Letterhead
 - [tokraggcorp_logo_primary.placeholder.txt](recursos_identidad/tokraggcorp_logo_primary.placeholder.txt) - TokRaggcorp® Logo Placeholder
+- [tokyo-ia-pr-analysis.yml](.github/workflows/tokyo-ia-pr-analysis.yml) - Tokyo-IA Agents - PR Analysis
+- [tokyo_crew.py](agents/tokyo_crew.py) - !/usr/bin/env python3
 - [tokyoapps_letterhead.md](hojas_membretadas/tokyoapps_letterhead.md) - TokyoApps® Official Letterhead
 - [tokyoapps_logo_primary.placeholder.txt](recursos_identidad/tokyoapps_logo_primary.placeholder.txt) - TokyoApps® Logo Placeholder
 - [toml.md](LIBRARY/by-technology/toml.md) - TOML

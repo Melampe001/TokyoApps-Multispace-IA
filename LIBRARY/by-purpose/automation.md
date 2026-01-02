@@ -1,6 +1,6 @@
 # Automation
 
-Total: 32 archivos
+Total: 33 archivos
 
 - [.codecov.yml](.codecov.yml) - .codecov.yml - workflow
 - [.golangci.yml](.golangci.yml) - .golangci.yml - workflow
@@ -29,6 +29,7 @@ Multi-agent workflow orchestration system.
 - [integration_mappings.yaml](config/agents/integration_mappings.yaml) - integration_mappings.yaml - workflow
 - [labeler.yml](.github/labeler.yml) - labeler.yml - workflow
 - [pr-auto-review.yml](.github/workflows/pr-auto-review.yml) - 🤖 PR Auto-Review Bot
+- [pr-automation-config.yml](.github/pr-automation-config.yml) - pr-automation-config.yml - workflow
 - [release-drafter.yml](.github/release-drafter.yml) - release-drafter.yml - workflow
 - [shell-automation.md](docs/elara/agents/shell-automation.md) - 🔧 Shell Agent - Automation Specialist
 - [slack-bot.yml](.github/workflows/slack-bot.yml) - Slack Bot

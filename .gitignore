@@ -54,6 +54,10 @@ build/
 .env
 .env.python
 
+# Agent Reports (Tokyo-IA)
+agent_reports_*/
+agent_reports_parallel_*/
+
 # Flutter/Dart
 .dart_tool/
 .flutter-plugins

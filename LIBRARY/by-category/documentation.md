@@ -1,6 +1,6 @@
 # Documentation
 
-Total: 157 archivos
+Total: 162 archivos
 
 ## [AGENTS_README.md](AGENTS_README.md)
 🤖 Tokyo-IA Agent Pipeline System
@@ -37,6 +37,9 @@ Dependency Agent Implementation Summary
 
 ## [DEPENDENCY_POLICY.md](docs/DEPENDENCY_POLICY.md)
 Dependency Policy
+
+## [DEPLOY_VERCEL.md](DEPLOY_VERCEL.md)
+🚀 Despliegue en Vercel - TokyoApps-Multispace-IA
 
 ## [Dockerfile.md](LIBRARY/by-technology/Dockerfile.md)
 DOCKERFILE
@@ -110,6 +113,9 @@ Política de Privacidad - Tokyo IA
 ## [PROJECT_STATISTICS.md](flutter_app/PROJECT_STATISTICS.md)
 Tokyo-IA Flutter - Project Statistics
 
+## [PR_METRICS_DASHBOARD.md](.github/dashboards/PR_METRICS_DASHBOARD.md)
+📊 PR Metrics Dashboard - TokyoApps Multispace IA
+
 ## [PULL_REQUEST_GUIDELINES.md](.github/PULL_REQUEST_GUIDELINES.md)
 Pull Request Guidelines
 
@@ -169,6 +175,9 @@ Tokyo-IA Documentation
 
 ## [README.md](docs/elara/README.md)
 👑 Elara Knowledge Base
+
+## [README.md](agents/README.md)
+Tokyo-IA Agent Orchestration System
 
 ## [README.md](SYNEMU/README.md)
 SYNEMU Suite
@@ -392,6 +401,9 @@ RB
 ## [requirements.txt](requirements.txt)
 Tokyo-IA Python Dependencies
 
+## [requirements.txt](api/requirements.txt)
+Vercel Serverless Functions - Python Dependencies
+
 ## [schema.md](LIBRARY/by-category/schema.md)
 Schema
 
@@ -439,6 +451,9 @@ SYNEMU Suite User Manual
 
 ## [testing.md](LIBRARY/by-purpose/testing.md)
 Testing
+
+## [tf.md](LIBRARY/by-technology/tf.md)
+TF
 
 ## [tokraggcorp_letterhead.md](hojas_membretadas/tokraggcorp_letterhead.md)
 TokRaggcorp® Official Letterhead

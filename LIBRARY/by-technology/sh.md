@@ -1,6 +1,6 @@
 # SH
 
-Total: 18 archivos
+Total: 21 archivos
 
 - [autodev_executor.sh](agents/autodev_executor.sh)
 - [brand_executor.sh](agents/brand_executor.sh)
@@ -10,11 +10,14 @@ Total: 18 archivos
 - [compress_assets.sh](.github/workflows/bots/scripts/compress_assets.sh)
 - [create_and_merge_pr.sh](scripts/create_and_merge_pr.sh)
 - [demo-ai-integration.sh](scripts/demo-ai-integration.sh)
+- [deploy-vercel.sh](scripts/deploy-vercel.sh)
 - [deploy.sh](scripts/deploy.sh)
 - [deploy_with_agents.sh](scripts/deploy_with_agents.sh)
 - [k8s-preflight.sh](scripts/k8s-preflight.sh)
 - [p1_implementation_with_agents.sh](scripts/p1_implementation_with_agents.sh)
+- [parallel_execution.sh](agents/parallel_execution.sh)
 - [pipeline.sh](pipeline.sh)
+- [run_agents.sh](agents/run_agents.sh)
 - [run_emulator.sh](emulator/run_emulator.sh)
 - [run_flow.sh](orchestrator/run_flow.sh)
 - [simulate_design.sh](simulator/simulate_design.sh)

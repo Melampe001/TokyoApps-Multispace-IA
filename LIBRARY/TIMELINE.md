@@ -1,6 +1,36 @@
 # 📅 Línea de Tiempo de Creaciones
-Última actualización: 2025-12-28 03:49:30
+Última actualización: 2026-01-01 03:52:05
 
+
+## 2025-12-29
+- **tokyo-ia-pr-analysis.yml** - Tokyo-IA Agents - PR Analysis
+- **test_tokyo_crew.py** - !/usr/bin/env python3
+- **generate_html_report.py** - !/usr/bin/env python3
+
+## 2025-12-28
+- **agent_dashboard.py** - !/usr/bin/env python3
+- **tokyo_crew.py** - !/usr/bin/env python3
+- **run_agents.sh** - !/bin/bash
+- **README.md** - Tokyo-IA Agent Orchestration System
+- **test_free_apis.py** - !/usr/bin/env python3
+- **parallel_execution.sh** - !/bin/bash
+- **test_all_apis.py** - !/usr/bin/env python3
+- **DEPLOY_VERCEL.md** - 🚀 Despliegue en Vercel - TokyoApps-Multispace-IA
+- **.vercelignore** - .vercelignore - other
+- **requirements.txt** - Vercel Serverless Functions - Python Dependencies
+- **agents.py** - AI Agents endpoint for TokyoApps-Multispace-IA on Vercel.
+Provides information a
+- **health.py** - Health check endpoint for TokyoApps-Multispace-IA on Vercel.
+Returns service hea
+- **index.py** - Main API endpoint for TokyoApps-Multispace-IA on Vercel.
+Handles HTTP GET and PO
+- **deploy-vercel.sh** - !/bin/bash
+- **synemu_observability.py** - !/usr/bin/env python3
+- **tf.md** - TF
+- **pr-dashboard-advanced.html** - pr-dashboard-advanced.html - other
+- **PR_METRICS_DASHBOARD.md** - 📊 PR Metrics Dashboard - TokyoApps Multispace IA
+- **pr-dashboard.html** - pr-dashboard.html - other
+- **pr-automation-config.yml** - pr-automation-config.yml - workflow
 
 ## 2025-12-27
 - **k8s-preflight.sh** - !/bin/bash
@@ -38,28 +68,3 @@ Uses Docu
 - **deployment.yaml** - deployment.yaml - workflow
 - **integration_mappings.yaml** - integration_mappings.yaml - workflow
 - **routing_rules.json** - routing_rules.json - configuration
-- **sheets-update.yml** - Update Dashboard
-- **jira-sync.yml** - Jira Sync
-- **slack-bot.yml** - Slack Bot
-- **sheets_updater.py** - !/usr/bin/env python3
-- **slack_bot.py** - !/usr/bin/env python3
-- **jira_sync.py** - !/usr/bin/env python3
-- **integrations.json** - integrations.json - configuration
-- **JIRA_SETUP.md** - Jira Integration Setup Guide
-- **openai_client.go** - openai_client.go - source
-- **gemini_client.go** - gemini_client.go - source
-- **anthropic_client.go** - anthropic_client.go - source
-- **integration_test.go** - integration_test.go - source
-- **factory.go** - factory.go - source
-- **RAILWAY.md** - Railway Deployment Guide
-- **Dockerfile** - Dockerfile - build
-- **.dockerignore** - .dockerignore - other
-- **orchestrator-deployment.yaml** - tokyo-ia-orchestrator
-- **Dockerfile** - Dockerfile - build
-- **.dockerignore** - .dockerignore - other
-- **agents-deployment.yaml** - tokyo-ia-agents
-- **Direccion fina** - Direccion fina - other
-- **maintenance.md** - Repository Maintenance Log
-
-## 2025-12-26
-- **IMPLEMENTATION_SUMMARY_BOTS.md** - Implementation Summary: Automated PR Bots

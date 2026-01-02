@@ -1,6 +1,6 @@
 # MD
 
-Total: 153 archivos
+Total: 157 archivos
 
 - [AGENTS_README.md](AGENTS_README.md)
 - [ARCHITECTURE.md](docs/ARCHITECTURE.md)
@@ -14,6 +14,7 @@ Total: 153 archivos
 - [CONTRIBUTING.md](CONTRIBUTING.md)
 - [DEPENDENCY_AGENT_SUMMARY.md](DEPENDENCY_AGENT_SUMMARY.md)
 - [DEPENDENCY_POLICY.md](docs/DEPENDENCY_POLICY.md)
+- [DEPLOY_VERCEL.md](DEPLOY_VERCEL.md)
 - [Dockerfile.md](LIBRARY/by-technology/Dockerfile.md)
 - [ELARA_COMMAND_CENTER.md](.github/ELARA_COMMAND_CENTER.md)
 - [ELARA_DASHBOARD.md](.github/ELARA_DASHBOARD.md)
@@ -38,6 +39,7 @@ Total: 153 archivos
 - [PLAY_STORE_CHECKLIST.md](docs/PLAY_STORE_CHECKLIST.md)
 - [PRIVACY_POLICY.md](docs/PRIVACY_POLICY.md)
 - [PROJECT_STATISTICS.md](flutter_app/PROJECT_STATISTICS.md)
+- [PR_METRICS_DASHBOARD.md](.github/dashboards/PR_METRICS_DASHBOARD.md)
 - [PULL_REQUEST_GUIDELINES.md](.github/PULL_REQUEST_GUIDELINES.md)
 - [QUICKSTART.md](examples/QUICKSTART.md)
 - [QUICKSTART.md](docs/QUICKSTART.md)
@@ -58,6 +60,7 @@ Total: 153 archivos
 - [README.md](assets/play-store/icon/README.md)
 - [README.md](docs/README.md)
 - [README.md](docs/elara/README.md)
+- [README.md](agents/README.md)
 - [README.md](SYNEMU/README.md)
 - [README.md](SYNEMU/recursos/README.md)
 - [README.md](SYNEMU/docs/README.md)
@@ -146,6 +149,7 @@ Total: 153 archivos
 - [synemu_technical_spec_template.md](plantillas/synemu_technical_spec_template.md)
 - [synemu_user_manual.md](manuales/synemu_user_manual.md)
 - [testing.md](LIBRARY/by-purpose/testing.md)
+- [tf.md](LIBRARY/by-technology/tf.md)
 - [tokraggcorp_letterhead.md](hojas_membretadas/tokraggcorp_letterhead.md)
 - [tokyoapps_letterhead.md](hojas_membretadas/tokyoapps_letterhead.md)
 - [toml.md](LIBRARY/by-technology/toml.md)

@@ -1,6 +1,6 @@
 # Integration
 
-Total: 17 archivos
+Total: 20 archivos
 
 - [IMPLEMENTATION_SUMMARY_AI.md](docs/IMPLEMENTATION_SUMMARY_AI.md) - Multi-Model AI Integration - Implementation Summary
 - [JIRA_SETUP.md](docs/integrations/JIRA_SETUP.md) - Jira Integration Setup Guide
@@ -9,6 +9,8 @@ Total: 17 archivos
 - [ai-models-integration-architecture.md](docs/architecture/ai-models-integration-architecture.md) - Multi-Model AI Integration Architecture
 - [api_service.dart](flutter_app/lib/services/api_service.dart) - api_service.dart - source
 - [demo-ai-integration.sh](scripts/demo-ai-integration.sh) - !/bin/bash
+- [index.py](api/index.py) - Main API endpoint for TokyoApps-Multispace-IA on Vercel.
+Handles HTTP GET and POST requests for serv
 - [integration.md](LIBRARY/by-purpose/integration.md) - Integration
 - [integration_agent.py](lib/agents/integration_agent.py) - Integration Agent - Handles external integrations with mock fallback.
 
@@ -20,4 +22,6 @@ Uses Documentation Agent for
 - [jira_sync_with_agents.py](.github/workflows/scripts/jira_sync_with_agents.py) - !/usr/bin/env python3
 - [synemu_integrations.py](SYNEMU/agents_bots/synemu_integrations.py) - !/usr/bin/env python3
 - [test-integrations.yml](.github/workflows/test-integrations.yml) - Test Integrations
+- [test_all_apis.py](agents/test_all_apis.py) - !/usr/bin/env python3
+- [test_free_apis.py](agents/test_free_apis.py) - !/usr/bin/env python3
 - [test_integration_agent.py](lib/agents/test_integration_agent.py) - Tests for Integration Agent.

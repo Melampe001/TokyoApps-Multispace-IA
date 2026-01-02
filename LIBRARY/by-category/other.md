@@ -1,6 +1,6 @@
 # Other
 
-Total: 32 archivos
+Total: 35 archivos
 
 ## [.dockerignore](.dockerignore)
 .dockerignore - other
@@ -31,6 +31,9 @@ Total: 32 archivos
 
 ## [.python-version](.python-version)
 .python-version - other
+
+## [.vercelignore](.vercelignore)
+.vercelignore - other
 
 ## [Agentes y bots](Agentes y bots)
 Agentes y bots - other
@@ -85,6 +88,12 @@ index.css - other
 
 ## [index.html](web/index.html)
 index.html - other
+
+## [pr-dashboard-advanced.html](.github/dashboards/pr-dashboard-advanced.html)
+pr-dashboard-advanced.html - other
+
+## [pr-dashboard.html](.github/dashboards/pr-dashboard.html)
+pr-dashboard.html - other
 
 ## [pre-commit](.githooks/pre-commit)
 pre-commit - other
