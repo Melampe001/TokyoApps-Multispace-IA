@@ -1,5 +1,5 @@
 {
-  "generated": "2026-01-03T03:23:49.293635",
+  "generated": "2026-01-04T03:52:30.819510",
   "total_files": 454,
   "files": [
     {
@@ -5130,7 +5130,7 @@
         "name": "SEARCH_INDEX.json",
         "type": "configuration",
         "extension": ".json",
-        "size_bytes": 375053,
+        "size_bytes": 375054,
         "lines": 15382
       },
       "classification": {
@@ -5143,7 +5143,7 @@
       },
       "dates": {
         "created": "2025-12-14T07:22:11Z",
-        "modified": "2026-01-02T03:42:05Z"
+        "modified": "2026-01-03T03:23:49Z"
       },
       "authorship": {
         "author": "copilot-swe-agent[bot]",
@@ -5151,7 +5151,7 @@
           "copilot-swe-agent[bot]",
           "github-actions[bot]"
         ],
-        "commits": 23
+        "commits": 24
       },
       "content": {
         "description": "SEARCH_INDEX.json - configuration",
@@ -5274,7 +5274,7 @@
       },
       "dates": {
         "created": "2025-12-14T07:22:11Z",
-        "modified": "2026-01-02T03:42:05Z"
+        "modified": "2026-01-03T03:23:49Z"
       },
       "authorship": {
         "author": "copilot-swe-agent[bot]",
@@ -5282,7 +5282,7 @@
           "copilot-swe-agent[bot]",
           "github-actions[bot]"
         ],
-        "commits": 23
+        "commits": 24
       },
       "content": {
         "description": "\ud83d\udcda Cat\u00e1logo Completo de la Biblioteca",
@@ -5306,7 +5306,7 @@
       },
       "dates": {
         "created": "2025-12-14T07:22:11Z",
-        "modified": "2026-01-02T03:42:05Z"
+        "modified": "2026-01-03T03:23:49Z"
       },
       "authorship": {
         "author": "copilot-swe-agent[bot]",
@@ -5314,7 +5314,7 @@
           "copilot-swe-agent[bot]",
           "github-actions[bot]"
         ],
-        "commits": 23
+        "commits": 24
       },
       "content": {
         "description": "\ud83d\udcc5 L\u00ednea de Tiempo de Creaciones",
