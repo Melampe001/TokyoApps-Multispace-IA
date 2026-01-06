@@ -1,4 +1,4 @@
-import React from 'react'
+import { Link } from 'react-router-dom'
 import './App.css'
 
 function App() {
@@ -7,6 +7,11 @@ function App() {
       <header className="App-header">
         <h1>🏛️ Tokyo IA</h1>
         <p>AI Agent Orchestration Platform</p>
+        <div className="nav-buttons">
+          <Link to="/admin" className="admin-link">
+            🎛️ Admin Panel
+          </Link>
+        </div>
         <div className="agents-grid">
           <div className="agent-card">
             <h2>侍 Akira</h2>

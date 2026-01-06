@@ -14,6 +14,29 @@
   margin-bottom: 0.5rem;
 }
 
+.nav-buttons {
+  margin: 1.5rem 0;
+}
+
+.admin-link {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border-radius: 8px;
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.admin-link:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
 .agents-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
