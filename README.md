@@ -339,6 +339,7 @@ tokyoia/
 - **[🔒 Privacy Policy](docs/PRIVACY_POLICY.md)** - GDPR-compliant privacy policy
 
 ### API & Integration
+- **[🤖 Agents Guide (Bilingual)](docs/agents-guide.md)** - ⭐ Complete guide to the 4 executor agents (Brand, UX, Bridge, AutoDev)
 - **[Agent Orchestration Guide](docs/agents/ORCHESTRATION.md)** - Complete system documentation
 - **[Database Schema](db/README.md)** - Database setup and operations
 - **[API Reference](docs/agents/ORCHESTRATION.md#api-reference)** - REST API endpoints
