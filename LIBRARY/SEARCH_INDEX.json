@@ -1,5 +1,5 @@
 {
-  "generated": "2026-01-06T03:40:29.466608",
+  "generated": "2026-01-07T03:40:57.871303",
   "total_files": 454,
   "files": [
     {
@@ -511,8 +511,8 @@
       "authorship": {
         "author": "Artur Orozco",
         "contributors": [
-          "Artur Orozco",
-          "copilot-swe-agent[bot]"
+          "copilot-swe-agent[bot]",
+          "Artur Orozco"
         ],
         "commits": 18
       },
@@ -909,8 +909,8 @@
       "authorship": {
         "author": "copilot-swe-agent[bot]",
         "contributors": [
-          "Artur Orozco",
-          "copilot-swe-agent[bot]"
+          "copilot-swe-agent[bot]",
+          "Artur Orozco"
         ],
         "commits": 4
       },
@@ -2134,8 +2134,8 @@
         "name": "package-lock.json",
         "type": "configuration",
         "extension": ".json",
-        "size_bytes": 59487,
-        "lines": 1783
+        "size_bytes": 58671,
+        "lines": 1763
       },
       "classification": {
         "category": "configuration",
@@ -2147,14 +2147,15 @@
       },
       "dates": {
         "created": "2025-12-23T20:42:10Z",
-        "modified": "2025-12-23T20:42:10Z"
+        "modified": "2026-01-05T09:45:46Z"
       },
       "authorship": {
         "author": "copilot-swe-agent[bot]",
         "contributors": [
-          "copilot-swe-agent[bot]"
+          "copilot-swe-agent[bot]",
+          "dependabot[bot]"
         ],
-        "commits": 1
+        "commits": 2
       },
       "content": {
         "description": "package-lock.json - configuration",
@@ -2198,7 +2199,7 @@
         "name": "package.json",
         "type": "configuration",
         "extension": ".json",
-        "size_bytes": 478,
+        "size_bytes": 476,
         "lines": 22
       },
       "classification": {
@@ -2211,14 +2212,15 @@
       },
       "dates": {
         "created": "2025-12-23T20:39:05Z",
-        "modified": "2025-12-23T20:42:10Z"
+        "modified": "2026-01-05T09:45:46Z"
       },
       "authorship": {
         "author": "copilot-swe-agent[bot]",
         "contributors": [
-          "copilot-swe-agent[bot]"
+          "copilot-swe-agent[bot]",
+          "dependabot[bot]"
         ],
-        "commits": 2
+        "commits": 3
       },
       "content": {
         "description": "package.json - configuration",
@@ -5143,7 +5145,7 @@
       },
       "dates": {
         "created": "2025-12-14T07:22:11Z",
-        "modified": "2026-01-05T03:57:40Z"
+        "modified": "2026-01-06T03:40:29Z"
       },
       "authorship": {
         "author": "copilot-swe-agent[bot]",
@@ -5151,7 +5153,7 @@
           "github-actions[bot]",
           "copilot-swe-agent[bot]"
         ],
-        "commits": 26
+        "commits": 27
       },
       "content": {
         "description": "SEARCH_INDEX.json - configuration",
@@ -5274,7 +5276,7 @@
       },
       "dates": {
         "created": "2025-12-14T07:22:11Z",
-        "modified": "2026-01-05T03:57:40Z"
+        "modified": "2026-01-06T03:40:29Z"
       },
       "authorship": {
         "author": "copilot-swe-agent[bot]",
@@ -5282,7 +5284,7 @@
           "github-actions[bot]",
           "copilot-swe-agent[bot]"
         ],
-        "commits": 26
+        "commits": 27
       },
       "content": {
         "description": "\ud83d\udcda Cat\u00e1logo Completo de la Biblioteca",
@@ -5306,7 +5308,7 @@
       },
       "dates": {
         "created": "2025-12-14T07:22:11Z",
-        "modified": "2026-01-05T03:57:40Z"
+        "modified": "2026-01-06T03:40:29Z"
       },
       "authorship": {
         "author": "copilot-swe-agent[bot]",
@@ -5314,7 +5316,7 @@
           "github-actions[bot]",
           "copilot-swe-agent[bot]"
         ],
-        "commits": 26
+        "commits": 27
       },
       "content": {
         "description": "\ud83d\udcc5 L\u00ednea de Tiempo de Creaciones",
