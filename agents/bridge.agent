@@ -1,0 +1,441 @@
+---
+# Tokyo-IA Bridge Agent Configuration
+# This agent creates comprehensive widget-to-platform mappings
+# For integration with Tokyo-IA Agent Pipeline System
+---
+
+# 🌉 Bridge Agent
+
+## Agent Identity
+
+**Name**: Bridge Agent
+**Role**: Cross-Platform Widget Mapping Specialist
+**Version**: 1.0.0
+**Status**: Active
+
+## Purpose
+
+Creates comprehensive mappings between Flutter widgets and their native platform equivalents for Android, iOS, and Web. Provides the "translation dictionary" that enables AutoDev Agent to generate accurate platform-specific code.
+
+## Input Requirements
+
+### Primary Input
+**None** - Bridge agent generates static mapping knowledge base
+
+### Optional Context (for future enhancements)
+- Design model for dynamic mapping adjustments
+- Brand tokens for styling considerations
+- Platform constraints for mapping optimization
+
+## Output Specification
+
+### Primary Output
+- **File**: `simulator/output/platform_bridge.json`
+- **Format**: JSON
+- **Schema**:
+```json
+{
+  "generated_at": "ISO8601 timestamp",
+  "version": "semantic version",
+  "widget_mappings": {
+    "FlutterWidgetName": {
+      "android": {
+        "component": "string - Android component name",
+        "package": "string - Full package path",
+        "description": "string - Usage notes"
+      },
+      "ios": {
+        "component": "string - iOS component name",
+        "framework": "string - Framework name (UIKit/SwiftUI)",
+        "description": "string - Usage notes"
+      },
+      "web": {
+        "component": "string - HTML element or React component",
+        "tag": "string - HTML tag name",
+        "description": "string - Usage notes"
+      }
+    }
+  },
+  "state_management_mappings": {
+    "flutter_pattern": {
+      "android": "string - Android equivalent",
+      "ios": "string - iOS equivalent",
+      "web": "string - Web equivalent"
+    }
+  },
+  "navigation_mappings": {
+    "flutter_pattern": {
+      "android": "string - Android navigation",
+      "ios": "string - iOS navigation",
+      "web": "string - Web routing"
+    }
+  }
+}
+```
+
+## Agent Rules
+
+### Core Principles
+1. **Semantic Equivalence**: Map to platform components with equivalent functionality, not just appearance
+2. **Modern APIs**: Prioritize current best practices (Material 3, SwiftUI, React modern patterns)
+3. **Accessibility First**: Ensure mappings support accessibility features on all platforms
+4. **Performance Aware**: Map to performant platform components
+5. **Comprehensive Coverage**: Include all commonly used Flutter widgets
+
+### Widget Mapping Rules
+
+#### 1. Structural Components
+**Scaffold** (App structure container)
+- **Android**: CoordinatorLayout
+  - Provides coordinated behavior between toolbar and content
+  - Package: androidx.coordinatorlayout.widget.CoordinatorLayout
+- **iOS**: UIViewController
+  - Root view controller pattern
+  - Framework: UIKit
+- **Web**: `<main>` element
+  - Semantic HTML5 container
+  - Accessibility landmark
+
+**AppBar** (Top navigation bar)
+- **Android**: MaterialToolbar
+  - Material Design 3 toolbar
+  - Package: com.google.android.material.appbar.MaterialToolbar
+- **iOS**: UINavigationBar
+  - Standard iOS navigation bar
+  - Framework: UIKit
+- **Web**: `<header>` element
+  - Semantic header with navigation
+  - ARIA role: banner
+
+#### 2. Layout Components
+**Container** (Basic container)
+- **Android**: FrameLayout
+- **iOS**: UIView
+- **Web**: `<div>`
+
+**Column** (Vertical layout)
+- **Android**: LinearLayout (orientation=vertical)
+- **iOS**: UIStackView (axis=vertical)
+- **Web**: `<div>` with flexbox (flex-direction: column)
+
+**Row** (Horizontal layout)
+- **Android**: LinearLayout (orientation=horizontal)
+- **iOS**: UIStackView (axis=horizontal)
+- **Web**: `<div>` with flexbox (flex-direction: row)
+
+#### 3. Content Components
+**Text** (Text display)
+- **Android**: TextView
+- **iOS**: UILabel
+- **Web**: `<span>` or `<p>`
+
+**Image** (Image display)
+- **Android**: ImageView
+- **iOS**: UIImageView
+- **Web**: `<img>`
+
+**ListView** (Scrollable list)
+- **Android**: RecyclerView
+  - High-performance recycling
+- **iOS**: UITableView or UICollectionView
+- **Web**: `<ul>` with virtual scrolling
+
+#### 4. Interactive Components
+**Button** (Clickable button)
+- **Android**: MaterialButton
+- **iOS**: UIButton
+- **Web**: `<button>`
+
+**TextField** (Text input)
+- **Android**: TextInputLayout + TextInputEditText
+- **iOS**: UITextField
+- **Web**: `<input type="text">`
+
+### State Management Mapping Rules
+
+#### setState (Built-in)
+- **Android**: LiveData + ViewModel
+  - Architecture Components pattern
+  - Lifecycle-aware state
+- **iOS**: Property Observers + Combine
+  - SwiftUI @State and @Published
+  - Reactive observers
+- **Web**: React useState / Redux
+  - Component state or global store
+
+#### Provider/Riverpod (DI pattern)
+- **Android**: ViewModel + Repository + Hilt/Dagger
+  - Dependency injection container
+  - Repository pattern for data
+- **iOS**: Environment Objects / DI
+  - SwiftUI environment
+  - Dependency injection framework
+- **Web**: React Context / Props
+  - Context API for global state
+
+#### BLoC (Business Logic Component)
+- **Android**: ViewModel + LiveData Streams
+  - Reactive streams
+  - State flow
+- **iOS**: Combine Publishers / MVVM
+  - Publisher/Subscriber pattern
+- **Web**: Redux / RxJS
+  - State management library
+  - Observable streams
+
+### Navigation Mapping Rules
+
+#### Imperative Navigation
+- **Android**: Fragment Transactions / Navigation Component
+  - FragmentManager for imperative navigation
+  - Navigation Component library
+- **iOS**: UINavigationController push/pop
+  - Programmatic navigation
+- **Web**: React Router imperative
+  - useNavigate hook, history API
+
+#### Named Routes
+- **Android**: Navigation Component with nav graph
+  - XML navigation graph
+  - Deep linking support
+- **iOS**: Coordinator pattern
+  - Route name lookup
+- **Web**: React Router named routes
+  - Route configuration object
+
+#### Declarative Navigation
+- **Android**: Jetpack Compose Navigation
+  - Modern declarative navigation
+- **iOS**: SwiftUI NavigationStack
+  - View-based navigation
+- **Web**: React Router v6
+  - Declarative routing
+
+### Quality Standards
+1. **Completeness**: Every major Flutter widget should have platform mappings
+2. **Accuracy**: Mappings must reflect actual platform best practices
+3. **Currency**: Use current APIs, not deprecated ones
+4. **Documentation**: Each mapping includes clear description
+5. **Consistency**: Similar widgets map to similar platform components
+
+### Error Handling
+1. Generate valid JSON even if external context unavailable
+2. Include version for mapping evolution tracking
+3. Timestamp generation for cache invalidation
+4. Log mapping generation process
+
+## Integration Points
+
+### Upstream Dependencies
+**None** - Bridge agent is self-contained knowledge base
+
+### Downstream Consumers
+- **AutoDev Agent**: Primary consumer, uses mappings to generate code
+- **Emulator**: Validates generated code against mappings
+- **Documentation**: Reference for developers
+- **Custom Code Generators**: External tools can use mappings
+
+## Execution
+
+### Command
+```bash
+bash agents/bridge_executor.sh
+```
+
+### Execution Context
+- Working Directory: Project root
+- Required Permissions: Write access to simulator/output/
+- Required Tools: `bash 4.0+`, `date`, `sed`, `jq`
+
+### Performance Expectations
+- Execution Time: < 2 seconds (static generation)
+- Memory Usage: < 20MB
+- Output Size: ~ 5-10KB JSON file
+
+## Validation
+
+### Success Criteria
+1. platform_bridge.json created successfully
+2. Valid JSON structure
+3. All three platforms (android, ios, web) present for each widget
+4. Timestamp properly formatted
+5. Version follows semantic versioning
+
+### Testing
+```bash
+# Verify file exists
+test -f simulator/output/platform_bridge.json
+
+# Validate JSON
+jq empty simulator/output/platform_bridge.json
+
+# Check widget mappings structure
+jq -e '.widget_mappings.Scaffold.android.component' simulator/output/platform_bridge.json
+jq -e '.widget_mappings.Scaffold.ios.component' simulator/output/platform_bridge.json
+jq -e '.widget_mappings.Scaffold.web.component' simulator/output/platform_bridge.json
+
+# Verify state management mappings
+jq -e '.state_management_mappings | length >= 3' simulator/output/platform_bridge.json
+
+# Check navigation mappings
+jq -e '.navigation_mappings | length >= 2' simulator/output/platform_bridge.json
+```
+
+## Use Cases
+
+### 1. Code Generation
+**Scenario**: AutoDev needs to generate Android MainActivity
+**Process**:
+1. Read Flutter widget tree (Scaffold > AppBar > Body)
+2. Look up each widget in platform_bridge.json
+3. Generate Android code with mapped components
+4. Apply brand tokens for styling
+
+### 2. Platform Capability Assessment
+**Scenario**: Determine if Flutter feature is supported on target platform
+**Process**:
+1. Identify Flutter widget/pattern used
+2. Check mapping existence in platform_bridge.json
+3. Review platform component capabilities
+4. Flag unsupported features
+
+### 3. Developer Documentation
+**Scenario**: Developer wants to understand platform equivalents
+**Process**:
+1. Search for Flutter widget name
+2. View all three platform mappings
+3. Read descriptions and package info
+4. Reference in custom development
+
+### 4. Migration Planning
+**Scenario**: Planning Flutter to native migration
+**Process**:
+1. Analyze Flutter app widget usage
+2. Look up platform mappings for each widget
+3. Estimate migration complexity
+4. Plan component-by-component migration
+
+## Mapping Maintenance
+
+### Adding New Widget Mappings
+
+**Process**:
+1. Identify Flutter widget requiring mapping
+2. Research platform equivalents:
+   - Android: Material Components, Jetpack
+   - iOS: UIKit, SwiftUI
+   - Web: HTML5, React patterns
+3. Document component names and packages
+4. Add to widget_mappings section
+5. Include clear descriptions
+6. Test with AutoDev generation
+
+**Example Addition**:
+```json
+"Card": {
+  "android": {
+    "component": "MaterialCardView",
+    "package": "com.google.android.material.card.MaterialCardView",
+    "description": "Elevated card with Material Design styling"
+  },
+  "ios": {
+    "component": "UIView with shadow",
+    "framework": "UIKit",
+    "description": "Custom view with shadow and corner radius"
+  },
+  "web": {
+    "component": "<div>",
+    "tag": "div",
+    "description": "Styled div with box-shadow and border-radius"
+  }
+}
+```
+
+### Updating Existing Mappings
+
+**When to Update**:
+- New platform SDK versions
+- Deprecated API replacements
+- Performance improvements discovered
+- Better semantic equivalents found
+
+**Process**:
+1. Increment version (semantic versioning)
+2. Update component mapping
+3. Update package/framework if changed
+4. Enhance description with migration notes
+5. Test with AutoDev to ensure compatibility
+
+### Deprecation Strategy
+1. Mark deprecated mappings with note in description
+2. Include migration path to new component
+3. Maintain backward compatibility for 2 versions
+4. Remove after 6 months or major version bump
+
+## Best Practices
+
+### For Mapping Curators
+1. Prioritize semantic correctness over visual similarity
+2. Choose modern APIs over legacy components
+3. Consider accessibility implications
+4. Document platform-specific quirks
+5. Keep descriptions concise but informative
+
+### For Code Generators
+1. Cache platform_bridge.json for performance
+2. Validate mapping exists before use
+3. Fall back to Container/View for unknown widgets
+4. Log unmapped widgets for future additions
+5. Respect platform design guidelines
+
+## Advanced Features
+
+### Conditional Mappings (Future)
+Support context-aware mappings based on:
+- Platform version (min SDK)
+- Feature availability
+- Performance requirements
+- Accessibility needs
+
+### Custom Mapping Extensions (Future)
+Allow project-specific mapping overrides:
+```json
+"custom_mappings": {
+  "MyCustomWidget": {
+    "android": {...},
+    "ios": {...},
+    "web": {...}
+  }
+}
+```
+
+### Styling Hints (Future)
+Include styling guidance:
+```json
+"styling_hints": {
+  "android": "Apply MaterialTheme colors",
+  "ios": "Use system colors for iOS 13+",
+  "web": "CSS custom properties recommended"
+}
+```
+
+## Maintenance
+
+### Version History
+- **v1.0.0** (December 2024): Initial implementation with 10 core widget mappings
+  - Scaffold, AppBar, Text, Button, Container
+  - Column, Row, ListView, Image, TextField
+
+### Roadmap
+- v1.1.0: Add 20 more common widgets
+- v1.2.0: Form component mappings
+- v1.3.0: Advanced layout widgets
+- v2.0.0: SwiftUI/Jetpack Compose primary mappings
+
+## Support
+
+For issues or questions:
+- Review mapping structure in JSON file
+- Check AGENTS_README.md for integration details
+- Consult platform documentation for component details
+- Propose new mappings via pull request
