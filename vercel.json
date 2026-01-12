@@ -27,7 +27,8 @@
     "api/*.py": {
       "runtime": "python3.11",
       "memory": 1024,
-      "maxDuration": 10
+      "maxDuration": 30,
+      "regions": ["iad1"]
     }
   },
   "headers": [
@@ -45,6 +46,18 @@
         {
           "key": "Access-Control-Allow-Headers",
           "value": "X-Requested-With, Content-Type, Authorization"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
         }
       ]
     }
