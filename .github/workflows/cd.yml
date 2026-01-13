@@ -23,7 +23,7 @@ jobs:
       url: https://tokyo-ia-staging.up.railway.app
     
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       
       - name: Install Railway CLI
         run: |
@@ -67,7 +67,7 @@ jobs:
       url: https://tokyo-ia.up.railway.app
     
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       
       - name: Install Railway CLI
         run: |

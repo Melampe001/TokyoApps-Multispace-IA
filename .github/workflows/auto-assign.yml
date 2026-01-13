@@ -21,7 +21,7 @@ jobs:
     
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       
       - name: Auto-assign reviewers
         uses: kentaro-m/auto-assign-action@v2.0.0
