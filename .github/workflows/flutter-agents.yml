@@ -19,7 +19,7 @@ jobs:
         working-directory: flutter_app
     
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -44,7 +44,7 @@ jobs:
         working-directory: flutter_app
     
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -74,7 +74,7 @@ jobs:
         working-directory: flutter_app
     
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -109,7 +109,7 @@ jobs:
         working-directory: flutter_app
     
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
