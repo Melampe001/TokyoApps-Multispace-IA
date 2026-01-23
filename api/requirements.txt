@@ -2,18 +2,18 @@
 # Optimized for Vercel's Python runtime environment
 
 # CrewAI - Framework for orchestrating role-playing, autonomous AI agents
-crewai>=0.80.0
-crewai-tools>=0.12.0
+crewai==0.80.0
+crewai-tools==0.12.0
 
 # LLM API Clients
-groq>=0.13.0
-openai>=1.0.0
-anthropic>=0.25.0
-google-generativeai>=0.3.0
+groq==0.13.0
+openai==1.58.1
+anthropic==0.43.1
+google-generativeai==0.8.3
 
 # HTTP client for API calls
-requests>=2.31.0
-httpx>=0.25.0
+requests==2.32.3
+httpx==0.28.1
 
 # Utilities
 python-dotenv>=1.0.0

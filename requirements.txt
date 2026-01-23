@@ -2,35 +2,30 @@
 # AI Agent Framework and LLM Inference
 
 # CrewAI - Framework for orchestrating role-playing, autonomous AI agents
-crewai>=0.80.0
-crewai-tools>=0.12.0
+crewai==0.80.0
+crewai-tools==0.12.0
 
 # LLM API Clients
 # Groq - Fast inference API for LLMs (Llama models)
-groq>=0.13.0
+groq==0.13.0
 
 # OpenAI - GPT models and o3
-openai>=1.0.0
+openai==1.58.1
 
 # Anthropic - Claude models
-anthropic>=0.25.0
+anthropic==0.43.1
 
 # Google - Gemini models
-google-generativeai>=0.3.0
+google-generativeai==0.8.3
 
 # HTTP client for API calls
-requests>=2.31.0
-httpx>=0.25.0
+requests==2.32.3
+httpx==0.28.1
 
 # Database and API integration
-psycopg2-binary>=2.9.9  # PostgreSQL adapter
-sqlalchemy>=2.0.0  # ORM for database operations
+psycopg2-binary==2.9.10  # PostgreSQL adapter
+sqlalchemy==2.0.36  # ORM for database operations
 
 # Utilities
-python-dotenv>=1.0.0  # Environment variable management
-pydantic>=2.0.0  # Data validation
-rich>=13.0.0  # Terminal UI for dashboard
-
-# Testing
-pytest>=7.4.0  # Testing framework
-pytest-cov>=4.1.0  # Coverage reporting
+python-dotenv==1.0.1  # Environment variable management
+pydantic==2.10.3  # Data validation
