@@ -6,7 +6,7 @@ toolchain go1.24.11
 
 require (
 	github.com/google/uuid v1.6.0
-	github.com/lib/pq v1.10.9
+	github.com/lib/pq v1.11.1
 	github.com/sashabaranov/go-openai v1.41.2
 	google.golang.org/api v0.258.0
 	gopkg.in/yaml.v3 v3.0.1
